@@ -1,0 +1,28 @@
+.header{
+    display: flex;
+}
+.header .menu{
+    flex: 10;
+    justify-content: space-between;
+}
+.header .dropDwon{
+    flex: 1;
+    justify-content: space-between;
+    color: #fff;
+}
+
+.logo {
+    width: 120px;
+    height: 31px;
+    line-height: 30px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 16px 28px 16px 0;
+    float: left;
+    text-align: center;
+  }
+  .logo a{
+    color: #fff !important;
+  }
+  .site-layout-background {
+    background: #fff;
+  }
