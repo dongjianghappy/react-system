@@ -1,24 +1,31 @@
-.header{
+.header-wrap{
+  display: flex;
+  flex: 1;
+}
+.header-wrap .header-left{
+  flex: 1;
+    justify-content: space-between;
+}
+.header-wrap .header-right{
+    justify-content: flex-end;
+    align-items: flex-end;
     display: flex;
-}
-.header .menu{
-    flex: 10;
-    justify-content: space-between;
-}
-.header .dropDwon{
-    flex: 1;
-    justify-content: space-between;
+    width: 300px;;
     color: #fff;
+}
+.header-wrap .header-right .dropDwon{
+  width: 120px;;
+  color: #fff !important;
 }
 
 .logo {
-    width: 120px;
+    width: 121px;
     height: 31px;
     line-height: 30px;
-    background: rgba(255, 255, 255, 0.2);
     margin: 16px 28px 16px 0;
     float: left;
     text-align: center;
+    color: #fff !important;
   }
   .logo a{
     color: #fff !important;

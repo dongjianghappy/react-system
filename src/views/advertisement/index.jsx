@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, Table, Space, Popconfirm, Button, Checkbox, Switch} from 'antd';
-import { Status, Dialog } from '../../components/index.js'
+import { Status, Dialog, Condition } from '../../components/index.js'
 import AddArticle from './article'
 import { getListAction } from '../../store/action'
 import store from '../../store';
@@ -85,7 +85,6 @@ export default class Advertisement extends React.Component{
                       title="确定删除此项" 
                       onCancel={()=>console.log("sss")} 
                       onConfirm={()=>{
-                        debugger
                         api.delete({
                           coding: 'K0002',
                           id: record.id
@@ -123,11 +122,17 @@ export default class Advertisement extends React.Component{
             <div>
                 <Card title="所以广告" extra={
               <div>
-                <Dialog butName="添加广告" title="添加广告">
+                <Space>
+                <Button size="small">生成JSON文件</Button>
+                <Dialog butName="新增广告" title="新增广告">
                   <AddArticle />
                 </Dialog>
+                </Space>
               </div>
             }>
+                <div style={{marginBottom: 20}}>
+                <Condition />
+                </div>
                 <Table
                     rowKey="id"
                     columns={columns}

@@ -1,10 +1,13 @@
 import React from 'react';
 import { Card, Table, Space, Popconfirm, Button, Checkbox, Switch} from 'antd';
+import { DeleteOutlined , UnorderedListOutlined, PlusOutlined} from '@ant-design/icons';
 import { connect } from 'react-redux'
-import { Status, Dialog } from '../../components/index.js'
+import { Status, Dialog, Operatinavbar, Condition } from '../../components/index.js'
 import AddArticle from './addArticle'
 import dispatchToProps from '../../store/actions'
+import coding from '../../static/constant/coding'
 import api from '../../api';
+import CateForm from './components/cateForm.jsx';
 
 class Channel extends React.Component{
 
@@ -35,7 +38,7 @@ class Channel extends React.Component{
                 title: '状态',
                 dataIndex: 'status',
                 render:(text, record) => (
-                  <Status {...record} />
+                  <Status coding="K0002" field="status" {...record} updateStatus={this.props.updateStatus} />
                 )
               },
               {
@@ -43,14 +46,17 @@ class Channel extends React.Component{
                 dataIndex: 'operating',
                 render: (text, record) => (
                     <Space size="middle">
-                      <Button type="default" size="small">添加</Button>
-                      <Button type="primary" size="small" onClick={()=>this.props.history.push(`/admin/sucai/list/${record.id}`)}>列表</Button>
-                      <Button type="primary" size="small" onClick={()=>this.props.history.push(`/admin/sucai/article/edit/${record.id}`)}>编辑</Button>
+                      <Button type="default" size="small"><PlusOutlined />添加</Button>
+                      <Button type="primary" size="small" onClick={()=>this.props.history.push(`/admin/source/list/${record.id}`)}>
+                        <UnorderedListOutlined />
+                        列表
+                      </Button>
+
+                      <CateForm type="edit" butName="编辑" title="编辑分类" />
                       <Popconfirm 
                       title="确定删除此项" 
                       onCancel={()=>console.log("sss")} 
                       onConfirm={()=>{
-                        debugger
                         api.delete({
                           coding: 'K0002',
                           id: record.id
@@ -59,7 +65,7 @@ class Channel extends React.Component{
                           this.itemRender()
                         })
                       }} >
-                        <Button type="default" size="small">删除</Button>
+                        <Button type="ghost" size="small"><DeleteOutlined />删除</Button>
                       </Popconfirm>
                     </Space>
                   ),
@@ -72,24 +78,32 @@ class Channel extends React.Component{
     }
 
     render(){
+
+        const path = this.props.match.path.split("/")[2]
+        const { cate, article} = coding[path]
+
         const {columns} = this.state
         const {list, total, pages} = this.props.list
         return(
-            <Card title="资源分类"  extra={
-              <div>
-                <Dialog butName="新增分类" title="新增分类">
-                  <AddArticle />
-                </Dialog>
-                <Button type="default" onClick={()=>this.props.history.push('/admin/sucai/article/edit')}>新增分类</Button>
-                <Button type="default" onClick={()=>this.props.history.push('/admin/sucai/article/edit')}>批量添加</Button>
-              </div>
-            }>
+
+          
+          <Card
+              title="分类管理"
+              extra={
+                <Space>
+                <CateForm butName="新增分类" title="新增分类" />
+                <Button size="small">批量添加</Button>
+                </Space>
+              }
+          >
                 <Table
                     rowKey="id"
                     columns={columns}
                     dataSource={list}
-                    pagination={{total, defaultPageSize: 10, onChange: this.props.inputChange}}
+                    pagination={false}
                 />
+                <Operatinavbar total={total} />
+                <input id="coding" type="hidden" value={cate} />
             </Card>
         )
     }

@@ -5,3 +5,6 @@ html, body, #root, .ant-layout {
 .site-layout-background {
   background: none !important;
 }
+.ant-layout-sider-children{
+  background: #001529 !important;
+}

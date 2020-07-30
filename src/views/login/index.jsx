@@ -5,6 +5,13 @@ import { setToken } from '../../utils/auth'
 import '../../static/login.css'
 import api from '../../api/index'
 
+
+
+const bgGround={
+    height: '100%',
+    background: `url(${require("../../static/image/login_bg.jpg")})`
+}
+
 export default class Login extends React.Component{
 
     onFinish = values => {
@@ -13,7 +20,6 @@ export default class Login extends React.Component{
             username: values.username,
             password: values.password
         }).then((res) =>{
-            debugger
             setToken(res.result.token)
             this.props.history.push("/admin")
         })
@@ -29,6 +35,7 @@ export default class Login extends React.Component{
 
     render(){
         return(
+            <div style={bgGround}>
             <Card title="管理员登录" className="login-form">
                 <Form
                     name="normal_login"
@@ -63,6 +70,7 @@ export default class Login extends React.Component{
                     </Form.Item>
                     </Form>
             </Card>
+            </div>
         )
     }
 }

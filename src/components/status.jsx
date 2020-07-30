@@ -1,6 +1,5 @@
 import React from 'react'
 import { Switch } from 'antd'
-import api from '../api/index'
 
 const Status = (props) => {
     return (
@@ -8,15 +7,16 @@ const Status = (props) => {
             checkedChildren="开启" 
             unCheckedChildren="关闭"
             size="small"
-            defaultChecked={props.status === '1' ? true : false}
+            defaultChecked={(props.status || props.checked) === '1' ? true : false}
             onChange={() => {
-                api.updateStatus({
-                    coding: 'K0002',
+                props.updateStatus({
+                    coding: props.coding,
                     id: props.id,
-                    status: 'status'
+                    status: props.field
                 })
             }}
         />
     )
 }
+
 export default Status

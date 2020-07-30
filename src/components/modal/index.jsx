@@ -1,19 +1,25 @@
-import React from 'react'
-import {Button, Modal } from 'antd'
+import React, { Fragment } from 'react'
+import { Button, Modal, message } from 'antd'
 
 export default class Dialog extends React.Component{
 
     state = { visible: false };
 
     showModal = () => {
-        console.log("ggggggggd");
-        this.setState({
-          visible: true,
-        });
+        // 是否勾选
+        //if(this.props.checked !== undefined && this.props.checked === false){
+        if(this.props.dataSource && this.props.dataSource.length === 0){
+            message.info(this.props.messageTitle);
+        }else{
+            this.setState({
+                visible: true,
+            });
+        }
+
     };
 
     handleOk = e => {
-    console.log(e);
+    this.props.handleOk()
     this.setState({
         visible: false,
     });
@@ -27,21 +33,37 @@ export default class Dialog extends React.Component{
     };
 
     render() {
-
         const { visible } = this.state
-        const { butName, title } = this.props
+        const { butName, title, type, width } = this.props
         return (
-            <div>
-                <Button type="default" onClick={this.showModal}>{butName}</Button>
+            <Fragment>
+                { 
+                    this.props.type === 'text' ? 
+                    <span onClick={this.showModal}>{butName}</span>
+                    : <Button type={type || "default"} size="small" onClick={this.showModal}>{butName}</Button>
+                }
+                
                 <Modal
-                    title={title}
+                    title={title || "提示信息"}
+                    width={width ? width*1 : 500}
                     visible={visible}
-                    onOk={this.handleOk}
                     onCancel={this.handleCancel}
+                    footer={
+                        this.props.footerBtn !== null ? 
+                        [
+                            <Button key="back" onClick={this.handleCancel}>
+                              取消
+                            </Button>,
+                            <Button key="submit" type="primary"  onClick={this.handleOk}>
+                              确定
+                            </Button>,
+                          ]
+                        : null
+                    }
                 >
                     {this.props.children}
                 </Modal>
-            </div>
+            </Fragment>
         )
     }
 }

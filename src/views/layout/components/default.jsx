@@ -12,7 +12,7 @@ export default class Default extends React.Component{
                     <Col span={6}>
                         <Card>
                         <Statistic
-                            title="Active"
+                            title="用户"
                             value={11.28}
                             precision={2}
                             valueStyle={{ color: '#3f8600' }}
@@ -24,7 +24,7 @@ export default class Default extends React.Component{
                     <Col span={6}>
                         <Card>
                         <Statistic
-                            title="Idle"
+                            title="业绩"
                             value={9.3}
                             precision={2}
                             valueStyle={{ color: '#cf1322' }}
@@ -36,7 +36,7 @@ export default class Default extends React.Component{
                     <Col span={6}>
                         <Card>
                         <Statistic
-                            title="Active"
+                            title="消息"
                             value={11.28}
                             precision={2}
                             valueStyle={{ color: '#3f8600' }}
@@ -48,13 +48,53 @@ export default class Default extends React.Component{
                     <Col span={6}>
                         <Card>
                         <Statistic
-                            title="Idle"
+                            title="订单"
                             value={9.3}
                             precision={2}
                             valueStyle={{ color: '#cf1322' }}
                             prefix={<ArrowDownOutlined />}
                             suffix="%"
                         />
+                        </Card>
+                    </Col>
+                    <Col span={18} style={{marginTop: 15}}>
+                        <Card style={{height: 450}}>
+                        
+                        </Card>
+                    </Col>
+                    <Col span={6} style={{marginTop: 15}}>
+                        <Card style={{height:250}}>
+                        <Statistic
+                            title="天气"
+                            value={9.3}
+                            precision={2}
+                            valueStyle={{ color: '#cf1322' }}
+                            prefix={<ArrowDownOutlined />}
+                            suffix="%"
+                        />
+                        </Card>
+
+                        <Card style={{marginTop: 15, height:185}}>
+                        <Statistic
+                            title="访客"
+                            value={9.3}
+                            precision={2}
+                            valueStyle={{ color: '#cf1322' }}
+                            prefix={<ArrowDownOutlined />}
+                            suffix="%"
+                        />
+                        </Card>
+                    </Col>
+
+                    <Col span={12} style={{marginTop: 15}}>
+                        <Card style={{height: 350}}>
+                        
+                        </Card>
+                    </Col>
+
+                    <Col span={12} style={{marginTop: 15}}>
+                        <Card style={{height: 350}}>
+                        
                         </Card>
                     </Col>
                     </Row>

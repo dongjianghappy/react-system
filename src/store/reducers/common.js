@@ -1,8 +1,12 @@
-import { INPUT_CHANGE, ADD_ITEM, DELETE_ITEM, GET_DATA_ACTION } from '../actionTypes'
+import { INPUT_CHANGE, ADD_ITEM, DELETE_ITEM, GET_DATA_ACTION, CHECK_CHANGE } from '../actionTypes'
 
 const initState = {
+    global: {
+        checked: true,
+        checkedList: []
+    },
     inputValue: "请输入内容",
-    list: []
+    list: [{id: 1}]
 }
 
 const reducers = (state = initState, action) => {
@@ -26,6 +30,21 @@ const reducers = (state = initState, action) => {
      else if(action.type === GET_DATA_ACTION){
         let newState = JSON.parse(JSON.stringify(state))
         newState.list = action.data
+        return newState
+    }      
+     else if(action.type === CHECK_CHANGE){
+        let newState = JSON.parse(JSON.stringify(state))
+        if(action.data.checked){
+            newState.global.checkedList.push(action.data.value)
+        }else{
+            newState.global.checkedList.map((item, index) => {
+                if(item.id === action.data.value.id){
+                    newState.global.checkedList.splice(index, 1)
+                }
+                
+            })
+        }
+        debugger
         return newState
     }      
     return state

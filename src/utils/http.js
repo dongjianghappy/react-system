@@ -76,7 +76,9 @@ export default class http {
 				if(response.data.result === true){
 
 				}else{
-					return response.data.responseBody;
+                    if(response.data.responseBody !== null){
+                        return response.data.responseBody;
+                    }
 				}
 			}else{
 				

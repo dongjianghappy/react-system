@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
-import './App.css'
-import Frame from '../src/views/layout'
-import { mainRouter, adminRouter } from './router'
-import { isLogined } from './utils/auth'
+import '@/App.css'
+import Frame from '@view/layout'
+import { mainRouter, adminRouter } from '@/router'
+import { isLogined } from '@/utils/auth'
 
 
 // 手动按需加载
@@ -23,6 +23,23 @@ const App = (props) =>  {
           {
             adminRouter.map( route => {
               return (
+
+                route.children ?
+
+                route.children.map((list, i) => (
+                    
+                  <Route
+                    key={list.path}
+                    path={list.path}
+                    exact={list.exact}
+                    render={ listProps => {
+                      console.log(list.exact);
+                      return <list.component {...listProps} />
+                    }}
+                  />
+                ))
+                
+                :
                 <Route
                   key={route.path}
                   path={route.path}

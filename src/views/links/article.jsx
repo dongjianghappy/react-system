@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, Form, Input, InputNumber, Button, Radio, Select, DatePicker } from 'antd';
+import { SelectBox } from '../../components'
 
-const { Option } = Select;
 
 // 这种常量可以定义在组件外，官网是这么定义的
 const layout = {
@@ -9,9 +9,13 @@ const layout = {
     wrapperCol: { span: 18 },
 };
 
+
+
 export default class AddArticle extends React.Component{
 
         render(){
+
+            const { linkType } = React.$enums;
             return (
                     <Form
                     {...layout}
@@ -35,14 +39,7 @@ export default class AddArticle extends React.Component{
                     </Form.Item>
 
                     <Form.Item name={['user', 'name']} label="来源" rules={[{ required: true }]}>
-                        <Select defaultValue="lucy" style={{ width: 120 }}>
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
-                        <Option value="disabled" disabled>
-                            Disabled
-                        </Option>
-                        <Option value="Yiminghe">yiminghe</Option>
-                        </Select>
+                        <SelectBox data={linkType} />
                     </Form.Item>
                     <Form.Item name={['user', 'email']} label="方式" rules={[{ type: 'email' }]}>
                         <Radio value={1}>交换</Radio>

@@ -1,0 +1,17 @@
+import React from 'react'
+import { Switch, Row, Col, Pagination } from 'antd'
+import { ButtonGroup } from './index'
+import { connect } from 'react-redux'
+import dispatchToProps from '../store/actions'
+
+const Operatinavbar = (props) => {
+    return (
+        <Row style={{marginTop: 15}}>
+        <Col span={12}><ButtonGroup /></Col>  
+        <Col span={12} style={{textAlign: 'end'}}><Pagination defaultPageSize={10} total={props.total} onChange={props.inputChange} /></Col>  
+      </Row>
+    )
+}
+
+
+export default connect(null, dispatchToProps)(Operatinavbar)

@@ -20,7 +20,7 @@ const Index = (props) =>  {
               <Content
                 className="site-layout-background"
                 style={{
-                  padding: 16,
+                  padding: 25,
                   margin: 0,
                   minHeight: 280,
                   overflow: "auto"

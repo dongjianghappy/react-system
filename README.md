@@ -1,3 +1,8 @@
+### 创建项目环境
+npm create-react-app react-system
+
+### 安装调试工具
+
 ### 安装antd
 npm isntall antd --save
 
@@ -42,8 +47,9 @@ thunk表示中间件，通常将异步请求放到中间件，thunk引入后作�
 
 一个组件在数据发生变化时该组件的render函数会进行跟新，但是该组件使用其他子组件时也会被同时更新，为了防止子组件更新，我们使用一下两种方法。1、在子组件中shouldWillProps生命周期返回一个false，当然我们使用的是该生命周期的两个参数进行对比，如果一致返回false，否则返回true。2、使用子组件继承React.pureComponent组件对象即可
 
-### 使用Git管理项目
+Component组件对象不会对数据进行比较，而pureComponent组件对象会对数据进行浅比较，如果是复杂数据不推荐使用pureComponent
 
+### 使用Git管理项目
 1、登录GitHub创建一个项目
 2、本地项目进行初始化: git init
 3、将本地和远程厂库关联起来: git remote add origin 远程仓库地址
@@ -54,7 +60,47 @@ thunk表示中间件，通常将异步请求放到中间件，thunk引入后作�
 
 5、创建新分支并切换: git checkout -b develop
 
+### Fragment组件优化
+关于父组件与子组件拆分，父组件使用的是<ul></ul>标签，而在子组件使用的是<li></li>标签，当子组件中<li>多个时需要一个根元素，平时我们使用的时div但是，在d浏览器dom结构中就不符合3wc标准，所以我们在组件中通过Fragment组件进行包裹或者使用空的<></>进行包裹，建议推荐使用Fragment包裹
 
+
+### 高阶组件
+高阶组件是一个函数，参数是一个组件，返回也是一个组件
+什么时候使用到高阶组件，在多个组件代码相同时，将公共部分抽离出来定义成高阶组件
+
+### 错误边界处理
+在开发环境中错误组件产生错误时会有错误信息提示，但是在生产中发生错误后页面会出现空白，此时我们需要进行错误处理，其他功能正常使用
+
+1、定义一个错误组件
+2，在组件中使用componentDidCatch生命周期进行捕获错误信息
+3、然后将该组件包裹其他需要提示的组件，此时，其他组件作为该组件的子组件，当子组件发生错误时，会触发错误组件的componentDidCatch生命周期，然后在当前组件使用render属性将错误信息打印出来
+
+
+### 使用受控组件获取数据
+受控组件获取数据是指在每个表单元素上进行绑定一个onChange事件，每个事件都定义一个方法，当form表单元素中含有多个时，可以帮到同一个事件函数，此时，该事件函数作为公共函数，内部获取数据书写成this.setState{[e.target.name]: e.tager.vaule}即可
+
+### 关于路由跳转时history为undefined的问题
+原因：是当前跳转组件并没有被router关联到，所以找不到
+方案：1、通过props父子组件传参将history传递，该方法如果在页面复杂时不适用，2、通过路由高阶函数withRoute设置
+
+### 导入报错问题
+react Import in body of module; reorder to top  import/first
+
+分析原因：import语句应该放在最前面，至少要放到const定义变量的前面。
+
+### 别名配置
+
+在config打开webpack.config.js文件，找到alias添加以下两个属性
+'@': path.resolve(__dirname, '../src'),
+'@view': path.resolve(__dirname, '../src/views'),
+
+
+### 关于token的使用
+1、token主要用于跨域请求的后端校验
+2、在用户登录成功后，后端生成一个token返回给前端，前端将token通过Cooke或localStorage等方式进行存储，每次发送请求都会将token传送给后端
+3、同时也可以存储到redux中
+4、请求接口中把token传给后端有两种方式，第一种是在请求头进行添加，第二中是通过字段传参
+5、后端拿到token后会进行验证
 
 
 
