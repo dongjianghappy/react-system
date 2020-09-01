@@ -41,8 +41,12 @@ class Position extends React.Component{
                     </Col>
                     <Col span={12}>
                     <Row justify="end">
-                        <Col span={2} onClick={() => this.route('/admin/tag')}>标签</Col>
-                        <Col span={2} onClick={() => this.route('/admin/user')}>用户</Col>
+                        <Col span={2} onClick={() => this.route('/admin/tag')}>
+                            <i className="iconfont icon-tags" style={{fontSize: 20}}></i>
+                        </Col>
+                        <Col span={2} onClick={() => this.route('/admin/user')}>
+                        <i className="iconfont icon-user" style={{fontSize: 16}}></i>
+                        </Col>
                         <Col span={2} onClick={() => this.route('/admin/appstore')}>微博</Col>
                         <Col span={2} onClick={() => this.route('/admin/appstore')}>空间</Col>
                         <Col span={2} onClick={() => this.route('/admin/appstore')}>客服</Col>

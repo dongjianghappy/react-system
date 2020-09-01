@@ -68,19 +68,21 @@ const { Search } = Input;
 
     return(
         <Header className="header">
-        <div className="logo" onClick={() => route('/admin')}>管理控制平台</div>
+        <div className="logo" onClick={() => route('/admin')}>
+          <img alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" width="25" style={{marginRight: 10}} />
+          管理控制平台</div>
         <div className="header-wrap">
           <div className="header-left">
           <Row>
             <Col>
               <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']} className="menu">
-              <Menu.Item key="1"><Link to="/admin/basic">基本</Link></Menu.Item>
-              <Menu.Item key="2"><Link to="/admin/navigation">导航</Link></Menu.Item>
-              <Menu.Item key="3"><Link to="/admin/sucai" >素材</Link></Menu.Item>
-              <Menu.Item key="4"><Link to="/admin/todolist" >测试</Link></Menu.Item>
+              <Menu.Item><Link to="/admin/basic">基本</Link></Menu.Item>
+              <Menu.Item><Link to="/admin/navigation">导航</Link></Menu.Item>
+              {/* <Menu.Item key="3"><Link to="/admin/sucai" >素材</Link></Menu.Item>
+              <Menu.Item key="4"><Link to="/admin/todolist" >测试</Link></Menu.Item> */}
             </Menu>
             </Col>
-            <Col><Search placeholder="站内搜索" /></Col>
+            <Col offset={3}><Search placeholder="站内搜索" /></Col>
           </Row>
           </div>
           <div className="header-right">

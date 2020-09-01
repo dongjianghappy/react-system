@@ -93,7 +93,7 @@ export default class Sidebar extends React.Component {
                   </SubMenu>
                   : 
                   <Menu.Item key={ i+100 }>
-                      <Link to={item.path}>{ item.name }</Link>
+                      <Link to={item.path}><i className={`iconfont ${item.meta && item.meta.icon}`} style={{marginRight: 10, fontSize: 18}}></i>{ item.name }</Link>
                   </Menu.Item>
                   ))
             }

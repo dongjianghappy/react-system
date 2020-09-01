@@ -5,6 +5,8 @@ import { Provider } from 'react-redux'
 import { mainRouter, adminRouter } from '@/router'
 import store from '@/store'
 import '@/index.css';
+import '@/static/css/chartist.min.css';
+import '@/static/css/iconfont/iconfont.css';
 import App from '@/App';
 import * as serviceWorker from '@/serviceWorker';
 import enums from '@/static/constant/enum'

@@ -46,7 +46,7 @@ export default class Navigation extends React.Component{
         return(
             <div>
                 <div>
-                    <Input placeholder={this.state.inputValue} value={this.state.inputValue} onChange={this.inputChange} style={{width:"350px"}} />
+                    <Input placeholder={this.state.inputValue} value={this.state.inputValue} onChange={this.getListAction} style={{width:"350px"}} />
                     <Button onClick={this.addItem}>添加</Button>
                 </div>
                 <List

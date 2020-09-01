@@ -8,7 +8,7 @@ const Operatinavbar = (props) => {
     return (
         <Row style={{marginTop: 15}}>
         <Col span={12}><ButtonGroup /></Col>  
-        <Col span={12} style={{textAlign: 'end'}}><Pagination defaultPageSize={10} total={props.total} onChange={props.inputChange} /></Col>  
+        <Col span={12} style={{textAlign: 'end'}}><Pagination defaultPageSize={10} total={props.total} onChange={props.getListAction} /></Col>  
       </Row>
     )
 }

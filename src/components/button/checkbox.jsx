@@ -4,8 +4,10 @@ import { Checkbox } from 'antd'
 export default (props) => {
 
     function onChange(e) {
+        debugger
         props.onChange({
             checked: e.target.checked,
+            type: "single",
             value: {
                 id: props.data
             }
@@ -20,7 +22,16 @@ export default (props) => {
         console.log(`checked = ${e.target.checked}`);
       }
 
+      const ches = () => (
+        props.list.some((item, index) => {
+            return item.id === props.data
+        })
+      )
+
     return (
-    <Checkbox onChange={onChange}></Checkbox>
+        <div>
+                <Checkbox checked={ches()} onChange={onChange}></Checkbox>{console.log(props.list)}
+        </div>
+    
     )
 }

@@ -13,6 +13,7 @@ export const TEXT_TYPE = [
     }
 ]
 
+// 友链平台
 export const LINK_TYPE = [
     {
         value: "0",
@@ -44,6 +45,30 @@ export const LINK_TYPE = [
     }
 ]
 
+// 友链方式
+export const LINK_METHOD = [
+    {
+        value: "0",
+        name: "交换"
+    },
+    {
+        value: "1",
+        name: "出售"
+    }
+]
+
+// 出售状态
+export const SELL_STATUS = [
+    {
+        value: "0",
+        name: "过期"
+    },
+    {
+        value: "1",
+        name: "正常"
+    }
+]
+
 export const CHANNEL_TYPE = [
     {
         value: "article",
@@ -70,7 +95,9 @@ export const CHANNEL_TYPE = [
  const enums = {
     textType: TEXT_TYPE,
     linkType: LINK_TYPE,
-    channelType: CHANNEL_TYPE
+    channelType: CHANNEL_TYPE,
+    linkMethod: LINK_METHOD,
+    sellStatus: SELL_STATUS
 }
 
 export default enums

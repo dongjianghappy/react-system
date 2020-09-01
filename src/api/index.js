@@ -82,4 +82,21 @@ export default {
     openAndClose(params) {
         return http.request('common', 'openAndClose', params)
     },   
+    // 幻灯片
+    slideshow(params) {
+        return http.request('vue', 'slideshow', params)
+    },     
+    // 幻灯片
+    slideshowList(params) {
+        return http.request('vue', 'slideshowList', params)
+    }, 
+
+    // 图片空间
+    space(params) {
+        return http.request('space', 'space', params)
+    },
+    // 创建文件夹
+    createfile(params) {
+        return http.request('space', 'createfile', params)
+    }, 
 }

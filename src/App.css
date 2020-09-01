@@ -8,3 +8,18 @@ html, body, #root, .ant-layout {
 .ant-layout-sider-children{
   background: #001529 !important;
 }
+.pointer {
+  cursor: pointer;
+}
+.icon-right, .icon-error{
+  cursor: pointer;
+  
+}
+.icon-right{
+  font-size:  24px;
+  color: #52c41a !important
+}
+.icon-error{
+  font-size:  20px;
+  color: #d9363e !important
+}

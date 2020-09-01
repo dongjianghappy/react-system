@@ -32,6 +32,7 @@ import Tags from '../views/tag'
 import MessageBoard from '../views/service/messageBoard'
 import Slideshow from '../views/slideshow'
 import SlideshowList from '../views/slideshow/list'
+import spread from '../views/spread'
 
 export const mainRouter = [
     {
@@ -58,12 +59,16 @@ const asyncRoutes = [
         name: "基本信息",
         path: "/admin/basic",
         isShow: true,
-        component: Basic 
+        component: Basic,
+        meta: {
+            title: "",
+            icon: "icon-basic",
+        }  
     },
     {
         module: "basic",
         name: "轮播图设置",
-        path: "/admin/slideshow/list",
+        path: "/admin/slideshow/list/:fid?",
         isShow: false,
         component: SlideshowList 
     }, 
@@ -72,7 +77,11 @@ const asyncRoutes = [
         name: "幻灯片",
         path: "/admin/slideshow",
         isShow: true,
-        component: Slideshow 
+        component: Slideshow,
+         meta: {
+            title: "",
+            icon: "icon-slideshow"
+        }       
     },    
     {
         name: "修改文档",
@@ -91,6 +100,10 @@ const asyncRoutes = [
         path: "/admin/link",
         component: Links,
         isShow: true,
+        meta: {
+            title: "",
+            icon: "icon-link"
+        },
     },
     {
         module: "business",
@@ -98,8 +111,24 @@ const asyncRoutes = [
         path: "/admin/partner",
         component: Partner,
         isShow: true, 
+        meta: {
+            title: "",
+            icon: "icon-partner"
+        },        
         exact: true
     }, 
+    {
+        module: "business",
+        name: "推广管理",
+        path: "/admin/spread",
+        component: spread,
+        isShow: true, 
+        meta: {
+            title: "",
+            icon: "icon-spread"
+        },         
+        exact: true
+    },     
     {
         name: "广告管理",
         path: "/admin/advertisement/location",

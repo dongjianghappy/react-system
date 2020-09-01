@@ -7,7 +7,7 @@ const OperatingGroup = (props) => {
     return (
         <Space>
         <Dialog butName="编辑" title="更改友链">
-          
+          {props.children}
         </Dialog>
         <Popconfirm 
         title="确定删除此项" 

@@ -1,27 +1,15 @@
 import React from 'react'
 import { Card, Table, Space, Popconfirm, Button, Checkbox, Switch} from 'antd';
 import { Status, Dialog, Condition } from '../../components/index.js'
+import { connect } from 'react-redux'
 import AddArticle from './article'
+import dispatchToProps from '../../store/actions'
 import { getListAction } from '../../store/action'
 import store from '../../store';
 import api from '../../api';
 
-export default class Advertisement extends React.Component{
+class Advertisement extends React.Component{
     
-    constructor(props){
-        super(props)
-        // 监听(订阅)参数是一个方法，在方法中需要从小设置值即可
-        store.subscribe(this.change)
-      }
-  
-      change = () => {
-        const {link} = store.getState()
-        this.setState({
-          data: link.list.list,
-          total: link.list.total,
-          pages: link.list.pages
-        })
-      }
 
     state ={
         columns: [
@@ -106,40 +94,44 @@ export default class Advertisement extends React.Component{
     }
 
     componentDidMount(){
-        const action = getListAction({
-          coding: 'P0008',
-          page: 0,
-          pagesize: 10
-        })
-        store.dispatch(action)
-      }
+      this.props.getListAction()
+    }
 
     render(){
 
         const {columns, data} = this.state
+        const {list, total, pages} = this.props.list
 
         return (
             <div>
                 <Card title="所以广告" extra={
-              <div>
-                <Space>
-                <Button size="small">生成JSON文件</Button>
-                <Dialog butName="新增广告" title="新增广告">
+                  <div>
+                  <Space>
+                <Condition />
+                <Dialog type="primary" size="defualt" butName="新增广告" title="新增广告" >
                   <AddArticle />
                 </Dialog>
                 </Space>
-              </div>
-            }>
-                <div style={{marginBottom: 20}}>
-                <Condition />
                 </div>
+            }>
                 <Table
                     rowKey="id"
                     columns={columns}
-                    dataSource={data}
+                    dataSource={list}
                 />
+                <input id="coding" type="hidden" value="P0008" />
                 </Card>
             </div>
         )
     }
 }
+
+const stateToProops = (state) => {
+  console.log(state);
+  return {
+      inputValue: state.inputValue,
+      list: state.common.list
+  }
+}
+
+export default connect(stateToProops, dispatchToProps)(Advertisement)

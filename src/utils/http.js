@@ -55,6 +55,9 @@ export default class http {
 
     // 请求方法
     request(m, n, params){
+
+        params = params || {}
+
 		params.n = n;
 		params.m = params.m ? params.m : m;
 

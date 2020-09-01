@@ -83,14 +83,11 @@ class UserList extends React.Component{
 
         const {columns, data} = this.state
         return(
+
           <Card title="用户列表" extra={
+            <div>
             <Space>
-              <Button>创建用户</Button>
-              <Button>返回</Button>
-            </Space>
-          }>
-            <Space style={{marginBottom: 25}}>
-                <Search
+            <Search
       placeholder="input search text"
       onSearch={value => console.log(value)}
       style={{ width: 200 }}
@@ -98,7 +95,13 @@ class UserList extends React.Component{
     注册时间 <RangePicker />
     <Button type="primary">搜索</Button>
     <Button type="default">重置</Button>
-    </Space>
+          <Dialog type="primary" size="defualt" butName="创建用户" title="创建用户" >
+            
+          </Dialog>
+          </Space>
+          </div>
+      }>
+
                 <Table
                     rowKey="id"
                     columns={columns}

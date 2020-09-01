@@ -22,11 +22,11 @@ const { TabPane } = Tabs;
 
   render() {
 
-    const { butName, title, type } = this.props
+    const { butName, title, type, size } = this.props
     const { channelType } = React.$enums;
     return (
       <>
-        <Button type="primary" onClick={this.showDrawer} size="small" >
+        <Button type="primary" onClick={this.showDrawer} size={size || "small"} >
         { 
         type === 'edit' ?  <EditOutlined  /> : <PlusOutlined /> 
         }

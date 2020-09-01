@@ -74,7 +74,7 @@ class Channel extends React.Component{
     }
 
     componentDidMount(){
-       this.props.inputChange()
+       this.props.getListAction()
     }
 
     render(){
@@ -91,8 +91,8 @@ class Channel extends React.Component{
               title="分类管理"
               extra={
                 <Space>
-                <CateForm butName="新增分类" title="新增分类" />
-                <Button size="small">批量添加</Button>
+                <CateForm size="defualt" butName="新增分类" title="新增分类" />
+                <Button>批量添加</Button>
                 </Space>
               }
           >

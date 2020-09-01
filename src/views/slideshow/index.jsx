@@ -1,52 +1,75 @@
 import React from 'react'
-import { Card, Button, Row, Col, Avatar  } from 'antd'
+import { Card, Button, Row, Col, Avatar } from 'antd'
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
+import { connect } from 'react-redux'
+import dispatchToProps from '../../store/actions'
 import { Dialog } from '../../components'
 import SlideshowFrom from './components/slideshowFrom'
 import { Link } from 'react-router-dom';
 
 const { Meta } = Card;
 
-export default class Slideshow extends React.Component{
+class Slideshow extends React.Component{
+
+    componentDidMount(){
+        this.props.getSlideshow()
+    }
 
     render() {
+
+        const {list, total, pages} = this.props.list
+
         return (
             <Card 
                 title="幻灯片管理"
                 extra={
-                    <Dialog type="text" butName="新增幻灯片" title="新增幻灯片">
+                    <Dialog type="text" butName="新增幻灯片" title="新增幻灯片" className="pointer" >
                     <SlideshowFrom />
                   </Dialog>
                 }
             >
 
                 <Row>
-                    <Col span={6}>
-                    <Card
-                        style={{ width: 300 }}
-                        cover={
-                            <Link to="/admin/slideshow/list">
-                        <img
-                            alt="example"
-                            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                        />
-                            </Link>
-                        }
-                        actions={[
-                        <SettingOutlined key="setting" />,
-                        <EditOutlined key="edit" />,
-                        <EllipsisOutlined key="ellipsis" />,
-                        ]}
-                    >
-                        <Meta
-                        avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                        title="Card title"
-                        description="This is the description"
-                        />
-                    </Card>
-                    </Col>
+                   
+                    {
+                        list && list.map((item, i) => (
+                            <Col span={6}>
+                            <Card
+                                style={{ width: 300, marginBottom: 25 }}
+                                cover={
+                                    <Link onClick={()=>this.props.history.push(`/admin/slideshow/list/${item.id}`)}>
+                                <img
+                                    alt="example"
+                                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                                />
+                                    </Link>
+                                }
+                                actions={[
+                                <SettingOutlined key="setting" />,
+                                <EditOutlined key="edit" />,
+                                <EllipsisOutlined key="ellipsis" />,
+                                ]}
+                            >
+                                <Meta
+                                avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                                title={item.name}
+                                />
+                            </Card>
+                            </Col>
+                        ))
+                    }
+                   
                 </Row>
             </Card>
         )
     }
 }
+
+const stateToProops = (state) => {
+    debugger
+    return {
+        list: state.slideshow
+    }
+  }
+
+export default connect(stateToProops, dispatchToProps)(Slideshow)

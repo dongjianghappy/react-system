@@ -18,13 +18,16 @@
   color: #fff !important;
 }
 
+.ant-layout-header{
+  padding: 0 20px !important;
+}
+
 .logo {
-    width: 121px;
+    width: 151px;
     height: 31px;
     line-height: 30px;
     margin: 16px 28px 16px 0;
     float: left;
-    text-align: center;
     color: #fff !important;
   }
   .logo a{

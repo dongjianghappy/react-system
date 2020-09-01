@@ -19,10 +19,10 @@ export default class Dialog extends React.Component{
     };
 
     handleOk = e => {
-    this.props.handleOk()
-    this.setState({
-        visible: false,
-    });
+        console.log("sss");
+        this.setState({
+            visible: false,
+        });
     };
 
     handleCancel = e => {
@@ -34,13 +34,13 @@ export default class Dialog extends React.Component{
 
     render() {
         const { visible } = this.state
-        const { butName, title, type, width } = this.props
+        const { butName, title, type, size, width, className } = this.props
         return (
             <Fragment>
                 { 
                     this.props.type === 'text' ? 
-                    <span onClick={this.showModal}>{butName}</span>
-                    : <Button type={type || "default"} size="small" onClick={this.showModal}>{butName}</Button>
+                    <span className={className} onClick={this.showModal}>{butName}</span>
+                    : <Button className={className} type={type || "default"} size={size || "small"} onClick={this.showModal}>{butName}</Button>
                 }
                 
                 <Modal

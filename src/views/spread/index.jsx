@@ -6,7 +6,7 @@ import AddArticle from './article'
 import dispatchToProps from '../../store/actions'
 import api from '../../api';
 
-class Links extends React.Component{
+class Spread extends React.Component{
     
     state ={
         columns: [
@@ -16,31 +16,25 @@ class Links extends React.Component{
               render: text => <a><Checkbox></Checkbox></a>,
             },
             {
-              title: '网站名称',
+              title: '顺序',
+              dataIndex: 'sort',
+            },
+            {
+              title: '推广名称',
               dataIndex: 'name',
             },
             {
-              title: '链接地址',
-              dataIndex: 'url',
-            },
-            {
-                title: '来源',
-                dataIndex: 'source',
+                title: '推广链接',
+                dataIndex: 'url',
                 render: text => <a>{text}</a>,
-              },
-            {
-                title: '类型',
-                dataIndex: 'type',
-                render: text => <a>{text}</a>,
-              },   
-              
+              },              
             {
                 title: '价格(元/月)',
                 dataIndex: 'price',
                 render: text => <a>{text}</a>,
               },
             {
-                title: '结束日期',
+                title: '日期',
                 dataIndex: 'datetime',
                 render: text => <a>{text}</a>,
               },                
@@ -57,7 +51,19 @@ class Links extends React.Component{
                 title: '操作',
                 dataIndex: 'operating',
                 render: (text, record) => (
-                    <OperatingGroup><AddArticle /></OperatingGroup>
+                  <Space>
+                  <Dialog butName="编辑" title="更改友链">
+                  <AddArticle />
+                  </Dialog>
+                  <Popconfirm 
+                  title="确定删除此项" 
+                  onCancel={()=>console.log("sss")} 
+                  onConfirm={()=>{
+                    
+                  }} >
+                    <Button type="default" size="small">删除</Button>
+                  </Popconfirm>
+                </Space>
                   ),
               },
         ],
@@ -79,29 +85,16 @@ class Links extends React.Component{
       
         return (
             <div>
-                <Card
-                tabList={[
-                  {
-                    key: 'tab1',
-                    tab: '出售链接',
-                  },
-                  {
-                    key: 'tab2',
-                    tab: '交换链接',
-                  },
-                ]}
-
-                tabBarExtraContent={
+                <Card title="推广管理" extra={
                   <div>
-                    <Space>
-                  <Condition />
-                  <Dialog type="primary" size="defualt" butName="新增友链" title="新增友链" >
-                    <AddArticle />
-                  </Dialog>
-                  </Space>
-                  </div>
-                }
-            >
+                  <Space>
+                <Condition />
+                <Dialog type="primary" size="defualt" butName="新增内容" title="新增内容" >
+                  <AddArticle />
+                </Dialog>
+                </Space>
+                </div>
+            }>
                 <Table
                     rowKey="id"
                     columns={columns}
@@ -109,7 +102,7 @@ class Links extends React.Component{
                     pagination={ false }
                 />
                 <Operatinavbar total={total} />
-                <input id="coding" type="hidden" value="P0003" />
+                <input id="coding" type="hidden" value="P0006" />
                 </Card>
             </div>
         )
@@ -124,4 +117,4 @@ const stateToProops = (state) => {
   }
 }
 
-export default connect(stateToProops, dispatchToProps)(Links)
+export default connect(stateToProops, dispatchToProps)(Spread)

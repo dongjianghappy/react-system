@@ -4,10 +4,11 @@ import { Switch } from 'antd'
 const Status = (props) => {
     return (
         <Switch 
-            checkedChildren="开启" 
-            unCheckedChildren="关闭"
+            checkedChildren={props.field !== 'checked' ? "NO" : ""} 
+            unCheckedChildren={props.field !== 'checked' ? "OFF" : ""} 
             size="small"
             defaultChecked={(props.status || props.checked) === '1' ? true : false}
+            checked={(props.status || props.checked) === '1' ? true : false}
             onChange={() => {
                 props.updateStatus({
                     coding: props.coding,

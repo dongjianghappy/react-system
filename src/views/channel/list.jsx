@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import { Card, Table, Space, Checkbox, Button, Popover, Row, Col, Pagination} from 'antd';
 import { connect } from 'react-redux'
-import { Status, Dialog, ButtonGroup, Operatinavbar, Condition, R_button, R_checkbox } from '../../components/index.js'
+import { Checked, Dialog, ButtonGroup, buttonGroupArticle, Operatinavbar, Condition, R_button, R_checkbox } from '../../components/index.js'
 import dispatchToProps from '../../store/actions'
 import coding from '../../static/constant/coding'
 import api from '../../api'
@@ -16,6 +16,11 @@ class List extends React.Component{
               title: '选择',
               dataIndex: 'name',
               render: (text, record) => (
+               
+                // checked={
+                //     this.props.common.global.checkedList.some((item, index) => item[index].id)
+                // } 
+                
                 <R_checkbox onChange={this.props.checkBox} list={this.props.common.global.checkedList} data={record.id}></R_checkbox>
               ),
             },
@@ -45,7 +50,7 @@ class List extends React.Component{
                 title: '状态',
                 dataIndex: 'status',
                 render:(text, record) => (
-                    <Status type="switch" coding="K0000" field="checked" {...record} updateStatus={this.props.updateStatus} />
+                    <Checked type="switch" coding="K0000" field="checked" {...record} updateStatus={this.props.updateStatus} />
                 )
             },
             {
@@ -79,7 +84,7 @@ class List extends React.Component{
     };
 
     componentDidMount(){
-        this.props.inputChange()
+        this.props.getListAction()
     }
 
     checkedAll = () =>{
@@ -90,8 +95,10 @@ class List extends React.Component{
                 id: Item.id
             })
         })
+
         this.props.checkBox({
             checked: this.state.allChecked,
+            type: "all",
             value: data            
         })
 
@@ -126,13 +133,18 @@ class List extends React.Component{
             {
                 key: 'tab3',
                 tab: '已退回',
-              },
-              {
-                key: 'tab4',
-                tab: '发布文档',
-              },
+              }
           ]}
-          tabBarExtraContent={ <Condition /> }
+          tabBarExtraContent={ 
+            <div>
+            <Space>
+          <Condition />
+          <Dialog type="primary" size="defualt" butName="发布文档" title="发布文档">
+      
+          </Dialog>
+          </Space>
+          </div>
+        }
       >
                 <Table
                     bordered
@@ -203,6 +215,7 @@ class List extends React.Component{
                         </Dialog>
                         <Button type="default">属性设置</Button>
                     </Space>
+                    <buttonGroupArticle />
                     </Col>  
                     <Col span={12} style={{textAlign: 'end'}}><Pagination defaultPageSize={10} total={total} onChange={this.props.inputChange} /></Col>  
                 </Row>
@@ -216,7 +229,7 @@ const stateToProops = (state) => {
     return {
         common: state.common,
         inputValue: state.inputValue,
-        list: state.link.list
+        list: state.common.list
     }
   }
 

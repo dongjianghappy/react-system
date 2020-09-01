@@ -104,6 +104,93 @@ react Import in body of module; reorder to top  import/first
 
 
 
+### webpack
+前端资源构建工具，静态模块打包器 
+
+五个核心概念entry:入口文件起点、output输出文件、loader处理非js文件比如less，css,img而webpack本身就可以处理js文件、plug：插件和mode：有开发模式和生产模式
+
+
+
+### 创建webpack
+
+1、快速构建项目命令：npm init -y
+2、全局按钮webpake和webpack-cli
+   npm install webpack webpack-cli --g
+
+
+webpack可以打包js和json文件，其他资源是不可以处理的
+
+生产环境比开发环境多一个压缩文件
+生产环境和开发环境将ex6模块化编译成浏览器能够识别的模块话
+
+### 如何使webpack打包样式资源 
+
+需要通过loader进行解析翻译webpack不能识别的模块，所以需要在webpack.config.js配置文件进行配置
+
+
+所有构建工具都是基于node.js平台运行的，所以模块化默认采用common.js
+
+### loader 1、下载 2、使用
+
+安装css loader
+npm i style-loader css-loader -D :-D表示仅在开发环境下存在的包用-D
+
+安装 less loader
+npm install less less-loader -D
+
+### plugin 1、下载 2、引入 3、使用
+
+
+### 打包html文件
+1、下载：npm install html-webpack-plugin -D
+
+2、引入：在配置文件中通过require引入模块
+
+3、使用：在plugin属性中使用new HtmlWebpackPlugin()
+
+在webpack的管理输出的部分,设定HtmlWebpackPlugin部分,运行npm run build 会报错
+Error: Cannot find module 'webpack/lib/node/NodeTemplatePlugin'
+
+解决方法是：分别执行下面npm命令
+npm install webpack
+npm install -D webpack-cli
+然后再运行npm run build
+
+### 打包图片文件
+npm install url-loader file-loader html-loader -D
+
+打包图片有两种类型
+1、图片在样式中，
+2、图片之间引入到html标签中
+
+### 打包的那些坑货
+
+1、ERROR in   Error: Child compilation failed:  Module not found: Error: Can't resolve './build/build.js' in 'D:\E：盘（资料）\webpack\test\src':
+
+配置文件中配置了html-loader，而index.html模板引入了build.js文件，打包时就出现以上错误信息，是模板文件路径问题
+
+### 打包其他资源
+匹配规则通过取反匹配使用exclude进行匹配排除某些文件比如：css、less、图片等剩下的就是其他资源，包括图标和字体等
+loader使用处理器是file-loader
+
+### webpack服务搭建
+安装：npm install webpack-dev-server -D
+
+配置：在配置文件中进行配置devServer属性
+devServer属性有：
+contantBase: 项目构建后路径
+compress: 启动gzip压缩,值为true和false
+port:端口号
+open:是否自动开启默认浏览器
+
+配置完成后通过npx webpack-dev-server启动服务
+
+### 打包时将CSS从JS中分离单独文件 
+
+
+
+ 
+
 
 
 

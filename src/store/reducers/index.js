@@ -1,14 +1,16 @@
 import { combineReducers } from 'redux'
 
 import common from './common'
-import link from './link'
 import channel from './channel'
+import slideshow from './slideshow'
+import space from './space'
 
 
 const rootReducer = combineReducers({
     common,
-    link,
-    channel
+    channel,
+    slideshow,
+    space
 })
 
 export default rootReducer;
