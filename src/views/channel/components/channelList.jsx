@@ -4,15 +4,20 @@ import { Drawer, Button, Row, Col, Card } from 'antd';
 import { adminRouter } from '../../../router'
 import { withRouter } from 'react-router-dom';
 import ChannelForm from './channelForm'
+import { checkButtonAuth } from '@/utils/auth'
 
-const routers = adminRouter.filter(route => route.flag === 'channel')
+
+
 const { Meta } = Card;
 
 
 class ChannelList extends React.Component {
   state = { visible: false, childrenDrawer: false };
 
+  formRef = React.createRef();
+
   showDrawer = () => {
+    
     this.setState({
       visible: true,
     });
@@ -36,52 +41,78 @@ class ChannelList extends React.Component {
     });
   };
 
-   handel = path => {
-    this.props.history.push(path)
-    window.location.reload()
-}
+  handel = (path) => {
+    this.formRef.current.classList.remove("show")
+    this.formRef.current.classList.add("hide")
+    this.setState({
+      visible: false,
+    });
+    this.props.click("/admin/"+path, path)
+  }
+
+  mouseOver = () => {
+    debugger
+    this.formRef.current.classList.remove("hide")
+    this.formRef.current.classList.add("show")
+    
+  }
+
+  mouseLeave = () => {
+    debugger
+    this.formRef.current.classList.remove("show")
+    this.formRef.current.classList.add("hide")
+    
+  }
+  
 
   render() {
 
-    const { butName, title, type, width } = this.props
+    const { module } = React.$enums;
+    const routers = module.filter(route => route.type === "plate")
+    const channel = module.filter(route => route.type === "channel")
+    const { title, type, width } = this.props
     return (
       <>
-        { 
-        
-            this.props.type === 'text' ? 
-            <span onClick={this.showDrawer}>{butName}</span>
-            : <Button type={type || "default"} size="small" onClick={this.showDrawer}>{butName}</Button>
-        }
+        <span onClick={this.showDrawer}><i className="iconfont icon-navicon font24"></i></span>
+
         <Drawer
-          title={title}
-          width={620}
+          placement="left"
+          
+          style={{ top: 110 }}
+          width={200}
           closable={false}
           onClose={this.onClose}
           visible={this.state.visible}
         >
-            {this.props.children}
-          <Button type="primary" onClick={this.showChildrenDrawer}>
-            新增频道
-          </Button>
 
-          <Row>
+
+            {this.props.children}
+          <ul className="navigation">
         {
             routers.map((list, i) => (
-            <Col key={i} span={6} style={{padding: 10}}>
-
-                <Card
-                    hoverable
-                    style={{ width: 'auto' }}
-                    cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" onClick={() => this.handel(list.path)} />}
-                    
-                >
-                    <Meta title={ list.name } description="www.instagram.com" />
-                    <p onClick={this.showChildrenDrawer}>编辑</p>
-                </Card>
-            </Col>
+                list.value === 'channel' ?
+                <li key={i} className="channel" onMouseEnter={() => this.mouseOver()} onMouseLeave={() => this.mouseLeave()} >
+                { list.name }
+        <div ref={this.formRef} className="channel-wrap hide">
+          <ul className="channel">
+          {
+            channel.map((item, index) => (
+              
+              checkButtonAuth(item.authority) ? 
+              <li span={24} className="channel-list" onClick={() => this.handel(item.value)} >{ item.name }</li>
+              : ""
+            ))
+          }
+          </ul>
+        </div>
+                </li>
+                :
+                <li key={i} onClick={() => this.handel(list.value)}>
+                { list.name }
+                </li>
             ))
         }
-        </Row>
+        </ul>
 
 
           <Drawer

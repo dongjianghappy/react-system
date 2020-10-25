@@ -4,6 +4,7 @@ import { Switch } from 'antd'
 const Status = (props) => {
     return (
         <Switch 
+            disabled={props.disabled || ""}
             checkedChildren={props.field !== 'checked' ? "NO" : ""} 
             unCheckedChildren={props.field !== 'checked' ? "OFF" : ""} 
             size="small"

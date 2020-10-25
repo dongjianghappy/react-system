@@ -5,98 +5,212 @@ const http = new https()
 export default {
 	//用户登录
 	Login(params){
-		return http.request('user', 'Login', params)
+		return http.request('user', 'Login', 'post', params)
     },	
+	// 默认数据
+	Default(params){
+		return http.request('vue', 'defaultPage', 'post', params)
+    },	
+    
+    // 单个列表详情接口
+    detail(params) {
+        return http.request('vue', 'detail','post', params)
+    },      
     // 新增
     insert(params) {
-        return http.request('common', 'insert', params)
+        return http.request('common', 'insert', 'post', params)
     },   
     // 删除和还原
     removeAndRestore(params) {
-        return http.request('common', 'removeAndRestore', params)
+        return http.request('common', 'removeAndRestore', 'post', params)
     },   
     // 删除
     delete(params) {
-        return http.request('common', 'delete', params)
+        return http.request('common', 'delete', 'post', params)
     },   
     // 更改
     update(params) {
-        return http.request('common', 'update', params)
+        return http.request('common', 'update', 'post', params)
     }, 
     // 查询
     select(params) {
-        console.log(JSON.stringify(params));
-        return http.request('vue', 'select', params)
+        return http.request('vue', 'select', 'post', params)
     },
+    // 文章列表查询接口
+    articleList(params) {
+        debugger
+        return http.request('vue', 'articleList', 'post', params)
+    }, 
+    // 分类列表查询接口
+    cateList(params) {
+        return http.request('vue', 'cateList', 'post', params)
+    }, 
     // 分类信息查询接口
     cateDetail(params) {
-        return http.request('vue', 'cateDetail', params)
-    },     
+        return http.request('vue', 'cateDetail', 'post', params)
+    },  
+    // 选择分类
+    systemCate(params) {
+        return http.request('common', 'systemCate', 'post', params)
+    },    
+    // 移动文档
+    moveAticle(params) {
+        return http.request('common', 'moveAticle', 'post', params)
+    },  
     // 文章详情查询接口
     articleDetail(params) {
-        return http.request('vue', 'articleDetail', params)
+        return http.request('vue', 'articleDetail', 'post', params)
     },  
     // 更新状态
     updateStatus(params) {
-        return http.request('common', 'updateStatus', params)
+        return http.request('common', 'updateStatus', 'post', params)
     },
 
      // 用户查询
      userList(params) {
-        return http.request('vue_user', 'userList', params)
+        return http.request('vue_user', 'userList', 'post', params)
     },  
     // 用户权限
     userGrade(params) {
-        return http.request('vue_user', 'userGrade', params)
+        return http.request('vue_user', 'userGrade', 'post', params)
     },  
     // 用户等级
     userGroup(params) {
-        return http.request('vue_user', 'userGroup', params)
+        return http.request('vue_user', 'userGroup', 'post', params)
     }, 
     // 用户审核
     userAudit(params) {
-        return http.request('vue_user', 'userAudit', params)
+        return http.request('vue_user', 'userAudit', 'post', params)
     },  
     // 用户禁言
     userBanuser(params) {
-        return http.request('vue_user', 'userBanuser', params)
+        return http.request('vue_user', 'userBanuser', 'post', params)
     },      
     // 推荐关注
     userRecommend(params) {
-        return http.request('vue_user', 'userRecommend', params)
+        return http.request('vue_user', 'userRecommend', 'post', params)
     },  
     // 密保问题
     userSecurity(params) {
-        return http.request('vue_user', 'userSecurity', params)
+        return http.request('vue_user', 'userSecurity', 'post', params)
     },  
     
     // 主题
     theme(params) {
-        return http.request('vue_user', 'theme', params)
+        return http.request('vue_user', 'theme', 'post', params)
     },      
     // 主题
     orderCard(params) {
-        return http.request('vue', 'orderCard', params)
+        return http.request('vue', 'orderCard', 'post', params)
     },  
     // 关闭
     openAndClose(params) {
-        return http.request('common', 'openAndClose', params)
+        return http.request('common', 'openAndClose', 'post', params)
     },   
     // 幻灯片
     slideshow(params) {
-        return http.request('vue', 'slideshow', params)
+        return http.request('vue', 'slideshow', 'post', params)
     },     
     // 幻灯片
     slideshowList(params) {
-        return http.request('vue', 'slideshowList', params)
+        return http.request('vue', 'slideshowList', 'post', params)
     }, 
 
     // 图片空间
     space(params) {
-        return http.request('space', 'space', params)
+        return http.request('space', 'space', 'post', params)
     },
     // 创建文件夹
     createfile(params) {
-        return http.request('space', 'createfile', params)
+        return http.request('space', 'createfile', 'post', params)
     }, 
+
+    // 自定义
+    anpassen(params) {
+        return http.request('vue', 'anpassen', 'post', params)
+    },   
+    // 自定义字段管理
+    anpassen_field(params) {
+        return http.request('vue', 'anpassen_field', 'post', params)
+    },   
+    // 新增字段
+    add_anpassen(params) {
+        return http.request('vue', 'add_anpassen', 'post', params)
+    },          
+    // 更改字段
+    update_anpassen(params) {
+        return http.request('vue', 'update_anpassen', 'post', params)
+    },     
+    // 删除字段
+    delete_columns(params) {
+        return http.request('vue', 'delete_columns', 'post', params)
+    },  
+    
+    // 获取自定义字段
+    getColumns(params) {
+        return http.request('vue', 'getColumns', 'post', params)
+    },  
+
+    // 频道首页导航
+    navList(params) {
+        return http.request('vue', 'navList', 'post', params)
+    }, 
+    // 导航列表
+    navigation(params) {
+        return http.request('vue', 'navigation', 'post', params)
+    },     
+    // 单页列表
+    singleNav(params) {
+        return http.request('vue', 'singleNav', 'post', params)
+    },  
+    // 更新静态
+    updateStatic(params) {
+        return http.request('statics', 'updateStatic', 'post', params)
+    },
+    // 获取标签值
+    getFlag(params) {
+        return http.request('common', 'tagCheckbox', 'post', params)
+    },     
+     // 获取路由信息r
+     getRouterInfo(params) {
+        return http.request('vue', 'routerInfo', 'post', params)
+    },     
+    // 基本信息
+    basicInfo(params) {
+        return http.request('vue', 'basicInfo', 'post', params)
+    },
+    // 更新基本信息
+    updateInfo(params) {
+        return http.request('vue', 'updateBasicInfo', 'post', params)
+    },
+    // 数据库列表
+    mysql(params) {
+        return http.request('vue', 'mysql', 'post', params)
+    }, 
+    // 数据库备份
+    backup(params) {
+        return http.request('database', 'backup', 'post', params)
+    },    
+    // 应用商城
+    appstore(params) {
+        return http.request('vue', 'appstore', 'post', params)
+    }, 
+    // 更新状态
+    changeData(params) {
+        return http.request('common', 'changeData','post', params)
+    }, 
+    // 路由查询
+    routerSelect(params) {
+        return http.request('vue', 'routerSelect','post', params)
+    }, 
+    // 角色权限
+    rolegrade(params) {
+        return http.request('vue', 'rolegrade','post', params)
+    },  
+    // 更改用户信息
+    editUserInfo(params) {
+        return http.request('user', 'editUserInfo','post', params)
+    },      
+    
+
 }

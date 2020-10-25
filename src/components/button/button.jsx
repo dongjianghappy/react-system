@@ -1,22 +1,22 @@
 import React from 'react'
 import { message, Button } from 'antd'
 
-export default class R_button extends React.Component {
+const R_button = (props) => {
 
-    handle = () => {
-
-        // 是否勾选
-        if(!this.props.checked){
-            message.info(this.props.messageTitle);
-        }else{
-            this.props.render()
-        }
-        
+    const { type, size } = props
+    const handle = () => {
+        props.click(props)
     }
-    render() {
 
-        return (
-        <Button onClick={this.handle}>{this.props.title}</Button>
-        )
-    }
+    return (
+        <Button
+        disabled={props.disabled || ""}
+        type={type || "default"}
+        size={size || "small"}
+        onClick={handle}>
+            {props.title || "按钮"}
+        </Button>
+    )
 }
+
+export default R_button 

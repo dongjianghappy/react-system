@@ -2,7 +2,6 @@ import React from 'react';
 import {Input, Button, List } from 'antd'
 import store from '../../store'
 import { INPUT_CHANGE, ADD_ITEM, DELETE_ITEM } from '../../store/actionTypes'
-import { inputChangeAction, addItemAction, deleteItemAction } from '../../store/action'
 
 // 在修改store中的数据时，因为页面上的state数据是通过store获取，所以store中的数据发生变化，并不会同步到页面上的state，而是需要通过store监听数据，此时才会同步到页面上的state中
 // 在文本框中如果给value绑定值后，会出现不可输入和删除的状态，所以需要监听store中的数据

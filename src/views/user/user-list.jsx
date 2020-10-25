@@ -3,10 +3,9 @@ import { Card, Table, Space, Popconfirm, Button, Checkbox, Input, DatePicker} fr
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Status, Dialog, Operatinavbar, Condition } from '../../components/index.js'
-import dispatchToProps from '../../store/actions'
-import coding from '../../static/constant/coding'
-import api from '../../api';
-
+import dispatchToProps from '../../store/dispatch'
+import SetUser from './components/drawer/setUser'
+ 
 const { Search } = Input;
 const { RangePicker } = DatePicker;
 
@@ -64,24 +63,17 @@ class UserList extends React.Component{
     }
 
     componentDidMount(){
-      api.userList({
-        level: 0
-      }).then(res => {
-        this.setState({
-            data: res.result,
-            total: res.result.total,
-            pages: res.result.pages
-        })
+      this.props.select({
+        api: 'userList',
+        node: 'user'           
       })
-
-      
     }
 
 
     render(){
+      const {columns} = this.state
 
-
-        const {columns, data} = this.state
+        const {user} = this.props.module
         return(
 
           <Card title="用户列表" extra={
@@ -95,29 +87,64 @@ class UserList extends React.Component{
     注册时间 <RangePicker />
     <Button type="primary">搜索</Button>
     <Button type="default">重置</Button>
-          <Dialog type="primary" size="defualt" butName="创建用户" title="创建用户" >
-            
-          </Dialog>
+  
           </Space>
           </div>
       }>
 
-                <Table
-                    rowKey="id"
-                    columns={columns}
-                    dataSource={data}
-                    pagination={false}
-                />
+            <table width="100%" className="table-striped table-hover col-left-23">
+              <tr className="th">
+                <td className="col-md-1">选择</td>
+                <td className="col-md-1">头像</td>
+                <td className="col-md-2">会员账号</td>
+                <td className="col-md-2">用户名</td>
+                <td className="col-md-2">电子邮箱</td>
+                <td className="col-md-2">注册日期</td>
+                <td className="col-md-1">在线/天</td>
+                <td className="col-md-1">操作</td>
+              </tr>
+              {
+              user && user.map((item, index) => (
+                <tr>
+                  <td></td>
+                  <td>
+                    <span className="relative">
+                      <img src={item.photos} style={{borderRadius: '50%', width: '30px', height: '30px'}} />
+                      <i className="iconfont  icon-female  absolute font12" style={{bottom: 0}}></i>
+                    </span>
+                  </td>
+                  <td>
+                    {item.account}
+                    {
+                      item.role !== '0' ?
+                      <span style={{backgroundColor: "#52c41a", position: "relative", left: "9px", display: "inline-block", width: "6px", height: "6px", verticalAlign: "middle", borderRadius: "50%"}}></span>
+                      : ""
+                    }
+                  </td>
+                  <td>{item.nickname}</td>
+                  <td>{item.email}</td>
+                  <td>{item.last_login_time}</td>
+                  <td>{item.online}</td>
+                  <td>
+                    <Space size="middle">
+                      <Button type="primary" size="small">推送</Button>
+                      <SetUser type="primary" size="small" name="设置" title="用户信息" {...this.props} id={item.id} {...item} />
+                    </Space>
+                  </td>
+                </tr>
+                ))
+              }
+            </table>
             </Card>
         )
     }
 }
 
 const stateToProops = (state) => {
-  console.log(state);
   return {
-      inputValue: state.inputValue,
-      list: state.channel.list
+    global: state.common.global,
+    state,
+    module: state.user
   }
 }
 

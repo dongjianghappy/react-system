@@ -1,22 +1,88 @@
 import React from 'react'
-import { Card, Table, Space, Popconfirm, Button, Checkbox, Switch} from 'antd';
-import { Status, Dialog, Condition } from '../../components/index.js'
+import { Card, Table, Space, Checkbox} from 'antd';
+import {
+  Status,
+  Dialog,
+  Condition,
+  R_button,
+  R_checkbox,
+  R_drawer,
+  Quick
+} from '../../components/index.js'
+import {
+  ButtonGroup,
+  Option,
+  ModalGroup
+} from '../../common'
 import { connect } from 'react-redux'
-import AddArticle from './article'
-import dispatchToProps from '../../store/actions'
-import { getListAction } from '../../store/action'
-import store from '../../store';
-import api from '../../api';
+import Article from './article'
+import dispatchToProps from '../../store/dispatch'
+
 
 class Advertisement extends React.Component{
     
+  option = [
+    {
+      name: "来源",
+      field: 'source',
+      list: [
+        {
+          value: "",
+          name: "全部"
+        },
+        ...React.$enums.adSource
+      ]
+    },
+    {
+      name: "显示",
+      field: 'display',
+      list: [
+        {
+          value: "",
+          name: "全部"
+        },
+        ...React.$enums.adDisplay
+      ]
+    },
+    {
+      name: "类型",
+      field: 'type',
+      list: [
+        {
+          value: "",
+          name: "全部"
+        },
+        ...React.$enums.adType
+      ]
+    },
+    {
+      name: "状态",
+      field: 'status',
+      list: [
+        {
+          val: "",
+          name: "全部"
+        },
+        {
+          value: "1",
+          name: "开启"
+        },
+        {
+          value: "0",
+          name: "关闭"
+        }
+      ]
+    },
+  ]
 
     state ={
         columns: [
             {
               title: '选择',
               dataIndex: 'name',
-              render: text => <a><Checkbox></Checkbox></a>,
+              render: (text, record) => (
+                <R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={record.id}></R_checkbox>
+              ),
             },
             {
               title: '广告名称',
@@ -47,44 +113,17 @@ class Advertisement extends React.Component{
                 title: '状态',
                 dataIndex: 'status',
                 render:(text, record) => (
-                  <Status {...record} />
-                  // <Switch 
-                  //   checkedChildren="开启" 
-                  //   unCheckedChildren="关闭"
-                  //   defaultChecked={record.status === '1' ? true : false}
-                  //   onChange={() => {
-                  //     api.updateStatus({
-                  //       coding: 'K0002',
-                  //       id: record.id,
-                  //       status: 'status'
-                  //     })
-                  //   }} />
+                  <Status type="switch" coding="P0008" field="status" {...record} updateStatus={this.props.updateStatus} />
                 )
               },
               {
                 title: '操作',
                 dataIndex: 'operating',
                 render: (text, record) => (
-                    <Space size="middle">
-                      <Dialog butName="编辑" title="更改广告">
-                        <AddArticle />
-                      </Dialog>
-                      <Popconfirm 
-                      title="确定删除此项" 
-                      onCancel={()=>console.log("sss")} 
-                      onConfirm={()=>{
-                        api.delete({
-                          coding: 'K0002',
-                          id: record.id
-                        }).then(res => {
-                          // 删除完成后再进行刷新页面
-                          this.itemRender()
-                        })
-                      }} >
-                        <Button type="default" size="small">删除</Button>
-                      </Popconfirm>
-                      <Button type="default" size="small">生成订单</Button>
-                    </Space>
+                  <Space>
+                    <R_button.edit click={this.handleClick} id={record.id} action="edit" title="广告编辑" dispatch="popup" node="drawer" />
+                    <R_button.del click={this.handleClick} id={record.id} title="删除广告" dispatch="popup" node="dialog" fn="getDelete" />
+                  </Space>
                   ),
               },
         ],
@@ -94,33 +133,75 @@ class Advertisement extends React.Component{
     }
 
     componentDidMount(){
-      this.props.getListAction()
+      this.props.select({
+        data: {
+          page: 0,
+          pagesize: 10,
+          coding: "P0008"
+        }            
+    })
     }
+
+    handleClick = (data) => {
+      this.props[data.dispatch](data)
+    }    
 
     render(){
 
         const {columns, data} = this.state
-        const {list, total, pages} = this.props.list
+        const {list, total, pages} = this.props.module
 
         return (
             <div>
-                <Card title="所以广告" extra={
-                  <div>
-                  <Space>
-                <Condition />
-                <Dialog type="primary" size="defualt" butName="新增广告" title="新增广告" >
-                  <AddArticle />
-                </Dialog>
-                </Space>
+                <ModalGroup {...this.props} article={Article} coding="P0008" />
+
+                <div style={{marginBottom: 15}}>
+                  <ul className="navbar">
+                    <li>广告管理</li>
+                    <li><R_button.link click={this.handleClick} action="add" name="新增广告" title="新增广告" dispatch="popup" node="drawer" /></li>
+                    <li>生成JSON文件</li>
+                    <li className="search"><Condition /></li>
+                  </ul>
+                  <Option option={this.option} select={this.props.select} coding="P0008" />
+                  
                 </div>
-            }>
-                <Table
-                    rowKey="id"
-                    columns={columns}
-                    dataSource={list}
-                />
-                <input id="coding" type="hidden" value="P0008" />
+
+                <Card>
+                  <table width="100%" className="table-striped table-hover col-left-2">
+                    <tr>
+                      <td className="col-md-1">选择</td>
+                      <td className="col-md-2">广告名称</td>
+                      <td className="col-md-1">尺寸类型</td>
+                      <td className="col-md-2">广告位置</td>
+                      <td className="col-md-1">每月/元</td>
+                      <td className="col-md-2">时间</td>
+                      <td className="col-md-1">状态</td>
+                      <td className="col-md-2">操作</td>
+                    </tr>
+                    {
+                  list && list.map((item, index) => (
+                    <tr className="tr-list">
+                      <td><R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={item.id}></R_checkbox></td>
+                      <td><Quick id={item.id} title={item.name} field="name" coding="P0005" changeData={this.props.changeData}/></td>
+                      <td>{item.size_type}</td>
+                      <td>{item.size}</td>
+                      <td>{item.price}</td>
+                      <td>{item.last_time}</td>
+                      <td><Status type="switch" coding="P0008" field="status" {...item} updateStatus={this.props.updateStatus} /></td>
+                      <td>
+                        <Space>
+                          <R_button.edit click={this.handleClick} id={item.id} action="edit" title="广告编辑" dispatch="popup" node="drawer" />
+                          <R_button.del click={this.handleClick} id={item.id} title="删除广告" dispatch="popup" node="dialog" fn="getDelete" />
+                        </Space>
+                      </td>
+                    </tr>
+                    ))
+                  }
+                  </table>
                 </Card>
+                <ButtonGroup {...this.props} button={['all', 'delete', 'open', 'close']} ></ButtonGroup>
+                <input id="coding" type="hidden" value="P0008" />
+
             </div>
         )
     }
@@ -129,8 +210,9 @@ class Advertisement extends React.Component{
 const stateToProops = (state) => {
   console.log(state);
   return {
-      inputValue: state.inputValue,
-      list: state.common.list
+    global: state.common.global,
+    state,
+    module: state.advertisement
   }
 }
 

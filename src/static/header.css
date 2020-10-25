@@ -7,10 +7,7 @@
     justify-content: space-between;
 }
 .header-wrap .header-right{
-    justify-content: flex-end;
-    align-items: flex-end;
-    display: flex;
-    width: 300px;;
+    width: 350px;;
     color: #fff;
 }
 .header-wrap .header-right .dropDwon{

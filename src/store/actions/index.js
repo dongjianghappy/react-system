@@ -1,90 +1,213 @@
-import {
-  checkChange, 
-  getListAction, 
-  updateStatus, 
-  removeAndRestore,
-   openAndClose, 
-   slideshowAction,
-   slideshowListAction,
-   spaceAction
-} from '../action'
+// 当业务逻辑较多时需要将action抽离出来，易于维护
+import { message } from 'antd'
 
-const dispatchToProps = (dispatch) => {
+import api from '../../api'
+import { 
+    INPUT_CHANGE,
+    DRAWER, 
+    DIALOG,
+    ADD_ITEM, 
+    DELETE_ITEM, 
+    GET_DATA_ACTION, 
+    CHECK_CHANGE, 
+    OPEN_AND_CLOSE,
+    UPDATE_STATUS, 
+    GET_SLIDESHOW_ACTION,
+    GET_SLIDESHOW_LIST_ACTION,
+    GET_SPACE_ACTION,
+    DEFAULT_DATA,
+    ANPASSEN,
+    ANPASSEN_FIELD,
+    CHANNEL,
+    NAVIGATION,
+    SINGLE,
+    UPDATE_STATIC,
+    LOGIN,
+    USER_INFO,
+    RIGHT_MENU
+} from '../actionTypes'
 
-    return {
-        
-        checkBox(params) {
-          debugger
-          const action = checkChange({
-            data: params
-          })
-          dispatch(action)
-        },
+export const inputChangeAction = (value) =>({
+    type: INPUT_CHANGE,
+    value: value
+})
 
-        getListAction(page = 0, pagesize = 10) {
-          const el = document.getElementById("coding")
-            const action = getListAction({
-              coding: el.value,
-              page,
-              pagesize
-            })
-            dispatch(action)
-        },
-        
-        // 更改状态
-        updateStatus(params) {
+export const drawerAction = (value) =>({
+    type: DRAWER,
+    value: value
+})
 
-          const action = updateStatus({
+export const dialogAction = (value) =>({
+    type: DIALOG,
+    value: value
+})
+
+export const addItemAction = (value) =>({
+    type: ADD_ITEM
+})
+
+export const deleteItemAction = (index) =>({
+    type: DELETE_ITEM,
+    index
+})
+
+export const getDataAction = (data) =>({
+    type: GET_DATA_ACTION,
+    data
+})
+
+// export const getListAction = (params) =>{
+//     return async (dispatch) => {
+//       const data = await api.select({
+//         m: 'vue',
+//         n: 'cateList',
+//         ...params
+//       })
+
+//       const action = getDataAction(data.result)
+//       dispatch(action)
+//     }
+// }
+
+
+
+
+
+
+export const updateStatus = (params) =>{
+    return async (dispatch) => {
+        await api.updateStatus({
             ...params
-          })
-          dispatch(action)
-        },
+        })
 
-        // 删除数据
-        removeAndRestore(params) {
-          const el = document.getElementById("coding")
-          removeAndRestore({
-            coding: el.value,
-            ...params
-          })
-        },
-        // 开启或关闭
-        openAndClose(params) {
-          debugger
-          const el = document.getElementById("coding")
-          const action = openAndClose({
-            coding: el.value,
-            ...params
-          })
-
-          dispatch(action)
-          
-        },
-        
-        // 幻灯片
-        getSlideshow() {
-            const action = slideshowAction({
-              n: 'cateList',
-            })
-            dispatch(action)
-        },
-
-        // 幻灯片
-        getSlideshowList(params) {
-            const action = slideshowListAction({
-              ...params
-            })
-            dispatch(action)
-        },  
-        
-        // 图片空间
-        getSpace(params) {
-          const action = spaceAction({
-            ...params
-          })
-          dispatch(action)
-      },  
+        const action = {
+            type: UPDATE_STATUS,
+            data: params.id,
+            field: params.status
+        }
+        dispatch(action)
     }
-  }
+}
 
-  export default dispatchToProps
+// 删除或移除
+export const removeAndRestore = async (params) =>{
+    //return async (dispatch) => {
+        await api.removeAndRestore({
+            ...params
+        })
+   // }
+}
+
+// 开启或关闭
+export const openAndClose = (params) =>{
+    return async (dispatch) => {
+        debugger
+        const { coding } = params
+        const result = await api.openAndClose({
+            coding,
+            operating: params.global.data.operating,
+            list: params.module.checkedList
+        })
+        
+        const action = {
+            type: OPEN_AND_CLOSE,
+            data: {
+                result: result.result,
+                operating: params.global.data.operating
+            }
+        }
+        dispatch(action)
+      }
+
+
+//     return async (dispatch) => {
+//         const result = await api.openAndClose({
+//             ...params
+//         })
+//       
+//         message.info("操作成功")
+//         const action = {
+//             type: OPEN_AND_CLOSE
+//         }
+//         dispatch(action)
+//    }
+}
+
+export const checkChange = (params) => ({
+    type: CHECK_CHANGE,
+    ...params
+})
+ 
+
+// 图片空间
+export const getSpaceAction = (data) =>({
+    type: GET_SPACE_ACTION,
+    data
+})
+
+
+export const spaceAction = (params) =>{
+    return async (dispatch) => {
+      const data = await api.space(params)
+      const action = getSpaceAction(data.result)
+      dispatch(action)
+    }
+}
+
+// 默认列表
+export const getDefaultAction = (data) =>({
+    type: DEFAULT_DATA,
+    data
+})
+export const defaultAction = (params) =>{
+    return async (dispatch) => {
+      const data = await api.Default(params)
+      const action = getDefaultAction(data.result)
+      dispatch(action)
+    }
+}
+
+
+
+// 生成静态
+export const getUpdateStaticAction = (data) =>({
+    type: UPDATE_STATIC,
+    data
+})
+export const updateStaticAction = (params) =>{
+    return async (dispatch) => {
+      const data = await api.updateStatic(params)
+      const action = getUpdateStaticAction(data.result)
+      dispatch(action)
+    }
+}
+
+// 用户登录
+export const getLoginAction = (value) =>({
+    type: LOGIN,
+    data: value
+})
+
+export const loginAction = (params) =>{
+    return async (dispatch) => {
+      const data = await api.Login(params)
+      const action = getLoginAction(data.result)
+      sessionStorage.setItem("token", data.result.token)
+      sessionStorage.setItem("userInfo", JSON.stringify(data.result.userInfo))
+      sessionStorage.setItem("menuList", JSON.stringify(data.result.menuList))
+      sessionStorage.setItem("gradeList", data.result.grade)
+      dispatch(action)
+    }
+}
+
+// 用户信息
+export const userINfoAction = (value) =>({
+    type: USER_INFO,
+    value: value
+})
+
+// 导航菜单
+export const rightMenuAction = (value) =>({
+    type: RIGHT_MENU,
+    value: value
+})

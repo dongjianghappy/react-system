@@ -23,7 +23,8 @@ ReactDOM.render(
   <Provider store={store}>
     <Router>
       <Switch>
-        <Route path="/admin" component={isLogin(App)} />
+        {/* <Route path="/admin" component={isLogin(App)} /> */}
+        <Route path="/admin" component={App} />
         {
           mainRouter.map( route => {
             return <Route key={route.path} {...route} />

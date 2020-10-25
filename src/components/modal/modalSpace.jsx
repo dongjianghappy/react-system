@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { Button, Modal, message, Card, Row, Col } from 'antd'
 import { connect } from 'react-redux'
-import dispatchToProps from '../../store/actions'
+import dispatchToProps from '../../store/dispatch'
 class ModalSpace  extends React.Component{
 
     state = { visible: false };
@@ -35,7 +35,6 @@ class ModalSpace  extends React.Component{
         const { visible } = this.state
         const { butName, title, type, width, className } = this.props
         const list = this.props.list.list.fileList
-        debugger
         return (
             <Fragment>
                 
@@ -89,7 +88,6 @@ class ModalSpace  extends React.Component{
 }
 
 const stateToProops = (state) => {
-    debugger
     return {
         list: state.space
     }

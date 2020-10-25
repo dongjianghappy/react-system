@@ -1,19 +1,56 @@
 import React from 'react'
-import { Card, Table, Space, Popconfirm, Button, Checkbox, Switch, Pagination, Row, Col} from 'antd';
+import { Card, Table, Space} from 'antd';
 import { connect } from 'react-redux'
-import { Status, Dialog, ButtonGroup, OperatingGroup, Operatinavbar, Condition } from '../../components/index.js'
-import AddArticle from './article'
-import dispatchToProps from '../../store/actions'
-import api from '../../api';
+import {
+  Status,
+  R_button,
+  R_checkbox,
+  Dialog,
+  Condition,
+  R_drawer,
+  Quick
+} from '../../components/index.js'
+import {
+  Navbar,
+  ButtonGroup,
+  Option,
+  OptionSelect,
+  ModalGroup
+} from '../../common'
+import Article from './article'
+import dispatchToProps from '../../store/dispatch'
 
 class Partner extends React.Component{
-    
+  
+  option = [
+    {
+      name: "状态",
+      field: 'status',
+      list: [
+        {
+          val: "",
+          name: "全部"
+        },
+        {
+          value: "1",
+          name: "开启"
+        },
+        {
+          value: "0",
+          name: "关闭"
+        }
+      ]
+    },
+  ]
+
     state ={
         columns: [
             {
               title: '选择',
               dataIndex: 'name',
-              render: text => <a><Checkbox></Checkbox></a>,
+              render: (text, record) => (
+                <R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={record.id}></R_checkbox>
+              ),
             },
             {
               title: '顺序',
@@ -27,28 +64,17 @@ class Partner extends React.Component{
                 title: '状态',
                 dataIndex: 'status',
                 render:(text, record) => (
-                  <Status type="switch" coding="P0003" field="status" {...record} updateStatus={this.props.updateStatus} />
+                  <Status type="switch" coding="P0005" field="status" {...record} updateStatus={this.props.updateStatus} />
                 )
               },
               {
                 title: '操作',
                 dataIndex: 'operating',
                 render: (text, record) => (
-                    <Space>
-                    <Dialog butName="编辑" title="更改友链">
-                    <AddArticle />
-                    </Dialog>
-                    <Popconfirm 
-                    title="确定删除此项" 
-                    onCancel={()=>console.log("sss")} 
-                    onConfirm={()=>{
-                      
-                    }} >
-                      <Button type="default" size="small">删除</Button>
-                    </Popconfirm>
+                  <Space>
+                    <R_button.edit click={this.handleClick} id={record.id} action="edit" title="伙伴编辑" dispatch="popup" node="drawer" />
+                    <R_button.del click={this.handleClick} id={record.id} title="删除伙伴" dispatch="popup" node="dialog" fn="getDelete" />
                   </Space>
-     
-                    
                   ),
               },
         ],
@@ -60,35 +86,71 @@ class Partner extends React.Component{
     }
 
     componentDidMount(){
-      this.props.getListAction()
+      this.props.select({
+        data: {
+          page: 0,
+          pagesize: 10,
+          coding: "P0005"
+        }            
+    })
     }
 
+
+    handleClick = (data) => {
+      this.props[data.dispatch](data)
+    }     
+    
     render(){
 
       const {columns} = this.state
-      const {list, total, pages} = this.props.list
+      const {list, total, pages} = this.props.module
       
         return (
             <div>
-                <Card title="伙伴管理" extra={
-                  <div>
-                  <Space>
-                <Condition />
-                <Dialog type="primary" size="defualt" butName="新增伙伴" title="新增伙伴" >
-                  <AddArticle />
-                </Dialog>
-                </Space>
+                <ModalGroup {...this.props} article={Article} coding="P0005" />
+                
+                <div style={{marginBottom: 15}}>
+                  <ul className="navbar">
+                    <li>伙伴管理</li>
+                    <li><R_button.link click={this.handleClick} action="add" name="新增伙伴" title="新增伙伴" dispatch="popup" node="drawer" /></li>
+                    <li className="search"><Condition /></li>
+                  </ul>
+                  <Option option={this.option} select={this.props.select} coding="P0005" />
                 </div>
-            }>
-                <Table
-                    rowKey="id"
-                    columns={columns}
-                    dataSource={list}
-                    pagination={ false }
-                />
-                <Operatinavbar total={total} />
-                <input id="coding" type="hidden" value="P0005" />
+
+                <Card>
+                <table width="100%" className="table-striped table-hover col-left-3">
+                  <tr className="th">
+                    <td className="col-md-1">选择</td>
+                    <td className="col-md-1">顺序</td>
+                    <td className="col-md-7">伙伴名称</td>
+                    <td className="col-md-1">状态</td>
+                    <td className="col-md-2">操作</td>
+                  </tr>
+                  {
+                  list && list.map((item, index) => (
+                  <tr class="tr-list">
+                    <td><R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={item.id}></R_checkbox></td>
+                    <td>
+                      <Quick id={item.id} title={item.sort} field="sort" coding="P0005" changeData={this.props.changeData}/>
+                    </td>
+                    <td>
+                    <Quick id={item.id} title={item.name} field="name" width="50%" coding="P0005" changeData={this.props.changeData}/>
+                    </td>
+                    <td><Status type="switch" coding="P0005" field="status" {...item} updateStatus={this.props.updateStatus} /></td>
+                    <td>
+                      <Space>
+                      <R_button.edit click={this.handleClick} id={item.id} action="edit" title="伙伴编辑" dispatch="popup" node="drawer" />
+                      <R_button.del click={this.handleClick} id={item.id} title="删除伙伴" dispatch="popup" node="dialog" fn="getDelete" />
+                    </Space>
+                    </td>
+                  </tr>
+                  ))
+                }
+                </table>
                 </Card>
+                <ButtonGroup {...this.props} button={['all', 'delete', 'open', 'close']} ></ButtonGroup>
+                <input id="coding" type="hidden" value="P0005" />
             </div>
         )
     }
@@ -97,8 +159,9 @@ class Partner extends React.Component{
 const stateToProops = (state) => {
   console.log(state);
   return {
-      inputValue: state.inputValue,
-      list: state.common.list
+    global: state.common.global,
+    state,
+    module: state.partner
   }
 }
 

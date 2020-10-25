@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, Button, Row, Col, Avatar } from 'antd'
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux'
-import dispatchToProps from '../../store/actions'
+import dispatchToProps from '../../store/dispatch'
 import { Dialog } from '../../components'
 import SlideshowFrom from './components/slideshowFrom'
 import { Link } from 'react-router-dom';
@@ -12,21 +12,23 @@ const { Meta } = Card;
 class Slideshow extends React.Component{
 
     componentDidMount(){
-        this.props.getSlideshow()
+        this.props.select({
+            api: "slideshow"          
+        })
     }
 
     render() {
 
-        const {list, total, pages} = this.props.list
+        const {list} = this.props.module
 
         return (
             <Card 
                 title="幻灯片管理"
-                extra={
-                    <Dialog type="text" butName="新增幻灯片" title="新增幻灯片" className="pointer" >
-                    <SlideshowFrom />
-                  </Dialog>
-                }
+                // extra={
+                //     <Dialog type="text" butName="新增幻灯片" title="新增幻灯片" className="pointer" >
+                //     <SlideshowFrom />
+                //   </Dialog>
+                // }
             >
 
                 <Row>
@@ -66,9 +68,8 @@ class Slideshow extends React.Component{
 }
 
 const stateToProops = (state) => {
-    debugger
     return {
-        list: state.slideshow
+        module: state.slideshow
     }
   }
 

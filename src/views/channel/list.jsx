@@ -2,234 +2,171 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import { Card, Table, Space, Checkbox, Button, Popover, Row, Col, Pagination} from 'antd';
 import { connect } from 'react-redux'
-import { Checked, Dialog, ButtonGroup, buttonGroupArticle, Operatinavbar, Condition, R_button, R_checkbox } from '../../components/index.js'
-import dispatchToProps from '../../store/actions'
+import {
+    Status,
+    R_checkbox,
+    R_drawer,
+    R_button,
+    Dialog,
+    Condition,
+    Quick,
+    ModalCate
+  } from '../../components/index.js'
+  import {
+    Navbar,
+    ButtonGroup,
+    Option,
+    OptionSelect,
+    ModalGroup
+  } from '../../common'
+import dispatchToProps from '../../store/dispatch'
 import coding from '../../static/constant/coding'
 import api from '../../api'
 import Item from 'antd/lib/list/Item';
+import Flags from './components/flags'
+
 
 class List extends React.Component{
 
-    state ={
-        columns: [
+    option = [
+        {
+          name: "属性",
+          field: 'flags',
+          list: []
+        },
+        {
+          name: "状态",
+          field: 'checked',
+          list: [
             {
-              title: '选择',
-              dataIndex: 'name',
-              render: (text, record) => (
-               
-                // checked={
-                //     this.props.common.global.checkedList.some((item, index) => item[index].id)
-                // } 
-                
-                <R_checkbox onChange={this.props.checkBox} list={this.props.common.global.checkedList} data={record.id}></R_checkbox>
-              ),
+              val: "",
+              name: "全部"
             },
             {
-              title: '编号',
-              dataIndex: 'id',
+              value: "1",
+              name: "开启"
             },
             {
-              title: '名称',
-              dataIndex: 'title',
-            },
-            {
-                title: '分类',
-                dataIndex: 'parent',
-                render: text => <Dialog butName="网页" type="text" title="选择分类"></Dialog>,
-            },
-            {
-                title: '下载',
-                dataIndex: 'dowmload'
-            },
-            {
-                title: '发布时间',
-                dataIndex: 'datetime',
-                render: text => <a>{text}</a>,
-            },
-            {
-                title: '状态',
-                dataIndex: 'status',
-                render:(text, record) => (
-                    <Checked type="switch" coding="K0000" field="checked" {...record} updateStatus={this.props.updateStatus} />
-                )
-            },
-            {
-            title: '操作',
-            dataIndex: 'operating',
-            render: (text, record) => (
-                <Space size="middle">
-                    <Button type="primary" size="small" onClick={() => `/sucai/article/edit/${record.id}`}>编辑</Button>
-                    <Button size="small">删除</Button>
-                    <Popover placement="left" content={
-                        <div>
-                            <p>编号：{record.id}</p>
-                            <p>标签: {record.label}</p>
-                            <p>作者: {record.id}</p>
-                            <p>来源: {record.source}</p>
-                            <p>更新时间: {record.datetime}</p>
-                        </div>
-                    }>
-                    <Button type="link" size="small">更多</Button>
-                    </Popover>
-                    <a></a>
-                </Space>
-                ),
-            },
-        ],
-        data: [],
-        total: 0,
-        pages: 0,
-        list: [],
-        allChecked: true
-    };
+              value: "0",
+              name: "关闭"
+            }
+          ]
+        },
+      ]
 
     componentDidMount(){
-        this.props.getListAction()
+        this.props.select({
+          api: "articleList",
+          data: {
+            coding: "K0000"
+          }            
+      })
+        this.props.getFlagAction()
     }
 
-    checkedAll = () =>{
-
-        const data = []
-        this.props.list.list.forEach( Item=>{
-            data.push({
-                id: Item.id
-            })
-        })
-
-        this.props.checkBox({
-            checked: this.state.allChecked,
-            type: "all",
-            value: data            
-        })
-
-        this.setState({
-            allChecked: !this.state.allChecked
-        })
-        
-    }
+    handleClick = (data) => {
+        this.props[data.dispatch](data)
+    }  
 
     render(){
 
         const path = this.props.match.path.split("/")[2]
 
         const { cate, art} = coding[path]
+        const {list } = this.props.module
+        debugger
 
-        const {columns} = this.state
-        const { common } = this.props
-        const { global } = common
-        const {list, total, pages} = this.props.list
+        this.option[0].list = [
+            {
+                value: "",
+                name: "全部"
+              },
+              ...this.props.flags
+            ]
+
 
         return(
-<Card
-          tabList={[
-            {
-              key: 'tab1',
-              tab: '文档列表',
-            },
-            {
-              key: 'tab2',
-              tab: '正在审核',
-            },
-            {
-                key: 'tab3',
-                tab: '已退回',
-              }
-          ]}
-          tabBarExtraContent={ 
             <div>
-            <Space>
-          <Condition />
-          <Dialog type="primary" size="defualt" butName="发布文档" title="发布文档">
-      
-          </Dialog>
-          </Space>
-          </div>
-        }
-      >
-                <Table
-                    bordered
-                    columns={columns}
-                    dataSource={list}
-                    pagination={false}
-                />
+                <ModalGroup {...this.props} article="" coding={art} />
+
+                <div style={{marginBottom: 15}}>
+                    <ul className="navbar">
+                    <li>文档管理</li>
+                    <li>正在审核</li>
+                    <li>已退回</li>
+                    <li><Button onClick={() => this.props.history.push('/admin/source/article/')}>新增文档</Button></li>
+                    <li className="search"><Condition /></li>
+                    </ul>
+                    <Option option={this.option} getConditionAction={this.props.getConditionAction} />
+                </div>
+                <Card>
+                  <table width="100%" className="table-striped table-hover artlist col-left-23">
+                    <tr className="th">
+                      <td className="col-md-1">选择</td>
+                      <td className="col-md-1">id</td>
+                      <td className="col-md-4">名称</td>
+                      <td className="col-md-2">分类</td>
+                      <td className="col-md-1">浏览 | 下载</td>
+                      <td className="col-md-1">发布时间</td>
+                      <td className="col-md-1">状态</td>
+                      <td className="col-md-1">操作</td>
+                    </tr>
+                    {
+                      list && list.map((item, index) => (
+                      <tr class="tr-list">
+                        <td><R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={item.id}></R_checkbox></td>
+                        <td>{item.id}</td>
+                        <td>{item.title}</td>
+                        <td>
+                      <ModalCate {...this.props} id={item.id} artCoding={art} coding={cate}>{item.parent ? item.parent : "未分类"}</ModalCate>
+                        </td>
+                        <td>{item.visit}|{item.download}</td>
+                        <td>{item.datetime}</td>
+                        <td><Status type="switch" coding={art} field="checked" {...item} updateStatus={this.props.updateStatus} /></td>
+                        <td>
+                        <Space size="middle">
+                          <Link to={{pathname:'/admin/source/article/', state:{id: item.id}}}>编辑</Link>
+                          <R_button.del click={this.handleClick} id={item.id} title="删除当前数据" dispatch="popup" node="dialog" fn="removeAndRestore" />
+                          <Popover placement="left" content={
+                              <div>
+                                  <p>编号：{item.id}</p>
+                                  <p>标签: {item.label}</p>
+                                  <p>作者: {item.id}</p>
+                                  <p>来源: {item.source}</p>
+                                  <p>更新时间: {item.datetime}</p>
+                              </div>
+                          }>
+                          <Button type="link" size="small">更多</Button>
+                          </Popover>
+                          <a></a>
+                      </Space>
+                        </td>
+                      </tr>
+                      ))
+                    }
+                  </table>
+                </Card>
 
                 <Row style={{marginTop: 15}}>
                     <Col span={12}>
-                    <Space>
-                        <Button type="default" onClick={this.checkedAll}>全选</Button>
-                        <Dialog 
-                            checked={global.checked} 
-                            messageTitle="请选择要操作的记录" 
-                            butName="删除" 
-                            dataSource={this.props.common.global.checkedList}
-                            handleOk={() => {
-                                this.props.removeAndRestore({
-                                    operating: 'remove',
-                                    list: this.props.common.global.checkedList
-                                })
-                            }}
-                        >
-                            <div>是否确定删除已选的数据！</div>
-                        </Dialog>
-                        <Dialog 
-                            checked={global.checked} 
-                            messageTitle="请选择要操作的记录" 
-                            butName="开启" 
-                            dataSource={this.props.common.global.checkedList}
-                            handleOk={() => {
-                                this.props.openAndClose({
-                                    operating: 'open',
-                                    list: this.props.common.global.checkedList
-                                })
-                            }}
-                        >
-                            <div>是否确定开启已选的数据</div>
-                        </Dialog>
-                        <Dialog 
-                            checked={global.checked} 
-                            messageTitle="请选择要操作的记录" 
-                            butName="关闭" 
-                            dataSource={this.props.common.global.checkedList}
-                            handleOk={() => {
-                                this.props.openAndClose({
-                                    operating: 'close',
-                                    list: this.props.common.global.checkedList
-                                })
-                            }}
-                        >
-                            <div>是否确定开启已选的数据</div>
-                        </Dialog>
-                        <Dialog 
-                            checked={global.checked} 
-                            messageTitle="请选择要操作的记录" 
-                            butName="移动" 
-                            dataSource={this.props.common.global.checkedList}
-                            handleOk={() => {
-                                this.props.openAndClose({
-                                    operating: 'close',
-                                    list: this.props.common.global.checkedList
-                                })
-                            }}
-                        >
-                            <div>是否确定开启已选的数据</div>
-                        </Dialog>
-                        <Button type="default">属性设置</Button>
-                    </Space>
-                    <buttonGroupArticle />
-                    </Col>  
-                    <Col span={12} style={{textAlign: 'end'}}><Pagination defaultPageSize={10} total={total} onChange={this.props.inputChange} /></Col>  
+                    <ButtonGroup {...this.props} flags={Flags} button={['all', 'delete', 'open', 'close']} ></ButtonGroup>
+                    </Col>   
                 </Row>
+                
                 <input id="coding" type="hidden" value={art} />
-            </Card>
+                </div>
         )
     }
 }
 
 const stateToProops = (state) => {
     return {
+        module: "channel",
+        state,
         common: state.common,
-        inputValue: state.inputValue,
-        list: state.common.list
+        global: state.common.global,
+        module: state.channel,
+        flags: state.channel.flags
     }
   }
 

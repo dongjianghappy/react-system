@@ -16,3 +16,16 @@ export const isLogined = (token) => {
 export const clearToken = () => {
     localStorage.removeItem('token')
 }
+
+export const setRightMenu = (data) => {
+    return localStorage.setItem('rightMenu', data)
+}
+// 按钮权限
+export const checkButtonAuth = (data) => {
+    const authority = sessionStorage.getItem('gradeList').split(",")
+    if(authority.indexOf(data) > -1){
+        return false
+    }else{
+        return true
+    }
+}

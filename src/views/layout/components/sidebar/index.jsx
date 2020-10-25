@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import { Layout, Menu, Breadcrumb } from 'antd';
+import { withRouter } from 'react-router-dom'
+import Channel from '../../../../components/channel'
+import ChannelList from '../../../channel/components/channelList';
 
 import {
     DesktopOutlined,
@@ -11,7 +14,10 @@ import {
   } from '@ant-design/icons';
 
 // import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
-import { adminRouter } from '../../../../router'
+import { adminRouter } from '@/router'
+
+import { connect } from 'react-redux'
+import dispatchToProps from '@/store/dispatch'
 
 // const { SubMenu } = Menu;
 // const { Sider } = Layout;
@@ -27,73 +33,46 @@ if(ee.length === 0){
 const routers = _routers.filter(route => route.module === ee[0].module)
 
 
-// export default class Sidebar extends React.Component{
-    
-//     render(){
-//         return(
-//             <Sider width={200} className="site-layout-background">
-//             <Menu
-//               mode="inline"
-//               defaultSelectedKeys={['0']}
-//               defaultOpenKeys={['sub1']}
-//               style={{ height: '100%', borderRight: 0 }}
-//             >
-//             { 
-//                 routers.map((list, i) => (
-//                 <Menu.Item key={ i }>
-//                     <Link to={list.path}>{ list.name }</Link>
-//                 </Menu.Item>
-//                 ))
-
-//             }
-//             </Menu>
-//           </Sider>
-//         )
-//     }
-// }
-
-
-
-
-
-
-
-
-
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
-export default class Sidebar extends React.Component {
-  state = {
-    collapsed: false,
-  };
+class Sidebar extends React.Component {
 
-  onCollapse = collapsed => {
-    console.log(collapsed);
-    this.setState({ collapsed });
-  };
+  // 模块页面跳转后需要刷新，主要时显示左侧菜单栏
+  route = (path, q='') => {
+    debugger
+    this.props.history.push(path)
+    this.props.handle(q)
+    //window.location.reload()
+  }
 
   render() {
-    return (
-        <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse} className="site-layout-background">
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+    const siderRouter = _routers.filter(route => route.module === this.props.routes)
 
-            { 
-                routers.map((item, i) => (
+    return (
+        <Sider  collapsed={this.props.screen} className="site-layout-background">
+          <div className="menus">
+            <ChannelList click={this.route} butName="频道" title="频道">
+              
+            </ChannelList>
+          </div>
+          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+          { 
+                siderRouter.map((item, i) => (
                   
-                  item.children ?
-                  <SubMenu key="sub1" icon={<UserOutlined />} title={item.name}>
+                  item.children ? //  && item.child !== 0 
+                  <SubMenu key={i} icon={<UserOutlined />} title={item.name}>
                   {
                       item.children.map((list, i) => (
                       <Menu.Item key={ i+item.name }>
-                          <Link to={list.path}>{ list.meta.title }</Link>
+                          <Link to={list.path}>{ list.name }</Link>
                       </Menu.Item>
                       ))
                   }
                   </SubMenu>
                   : 
                   <Menu.Item key={ i+100 }>
-                      <Link to={item.path}><i className={`iconfont ${item.meta && item.meta.icon}`} style={{marginRight: 10, fontSize: 18}}></i>{ item.name }</Link>
+                      <Link to={item.path}>{ item.name }</Link>
                   </Menu.Item>
                   ))
             }
@@ -102,3 +81,12 @@ export default class Sidebar extends React.Component {
     );
   }
 }
+
+const stateToProops = (state) => {
+  console.log(state);
+  return {
+      list: state.login
+  }
+}
+
+export default withRouter(connect(stateToProops, dispatchToProps)(Sidebar))

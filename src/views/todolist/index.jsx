@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { inputChangeAction, addItemAction, deleteItemAction } from '../../store/action'
+import { inputChangeAction, addItemAction, deleteItemAction } from '../../store/actions'
 import TodoListUI from './TodoListUI'
 
 // 如果没有业务逻辑的组件一般使用无状态组件，这样可以提高性能

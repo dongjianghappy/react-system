@@ -1,27 +1,59 @@
 import React from 'react'
-import { Card, Form, Input, InputNumber, Button, Radio, Select, DatePicker, Divider } from 'antd';
-import { SelectBox } from '../../../components'
+import { Drawer, Form, Button, Col, Row, Input, InputNumber, Select, DatePicker, Tabs, Divider, Radio, Checkbox } from 'antd';
+import { PlusOutlined, EditOutlined  } from '@ant-design/icons';
+import { SelectBox } from '@/components'
 
+const { Option } = Select;
+const { TabPane } = Tabs;
+ export default class FieldForm extends React.Component {
+  state = { visible: false };
 
-// 这种常量可以定义在组件外，官网是这么定义的
-const layout = {
-    labelCol: { span: 4 },
-    wrapperCol: { span: 18 },
-};
+  showDrawer = () => {
+    this.setState({
+      visible: true,
+    });
+  };
 
+  onClose = () => {
+    this.setState({
+      visible: false,
+    });
+  };
 
+  render() {
 
-export default class AddNavigation extends React.Component{
+    const { butName, title, type, size } = this.props
+    const { linkType } = React.$enums;
+    
+    return (
+      <>
+        <Button type="primary" onClick={this.showDrawer} size={size || "small"} >
+        { 
+        type === 'edit' ?  <EditOutlined  /> : <PlusOutlined /> 
+        }
+        {butName}
 
-        render(){
-
-            const { linkType } = React.$enums;
-            return (
-                    <Form
-                    {...layout}
-                    >
-                    <Divider orientation="left">基本信息</Divider>
-                    <Form.Item name={['user', 'name']} label="导航名称" rules={[{ required: true }]}>
+        </Button>
+        <Drawer
+          title={title}
+          width={500}
+          onClose={this.onClose}
+          visible={this.state.visible}
+          bodyStyle={{ paddingBottom: 80 }}
+          footer={
+            <div
+              style={{
+                textAlign: 'right',
+              }}
+            >
+              <Button onClick={this.onClose} type="primary">
+                Submit
+              </Button>
+            </div>
+          }
+        >
+          <Form layout="vertical" hideRequiredMark>
+          <Form.Item name={['user', 'name']} label="导航名称" rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
                     <Form.Item name={['user', 'email']} label="导航连接" rules={[{ type: 'email' }]}>
@@ -57,7 +89,9 @@ export default class AddNavigation extends React.Component{
                     <Form.Item name={['user', 'website']} label="描述">
                         <Input.TextArea />
                     </Form.Item>
-                    </Form>
-            )
-        }
+          </Form>
+        </Drawer>
+      </>
+    );
+  }
 }

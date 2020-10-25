@@ -2,28 +2,31 @@ import React from 'react'
 import { Card, Row, Col, Input, Button } from 'antd'
 import { Status, Dialog, ModalSpace, ButtonGroup, OperatingGroup, Operatinavbar, Condition } from '../../components'
 import { connect } from 'react-redux'
-import dispatchToProps from '../../store/actions'
+import dispatchToProps from '../../store/dispatch'
 import AddFrom from './components/addFrom'
 
 class SlideshowList extends React.Component{
 
     componentDidMount(){
-        this.props.getSlideshowList({
-            fid: this.props.match.params.fid
+        this.props.select({
+            api: "slideshowList",
+            data: {
+                fid: this.props.match.params.fid
+            },
+            node: "imgList"            
         })
     }
 
     render() {
-        const {imgList} = this.props.imgList
-        debugger
+        const {imgList} = this.props.module
         return (
             <Card
                 title="轮播图设置"
                 extra={
                     <div>
-                        <Dialog type="text" butName="添加轮播图" title="添加轮播图">
+                        {/* <Dialog type="text" butName="添加轮播图" title="添加轮播图">
                             <AddFrom />
-                        </Dialog>
+                        </Dialog> */}
                     </div>
                 }
             >
@@ -55,7 +58,7 @@ class SlideshowList extends React.Component{
 
 const stateToProops = (state) => {
     return {
-        imgList: state.slideshow
+        module: state.slideshow
     }
   }
 

@@ -32,11 +32,7 @@ export default class Custom extends React.Component{
 
         return (
 
-            <Card title="自定义管理" extra={
-                <Dialog type="text" butName="添加变量" title="添加变量">
-                  <AddCustom />
-                </Dialog>
-              }>
+            <Card title="自定义管理">
                 
               
             <Form

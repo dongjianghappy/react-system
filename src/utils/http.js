@@ -20,12 +20,24 @@ export default class http {
         }
     }
 
-    // 请求头设置
+    // 请求拦截
     requestHeaders(request){
-        //POST传参序列化
         request.interceptors.request.use((config) => {
-            if(config.method  === 'post'){
-                config.data = qs.stringify(config.data);
+     
+
+            const methodMapping = {
+                'get': 'select',
+                'post': 'insert',
+                'put': 'update',
+                'delete': 'delete'
+            }
+
+            const action = methodMapping[config.method]
+            config.headers["authoriziation"] = "Beartr " + getToken()
+            if(action){
+                if(config.method  === 'post'){
+                    config.data = qs.stringify(config.data);
+                }
             }
             return config;
         },(error) =>{
@@ -33,17 +45,22 @@ export default class http {
         });
     }
 
-
-    // 返回状态判断
+    // 响应拦截
     responseHeaders(request){
-        request.interceptors.response.use((res) =>{
-            if(!res.data.ifSuccess){
-                // _.toast(res.data.msg);
-                return Promise.reject(res);
-            }
-            return res;
-        }, (error) => {
+        request.interceptors.response.use((response) =>{
+			if(response.data.ifSuccess === 1){
+				if(response.data.result === true){
 
+				}else{
+                    if(response.data.responseBody !== null){
+                        return response.data.responseBody;
+                    }
+				}
+			}else{
+                return Promise.reject("ss");
+            }
+
+        }, (error) => {
             return Promise.reject(error);
         });
     }
@@ -54,54 +71,30 @@ export default class http {
     }    
 
     // 请求方法
-    request(m, n, params){
-
+    request(m, n, method, params){
         params = params || {}
-
 		params.n = n;
-		params.m = params.m ? params.m : m;
-
+        params.m = params.m ? params.m : m;
         const request  = this.axios()
 
         this.requestHeaders(request)
         this.responseHeaders(request)
-
-
-		// 添加请求拦截器
-		request.interceptors.request.use(config => {
-            config.headers["authoriziation"] = "Beartr " + getToken()
-			return config
-		});
-
-		// http响应拦截
-		request.interceptors.response.use(response => {
-			if(response.data.ifSuccess === 1){
-				if(response.data.result === true){
-
-				}else{
-                    if(response.data.responseBody !== null){
-                        return response.data.responseBody;
-                    }
-				}
-			}else{
-				
-			}
-		});
-
-
         return new Promise((resolve, reject) => {
-            request.post("inter_vue.php", params)
-                .then(response => {
-                    
-					resolve({
-						result: response
-					});
-                }, err => {
-                    reject(err);
-                })
-                .catch((error) => {
-                   reject(error)
-                })
+            request.request({
+                url: 'inter_vue.php',
+                method,
+                data: params
+            })
+            .then(response => {
+                resolve({
+                    result: response
+                });
+            }, err => {
+                reject(err);
+            })
+            .catch((error) => {
+                reject(error)
+            })
         })
     }
 }

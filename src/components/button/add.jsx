@@ -1,16 +1,15 @@
 import React from 'react'
 import { Button } from 'antd'
+import { PlusOutlined } from '@ant-design/icons';
 
-export default class Add extends React.Component{
+const Edit = (props) => {
 
-    handle = () => {
-        console.log("ggdd");
+    const handle = () => {
+        props.click(props)
     }
 
-    render() {
-        return (
-            <Button type="primary" onClick={this.handle}>添加</Button>
-        )
-    }
+    return (
+        <Button onClick={handle} type="default" size="small" ><PlusOutlined /> 添加</Button>
+    )
 }
-
+export default Edit

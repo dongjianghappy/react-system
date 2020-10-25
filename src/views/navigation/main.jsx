@@ -1,105 +1,192 @@
 import React from 'react';
-import {Space, Card, Table, Checkbox, Button } from 'antd'
-import { createStore } from 'redux'
-import { Link } from 'react-router-dom'
-import { Status, Dialog, ButtonGroup, OperatingGroup, Operatinavbar, Condition } from '../../components/index.js'
-import reducer from '../../reducers/counter'
-import AddNavigation from './components/addNavigation'
+import {Space, Card, Table, Checkbox, Button, Input } from 'antd'
+import { Status, R_button, R_drawer, R_checkbox, Dialog, Quick} from '../../components/index.js'
+import {
+  ButtonGroup
+} from '../../common'
+import Article from './article'
+import { checkButtonAuth } from '@/utils/auth'
 
-// 创建仓库
-const store = createStore(reducer)
-store.subscribe(() => console.log(store.getState()))
+import { connect } from 'react-redux'
+import dispatchToProps from '../../store/dispatch'
 
-export default class index extends React.Component{
+class Index extends React.Component{
      
-    state ={
-        columns: [
-            {
-              title: '选择',
-              dataIndex: 'name',
-            },
-            {
-              title: '顺序',
-              dataIndex: 'url',
-            },
-            {
-                title: '名称',
-                dataIndex: 'source',
-                render: text => <a>{text}</a>,
-              },
-            {
-                title: '连接',
-                dataIndex: 'source',
-                render: text => <a>{text}</a>,
-              },              
-              {
-                title: '状态',
-                dataIndex: 'status',
-                render:(text, record) => (
-                  <Status type="switch" coding="P0003" field="status" {...record} updateStatus={this.props.updateStatus} />
-                )
-              },
-            {
-                title: '操作',
-                dataIndex: 'price',
-                render: text =>(
-                    <OperatingGroup />
-                ),
-              }
-        ],
-        data: [{
-                name: "素材",
-                url: "素材",
-                source: "素材",
-                type: "素材",
-                price: "素材",
-                id: 1
-            },
-            {
-                name: "素材",
-                url: "素材",
-                source: "素材",
-                type: "素材",
-                price: "素材",
-                id: 2
-            },
-            {
-                name: "素材",
-                url: "素材",
-                source: "素材",
-                type: "素材",
-                price: "素材",
-                id: 3
-            }
-        ],
-        total: 0,
-        pages: 0
-    }
+    componentDidMount(){
+      this.props.select({
+        api: "navigation",
+        data: {
+          channel: 0 // this.props.match.params.channel_id
+        },
+        node: "main"            
+      })
+  }
 
-
+  handleClick = (data) => {
+    this.props[data.popup || data.global.data.fn](data)
+  }     
+  
     render(){
-
-        const { columns, data } = this.state
-
+        const { main } = this.props.module
         return(
 
             <div>
+
             <Card title="导航列表" extra={
                 <Space>
-                <Dialog type="text" butName="添加导航" title="添加导航">
-                  <AddNavigation />
-                </Dialog>
+                <R_button.button button={this.handleClick} name="新增导航" action="add" title="新增导航" popup="getDrawer" type="primary" size="default" disabled={checkButtonAuth('m:navigation:main:child')} />
                 <Button onClick={()=>this.props.history.push('/admin/navigation')}>返回</Button>
                 </Space>
               }>
-                    <Table
+
+
+
+
+<div id="content">
+    <table width="100%" className="table-striped col-left-34">
+      <tr className="th">
+        <td className="col-md-1">选择</td>
+        <td className="col-md-1">顺序</td>
+        <td className="col-md-4"><span className="icon-cate"></span>名称</td>
+        <td className="col-md-3">连接</td> 
+        <td className="col-md-1">状态</td>   
+        <td className="col-md-2">操作</td>
+      </tr>
+      {
+        main && main.map((item, index) => (
+        <>
+        <tr className="tr-list">
+          <td><R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={item.id}></R_checkbox></td>
+          <td>
+            <Quick
+              id={item.id}
+              title={item.sort}
+              field="sort"
+              coding="P0001"
+              changeData={this.props.changeData}
+            />
+          </td>
+          <td><i class="iconfont iconslide icon-anonymous-iconfont"></i>
+            <Quick
+              id={item.id}
+              title={item.name}
+              field="name"
+              coding="P0001"
+              width="80%"
+              changeData={this.props.changeData}
+            />
+          <img src={require('../../static/image/spread.gif')} title="添加二级导航" />
+          </td>
+          <td>
+          <Quick
+              id={item.id}
+              title={item.url}
+              field="url"
+              coding="P0001"
+              changeData={this.props.changeData}
+            />
+          </td>
+          <td><Status type="switch" coding="P0003" field="status" {...item} updateStatus={this.props.updateStatus} disabled={checkButtonAuth('b:navigation:main:status')} /></td>
+          <td>
+          <Space>
+            <R_button.edit click={this.handleClick} id={item.id} action="edit" title="编辑友链" dispatch="popup" node="drawer" disabled={checkButtonAuth('b:navigation:main:edit')} />
+            <R_button.del click={this.handleClick} id={item.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" disabled={checkButtonAuth('b:navigation:main:delete')} />
+          </Space>
+          </td>
+        </tr>
+        {
+          item.list ? 
+          <tr className="tr-slide">
+            <td colspan="8" className="p0">
+              {
+                item.list.map((ss, i) => (
+                  <table width="100%" className="table-bordered table-condensed table-hover color-cate">
+                        <tr className="tr-list">
+                          <td className="col-md-1"><R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={ss.id}></R_checkbox></td>
+                          <td className="col-md-1">
+                            <Quick
+                              id={ss.id}
+                              title={ss.sort}
+                              field="sort"
+                              coding="P0001"
+                              changeData={this.props.changeData}
+                            />
+                          </td>
+                          <td className="col-md-4">
+                            <i class="cate-two"></i>
+                            <i class="iconfont icon-jianhao iconslide"></i>
+                            <Quick
+                              id={ss.id}
+                              title={ss.name}
+                              field="name"
+                              coding="P0001"
+                              width="69%"
+                              changeData={this.props.changeData}
+                            />
+                          </td>
+                          <td className="col-md-3">
+                          <Quick
+                              id={ss.id}
+                              title={ss.url}
+                              field="url"
+                              coding="P0001"
+                              changeData={this.props.changeData}
+                            />
+                          </td>
+                          <td className="col-md-1"><Status type="switch" coding="P0003" field="status" {...item} updateStatus={this.props.updateStatus} disabled={checkButtonAuth('b:navigation:main:status')} /></td>
+                          <td className="col-md-2">
+                          <Space>
+                            <R_button.edit click={this.handleClick} id={ss.id} action="edit" title="编辑友链" dispatch="popup" node="drawer" disabled={checkButtonAuth('b:navigation:main:edit')} />
+                            <R_button.del click={this.handleClick} id={ss.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" disabled={checkButtonAuth('b:navigation:main:delete')} />
+                          </Space>
+                          </td>
+                        </tr>
+                  </table>
+                ))
+              }
+            </td>
+          </tr>
+        : ""
+        }
+        </>
+        ))
+      }
+
+    </table>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    {/* <Table
                         key="id"
                         columns={columns}
-                        dataSource={data}
+                        dataSource={main}
                         pagination={ false }
-                    ></Table>
+                    ></Table> */}
+
+                <ButtonGroup node={ this.props.node } {...this.props} button={['all', 'delete', 'open', 'close']}></ButtonGroup>
+                <input id="coding" type="hidden" value="P0001" />
                 </Card>
             </div>
         )
     }
 }
+
+const stateToProops = (state) => {
+  console.log(state);
+  return {
+      module: state.navigation
+  }
+}
+
+export default connect(stateToProops, dispatchToProps)(Index)

@@ -5,9 +5,18 @@ export default class Dialog extends React.Component{
 
     state = { visible: false };
 
+    componentDidMount(){
+
+        // 当状态抽屉状态为true时则更新状态值
+        if(this.props.global.dialog.status){
+          this.setState({
+            visible: true,
+          });
+        }
+    }
+
     showModal = () => {
         // 是否勾选
-        //if(this.props.checked !== undefined && this.props.checked === false){
         if(this.props.dataSource && this.props.dataSource.length === 0){
             message.info(this.props.messageTitle);
         }else{
@@ -19,30 +28,34 @@ export default class Dialog extends React.Component{
     };
 
     handleOk = e => {
-        console.log("sss");
         this.setState({
             visible: false,
         });
+        this.props.popup({
+            node: "dialog"
+        })
+        this.props.handleOk(this.props)
     };
 
     handleCancel = e => {
-    console.log(e);
-    this.setState({
-        visible: false,
-    });
+        this.setState({
+            visible: false,
+        });
+
+        // 延时更改状态，修复抽屉滑动隐藏
+        setTimeout(() => {
+            this.props.popup({
+                node: "dialog"
+            })
+        }, 300)
     };
 
     render() {
         const { visible } = this.state
-        const { butName, title, type, size, width, className } = this.props
+        const { butName, type, size, width, className } = this.props
+        const { title } = this.props.global.dialog
         return (
             <Fragment>
-                { 
-                    this.props.type === 'text' ? 
-                    <span className={className} onClick={this.showModal}>{butName}</span>
-                    : <Button className={className} type={type || "default"} size={size || "small"} onClick={this.showModal}>{butName}</Button>
-                }
-                
                 <Modal
                     title={title || "提示信息"}
                     width={width ? width*1 : 500}

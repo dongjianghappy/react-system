@@ -2,7 +2,7 @@ import React from 'react'
 import { Switch, Row, Col, Pagination } from 'antd'
 import { ButtonGroup } from './index'
 import { connect } from 'react-redux'
-import dispatchToProps from '../store/actions'
+import dispatchToProps from '../store/dispatch'
 
 const Operatinavbar = (props) => {
     return (

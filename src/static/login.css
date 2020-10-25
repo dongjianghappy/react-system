@@ -5,3 +5,45 @@
     transform: translate3d(-50%, -50%, 0);
     width: 480px;
 }
+
+
+
+
+.login-con{ background: #eee; margin: 0 auto; box-shadow: 1px 1px 5px #666; position:relative; top: 100px;width: 600px; height: 300px;}
+.login-left{ background: #eee; position: relative; padding: 50px 75px; width: 250px; height: 300px;}
+.login-left .photos{text-align: center; width: 100px; height: 100px; }
+.login-left .photos img{border-radius: 50%; width: 100px; height: 100px; }
+.login-left .username{ width: 100px; height: 50px; line-height: 50px; text-align: center; }
+.login-right{ background: #FFF; padding: 10px 25px ; width: 350px; height: 300px;}
+.login-right h1{ height: 30px; line-height: 30px; font-size: 14px; font-weight: bold; }
+.login-right ul{ list-style-type: none;}
+.login-right li{ position: relative; margin: 15px 0 ; height: 34px; line-height: 34px;}
+.login-right li i{ position: absolute; left: 5px}
+.login-right li input{ padding-left: 25px;}
+.login-right li.li{ position: relative; padding-left: 105px; overflow: hidden;}
+.login-right li.li input{ padding-left: 5px; }
+.login-right li label{ font-weight: normal;}
+.login-right li span.codeinput{ position: absolute; left: 0px; width: 100px;}
+.login-right li span.codeimg{display: inline-block; width: 95px; float: left;}
+.login-right li span.codeerror{display: inline-block; width: 100px; float: right; text-align: center;}
+
+
+
+.login-wrap{ 
+    background: #eee; 
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto; 
+    box-shadow: 1px 1px 5px #666;
+    width: 600px; 
+    height: 300px;
+    display: flex;
+    justify-content: center;
+}
+
+.font64 {
+    font-size: 64px !important;
+}

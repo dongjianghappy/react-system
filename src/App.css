@@ -2,12 +2,44 @@ html, body, #root, .ant-layout {
   width: 100%;
   height: 100%;
 }
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.ant-layout-sider{
+  box-shadow: rgba(0, 21, 41, 0.08) 0px 1px 4px;
+}
 .site-layout-background {
   background: none !important;
 }
 .ant-layout-sider-children{
   background: #001529 !important;
 }
+
+.ant-menu-dark .ant-menu-submenu-active{
+  background: #f0f2f5 !important;
+}
+.ant-menu-dark .ant-menu-submenu-title:hover, .ant-menu-inline .ant-menu-submenu-title{
+  color: #333 !important;
+}
+
+.ant-menu-dark .ant-menu-submenu-open .ant-menu-submenu-title{
+  background: #cad9e5 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 .pointer {
   cursor: pointer;
 }
@@ -22,4 +54,106 @@ html, body, #root, .ant-layout {
 .icon-error{
   font-size:  20px;
   color: #d9363e !important
+}
+
+.ant-layout-sider-children {
+  background: #fff !important;
+}
+.ant-menu-dark .ant-menu-inline.ant-menu-sub {
+  background: #ddd !important;
+}
+.ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub{
+  color:#333 !important;
+  background: #fff !important;
+}
+.ant-menu-dark .ant-menu-item > a{
+  color: #333 !important;
+}
+
+.ant-menu-item-selected{
+  background: #f0f2f5 !important;
+}
+
+.menus{
+  display: flex;
+  background: #fff;
+  padding-left: 15px;
+  width: 100%;
+  height: 45px;
+  box-shadow: rgba(0, 21, 41, 0.08) 0px 1px 4px;
+  border-bottom: 1px solid rgb(221, 221, 221);
+  justify-content: left;
+  align-items: center;
+  color: #fff;
+  font-size: 18px;
+}
+
+.navbar{
+  display: flex;
+  justify-content: left;
+  flex-wrap: wrap-reverse;
+
+}
+
+.navbar li{
+  background: #cad9e5;
+  margin-right: 10px;
+  padding: 5px 10px;
+  width: auto;
+  height: 35px;
+  color: #fff;
+  text-align: center;
+}
+.navbar li.search{
+  background: none;
+  flex: 1;
+  text-align: right;
+  margin: 0;
+  padding: 0;
+}
+
+.condition{
+  background: #fff;
+  padding: 15px;
+}
+
+.condition .col{
+  margin-bottom: 20px;
+}
+.condition .col:last-child{
+  margin-bottom: 0;
+}
+
+
+.condition a{
+  margin: 8px;
+  padding: 5px;
+}
+.option-current{
+  background: #1890ff;
+  color: #fff;
+}
+
+
+
+.cate-two {
+  background: url(../src/static/image/cate_icon1.png) no-repeat 7px;
+  display: inline-block;
+  margin-right: 5px;
+  width: 40px;
+  height: 30px;
+  font-size: 30px;
+  color: #ccc;
+  float: left;
+}
+
+.cate-tree {
+  background: url(../src/static/image/cate_icon2.png) no-repeat 7px;
+  display: inline-block;
+  margin-right: 5px;
+  width: 40px;
+  height: 30px;
+  font-size: 30px;
+  color: #ccc;
+  float: left;
 }

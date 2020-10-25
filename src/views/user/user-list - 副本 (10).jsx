@@ -3,15 +3,14 @@ import { Card, Table, Space, Popconfirm, Button, Checkbox, Input, DatePicker} fr
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Status, Dialog, Operatinavbar, Condition } from '../../components/index.js'
-import dispatchToProps from '../../store/actions'
-import AddGrade from './components/addGrade'
+import dispatchToProps from '../../store/dispatch'
 import coding from '../../static/constant/coding'
 import api from '../../api';
 
 const { Search } = Input;
 const { RangePicker } = DatePicker;
 
-class UserGrade extends React.Component{
+class UserList extends React.Component{
 
     constructor(props){
       super(props)
@@ -20,54 +19,41 @@ class UserGrade extends React.Component{
     state ={
         columns: [
             {
-              title: '功能名称',
+              title: '选择',
               dataIndex: 'name',
               render: text => <a><Checkbox></Checkbox></a>,
             },
             {
-              title: '描述',
+              title: '头像',
               dataIndex: 'phone',
             },
             {
-              title: '普通访客',
+              title: '会员账号',
               dataIndex: 'account',
-              render:(text, record) => (
-                <Status type="switch" coding="P0003" field="status" {...record} updateStatus={this.props.updateStatus} />
-              )
             },{
-                title: '普通会员',
+                title: '用户名',
                 dataIndex: 'nickname',
-                render:(text, record) => (
-                    <Status type="switch" coding="P0003" field="status" {...record} updateStatus={this.props.updateStatus} />
-                  )
+                render: text => <a>{text}</a>,
               },
               {
-                title: '高级会员',
+                title: '电子邮件',
                 dataIndex: 'email',
-                render:(text, record) => (
-                    <Status type="switch" coding="P0003" field="status" {...record} updateStatus={this.props.updateStatus} />
-                  )
               },
               {
-                title: 'VIP会员',
+                title: '注册日期',
                 dataIndex: 'last_login_time',
-                render:(text, record) => (
-                    <Status type="switch" coding="P0003" field="status" {...record} updateStatus={this.props.updateStatus} />
-                  )
               },{
-                  title: '超级VIP会员',
+                  title: '在线/天',
                   dataIndex: 'online',
-                  render:(text, record) => (
-                    <Status type="switch" coding="P0003" field="status" {...record} updateStatus={this.props.updateStatus} />
-                  )
+                  render: text => <a>{text}</a>,
                 },
               {
                 title: '操作',
                 dataIndex: 'operating',
                 render: (text, record) => (
                     <Space size="middle">
-                      <Button type="primary" size="small">编辑</Button>
-                      <Button type="primary" size="small">删除</Button>
+                      <Button type="primary" size="small">推送</Button>
+                      <Button type="primary" size="small">详情</Button>
                     </Space>
                   ),
               },
@@ -97,23 +83,23 @@ class UserGrade extends React.Component{
 
         const {columns, data} = this.state
         return(
-          <Card
-          tabList={[
-            {
-              key: 'tab1',
-              tab: '功能权限',
-            },
-            {
-              key: 'tab2',
-              tab: '应用权限',
-            },
-          ]}
-          tabBarExtraContent={ 
-            <Dialog type="text" butName="新增功能" title="新增功能">
-                <AddGrade />
-          </Dialog>
-          }
-          >
+
+          <Card title="用户列表" extra={
+            <div>
+            <Space>
+            <Search
+      placeholder="input search text"
+      onSearch={value => console.log(value)}
+      style={{ width: 200 }}
+    />
+    注册时间 <RangePicker />
+    <Button type="primary">搜索</Button>
+    <Button type="default">重置</Button>
+  
+          </Space>
+          </div>
+      }>
+
                 <Table
                     rowKey="id"
                     columns={columns}
@@ -133,4 +119,4 @@ const stateToProops = (state) => {
   }
 }
 
-export default connect(stateToProops, dispatchToProps)(UserGrade)
+export default connect(stateToProops, dispatchToProps)(UserList)

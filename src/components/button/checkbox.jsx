@@ -13,12 +13,6 @@ export default (props) => {
             }
             
         })
-        // if( e.target.checked){
-        //     props.list.push({
-        //         id: props.data
-        //     })
-        // }
-
         console.log(`checked = ${e.target.checked}`);
       }
 

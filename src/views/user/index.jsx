@@ -20,7 +20,7 @@ export default class Default extends React.Component{
                             prefix={<ArrowUpOutlined />}
                             suffix="%"
                         />
-                        <Link to="/admin/user/List">点击查看</Link>
+                        <Link to="/admin/user/list">点击查看</Link>
                         </Card>
                     </Col>
                     <Col span={6}>
@@ -33,7 +33,7 @@ export default class Default extends React.Component{
                             prefix={<ArrowDownOutlined />}
                             suffix="%"
                         />
-                        <Link to="/admin/user/List">点击查看</Link>
+                        <Link to="/admin/user/list">点击查看</Link>
                         </Card>
                     </Col>
                     <Col span={6}>
@@ -46,7 +46,7 @@ export default class Default extends React.Component{
                             prefix={<ArrowUpOutlined />}
                             suffix="%"
                         />
-                        <Link to="/admin/user/List">点击查看</Link>
+                        <Link to="/admin/user/list">点击查看</Link>
                         </Card>
                     </Col>
                     <Col span={6}>
@@ -59,7 +59,7 @@ export default class Default extends React.Component{
                             prefix={<ArrowDownOutlined />}
                             suffix="%"
                         />
-                        <Link to="/admin/user/List">点击查看</Link>
+                        <Link to="/admin/user/list">点击查看</Link>
                         </Card>
                     </Col>
                     </Row>

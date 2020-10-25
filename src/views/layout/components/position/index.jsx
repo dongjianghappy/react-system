@@ -23,14 +23,15 @@ const { Content, Sider } = Layout;
 class Position extends React.Component{
 
     // 模块页面跳转后需要刷新，主要时显示左侧菜单栏
-    route = (path) => {
+    route = (path, q='') => {
         this.props.history.push(path)
-        window.location.reload()
+        this.props.handle(q)
+        //window.location.reload()
     }
 
     render(){
         return(
-            <div style={{ background: ' #fff', padding: '12px', height: '45px', lineHeight: '25px !important'}}>
+            <div style={{ background: ' #fff', padding: '12px', height: '45px', lineHeight: '25px !important', boxShadow: "0 1px 4px rgba(0, 21, 41, 0.08)", borderBottom: "1px solid #ddd"}}>
                 <Row>
                     <Col span={12}>
                     <Breadcrumb>
@@ -42,17 +43,19 @@ class Position extends React.Component{
                     <Col span={12}>
                     <Row justify="end">
                         <Col span={2} onClick={() => this.route('/admin/tag')}>
-                            <i className="iconfont icon-tags" style={{fontSize: 20}}></i>
+                            标签
                         </Col>
-                        <Col span={2} onClick={() => this.route('/admin/user')}>
-                        <i className="iconfont icon-user" style={{fontSize: 16}}></i>
-                        </Col>
-                        <Col span={2} onClick={() => this.route('/admin/appstore')}>微博</Col>
-                        <Col span={2} onClick={() => this.route('/admin/appstore')}>空间</Col>
-                        <Col span={2} onClick={() => this.route('/admin/appstore')}>客服</Col>
-                        <Col span={2} onClick={() => this.route('/admin/appstore')}>设置</Col>
-                        <Col span={2} onClick={() => this.route('/admin/link')}>运营</Col>
-                        <Col span={2} ><ChannelList type="text" butName="频道" title="频道" /></Col>
+                        {/* <Col span={2} onClick={() => this.route('/admin/order')}>
+                            订单
+                        </Col> */}
+                        {/* <Col span={2} onClick={() => this.route('/admin/user', 'user')}>
+                            用户
+                        </Col> */}
+                        {/* <Col span={2} onClick={() => this.route('/admin/member')}>微博</Col>
+                        <Col span={2} onClick={() => this.route('/admin/space')}>空间</Col>
+                        <Col span={2} onClick={() => this.route('/admin/service', 'service')}>服务</Col> */}
+                        <Col span={2} onClick={() => this.route('/admin/appstore', 'setting')}>设置</Col>
+                        <Col span={2} onClick={() => this.route('/admin/link', 'business')}>运营</Col>
                     </Row>
                     </Col>
                 </Row>

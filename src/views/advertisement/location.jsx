@@ -2,7 +2,6 @@ import React from 'react'
 import { Card, Table, Space, Popconfirm, Button, Checkbox, Switch} from 'antd';
 import { Status, Dialog, Condition } from '../../components/index.js'
 import AddArticle from './article'
-import { getListAction } from '../../store/action'
 import store from '../../store';
 import api from '../../api';
 
@@ -106,12 +105,12 @@ export default class AdvertisementLocation extends React.Component{
     }
 
     componentDidMount(){
-        const action = getListAction({
-          coding: 'P0008',
-          page: 0,
-          pagesize: 10
-        })
-        store.dispatch(action)
+        // const action = getListAction({
+        //   coding: 'P0008',
+        //   page: 0,
+        //   pagesize: 10
+        // })
+        // store.dispatch(action)
       }
 
     render(){
