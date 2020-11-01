@@ -38,7 +38,7 @@ export default class Forms extends React.Component{
                     <Checkbox>勾选时做为菜单展示侧边栏</Checkbox>
                 </Form.Item>
                 <Form.Item name="icon" label="图标">
-                    <Input.TextArea />
+                    <Input />
                 </Form.Item>
             </>
         )

@@ -12,7 +12,8 @@ import {
     GET_FLAG,
     GET_BAISC_INFO,
     GET_MYSQL,
-    CHANGE_DATA 
+    CHANGE_DATA,
+    SEARCH_FIELD
 } from '../actionTypes'
 
 // 节点初始化设置
@@ -138,7 +139,10 @@ export const backup = async (params) =>{
        return result
 }
 
-
+export const searchFieldAction = (value) =>({
+    type: SEARCH_FIELD,
+    value
+})
 
 
 

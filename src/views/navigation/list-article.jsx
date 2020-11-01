@@ -51,7 +51,7 @@ class Single extends React.Component{
             <div>
               <Card title="新增单页" extra={
                   <Space>
-                  <Button onClick={()=>this.props.history.push('/admin/navigation/single')}>返回</Button>
+                  <Button onClick={()=>this.props.history.push('/admin/single')}>返回</Button>
                   </Space>
                 }>
                   <div>

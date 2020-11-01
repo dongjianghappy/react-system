@@ -42,9 +42,9 @@ class Position extends React.Component{
                     </Col>
                     <Col span={12}>
                     <Row justify="end">
-                        <Col span={2} onClick={() => this.route('/admin/tag')}>
+                        {/* <Col span={2} onClick={() => this.route('/admin/tag')}>
                             标签
-                        </Col>
+                        </Col> */}
                         {/* <Col span={2} onClick={() => this.route('/admin/order')}>
                             订单
                         </Col> */}
@@ -55,7 +55,7 @@ class Position extends React.Component{
                         <Col span={2} onClick={() => this.route('/admin/space')}>空间</Col>
                         <Col span={2} onClick={() => this.route('/admin/service', 'service')}>服务</Col> */}
                         <Col span={2} onClick={() => this.route('/admin/appstore', 'setting')}>设置</Col>
-                        <Col span={2} onClick={() => this.route('/admin/link', 'business')}>运营</Col>
+                        {/* <Col span={2} onClick={() => this.route('/admin/link', 'business')}>运营</Col> */}
                     </Row>
                     </Col>
                 </Row>

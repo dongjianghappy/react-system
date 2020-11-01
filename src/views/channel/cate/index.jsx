@@ -11,17 +11,17 @@ import {
   Dialog,
   Condition,
   Quick
-} from '../../../../components/index.js'
+} from '../../../components/index.js'
 import {
   Navbar,
   ButtonGroup,
   Option,
   OptionSelect,
   ModalGroup
-} from '../../../../common'
+} from '../../../common'
 import dispatchToProps from '@/store/dispatch'
 import coding from '@/static/constant/coding'
-import CateForm from '../../components/cateForm.jsx';
+import Detail from './components/detail';
 
 class Channel extends React.Component{
 
@@ -77,10 +77,11 @@ class Channel extends React.Component{
     }
 
     componentDidMount(){
+      const module = window.location.pathname.split("/")[2]
       this.props.select({
         api: "cateList",
         data: {
-          coding: "K0002"
+          coding: React.$coding[module].cate
         },
         node: "cateList"            
     })
@@ -104,7 +105,10 @@ class Channel extends React.Component{
               title="分类管理"
               extra={
                 <Space>
-                <CateForm size="defualt" butName="新增分类" title="新增分类" />
+                  <R_drawer.drawerForm title="新增导航" coding={cate} {...this.props} >
+                    <Detail />
+                  </R_drawer.drawerForm>
+                {/* <CateForm size="defualt" butName="新增分类" title="新增分类" /> */}
                 <Button>批量添加</Button>
                 </Space>
               }
@@ -137,7 +141,9 @@ class Channel extends React.Component{
           <td><Status coding={cate}  field="status" {...item} updateStatus={this.props.updateStatus} /></td>
           <td>
             <Space>
-              <R_button.edit edit={this.handleClick} id={item.id} action="edit" title="编辑友链" popup="getDrawer" />
+              <R_drawer.drawerForm title="编辑分类" id={item.id} coding={cate} {...this.props} >
+                <Detail />
+              </R_drawer.drawerForm>
               <R_button.del delete={this.handleClick} id={item.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" />
             </Space>
           </td>
@@ -159,7 +165,9 @@ class Channel extends React.Component{
                     <td class="col-md-1"><Status coding={cate}  field="status" {...sss} updateStatus={this.props.updateStatus} /></td>
                     <td class="col-md-2">
                       <Space>
-                        <R_button.edit edit={this.handleClick} id={sss.id} action="edit" title="编辑友链" popup="getDrawer" />
+                        <R_drawer.drawerForm title="编辑分类" id={sss.id} coding={cate} {...this.props} >
+                          <Detail />
+                        </R_drawer.drawerForm>
                         <R_button.del delete={this.handleClick} id={sss.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" />
                       </Space>
                     </td>
@@ -181,7 +189,9 @@ class Channel extends React.Component{
                                 <td className="col-md-1"><Status coding={cate} field="status" {...ddd} updateStatus={this.props.updateStatus} /></td>
                                 <td className="col-md-2">
                                   <Space>
-                                    <R_button.edit edit={this.handleClick} id={ddd.id} action="edit" title="编辑友链" popup="getDrawer" />
+                                    <R_drawer.drawerForm title="编辑分类" id={ddd.id} coding={cate} {...this.props} >
+                                      <Detail />
+                                    </R_drawer.drawerForm>
                                     <R_button.del delete={this.handleClick} id={ddd.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" />
                                   </Space>
                                 </td>

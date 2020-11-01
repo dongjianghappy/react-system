@@ -4,8 +4,11 @@ import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/ico
 import { connect } from 'react-redux'
 import dispatchToProps from '../../store/dispatch'
 import { Dialog } from '../../components'
-import SlideshowFrom from './components/slideshowFrom'
+import Detail from './components/detail'
 import { Link } from 'react-router-dom';
+import {
+    R_drawer
+  } from '../../components/index.js'
 
 const { Meta } = Card;
 
@@ -24,11 +27,11 @@ class Slideshow extends React.Component{
         return (
             <Card 
                 title="幻灯片管理"
-                // extra={
-                //     <Dialog type="text" butName="新增幻灯片" title="新增幻灯片" className="pointer" >
-                //     <SlideshowFrom />
-                //   </Dialog>
-                // }
+                extra={
+                <R_drawer.drawerForm title="新增幻灯片" name="新增幻灯片" coding="P0003" {...this.props} >
+                    <Detail />
+                </R_drawer.drawerForm>
+                }
             >
 
                 <Row>
@@ -39,7 +42,7 @@ class Slideshow extends React.Component{
                             <Card
                                 style={{ width: 300, marginBottom: 25 }}
                                 cover={
-                                    <Link onClick={()=>this.props.history.push(`/admin/slideshow/list/${item.id}`)}>
+                                    <Link to={{pathname:'/admin/slideshow/list', state:{fid: item.id}}}>
                                 <img
                                     alt="example"
                                     src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"

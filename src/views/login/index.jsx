@@ -23,20 +23,20 @@ const bgGround={
 class Login extends React.Component{
 
     onFinish = values => {
-        const q = this.props.getLogin({
-            username: values.username,
-            password: values.password
+        this.props.fetch({
+            api: 'Login',
+            data: {
+                username: values.username,
+                password: values.password                
+            }
+        }).then((res) => {
+            sessionStorage.setItem("token", res.result.token)
+            sessionStorage.setItem("userInfo", JSON.stringify(res.result.userInfo))
+            sessionStorage.setItem("menuList", JSON.stringify(res.result.menuList))
+            sessionStorage.setItem("gradeList", res.result.grade)
+            sessionStorage.setItem("channel", JSON.stringify(res.result.channel))
+            window.location.href = "/admin"
         })
-        
-        // api.Login().then((res) =>{
-        //     setToken(res.result.token)
-        //     setRightMenu(JSON.stringify(res.result.menuList))
-        //     this.props.history.push("/admin")
-        // })
-
-        //setToken(values.username)
-        //this.props.history.push("/admin")
-
       };
     
     onFinishFailed = errorInfo => {

@@ -1,13 +1,21 @@
 import React from 'react'
-import { Select } from 'antd'
+import { Form, Select } from 'antd'
 
 const { Option } = Select
 
 const SelectBox = (props) => {
     return (
-        props.data.map(item => (
-            <Option value={item.value}>{item.name}</Option>
-            ))
+        <Form>
+            <Form.Item>
+            <Select>
+            {
+            props.data.map(item => (
+                <Option value={item.value}>{item.name}</Option>
+            )) 
+            }
+        </Select>
+            </Form.Item>
+        </Form>
     )
 }
 

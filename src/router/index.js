@@ -4,17 +4,20 @@ import notfound from '../views/notfound'
 
 // 动态组件
 // 频道组件
-import Channel from '../views/channel/components/content'
+import ModuleDefault from '../views/channel'
+import Channel from '../views/channel/cate'
 import List from '../views/channel/list'
 import Recycle from '../views/channel/recycle'
 import Article from '../views/channel/list-article'
+import SettingChannel from '../views/channel/settingchannel'
 import Label from '../views/channel/label'
 // 基本组件
 import Default from '../views/layout/components/default'
 import Basic from '../views/basic'
 import TodoList from '../views/todolist'
 import Navigation from '../views/navigation'
-import NavigationMain from '../views/navigation/main'
+import NavigationMain from '../views/navigation/mainNavigation/main'
+import NavigationDetail from '../views/navigation/mainNavigation/navigation-detail'
 import Single from '../views/navigation/list'
 import SingleArticle from '../views/navigation/list-article'
 import menuRouter from '../views/menuRouter'
@@ -38,6 +41,7 @@ import UserBanuser from '../views/user/user-banuser'
 import UserRecommend from '../views/user/user-recommend'
 import UserSecurity from '../views/user/user-security'
 import UserTheme from '../views/user/user-theme'
+
 
 
 
@@ -72,11 +76,15 @@ import announcementArticle from '../views/service/announcement/article'
 import Job from '../views/service/job'
 import JobArticle from '../views/service/job/article'
 import Resume from '../views/service/job/resume'
+import Message from '../views/service/message/'
 import Spread from '../views/spread'
 import Space from '../views/space'
 import Static from '../views/static'
 import Customize from '../views/customize'
 import CustomizeList from '../views/customize/list'
+
+
+
 export const mainRouter = [
     {
         path: "/login",
@@ -154,6 +162,7 @@ const asyncRoutes = [
 
 const arrss = {
     menuRouter,
+    ModuleDefault,
     Channel,
     List,
     Links,
@@ -163,6 +172,7 @@ const arrss = {
     Partner,
     Navigation,
     NavigationMain,
+    NavigationDetail,
     Single,
     SingleArticle,
     Recycle,
@@ -202,10 +212,12 @@ const arrss = {
     Announcement,
     Job,
     Resume,
+    Message,
     Customize,
     CustomizeList,
     Manager,
-    Space
+    Space,
+    SettingChannel
 }
 
 
@@ -225,6 +237,7 @@ const loop = (data) => {
             component: arrss[item.component],
             isShow: item.isShow,
             exact: true,
+            icon: item.icon,
             meta: {
                 title: item.name,
                 icon: item.icon
@@ -241,6 +254,7 @@ const loop = (data) => {
             component: arrss[item.component],
             isShow: item.isShow,
             exact: true,
+            icon: item.icon,
             meta: {
                 title: "",
                 icon: "icon-link"

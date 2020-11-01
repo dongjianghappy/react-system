@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, Row, Col, Input, Button } from 'antd'
-import { Status, Dialog, ModalSpace, ButtonGroup, OperatingGroup, Operatinavbar, Condition } from '../../components'
+import { Status, R_drawer, ModalSpace, ButtonGroup, OperatingGroup, Operatinavbar, Condition } from '../../components'
 import { connect } from 'react-redux'
 import dispatchToProps from '../../store/dispatch'
 import AddFrom from './components/addFrom'
@@ -11,7 +11,7 @@ class SlideshowList extends React.Component{
         this.props.select({
             api: "slideshowList",
             data: {
-                fid: this.props.match.params.fid
+                fid: this.props.location.state.fid
             },
             node: "imgList"            
         })
@@ -24,9 +24,9 @@ class SlideshowList extends React.Component{
                 title="轮播图设置"
                 extra={
                     <div>
-                        {/* <Dialog type="text" butName="添加轮播图" title="添加轮播图">
+                        <R_drawer.drawerForm title="添加轮播图" name="添加轮播图" coding="P0003" {...this.props} >
                             <AddFrom />
-                        </Dialog> */}
+                        </R_drawer.drawerForm>
                     </div>
                 }
             >

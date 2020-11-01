@@ -4,8 +4,7 @@ import { Drawer, Button, Row, Col, Card } from 'antd';
 import { adminRouter } from '../../../router'
 import { withRouter } from 'react-router-dom';
 import ChannelForm from './channelForm'
-import { checkButtonAuth } from '@/utils/auth'
-
+import { checkButtonAuth, channelInfo } from '@/utils/auth'
 
 
 const { Meta } = Card;
@@ -51,14 +50,12 @@ class ChannelList extends React.Component {
   }
 
   mouseOver = () => {
-    debugger
     this.formRef.current.classList.remove("hide")
     this.formRef.current.classList.add("show")
     
   }
 
   mouseLeave = () => {
-    debugger
     this.formRef.current.classList.remove("show")
     this.formRef.current.classList.add("hide")
     
@@ -92,23 +89,25 @@ class ChannelList extends React.Component {
             routers.map((list, i) => (
                 list.value === 'channel' ?
                 <li key={i} className="channel" onMouseEnter={() => this.mouseOver()} onMouseLeave={() => this.mouseLeave()} >
+                  <i className={`iconfont icon-${list.icon} mr10`}></i>
                 { list.name }
-        <div ref={this.formRef} className="channel-wrap hide">
-          <ul className="channel">
-          {
-            channel.map((item, index) => (
-              
-              checkButtonAuth(item.authority) ? 
-              <li span={24} className="channel-list" onClick={() => this.handel(item.value)} >{ item.name }</li>
-              : ""
-            ))
-          }
-          </ul>
-        </div>
+                  <div ref={this.formRef} className="channel-wrap hide">
+                    <ul className="channel">
+                    {
+
+                        channelInfo().map((item, index) => (
+                          <li span={24} className="channel-list" onClick={() => this.handel(item.module)} >
+                            { item.name }
+                          </li>
+                      ))
+                    }
+                    </ul>
+                  </div>
                 </li>
                 :
-                <li key={i} onClick={() => this.handel(list.value)}>
-                { list.name }
+                <li key={i} className="font16" onClick={() => this.handel(list.value)}>
+                  <i className={`iconfont icon-${list.icon} mr10`}></i>
+                  { list.name }
                 </li>
             ))
         }

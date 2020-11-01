@@ -1,22 +1,58 @@
 import React from 'react';
 import {Space, Card, Table, Checkbox, Button, Input } from 'antd'
-import { Status, R_button, R_drawer, R_checkbox, Dialog, Quick} from '../../components/index.js'
+import { Link } from 'react-router-dom'
+import { Status, R_button, R_drawer, R_checkbox, Dialog, Quick} from '../../../components/index.js'
 import {
-  ButtonGroup
-} from '../../common'
-import Article from './article'
-import { checkButtonAuth } from '@/utils/auth'
+  ButtonGroup,
+  Option,
+} from '../../../common'
+import NavigationDrawer from './components/navigationDrawer'
+import Detail from './components/detail'
+import { checkButtonAuth, getChannel } from '@/utils/auth'
 
 import { connect } from 'react-redux'
-import dispatchToProps from '../../store/dispatch'
+import dispatchToProps from '../../../store/dispatch'
 
 class Index extends React.Component{
+
+    state = {
+      option: [
+        {
+          name: "导航类型: ",
+          field: 'channel',
+          list: []
+        }
+      ]
+    }
+
+
      
-    componentDidMount(){
+    async componentDidMount(){
+    const res = await this.props.fetch({
+        api: "static"          
+    })
+    
+
+    this.setState(() => {
+      return this.state.option[0].list = res.result
+    })
+    
+
+     let module = window.location.pathname.split("/")[2]
+
+      let channel = '0'
+      if(module === 'tech'){
+        channel = '1'
+      }else if(module === 'article'){
+        channel = '2'
+      }else if(module === 'source'){
+        channel = '3'
+      }
+
       this.props.select({
         api: "navigation",
         data: {
-          channel: 0 // this.props.match.params.channel_id
+          channel: channel
         },
         node: "main"            
       })
@@ -31,11 +67,15 @@ class Index extends React.Component{
         return(
 
             <div>
-
+                <div style={{marginBottom: 15}}>
+                  <Option option={this.state.option} select={this.props.select} api="navigation" node="main" />
+                </div>
             <Card title="导航列表" extra={
                 <Space>
-                <R_button.button button={this.handleClick} name="新增导航" action="add" title="新增导航" popup="getDrawer" type="primary" size="default" disabled={checkButtonAuth('m:navigation:main:child')} />
-                <Button onClick={()=>this.props.history.push('/admin/navigation')}>返回</Button>
+                  <R_drawer.drawerForm title="新增导航" coding="P0001" {...this.props} >
+                    <Detail />
+                  </R_drawer.drawerForm>
+                  {/* <NavigationDrawer {...this.props} title="新增导航" /> */}
                 </Space>
               }>
 
@@ -75,7 +115,7 @@ class Index extends React.Component{
               width="80%"
               changeData={this.props.changeData}
             />
-          <img src={require('../../static/image/spread.gif')} title="添加二级导航" />
+          <img src={require('../../../static/image/spread.gif')} title="添加二级导航" />
           </td>
           <td>
           <Quick
@@ -89,7 +129,10 @@ class Index extends React.Component{
           <td><Status type="switch" coding="P0003" field="status" {...item} updateStatus={this.props.updateStatus} disabled={checkButtonAuth('b:navigation:main:status')} /></td>
           <td>
           <Space>
-            <R_button.edit click={this.handleClick} id={item.id} action="edit" title="编辑友链" dispatch="popup" node="drawer" disabled={checkButtonAuth('b:navigation:main:edit')} />
+            {/* <NavigationDrawer id={item.id} {...this.props} title="编辑导航" /> */}
+            <R_drawer.drawerForm title="编辑导航" id={item.id} coding="P0001" {...this.props} >
+              <Detail />
+            </R_drawer.drawerForm>
             <R_button.del click={this.handleClick} id={item.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" disabled={checkButtonAuth('b:navigation:main:delete')} />
           </Space>
           </td>
@@ -136,7 +179,9 @@ class Index extends React.Component{
                           <td className="col-md-1"><Status type="switch" coding="P0003" field="status" {...item} updateStatus={this.props.updateStatus} disabled={checkButtonAuth('b:navigation:main:status')} /></td>
                           <td className="col-md-2">
                           <Space>
-                            <R_button.edit click={this.handleClick} id={ss.id} action="edit" title="编辑友链" dispatch="popup" node="drawer" disabled={checkButtonAuth('b:navigation:main:edit')} />
+                          <R_drawer.drawerForm title="编辑导航" id={ss.id} coding="P0001" {...this.props} >
+                            <Detail />
+                          </R_drawer.drawerForm>
                             <R_button.del click={this.handleClick} id={ss.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" disabled={checkButtonAuth('b:navigation:main:delete')} />
                           </Space>
                           </td>
@@ -182,10 +227,10 @@ class Index extends React.Component{
     }
 }
 
-const stateToProops = (state) => {
-  console.log(state);
+const stateToProops = ({navigation}) => {
+
   return {
-      module: state.navigation
+      module: navigation
   }
 }
 

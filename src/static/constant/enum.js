@@ -1,18 +1,8 @@
 // 模块
 export const MODUDLE = [
     {
-        value: "business",
-        name: "运营",
-        channel: false
-    },
-    {
         value: "setting",
         name: "设置",
-        channel: false
-    },
-    {
-        value: "service",
-        name: "服务",
         channel: false
     },
     {
@@ -21,21 +11,24 @@ export const MODUDLE = [
         channel: false
     },
     {
+        id: 1,
+        value: "tech",
+        name: "技术",
+        authority:"m:tech",
+        type: "channel"
+    },
+    {
+        id: 2,
         value: "article",
         name: "资讯",
         authority:"m:article",
         type: "channel"
     },
     {
+        id: 3,
         value: "source",
         name: "资源",
         authority:"m:source",
-        type: "channel"
-    },
-    {
-        value: "tech",
-        name: "技术",
-        authority:"m:tech",
         type: "channel"
     },
     {
@@ -47,27 +40,44 @@ export const MODUDLE = [
     {
         value: "channel",
         name: "频道",
-        type: "plate"
+        type: "plate",
+        icon: 'channel'
     },
     {
         value: "basic",
         name: "订单",
-        type: "plate"
+        type: "plate",
+        icon: "order"
     },  
     {
         value: "user",
         name: "用户",
-        type: "plate"
+        type: "plate",
+        icon: "user"
+    },
+    {
+        value: "service",
+        name: "服务",
+        type: "plate",
+        icon: "service"
+    },
+    {
+        value: "business",
+        name: "运营",
+        type: "plate",
+        icon: "operation"
     },
     {
         value: "space",
         name: "空间",
-        type: "plate"
+        type: "plate",
+        icon: "62gongzuokongjian"
     },
     {
         value: "space",
         name: "微博",
-        type: "plate"
+        type: "plate",
+        icon: "star"
     },
 ]
 
@@ -320,6 +330,30 @@ export const ORDER_TYPE = [
     }
 ]
 
+// 关键词类型
+export const NAV_TYPE = [
+    {
+        value: "main",
+        name: "主导航"
+    },
+    {
+        value: "top",
+        name: "顶部导航"
+    },
+    {
+        value: "bottom",
+        name: "底部导航"
+    },
+    {
+        value: "quick",
+        name: "快捷导航"
+    },
+    {
+        value: "home",
+        name: "家园导航"
+    }
+]
+
 
  const enums = {
     module: MODUDLE,
@@ -336,7 +370,8 @@ export const ORDER_TYPE = [
     adDisplay: AD_DISPLAY,
     articleOderBy: ARTICLE_ORDERBY,
     keywordTyoe: KEYWORD_TYPE,
-    orderType: ORDER_TYPE
+    orderType: ORDER_TYPE,
+    navType: NAV_TYPE
 }
 
 export default enums

@@ -64,12 +64,14 @@ class Recycle extends React.Component{
     };
 
     componentDidMount(){
+        const module = window.location.pathname.split("/")[2]
+
         this.props.select({
             api: "articleList",
             data: {
               page: 0,
               pagesize: 10,
-              coding: "K0000"
+              coding: React.$coding[module].art
             }            
         })
     }

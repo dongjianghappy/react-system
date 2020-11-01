@@ -15,7 +15,8 @@ import {
   ButtonGroup,
   Option,
   OptionSelect,
-  ModalGroup
+  ModalGroup,
+  Operatinavbar
 } from '../../common'
 import Article from './article'
 import dispatchToProps from '../../store/dispatch'
@@ -89,7 +90,7 @@ class Partner extends React.Component{
       this.props.select({
         data: {
           page: 0,
-          pagesize: 10,
+          pagesize: 25,
           coding: "P0005"
         }            
     })
@@ -148,9 +149,16 @@ class Partner extends React.Component{
                   ))
                 }
                 </table>
-                </Card>
-                <ButtonGroup {...this.props} button={['all', 'delete', 'open', 'close']} ></ButtonGroup>
+                
+                <Operatinavbar 
+                  node={ this.props.node }
+                  button={['all', 'delete', 'open', 'close']}
+                  data={this.props.module}
+                  coding="P0005"
+                  {...this.props}
+                />
                 <input id="coding" type="hidden" value="P0005" />
+                </Card>
             </div>
         )
     }

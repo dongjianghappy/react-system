@@ -16,11 +16,19 @@ const mod = ['channel', 'setting', 'basic',]
 
 const channel = ['article', 'source',];
 const setting = ['log', 'customize', 'mysql'];
-const basic = ['navigation', 'slideshow'];
+const basic = ['navigation', 'slideshow', 'single'];
 
 const commonReducers = (state, action) => {
+
+    let modules = window.location.pathname.split("/")[2]
+    let mdules3 = window.location.pathname.split("/")[3]
     
-    const modules = window.location.pathname.split("/")[2]
+    // 主要处理频道导航数据存储问题
+    if(basic.indexOf(mdules3) !== -1 || modules === "single"){
+        modules = "navigation"
+    }
+
+    
     
     
     if(modules !== state.module){
@@ -133,6 +141,8 @@ const commonReducers = (state, action) => {
             if(action.node){
                 newState[action.node] = data
             }else{
+                newState.total = action.data.total
+                newState.page = action.data.pages
                 newState.list = data
             }
 

@@ -12,7 +12,8 @@ import {
 import {
   ButtonGroup,
   Option,
-  ModalGroup
+  ModalGroup,
+  Operatinavbar
 } from '../../common'
 import { connect } from 'react-redux'
 import Article from './article'
@@ -136,7 +137,7 @@ class Advertisement extends React.Component{
       this.props.select({
         data: {
           page: 0,
-          pagesize: 10,
+          pagesize: 25,
           coding: "P0008"
         }            
     })
@@ -198,10 +199,16 @@ class Advertisement extends React.Component{
                     ))
                   }
                   </table>
-                </Card>
-                <ButtonGroup {...this.props} button={['all', 'delete', 'open', 'close']} ></ButtonGroup>
+                
+                <Operatinavbar 
+                  node={ this.props.node }
+                  button={['all', 'delete', 'open', 'close']}
+                  data={this.props.module}
+                  coding="P0008"
+                  {...this.props}
+                />
                 <input id="coding" type="hidden" value="P0008" />
-
+                </Card>
             </div>
         )
     }

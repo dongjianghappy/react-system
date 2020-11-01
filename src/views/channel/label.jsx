@@ -54,7 +54,14 @@ class Recycle extends React.Component{
     };
 
     componentDidMount(){
-        this.props.getListAction()
+        this.props.select({
+            api: 'getFlag',
+            data: {
+              coding: "O0002",
+              channel_id: 3,
+              type: 'art'
+            }          
+          })
     }
 
     render(){
@@ -66,7 +73,7 @@ class Recycle extends React.Component{
         const {columns} = this.state
         const { common } = this.props
         const { global } = common
-        const {list, total, pages} = this.props.list
+        const {list, total, pages} = this.props
 
         return(
 

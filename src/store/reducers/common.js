@@ -1,4 +1,4 @@
-import { INPUT_CHANGE, INSERT, DELETE, UPDATE, GET_DETAIL, DRAWER, DIALOG, ADD_ITEM, DELETE_ITEM, GET_DATA_ACTION, CHECK_CHANGE, OPEN_AND_CLOSE } from '../actionTypes'
+import { INPUT_CHANGE, INSERT, DELETE, UPDATE, GET_DETAIL, SEARCH_FIELD, DRAWER, DIALOG, ADD_ITEM, DELETE_ITEM, GET_DATA_ACTION, CHECK_CHANGE, OPEN_AND_CLOSE } from '../actionTypes'
 
 import { initListState } from './commonState'
 
@@ -7,6 +7,7 @@ import { initListState } from './commonState'
 const initState = {
     global: {
         data: {},
+        search: {},
         drawer: {
             title: "标题",
             status: false,
@@ -88,6 +89,12 @@ const reducers = (state = initState, action) => {
             return newState
             break
 
+
+        case SEARCH_FIELD :
+            newState = JSON.parse(JSON.stringify(state))
+            newState.global.search = Object.assign(newState.global.search || {})
+            return newState
+            break
 
         case INPUT_CHANGE :
             newState = JSON.parse(JSON.stringify(state))

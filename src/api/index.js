@@ -195,6 +195,10 @@ export default {
     appstore(params) {
         return http.request('vue', 'appstore', 'post', params)
     }, 
+    // 静态生成列表
+    static(params) {
+        return http.request('vue', 'staticList','post', params)
+    },     
     // 更新状态
     changeData(params) {
         return http.request('common', 'changeData','post', params)

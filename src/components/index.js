@@ -24,6 +24,9 @@ import SelectBox from './select'
 import R_checkbox from './button/checkbox'
 import Quick from './form/Quick'
 import Editor from './editor'
+import R_pagination from './pagination'
+import Search from './search'
+import TableList from './tableList'
 
 export  {
     Status,
@@ -47,6 +50,9 @@ export  {
     Drawers,
     R_checkbox,
     Quick,
-    Editor
+    Editor,
+    R_pagination,
+    Search,
+    TableList
 };
   

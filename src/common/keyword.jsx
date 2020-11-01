@@ -32,7 +32,7 @@ const Keyword = (props) => {
     }
 
     return (
-        <div className="p10" style={{background: "#f9f9f9"}}>
+        <div className="p10" style={{background: "#fff"}}>
             <div id="tagInputContainer" className="tagInputContainer" style={{background: "none", position: "relative"}}>
                 {
                     props.tag && props.tag.map((item, index) => (

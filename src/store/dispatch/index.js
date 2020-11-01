@@ -32,7 +32,8 @@ import {
   changeAction,
   fetchAction,
   mysql,
-  backup
+  backup,
+  searchFieldAction
 } from '../actions/operating'
 
 const dispatchToProps = (dispatch) => {
@@ -183,10 +184,9 @@ const dispatchToProps = (dispatch) => {
       }, 
 
       getLogin(params) {
-        const action = loginAction({
+        return loginAction({
           ...params
         })
-        dispatch(action)
       },      
 
       getUserInfo(params) {
@@ -204,10 +204,9 @@ const dispatchToProps = (dispatch) => {
       },
 
       insert(params) {
-        const action = insertAction({
+        return insertAction({
           ...params
         })
-        dispatch(action)
       },      
 
       getDelete(params) {
@@ -220,12 +219,11 @@ const dispatchToProps = (dispatch) => {
       },
 
       update(params) {
-        const action = updateAction({
+        return updateAction({
           ...params
         })
-        dispatch(action)
       },  
-      
+
       changeData(params) {
         return updateAction(params, 'changeData')
       }, 
@@ -275,6 +273,12 @@ const dispatchToProps = (dispatch) => {
         debugger
         const action = backup()
         debugger
+        dispatch(action)
+      },
+
+      searchField(params) {
+        debugger
+        const action = searchFieldAction(params)
         dispatch(action)
       },
 

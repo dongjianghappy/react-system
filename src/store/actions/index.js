@@ -196,6 +196,7 @@ export const loginAction = (params) =>{
       sessionStorage.setItem("userInfo", JSON.stringify(data.result.userInfo))
       sessionStorage.setItem("menuList", JSON.stringify(data.result.menuList))
       sessionStorage.setItem("gradeList", data.result.grade)
+      sessionStorage.setItem("channel", JSON.stringify(data.result.channel))
       dispatch(action)
     }
 }

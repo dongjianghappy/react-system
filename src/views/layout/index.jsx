@@ -13,26 +13,35 @@ const { Content } = Layout;
 
 const Index = (props) =>  {
 
-  const [ screen, setScreen ] = useState(false)
-  const [ routes, setRoutes ] = useState("basic")
+  let sidebar = sessionStorage.getItem("sidebar") || "basic"
+  // let module = window.location.pathname.split("/")[2]
+  // if(module === ""){
+  //   sidebar = "basic"
+  // }
 
-  const screens = (data) =>{
+  
+
+  const [ screen, setScreen ] = useState(false)
+  const [ routes, setRoutes ] = useState(sidebar)
+
+  const onScreens = (data) =>{
     setScreen(!screen)
   }
 
   const handleClick = (data) =>{
     const routes = data
     setRoutes(routes)
+    // sessionStorage.setItem("sidebar", routes)
   }
 
     return (
       <Layout>
           <Router>
-          <Toper screen={screens} handle={handleClick}/>
-          <Layout style={{marginTop: 65}}>
+          <Toper onScreens={onScreens} screen={screen} handle={handleClick}/>
+          <Layout>
             <Sidebar screen={screen} routes={routes} handle={handleClick} />
             <Layout style={{overflow:'hidden'}}>
-              <Position handle={handleClick} / >
+              <Position handle={handleClick} routes={routes} / >
               <Content
                 className="site-layout-background"
                 style={{

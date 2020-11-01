@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import { Card, Table, Space, Checkbox, Button, Popover, Row, Col, Pagination} from 'antd';
+import { Card, Table, Space, Checkbox, Button, Popover, Row, Col, Form, Input} from 'antd';
 import { connect } from 'react-redux'
 import {
     Status,
@@ -10,20 +10,23 @@ import {
     Dialog,
     Condition,
     Quick,
-    ModalCate
+    ModalCate,
+    Search
   } from '../../components/index.js'
   import {
     Navbar,
     ButtonGroup,
     Option,
     OptionSelect,
-    ModalGroup
+    ModalGroup,
+    Operatinavbar
   } from '../../common'
 import dispatchToProps from '../../store/dispatch'
 import coding from '../../static/constant/coding'
 import api from '../../api'
 import Item from 'antd/lib/list/Item';
 import Flags from './components/flags'
+import Statistics from './components/statistics'
 
 
 class List extends React.Component{
@@ -55,10 +58,14 @@ class List extends React.Component{
       ]
 
     componentDidMount(){
+        const module = window.location.pathname.split("/")[2]
+
         this.props.select({
           api: "articleList",
           data: {
-            coding: "K0000"
+            coding: React.$coding[module].art,
+            page: 1,
+            pagesize: 15,
           }            
       })
         this.props.getFlagAction()
@@ -75,7 +82,6 @@ class List extends React.Component{
         const { cate, art} = coding[path]
         const {list } = this.props.module
         debugger
-
         this.option[0].list = [
             {
                 value: "",
@@ -90,16 +96,60 @@ class List extends React.Component{
                 <ModalGroup {...this.props} article="" coding={art} />
 
                 <div style={{marginBottom: 15}}>
-                    <ul className="navbar">
+                  {/* <div className="mb15">
+                    <Button type="primary">列表</Button>
+                  </div> */}
+                    {/* <ul className="navbar">
                     <li>文档管理</li>
                     <li>正在审核</li>
                     <li>已退回</li>
                     <li><Button onClick={() => this.props.history.push('/admin/source/article/')}>新增文档</Button></li>
-                    <li className="search"><Condition /></li>
-                    </ul>
-                    <Option option={this.option} getConditionAction={this.props.getConditionAction} />
+                    <li className="search" style={{border: '0'}}>
+                      <Search
+                        api="articleList"
+                        select={this.props.select}
+                        // 存储查询条件
+                        searchField={this.props.searchField}
+                        search={this.props.common.global.search}
+                        // 自定义搜素框
+                        render={() => (
+                          <>
+                            <Form.Item name="title">
+                                <Input placeholder="关键词查找" className="input-250 input-sm mr10" />
+                            </Form.Item>
+                          </>
+                        )}
+                        coding={art}
+                      />
+                      </li>
+                    </ul> */}
+                    <Option 
+                      api="articleList"
+                      option={this.option} 
+                      select={this.props.select} 
+                      search={{
+                        show: true,
+                        params: this.props.common.global.search,
+                        searchField: this.props.searchField,
+                        render: () => (
+                          <>
+                            <Form.Item name="title">
+                                <Input placeholder="关键词查找" prefix={<i className="iconfont icon-search" />} className="input-250 input-sm mr10" />
+                            </Form.Item>
+                          </>
+                        )
+                      }}
+                      coding={art}
+                    />
                 </div>
-                <Card>
+                
+                
+                <Statistics />
+                
+
+                <Card
+                  title="文档列表"
+                >
                   <table width="100%" className="table-striped table-hover artlist col-left-23">
                     <tr className="th">
                       <td className="col-md-1">选择</td>
@@ -138,22 +188,30 @@ class List extends React.Component{
                           }>
                           <Button type="link" size="small">更多</Button>
                           </Popover>
-                          <a></a>
                       </Space>
                         </td>
                       </tr>
                       ))
                     }
                   </table>
-                </Card>
+                
 
                 <Row style={{marginTop: 15}}>
                     <Col span={12}>
-                    <ButtonGroup {...this.props} flags={Flags} button={['all', 'delete', 'open', 'close']} ></ButtonGroup>
                     </Col>   
                 </Row>
-                
+                <Operatinavbar 
+                  flags={Flags}
+                  node={ this.props.node }
+                  button={['all', 'delete', 'open', 'close']}
+                  data={this.props.module}
+                  api="articleList"
+                  search={this.props.common.global.search}
+                  coding={art}
+                  {...this.props}
+                />
                 <input id="coding" type="hidden" value={art} />
+                </Card>
                 </div>
         )
     }

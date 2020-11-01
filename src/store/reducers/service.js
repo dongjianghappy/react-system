@@ -6,6 +6,7 @@ import commonReducers from './commonReduce'
 const initState = {
     module: "service",
     list: [],
+    message: [],
     ...initListState
 }
 

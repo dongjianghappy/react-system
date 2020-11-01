@@ -10,11 +10,28 @@ export const isLogined = (token) => {
     if(localStorage.getItem('token')){
         return true
     }
+    alert("sd")
     return false
 }
 
 export const clearToken = () => {
     localStorage.removeItem('token')
+}
+
+export const channelInfo = () => {
+    return JSON.parse(sessionStorage.getItem('channel'))
+}
+
+
+export const getChannel = () => {
+
+    return [
+        {
+          name: "导航类型: ",
+          field: 'channel',
+          list: JSON.parse(sessionStorage.getItem('channel')) || []
+        }
+      ]
 }
 
 export const setRightMenu = (data) => {

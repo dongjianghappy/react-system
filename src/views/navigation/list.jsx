@@ -3,20 +3,52 @@ import {Space, Card, Table, Checkbox, Button, Input, Form } from 'antd'
 import { Link } from 'react-router-dom'
 import { Status, R_button, R_drawer, R_checkbox, Dialog, R_form, Quick} from '../../components/index.js'
 import {
-  ButtonGroup
+  ButtonGroup,
+  Option
 } from '../../common'
 import Article from './article'
-
+import { checkButtonAuth, getChannel } from '@/utils/auth'
 import { connect } from 'react-redux'
 import dispatchToProps from '../../store/dispatch'
 
 class Single extends React.Component{
-     
-    componentDidMount(){
+
+  state = {
+    option: [
+      {
+        name: "导航类型: ",
+        field: 'channel',
+        list: []
+      }
+    ]
+  }
+
+    async componentDidMount(){
+
+        const res = await this.props.fetch({
+            api: "static"          
+        })
+        
+    
+        this.setState(() => {
+          return this.state.option[0].list = res.result
+        })
+
+
+
+      let channel = '0'
+      if(module === 'tech'){
+        channel = '1'
+      }else if(module === 'article'){
+        channel = '2'
+      }else if(module === 'source'){
+        channel = '3'
+      }
+
       this.props.select({
         api: "singleNav",
         data: {
-          channel: this.props.match.params.channel_id
+          channel: channel
         },
         node: "single"            
       })
@@ -38,11 +70,13 @@ class Single extends React.Component{
 
             <div>
               
-              
+              <div style={{marginBottom: 15}}>
+                  <Option option={this.state.option} select={this.props.select} api="navigation" node="main" />
+                </div>
+
             <Card title="单页列表" extra={
                 <Space>
-                <Button onClick={() => this.props.history.push('/admin/navigation/single/article')}>新增单页</Button>
-                <Button onClick={() => this.props.history.push('/admin/navigation')} {...this.props}>返回</Button>
+                <Button onClick={() => this.props.history.push('/admin/single/detail')}>新增单页</Button>
                 </Space>
               }>
 
@@ -101,7 +135,7 @@ class Single extends React.Component{
                         <td><Status type="switch" coding="P0002" field="status" updateStatus={this.props.updateStatus} /></td>
                         <td>
                           <Space>
-                          <Link to={{pathname:'/admin/navigation/single/article', state:{id: item.id}}}>编辑</Link>
+                          <Link to={{pathname:'/admin/single/detail', state:{id: item.id}}}>编辑</Link>
                             <R_button.del click={this.handleClick} id={item.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" />
                           </Space>
                         </td>
@@ -109,6 +143,7 @@ class Single extends React.Component{
                   ))
                 }
               </table>
+              <ButtonGroup node={ this.props.node } {...this.props} button={['all', 'delete', 'open', 'close']}></ButtonGroup>
                 </Card>
             </div>
         )

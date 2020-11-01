@@ -10,6 +10,7 @@ import '@/static/css/iconfont/iconfont.css';
 import App from '@/App';
 import * as serviceWorker from '@/serviceWorker';
 import enums from '@/static/constant/enum'
+import coding from '@/static/constant/coding'
 import isLogin from '@/utils/validations/loginAuth'
 
 
@@ -18,6 +19,7 @@ import isLogin from '@/utils/validations/loginAuth'
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 
 React.$enums = enums
+React.$coding = coding
 
 ReactDOM.render(
   <Provider store={store}>

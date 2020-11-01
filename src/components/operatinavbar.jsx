@@ -6,10 +6,15 @@ import dispatchToProps from '../store/dispatch'
 
 const Operatinavbar = (props) => {
     return (
-        <Row style={{marginTop: 15}}>
-        <Col span={12}><ButtonGroup /></Col>  
-        <Col span={12} style={{textAlign: 'end'}}><Pagination defaultPageSize={10} total={props.total} onChange={props.getListAction} /></Col>  
-      </Row>
+      <div>sd</div>
+    //   <Row style={{marginTop: 25}}>
+    //   <Col span={8}>
+    //     <ButtonGroup node={ props.node } {...props} button={props.button}></ButtonGroup>
+    //   </Col>
+    //   <Col span={16} style={{textAlign: "right"}}>
+    //     <R_pagination data={props.module} select={props.select} />
+    //   </Col>
+    // </Row>
     )
 }
 
