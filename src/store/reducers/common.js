@@ -69,7 +69,6 @@ const reducers = (state = initState, action) => {
             break    
             
         case DRAWER :
-            debugger
             newState = JSON.parse(JSON.stringify(state))
             // newState.global = state.global // 组件是一个函数或类不能JSON格式化，如果格式化后该属性会为空
             newState.global[action.value.data.node].title = action.value.data.title

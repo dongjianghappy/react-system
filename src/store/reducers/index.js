@@ -25,6 +25,7 @@ import appstore from './appstore'
 import user from './user'
 import tag from './tag'
 import order from './order'
+import statistics from './statistics'
 
 const rootReducer = combineReducers({
     basic,
@@ -51,7 +52,8 @@ const rootReducer = combineReducers({
     appstore,
     user,
     tag,
-    order
+    order,
+    statistics
 })
 
 export default rootReducer;

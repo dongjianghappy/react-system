@@ -1,19 +1,7 @@
 import React from 'react';
-import { Layout, Menu, Row, Col, Breadcrumb, Card } from 'antd';
+import { Layout, Menu, Row, Col, Breadcrumb, Card, Tooltip } from 'antd';
 import { withRouter, Link } from 'react-router-dom'
-import Channel from '../../../../components/channel'
-import { Status, Dialog, Operatinavbar } from '../../../../components'
-
-
-
-import {
-    MoreOutlined,
-    SettingOutlined,
-    SmileOutlined,
-    SyncOutlined,
-    LoadingOutlined,
-  } from '@ant-design/icons';
-import ChannelList from '../../../channel/components/channelList';
+import Channel from './components/channel'
 
 const { SubMenu } = Menu;
 const { Content, Sider } = Layout;
@@ -21,12 +9,10 @@ const { Content, Sider } = Layout;
 
 
 class Position extends React.Component{
-
     // 模块页面跳转后需要刷新，主要时显示左侧菜单栏
     route = (path, q='') => {
         this.props.history.push(path)
         this.props.handle(q)
-        //window.location.reload()
     }
 
     render(){
@@ -41,26 +27,19 @@ class Position extends React.Component{
                     </Breadcrumb>
                     </Col>
                     <Col span={12}>
-                    <Row justify="end">
-                        {/* <Col span={2} onClick={() => this.route('/admin/tag')}>
-                            标签
-                        </Col> */}
-                        {/* <Col span={2} onClick={() => this.route('/admin/order')}>
-                            订单
-                        </Col> */}
-                        {/* <Col span={2} onClick={() => this.route('/admin/user', 'user')}>
-                            用户
-                        </Col> */}
-                        {/* <Col span={2} onClick={() => this.route('/admin/member')}>微博</Col>
-                        <Col span={2} onClick={() => this.route('/admin/space')}>空间</Col>
-                        <Col span={2} onClick={() => this.route('/admin/service', 'service')}>服务</Col> */}
-                        <Col span={2} onClick={() => this.route('/admin/appstore', 'setting')}>设置</Col>
-                        {/* <Col span={2} onClick={() => this.route('/admin/link', 'business')}>运营</Col> */}
+                    <Row justify="end" className="align_center">
+                        <Col span={2} onClick={() => this.route('/admin/appstore', 'setting')} className="pointer">
+                            <Tooltip placement="bottom" title="设置">
+                            <i className="iconfont icon-shezhi font18" />
+                            </Tooltip>
+                        </Col>
+                        <Col span={2} >
+                            <Channel click={this.route} />
+                        </Col>
                     </Row>
                     </Col>
                 </Row>
             </div>
-            
         )
     }
 }

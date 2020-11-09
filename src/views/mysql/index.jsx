@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Table, Space, Row, Col} from 'antd';
+import { Card, Table, Space, Row, Col, Button} from 'antd';
 import { connect } from 'react-redux'
 import {
   Status,
@@ -20,55 +20,6 @@ import dispatchToProps from '../../store/dispatch'
 
 class Mysql extends React.Component{
 
-
-
-    state ={
-        columns: [
-            {
-              title: '选择',
-              dataIndex: 'name1'
-            },
-            {
-              title: '数据库表',
-              dataIndex: 'dbname',
-            },
-            {
-              title: '类型',
-              dataIndex: 'dbtype',
-            },
-            {
-                title: '记录',
-                dataIndex: 'dbrow'
-              },
-            {
-                title: '整理',
-                dataIndex: 'dbcharset',
-            render: text => (
-            <a>{text}</a>
-            ),
-              },   
-              
-            {
-                title: '大小',
-                dataIndex: 'price',
-                render: text => <a>{text}</a>,
-              },
-            {
-                title: '多余',
-                dataIndex: 'datetime',
-                render: text => <a>{text}</a>,
-              },                
-              {
-                title: '创建时间',
-                dataIndex: 'dbtime'
-              },
-              {
-                title: '操作',
-                dataIndex: 'operating',
-              },
-        ]
-    }
-
     componentDidMount(){
       this.props.select({
         api: 'mysql',
@@ -81,23 +32,47 @@ class Mysql extends React.Component{
       }    
     
     render(){
-      const {columns} = this.state
       const { list } = this.props.module
         return (
             <Card>
                 <div style={{marginBottom: 15}}>
-                  <ul className="navbar">
-                    <li>数据库列表</li>
-                    <li>备份管理</li>
-                  </ul>
+                  <Space>
+                    <Button type="primary">数据库列表</Button>
+                    <Button type="primary">备份管理</Button>
+                  </Space>
                 </div>
 
-                <Table
-                    rowKey="id"
-                    columns={columns}
-                    dataSource={list}
-                    pagination={ false }
-                />
+                <table width="100%" class="table-striped table-hover artlist col-left-2">
+            <tr class="th">
+                <td class="col-md-1 align-center">选择</td>
+                <td class="col-md-2">数据库表</td>
+                <td class="col-md-1">类型</td>
+                <td class="col-md-1">记录</td>
+                <td class="col-md-1">整理</td>
+                <td class="col-md-1">大小</td>
+                <td class="col-md-1">多余</td>
+                <td class="col-md-2">创建时间</td>
+                <td class="col-md-1 align-center">操作</td>
+            </tr>
+            {
+              list && list.map((item, index) => (
+                <tr>
+                  <td><R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={item.id}></R_checkbox></td>
+                  <td>{item.dbname} {item.remark}</td>
+                  <td>{item.dbtype}</td>
+                  <td>{item.dbrow}</td>
+                  <td>{item.dbcharset}</td>
+                  <td>{item.dbsize}</td>
+                  <td> - </td>
+                  <td>{item.dbtime}</td>
+                  <td>
+                    备份 | 还原
+                  </td>
+                  
+                </tr>
+                ))
+              }
+        </table>
                 <ButtonGroup {...this.props}></ButtonGroup>
                 <input id="coding" type="hidden" value="P0003" />
             </Card>

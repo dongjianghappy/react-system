@@ -101,7 +101,6 @@ export const removeAndRestore = async (params) =>{
 // 开启或关闭
 export const openAndClose = (params) =>{
     return async (dispatch) => {
-        debugger
         const { coding } = params
         const result = await api.openAndClose({
             coding,

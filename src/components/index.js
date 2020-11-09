@@ -10,10 +10,12 @@ import ButtonGroup from './button/buttonGroup'
 import ButtonGroupArticle from './button/buttonGroupArticle'
 // 弹窗组
 // import R_drawer from './drawer/Drawer'
+import R_modal from './modal/inde'
 import R_drawer from './drawer'
 import R_form from './form/form'
 import Dialog from './modal'
 import ModalForm from './/modal/modalForm'
+import ModalForms from './/modal/modalForms'
 import ModalCate from './modal/modalCate'
 import ModalSpace from './modal/modalSpace'
 import Drawers from './modal/Drawer'
@@ -27,6 +29,7 @@ import Editor from './editor'
 import R_pagination from './pagination'
 import Search from './search'
 import TableList from './tableList'
+import Sorter from './sorter'
 
 export  {
     Status,
@@ -34,6 +37,7 @@ export  {
     Add,
     Edit,
     Delete,
+    R_modal,
     R_drawer,
     R_button,
     ButtonGroup,
@@ -41,6 +45,7 @@ export  {
     R_form,
     Dialog,
     ModalForm,
+    ModalForms,
     ModalCate,
     ModalSpace,
     Operatinavbar,
@@ -53,6 +58,7 @@ export  {
     Editor,
     R_pagination,
     Search,
-    TableList
+    TableList,
+    Sorter
 };
   

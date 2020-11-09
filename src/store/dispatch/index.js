@@ -262,7 +262,6 @@ const dispatchToProps = (dispatch) => {
       
       getMysql(params) {
         const el = document.getElementById("coding")
-        debugger
         const action = mysql({
           coding: el.value
         })
@@ -270,14 +269,11 @@ const dispatchToProps = (dispatch) => {
       },
 
       getBackup() {
-        debugger
         const action = backup()
-        debugger
         dispatch(action)
       },
 
       searchField(params) {
-        debugger
         const action = searchFieldAction(params)
         dispatch(action)
       },

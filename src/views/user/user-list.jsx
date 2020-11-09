@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Table, Space, Popconfirm, Button, Checkbox, Input, DatePicker} from 'antd';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Status, Dialog, Operatinavbar, Condition } from '../../components/index.js'
+import { Status, Dialog, Operatinavbar, Condition, R_checkbox } from '../../components/index.js'
 import dispatchToProps from '../../store/dispatch'
 import SetUser from './components/drawer/setUser'
  
@@ -77,19 +77,9 @@ class UserList extends React.Component{
         return(
 
           <Card title="用户列表" extra={
-            <div>
             <Space>
-            <Search
-      placeholder="input search text"
-      onSearch={value => console.log(value)}
-      style={{ width: 200 }}
-    />
-    注册时间 <RangePicker />
-    <Button type="primary">搜索</Button>
-    <Button type="default">重置</Button>
-  
-          </Space>
-          </div>
+            <Button type="primary">新增用户</Button>
+            </Space>
       }>
 
             <table width="100%" className="table-striped table-hover col-left-23">
@@ -106,7 +96,7 @@ class UserList extends React.Component{
               {
               user && user.map((item, index) => (
                 <tr>
-                  <td></td>
+                  <td><R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={item.id}></R_checkbox></td>
                   <td>
                     <span className="relative">
                       <img src={item.photos} style={{borderRadius: '50%', width: '30px', height: '30px'}} />

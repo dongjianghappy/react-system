@@ -22,8 +22,8 @@ export const nodeInit = (value) =>({
     value: value
 })
 // 新增数据
-export const insertAction = async (params, inter = "") =>{
-    const result = await api[inter || 'insert'](params)
+export const insertAction = async (params) =>{
+    const result = await api[params.api || 'insert'](params.data)
     return result
 }
 // 删除数据
@@ -32,8 +32,8 @@ export const deleteAction = async (params, inter = "") =>{
     return result
 }
 // 更改数据
-export const updateAction = async (params, inter = "") =>{
-    const result = await api[inter || 'update'](params)
+export const updateAction = async (params) =>{
+    const result = await api[params.api || 'update'](params.data)
     return result
 }
 
@@ -51,7 +51,6 @@ export const selectAction2 = async (params) =>{
 
 // 查询数据
 export const selectAction = (params) =>{
-    debugger
     return async (dispatch) => {
       const data = await api[params.api || 'select'](params.data)
       if(data.result){
@@ -102,7 +101,6 @@ export const getFlagAction = (value) =>({
 export const flagAction = (params) =>{
     return async (dispatch) => {
         const { coding, id } = params
-        debugger
         const result = await api.getFlag(params)
 
         if(result.result){
@@ -134,7 +132,6 @@ export const mysql = (params) =>{
 }
 
 export const backup = async (params) =>{
-    debugger
        const result = await api.backup()
        return result
 }

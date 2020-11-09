@@ -7,6 +7,12 @@ const initState = {
     module: "service",
     list: [],
     message: [],
+    messageBoard: [],
+    feedback: [],
+    job: [],
+    resume: [],
+    announcement: [],
+    security: [],
     ...initListState
 }
 

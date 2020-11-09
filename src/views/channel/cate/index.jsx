@@ -25,58 +25,7 @@ import Detail from './components/detail';
 
 class Channel extends React.Component{
 
-    state ={
-        columns: [
-            {
-              title: '选择',
-              dataIndex: 'name',
-              render: (text, record) => (
-                <R_checkbox onChange={this.props.checkBox} list={this.props.state.channel.checkedList} data={record.id}></R_checkbox>
-              ),
-            },
-            {
-              title: '顺序',
-              dataIndex: 'sort',
-            },
-            {
-              title: '分类名称',
-              dataIndex: 'name',
-            },{
-                title: '属性',
-                dataIndex: 'flag',
-                render: text => <a>{text}</a>,
-              },
-              {
-                title: '状态',
-                dataIndex: 'status',
-                render:(text, record) => (
-                  <Status coding="K0002" field="status" {...record} updateStatus={this.props.updateStatus} />
-                )
-              },
-              {
-                title: '操作',
-                dataIndex: 'operating',
-                render: (text, record) => (
-                    // <Space size="middle">
-                    //   <Button type="default" size="small"><PlusOutlined />添加</Button>
-                    //   <Button type="primary" size="small" onClick={()=>this.props.history.push(`/admin/source/list/${record.id}`)}>
-                    //     <UnorderedListOutlined />
-                    //     列表
-                    //   </Button>
-
-                    //   <CateForm type="edit" butName="编辑" title="编辑分类" />
-                    //   <Delete delete={this.handleClick} id={record.id} title="删除友链" popup="getDialog" fn="getDelete" />
-                    // </Space>
-                    <Space>
-                      <R_button.edit edit={this.handleClick} id={record.id} action="edit" title="编辑友链" popup="getDrawer" />
-                      <R_button.del delete={this.handleClick} id={record.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" />
-                    </Space>
-                  ),
-              },
-        ]
-    }
-
-    componentDidMount(){
+    getData = () => {
       const module = window.location.pathname.split("/")[2]
       this.props.select({
         api: "cateList",
@@ -84,7 +33,11 @@ class Channel extends React.Component{
           coding: React.$coding[module].cate
         },
         node: "cateList"            
-    })
+      })
+    }
+
+    componentDidMount(){
+      this.getData()
     }
 
     handleClick = (data) => {
@@ -95,8 +48,6 @@ class Channel extends React.Component{
         const path = this.props.location.pathname.split("/")[2]
         const { cate, article} = coding[path]
 
-        const {columns} = this.state
-        debugger
         const { cateList } = this.props.module
         return(
           <>
@@ -105,7 +56,7 @@ class Channel extends React.Component{
               title="分类管理"
               extra={
                 <Space>
-                  <R_drawer.drawerForm title="新增导航" coding={cate} {...this.props} >
+                  <R_drawer.drawerForm title="新增导航" coding={cate} renderList={this.getData} {...this.props} >
                     <Detail />
                   </R_drawer.drawerForm>
                 {/* <CateForm size="defualt" butName="新增分类" title="新增分类" /> */}
@@ -113,10 +64,6 @@ class Channel extends React.Component{
                 </Space>
               }
           >
-                <Card>
-
-                  
-
 
                 <table width="100%" className="table-striped table-condensed table-hover category  col-left-3">
         <tr class="th">
@@ -141,7 +88,7 @@ class Channel extends React.Component{
           <td><Status coding={cate}  field="status" {...item} updateStatus={this.props.updateStatus} /></td>
           <td>
             <Space>
-              <R_drawer.drawerForm title="编辑分类" id={item.id} coding={cate} {...this.props} >
+              <R_drawer.drawerForm title="编辑分类" id={item.id} renderList={this.getData} coding={cate} {...this.props} >
                 <Detail />
               </R_drawer.drawerForm>
               <R_button.del delete={this.handleClick} id={item.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" />
@@ -165,7 +112,7 @@ class Channel extends React.Component{
                     <td class="col-md-1"><Status coding={cate}  field="status" {...sss} updateStatus={this.props.updateStatus} /></td>
                     <td class="col-md-2">
                       <Space>
-                        <R_drawer.drawerForm title="编辑分类" id={sss.id} coding={cate} {...this.props} >
+                        <R_drawer.drawerForm title="编辑分类" id={sss.id} renderList={this.getData} coding={cate} {...this.props} >
                           <Detail />
                         </R_drawer.drawerForm>
                         <R_button.del delete={this.handleClick} id={sss.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" />
@@ -189,7 +136,7 @@ class Channel extends React.Component{
                                 <td className="col-md-1"><Status coding={cate} field="status" {...ddd} updateStatus={this.props.updateStatus} /></td>
                                 <td className="col-md-2">
                                   <Space>
-                                    <R_drawer.drawerForm title="编辑分类" id={ddd.id} coding={cate} {...this.props} >
+                                    <R_drawer.drawerForm title="编辑分类" id={ddd.id} renderList={this.getData} coding={cate} {...this.props} >
                                       <Detail />
                                     </R_drawer.drawerForm>
                                     <R_button.del delete={this.handleClick} id={ddd.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" />
@@ -212,11 +159,6 @@ class Channel extends React.Component{
     </table>
 
 
-
-
-
-
-                </Card>
                 <ButtonGroup {...this.props} button={['all', 'delete', 'open', 'close']} ></ButtonGroup>
                 <input id="coding" type="hidden" value={cate} />
             </Card>

@@ -6,11 +6,16 @@ import notfound from '../views/notfound'
 // 频道组件
 import ModuleDefault from '../views/channel'
 import Channel from '../views/channel/cate'
-import List from '../views/channel/list'
+import List from '../views/channel/article/list'
 import Recycle from '../views/channel/recycle'
-import Article from '../views/channel/list-article'
+import Article from '../views/channel/article/list-article'
 import SettingChannel from '../views/channel/settingchannel'
 import Label from '../views/channel/label'
+import Collect from '../views/channel/collect'
+import Comment from '../views/channel/comment'
+import Praise from '../views/channel/praise'
+import Download from '../views/channel/download'
+
 // 基本组件
 import Default from '../views/layout/components/default'
 import Basic from '../views/basic'
@@ -31,16 +36,16 @@ import Partner from '../views/partner'
 // 用户组件
 import User from '../views/user'
 import UserList from '../views/user/user-list'
-import UserGrade from '../views/user/user-grade'
+import UserGrade from '../views/user/grade'
 import UserRole from '../views/user/user-role'
 import RoleGrade from '../views/user/user-roleGrade'
-import UserGroup from '../views/user/user-group'
-import UserSign from '../views/user/user-sign'
-import UserAudit from '../views/user/user-audit'
-import UserBanuser from '../views/user/user-banuser'
-import UserRecommend from '../views/user/user-recommend'
-import UserSecurity from '../views/user/user-security'
-import UserTheme from '../views/user/user-theme'
+import UserGroup from '../views/user/group'
+import UserSign from '../views/user/sign'
+import UserAudit from '../views/user/audit'
+import UserBanuser from '../views/user/banuser'
+import UserRecommend from '../views/user/recommend'
+import UserSecurity from '../views/user/security/inedx'
+import UserTheme from '../views/user/theme'
 
 
 
@@ -65,6 +70,8 @@ import CollectionList from '../views/collection/list'
 import Tag from '../views/tag'
 import TagList from '../views/tag/list'
 import Order from '../views/order'
+import OrderDoing from '../views/order/order-doing'
+import OrderCompleted from '../views/order/order-completed'
 import Card from '../views/order/card'
 
 // 服务组件
@@ -112,13 +119,13 @@ const asyncRoutes = [
     //     isShow: false,
     //     component: SlideshowList 
     // },     
-    // {
-    //     name: "修改文档",
-    //     path: "/admin/source/article/:id?",
-    //     component: Article, 
-    //     isShow: false,
-    //     exact: true 
-    // },
+    {
+        name: "修改文档",
+        path: "/admin/article/detail",
+        component: Article, 
+        isShow: false,
+        exact: true 
+    },
     //  // 导航开始
     //  {
     //     name: "导航管理",
@@ -177,6 +184,10 @@ const arrss = {
     SingleArticle,
     Recycle,
     Label,
+    Collect,
+    Comment,
+    Praise,
+    Download,
     Basic,
     Slideshow,
     SlideshowList,
@@ -205,6 +216,8 @@ const arrss = {
     Tag,
     TagList,
     Order,
+    OrderDoing,
+    OrderCompleted,
     Card,
     Service,
     MessageBoard,

@@ -11,6 +11,10 @@ const initState = {
     module: "channel",
     cateList: [],
     flags: [],
+    comment: [],
+    praise: [],
+    collect: [],
+    download: [],
     ...initListState
 }
 

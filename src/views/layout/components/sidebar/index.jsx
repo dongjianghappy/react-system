@@ -1,26 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu } from 'antd';
 import { withRouter } from 'react-router-dom'
 import Channel from '../../../../components/channel'
 import ChannelList from '../../../channel/components/channelList';
 
-import {
-    DesktopOutlined,
-    PieChartOutlined,
-    FileOutlined,
-    TeamOutlined,
-    UserOutlined,
-  } from '@ant-design/icons';
-
-// import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
 import { adminRouter } from '@/router'
 
 import { connect } from 'react-redux'
 import dispatchToProps from '@/store/dispatch'
 
-// const { SubMenu } = Menu;
-// const { Sider } = Layout;
+
 const _routers = adminRouter.filter(route => route.isShow)
 const path = window.location.pathname.split("/")[2]
 
@@ -80,7 +70,7 @@ class Sidebar extends React.Component {
      
       }else{
         if(item.children){
-         return (<SubMenu key={i} icon={<i className={`iconfont icon-${item.icon}`}></i>} title={item.name}>
+         return (<SubMenu key={i} icon={<i className={`iconfont icon-${item.icon} mr10`}></i>} title={item.name}>
         {
             item.children.map((list, i) => (
             <Menu.Item key={ i+item.name }>

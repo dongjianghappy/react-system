@@ -1,72 +1,91 @@
 import React from 'react'
-import { Card, Table, Button } from 'antd'
-import { Link } from 'react-router-dom'
+import { Card, Table, Button, Space } from 'antd'
+import { connect } from 'react-redux'
+import dispatchToProps from '@/store/dispatch'
+import {
+  Status,
+  R_checkbox,
+  R_drawer,
+  R_button,
+  Dialog,
+  Condition,
+  Quick,
+  R_pagination
+} from '@/components/index.js'
+import Detail from './components/detail'
 
-export default class Manager extends React.Component{
 
-    state ={
-        columns: [
-            {
-              title: '选择',
-              dataIndex: 'name',
-            },
-            {
-              title: '编号',
-              dataIndex: 'id',
-            },
-            {
-              title: '	职位名称',
-              dataIndex: 'title',
-            },
-            {
-                title: '部门',
-                dataIndex: 'datetime',
-                render: text => <a>{text}</a>,
-              },
-            {
-                title: '人数',
-                dataIndex: 'type',
-                render: text => <a>{text}</a>,
-              },   
+class Job extends React.Component{
 
-             {
-                title: '发布时间',
-                dataIndex: 'datetime',
-                render: text => <a>{text}</a>,
-              },
-            {
-                title: '状态',
-                dataIndex: 'type',
-                render: text => <a>{text}</a>,
-              },                
-              
-            {
-                title: '操作',
-                dataIndex: 'price',
-                render: text => <a>{text}</a>,
-              }
-        ],
-        data: [],
-        total: 0,
-        pages: 0
-    }
+  getData = () => {
+    this.props.select({
+      data: {
+        page: 0,
+        pagesize: 25,
+        coding: "Q0012"
+      },
+      node: "job"            
+    })
+  }
+
+  componentDidMount(){
+    this.getData()
+  }
 
     render() {
 
-        const { columns } = this.state
+        const { job } = this.props.module
 
         return (
             <Card
             title="职位管理"
             extra={
-                <Link to="/admin/service/job/article">新增职位</Link>
+              <Space>
+              <R_drawer.drawerForm title="新增职位" name="新增职位" coding="Q0012" renderList={this.getData} {...this.props} >
+                <Detail />
+              </R_drawer.drawerForm>
+            </Space>
               }
             >
-                <Table
-                    columns={columns}
-                ></Table>
-
+                <table width="100%" class="table-striped artlist col-left-34">
+                  <tr class="th">
+                      <td class="col-md-1">选择</td>
+                      <td class="col-md-1">编号</td>
+                      <td class="col-md-3">职位名称</td>
+                      <td class="col-md-1">部门</td>
+                      <td class="col-md-1">人数</td>
+                      <td class="col-md-2">发布时间</td>
+                      <td class="col-md-1">状态</td>
+                      <td class="col-md-2">操作</td>
+                  </tr>
+                  {
+                          job && job.map((item, index) => (
+                              <tr className="tr-list">
+                                  <td><R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={item.id}></R_checkbox></td>
+                                  <td>{item.id}</td>
+                                  <td>{item.name}</td>
+                                  <td>{item.post}</td>
+                                  <td>{item.number}</td>
+                                  <td>{item.datetime}</td>
+                                  <td>{item.status}</td>
+                                  <td>
+                                    <R_drawer.drawerForm title="编辑职位" name="编辑" id={item.id} coding="Q0012" renderList={this.getData} {...this.props} >
+                                      <Detail />
+                                    </R_drawer.drawerForm>
+                                     | 删除</td>
+                              </tr>
+                          ))
+                      }
+                </table>
             </Card>
         )
     }
 }
+
+const stateToProops = (state) => {
+  return {
+    module: state.service
+  }
+}
+
+export default connect(stateToProops, dispatchToProps)(Job)

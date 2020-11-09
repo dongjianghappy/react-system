@@ -14,6 +14,7 @@ const initState = {
     recommend: [],
     security: [],
     theme: [],
+    level: [],
     ...initListState
 }
 

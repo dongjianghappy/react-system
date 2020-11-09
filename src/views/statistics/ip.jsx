@@ -1,79 +1,75 @@
 import React from 'react'
-import { Card, Table, Space, Row, Col} from 'antd';
+import { Card, Tabs } from 'antd'
 import { connect } from 'react-redux'
-import {
-  Status,
-  R_checkbox,
-  R_drawer,
-  R_button,
-  Dialog,
-  Condition
-} from '../../components/index.js'
-import {
-  Navbar,
-  ButtonGroup,
-  Option,
-  OptionSelect,
-  ModalGroup
-} from '../../common'
 import dispatchToProps from '../../store/dispatch'
+import Tu from './components/statistics'
+import IpTodapy from './components/ip-today'
+import IpDetail from './components/ip-detail'
+import IpLib from './components/ip-lib'
+
+const { TabPane } = Tabs;
 
 class Ip extends React.Component{
 
-    
-    state ={
-        columns: [
-            {
-              title: 'ID',
-              dataIndex: 'name',
-              render: (text, record) => (
-                <R_checkbox onChange={this.props.checkBox} list={this.props.state.link.checkedList} data={record.id}></R_checkbox>
-              ),
-            },
-            {
-              title: 'IP',
-              dataIndex: 'name',
-            },
-            {
-              title: '访问时间',
-              dataIndex: 'url',
-            }
-        ]
-    }
+    getData = (data) => {
+        this.props.select({
+          data: {
+            page: 0,
+            pagesize: 25,
+            coding: "P0003",
+            ...data
+          },
+          node: "ipList"            
+      })
+      }
+  
+      componentDidMount(){
+        this.getData({
+          method : 0,
+          apply_checked : 1
+        })
+      }
 
-    componentDidMount(){
-      this.props.getListAction()
-    }
+    render() {
+        const {ipList} = this.props.module
 
-    handleClick = (data) => {
-      this.props[data.dispatch](data)
-    }     
-    
-    render(){
-      const {columns} = this.state
-      const {list } = this.props
         return (
-            <div>
-                <Table
-                    rowKey="id"
-                    columns={columns}
-                    dataSource={list}
-                    pagination={ false }
-                />
-                <input id="coding" type="hidden" value="O0009" />
-            </div>
+            <>
+            <Tu />
+            <Card>
+            
+            <Tabs 
+                defaultActiveKey="1"  
+                // onChange={this.callback}
+                // tabBarExtraContent={
+                //   <Space>
+                //   <R_drawer.drawerForm title="新增导航" name="新增友情链接" coding="P0003" renderList={this.getData} {...this.props} >
+                //     <Article />
+                //   </R_drawer.drawerForm>
+                // </Space>
+                // }
+              >
+              <TabPane tab="今日IP" key="1">
+                <IpTodapy type="1" data={ipList} {...this.props} getData={() => this.getData(1)} />
+              </TabPane>
+              <TabPane tab="IP明细" key="2">
+                <IpDetail type="1" data={ipList} {...this.props} getData={() => this.getData(1)} />
+              </TabPane>
+              <TabPane tab="IP库" key="3">
+                <IpLib type="1" data={ipList} {...this.props} getData={() => this.getData(1)} />
+              </TabPane>
+            </Tabs>
+            </Card>
+            </>
         )
     }
 }
 
 const stateToProops = (state) => {
-  return {
-    module: "link",
-    state,
-    common: state.common,
-    global: state.common.global,
-    list: state.link.list
+    debugger
+    return {
+      module: state.statistics
+    }
   }
-}
-
-export default connect(stateToProops, dispatchToProps)(Ip)
+  
+  export default connect(stateToProops, dispatchToProps)(Ip)

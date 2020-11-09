@@ -12,7 +12,7 @@ import * as serviceWorker from '@/serviceWorker';
 import enums from '@/static/constant/enum'
 import coding from '@/static/constant/coding'
 import isLogin from '@/utils/validations/loginAuth'
-
+import '@/Global.less';
 
 
 // 引入样式

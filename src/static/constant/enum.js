@@ -6,45 +6,7 @@ export const MODUDLE = [
         channel: false
     },
     {
-        value: "user",
-        name: "用户",
-        channel: false
-    },
-    {
-        id: 1,
-        value: "tech",
-        name: "技术",
-        authority:"m:tech",
-        type: "channel"
-    },
-    {
-        id: 2,
-        value: "article",
-        name: "资讯",
-        authority:"m:article",
-        type: "channel"
-    },
-    {
-        id: 3,
-        value: "source",
-        name: "资源",
-        authority:"m:source",
-        type: "channel"
-    },
-    {
-        value: "picture",
-        name: "图片",
-        authority:"m:picture",
-        type: "channel"
-    },
-    {
-        value: "channel",
-        name: "频道",
-        type: "plate",
-        icon: 'channel'
-    },
-    {
-        value: "basic",
+        value: "order",
         name: "订单",
         type: "plate",
         icon: "order"
@@ -190,24 +152,24 @@ export const DATA_TYPE = [
 // 表单元素类型
 export const FORM_TYPE = [
     {
-        value: "0",
+        value: "input",
         name: "单行文本"
     },
     {
-        value: "1",
+        value: "textarea",
         name: "多行文本"
     },
     {
-        value: "0",
+        value: "radio",
         name: "单选框"
     },
     {
-        value: "1",
+        value: "checkbox",
         name: "复选框"
     }
 ,
     {
-        value: "1",
+        value: "select",
         name: "下拉框"
     }    
 ]

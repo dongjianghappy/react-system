@@ -36,9 +36,18 @@ export default {
     select(params) {
         return http.request('vue', 'select', 'post', params)
     },
+
+    // 新增
+    insertArticle(params) {
+        return http.request('article', 'insert', 'post', params)
+    }, 
+    // 更改
+    updateArticle(params) {
+        return http.request('article', 'update', 'post', params)
+    },     
+
     // 文章列表查询接口
     articleList(params) {
-        debugger
         return http.request('vue', 'articleList', 'post', params)
     }, 
     // 分类列表查询接口
@@ -214,6 +223,46 @@ export default {
     // 更改用户信息
     editUserInfo(params) {
         return http.request('user', 'editUserInfo','post', params)
+    },  
+    
+    // 评论
+    comment(params) {
+        return http.request('vue', 'comment','post', params)
+    },   
+    
+    // 收藏
+    collect(params) {
+        return http.request('vue', 'collect','post', params)
+    },   
+    
+    // 收藏
+    praise(params) {
+        return http.request('vue', 'praise','post', params)
+    },   
+    
+    // 下载
+    download(params) {
+        return http.request('vue', 'download','post', params)
+    },   
+    
+    // 在线留言
+    messageBoard(params) {
+        return http.request('vue', 'messageBoard','post', params)
+    },    
+       
+    // 在线留言
+    feedback(params) {
+        return http.request('vue', 'feedback','post', params)
+    },     
+    
+    // 访问统计
+    visitStatistics(params) {
+        return http.request('vue', 'visit_statistics','post', params)
+    },      
+
+    // 今日受访
+    interviewedTodayStatistics(params) {
+        return http.request('vue', 'related_statistics','post', params)
     },      
     
 

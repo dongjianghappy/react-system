@@ -50,7 +50,6 @@ const commonReducers = (state, action) => {
             newState = JSON.parse(JSON.stringify(state))
             
             newState.node = action.value.node
-            debugger
             return newState
             break        
 
@@ -64,7 +63,6 @@ const commonReducers = (state, action) => {
 
         case UPDATE_STATUS :
             newState = JSON.parse(JSON.stringify(state))
-            debugger
             newState.list.filter(item => {
                 if(item.id === action.data) {
                     if(action.field === "status"){
@@ -82,7 +80,6 @@ const commonReducers = (state, action) => {
             // 全选
             case CHECK_CHANGE :
                 newState = JSON.parse(JSON.stringify(state))
-                debugger
                 if(action.data.type === "single"){
                     if(action.data.checked){
                         newState.checkedList.push(action.data.value)
@@ -130,7 +127,6 @@ const commonReducers = (state, action) => {
 
         case GET_DATA_ACTION :
             newState = JSON.parse(JSON.stringify(state))
-            debugger
             let data = []
             if(action.data.list === undefined){
                 data = action.data || []
@@ -162,7 +158,6 @@ const commonReducers = (state, action) => {
             break
 
         case GET_BAISC_INFO :
-            debugger
             newState = JSON.parse(JSON.stringify(state))
             newState.list = action.value
             return newState

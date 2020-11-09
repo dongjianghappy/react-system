@@ -15,7 +15,8 @@ import {
   R_drawer,
   R_button,
   ModalForm,
-  Condition
+  Condition,
+  R_modal
 } from '../../components/index.js'
 import {
   Node,
@@ -27,7 +28,7 @@ import {
 } from '../../common'
 class Basic extends React.Component{
 
-    componentDidMount(){
+    getData = () => {
       this.props.select({
         api: "basicInfo",
         data: {
@@ -36,6 +37,10 @@ class Basic extends React.Component{
           coding: "P0000"
         }          
       })
+    }
+
+    componentDidMount(){
+      this.getData()
     }
   
     handle = () => {
@@ -54,16 +59,18 @@ class Basic extends React.Component{
         return(
            <>
            <Card>
+
+
+             
            <Node node={ this.props.node } fn={ this.props.nodeMethod} />
-            <div style={{marginBottom: 15}}>
-              <ul className="navbar">
-                <li>网站信息</li>
-                <li>
-                  <ModalForm action="add" type="text" {...this.props} coding="P0000" butName="自定义字段">
-                    <Article />  
-                  </ModalForm>  
-                </li>
-              </ul>
+
+           <div style={{marginBottom: 15}}>
+            <Space>
+              <Button type="primary">网站信息</Button>
+              <R_modal.modalForm title="自定义字段" name="自定义字段" coding="P0000" renderList={this.getData} {...this.props} >
+                  <Article />
+              </R_modal.modalForm>
+            </Space>
             </div>
 
             <DividerForm title="基本信息" dataSource={baisc} {...this.props} coding="P0000" handle={this.handle} ></DividerForm>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Table, Space} from 'antd';
+import { Card, Table, Space, Button} from 'antd';
 import { connect } from 'react-redux'
 import {
   Status,
@@ -22,22 +22,8 @@ import Buttons from './button'
 import dispatchToProps from '../../store/dispatch'
 
 class menuRouter extends React.Component{
-  
-  option = [
-    {
-      name: "模块",
-      field: 'module',
-      list: [
-        {
-          val: "",
-          name: "全部"
-        },
-        ...React.$enums.module
-      ]
-    },
-  ]
 
-    componentDidMount(){
+    getData = () => {
       this.props.select({
         api: "routerSelect",
         data: {
@@ -48,6 +34,11 @@ class menuRouter extends React.Component{
         }            
     })
     }
+
+    componentDidMount(){
+      this.getData()
+    }
+
 
 
     handleClick = (data) => {
@@ -121,8 +112,12 @@ class menuRouter extends React.Component{
                           <td className="col-md-4">
                           <Space>
                             <R_button.button click={this.handleClick} id={ss.id} title="按钮权限" dispatch="popup" component={Buttons} node="drawer" type="show" />
-                            <R_button.button click={this.handleClick} id={ss.id} action="add" title="新增页面" dispatch="popup" component={Article} node="drawer" type="form" />
-                            <R_button.edit click={this.handleClick} id={ss.id} action="edit" title="页面编辑" dispatch="popup" component={Article} node="drawer" type="form" />
+                            <R_drawer.drawerForm title="新增页面" name="新增页面" data={{fid: ss.id}} action="add" coding="P0015" renderList={this.getData} {...this.props} >
+                              <Article />
+                            </R_drawer.drawerForm>
+                            <R_drawer.drawerForm title="页面编辑" name="编辑" id={ss.id} coding="P0015" renderList={this.getData} {...this.props} >
+                              <Article />
+                            </R_drawer.drawerForm>
                             <R_button.del click={this.handleClick} id={ss.id} title="删除伙伴" dispatch="popup" node="dialog" fn="getDelete" />
                           </Space>
                           </td>
@@ -151,16 +146,19 @@ class menuRouter extends React.Component{
         return (
             <div>
                 <ModalGroup {...this.props} coding="P0015" />
-                
-                <div style={{marginBottom: 15}}>
-                  <ul className="navbar">
-                    <li>路由菜单</li>
-                    <li><R_button.link click={this.handleClick} action="add" name="新增路由" title="新增路由" dispatch="popup" component={Article} node="drawer" type="form" /></li>
-                    <li className="search"><Condition /></li>
-                  </ul>
-                  {/* <Option option={this.option} getConditionAction={this.props.getConditionAction} /> */}
-                </div>
+
 <Card>
+
+<div style={{marginBottom: 15}}>
+<Space>
+  <Button type="primary">路由菜单</Button>
+  <R_drawer.drawerForm title="新增路由" name="新增路由" coding="P0015" renderList={this.getData} {...this.props} >
+    <Article />
+  </R_drawer.drawerForm>
+  {/* <R_button.button  click={this.handleClick} action="add" name="新增路由" title="新增路由" dispatch="popup" component={Article} node="drawer" type="form" /> */}
+</Space>
+</div>
+
 <div id="content">
     <table width="100%" className="table-striped col-left-12">
       <tr className="th">
@@ -206,8 +204,12 @@ class menuRouter extends React.Component{
           <td>
           <Space>
               <R_button.button click={this.handleClick} id={item.id} title="按钮权限" dispatch="popup" component={Buttons} node="drawer" type="show" />
-              <R_button.button click={this.handleClick} id={item.id} action="add" title="新增页面" dispatch="popup" component={Article} node="drawer" type="form" />
-              <R_button.edit click={this.handleClick} id={item.id} action="edit" title="页面编辑" dispatch="popup" component={Article} node="drawer" type="form" />
+              <R_drawer.drawerForm title="新增页面" name="新增页面" coding="P0015" data={{fid: item.id}} action="add" renderList={this.getData} {...this.props} >
+                <Article />
+              </R_drawer.drawerForm>
+              <R_drawer.drawerForm title="页面编辑" name="编辑" id={item.id} coding="P0015" renderList={this.getData} {...this.props} >
+                <Article />
+              </R_drawer.drawerForm>
               <R_button.del click={this.handleClick} id={item.id} title="删除伙伴" dispatch="popup" node="dialog" fn="getDelete" />
             </Space>
           </td>

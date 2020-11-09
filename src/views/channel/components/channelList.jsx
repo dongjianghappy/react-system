@@ -41,26 +41,11 @@ class ChannelList extends React.Component {
   };
 
   handel = (path) => {
-    this.formRef.current.classList.remove("show")
-    this.formRef.current.classList.add("hide")
     this.setState({
       visible: false,
     });
     this.props.click("/admin/"+path, path)
   }
-
-  mouseOver = () => {
-    this.formRef.current.classList.remove("hide")
-    this.formRef.current.classList.add("show")
-    
-  }
-
-  mouseLeave = () => {
-    this.formRef.current.classList.remove("show")
-    this.formRef.current.classList.add("hide")
-    
-  }
-  
 
   render() {
 
@@ -70,7 +55,7 @@ class ChannelList extends React.Component {
     const { title, type, width } = this.props
     return (
       <>
-        <span onClick={this.showDrawer}><i className="iconfont icon-navicon font24"></i></span>
+        <span onClick={this.showDrawer}><i className="iconfont icon-navicon font24 pointer" /></span>
 
         <Drawer
           placement="left"
@@ -87,24 +72,6 @@ class ChannelList extends React.Component {
           <ul className="navigation">
         {
             routers.map((list, i) => (
-                list.value === 'channel' ?
-                <li key={i} className="channel" onMouseEnter={() => this.mouseOver()} onMouseLeave={() => this.mouseLeave()} >
-                  <i className={`iconfont icon-${list.icon} mr10`}></i>
-                { list.name }
-                  <div ref={this.formRef} className="channel-wrap hide">
-                    <ul className="channel">
-                    {
-
-                        channelInfo().map((item, index) => (
-                          <li span={24} className="channel-list" onClick={() => this.handel(item.module)} >
-                            { item.name }
-                          </li>
-                      ))
-                    }
-                    </ul>
-                  </div>
-                </li>
-                :
                 <li key={i} className="font16" onClick={() => this.handel(list.value)}>
                   <i className={`iconfont icon-${list.icon} mr10`}></i>
                   { list.name }
@@ -112,17 +79,6 @@ class ChannelList extends React.Component {
             ))
         }
         </ul>
-
-
-          <Drawer
-            title="新增频道"
-            width={500}
-            closable={false}
-            onClose={this.onChildrenDrawerClose}
-            visible={this.state.childrenDrawer}
-          >
-            <ChannelForm></ChannelForm>
-          </Drawer>
         </Drawer>
       </>
     );

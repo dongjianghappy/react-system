@@ -15,69 +15,6 @@ const { RangePicker } = DatePicker;
 
 class Tag extends React.Component{
 
-  option = [
-    {
-      name: "类型",
-      field: 'type',
-      list: [
-        {
-          value: "",
-          name: "全部"
-        },
-        ...React.$enums.orderType
-      ]
-    }
-  ]
-
-    state ={
-        columns: [
-            {
-              title: '选择',
-              dataIndex: 'name',
-              render: text => <a><Checkbox></Checkbox></a>,
-            },
-            {
-              title: '订单号',
-              dataIndex: 'number',
-            },
-            {
-              title: '订单名称',
-              dataIndex: 'name',
-            },{
-                title: '类型',
-                dataIndex: 'status',
-                render:(text, record) => (
-                  <Status type="switch" coding="O0006" field="status" {...record} updateStatus={this.props.updateStatus} />
-                )
-              },
-            {
-              title: '价格(元/周期)',
-              dataIndex: 'price',
-            },
-            {
-              title: '时长(月/个)',
-              dataIndex: 'cycle',
-            },
-            {
-              title: '时间范围',
-              dataIndex: 'start_time',
-            },
-              
-              {
-                title: '操作',
-                dataIndex: 'operating',
-                render: (text, record) => (
-                    <Space size="middle">
-                      正在进行中
-                    </Space>
-                  ),
-              },
-        ],
-        data: [],
-        total: 0,
-        pages: 0
-    }
-
     componentDidMount(){
       this.props.select({
         data: {
@@ -90,28 +27,36 @@ class Tag extends React.Component{
 
 
     render(){
-      const {columns} = this.state
-
         const {list} = this.props.module
         return(
 
             <>
-                <div style={{marginBottom: 15}}>
-                  <ul className="navbar">
-                    <li>订单管理</li>
-                  </ul>
-                  <Option option={this.option} select={this.props.select} coding="P0014" />
-                </div>
-
-
-
-                <Table
-                    rowKey="id"
-                    columns={columns}
-                    dataSource={list}
-                    pagination={false}
-                />
-
+              <Card title="新订单">
+              <table width="100%" className="table-striped table-hover col-left-23">
+                <tr class="th">
+                  <td class="col-md-1">选择</td>
+                  <td class="col-md-2">订单号</td>
+                  <td class="col-md-4">订单名称</td>
+                  <td class="col-md-1">类型</td>
+                  <td class="col-md-2">价格(元/周期)</td>
+                  <td class="col-md-1">下单日期</td>
+                  <td class="col-md-1">操作</td>
+                </tr>
+                {
+                  list && list.map((item, index) => (
+                      <tr>
+                        <td><Checkbox></Checkbox></td>
+                        <td>{item.number}</td>
+                        <td>{item.name}</td>
+                        <td>{item.price}</td>
+                        <td>{item.cycle}</td>
+                        <td>{item.start_time}</td>
+                        <td>处理订单</td>
+                      </tr>
+                  ))
+                }
+              </table>
+              </Card>
             </>
         )
     }

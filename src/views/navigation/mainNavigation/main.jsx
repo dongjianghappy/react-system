@@ -25,10 +25,8 @@ class Index extends React.Component{
       ]
     }
 
-
-     
-    async componentDidMount(){
-    const res = await this.props.fetch({
+    getData = async () => {
+      const res = await this.props.fetch({
         api: "static"          
     })
     
@@ -56,7 +54,11 @@ class Index extends React.Component{
         },
         node: "main"            
       })
-  }
+    }
+     
+    componentDidMount(){
+      this.getData()
+    }
 
   handleClick = (data) => {
     this.props[data.popup || data.global.data.fn](data)
@@ -72,7 +74,7 @@ class Index extends React.Component{
                 </div>
             <Card title="导航列表" extra={
                 <Space>
-                  <R_drawer.drawerForm title="新增导航" coding="P0001" {...this.props} >
+                  <R_drawer.drawerForm title="新增导航" name="新增导航" coding="P0001" renderList={this.getData} {...this.props} >
                     <Detail />
                   </R_drawer.drawerForm>
                   {/* <NavigationDrawer {...this.props} title="新增导航" /> */}
@@ -129,8 +131,7 @@ class Index extends React.Component{
           <td><Status type="switch" coding="P0003" field="status" {...item} updateStatus={this.props.updateStatus} disabled={checkButtonAuth('b:navigation:main:status')} /></td>
           <td>
           <Space>
-            {/* <NavigationDrawer id={item.id} {...this.props} title="编辑导航" /> */}
-            <R_drawer.drawerForm title="编辑导航" id={item.id} coding="P0001" {...this.props} >
+            <R_drawer.drawerForm title="编辑导航" name="编辑" id={item.id} coding="P0001" renderList={this.getData} {...this.props} >
               <Detail />
             </R_drawer.drawerForm>
             <R_button.del click={this.handleClick} id={item.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" disabled={checkButtonAuth('b:navigation:main:delete')} />
@@ -179,7 +180,7 @@ class Index extends React.Component{
                           <td className="col-md-1"><Status type="switch" coding="P0003" field="status" {...item} updateStatus={this.props.updateStatus} disabled={checkButtonAuth('b:navigation:main:status')} /></td>
                           <td className="col-md-2">
                           <Space>
-                          <R_drawer.drawerForm title="编辑导航" id={ss.id} coding="P0001" {...this.props} >
+                          <R_drawer.drawerForm title="编辑导航" id={ss.id} renderList={this.getData} coding="P0001" {...this.props} >
                             <Detail />
                           </R_drawer.drawerForm>
                             <R_button.del click={this.handleClick} id={ss.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" disabled={checkButtonAuth('b:navigation:main:delete')} />

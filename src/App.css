@@ -28,9 +28,9 @@ ul {
   color: #333 !important;
 }
 
-.ant-menu-dark .ant-menu-submenu-open .ant-menu-submenu-title {
+/* .ant-menu-dark .ant-menu-submenu-open .ant-menu-submenu-title {
   background: #cad9e5 !important;
-}
+} */
 
 .pointer {
   cursor: pointer;
@@ -51,21 +51,13 @@ ul {
 .ant-layout-sider-children {
   background: #fff !important;
 }
-.ant-menu-dark .ant-menu-inline.ant-menu-sub {
-  background: #ddd !important;
-}
+
 .ant-menu.ant-menu-dark,
 .ant-menu-dark .ant-menu-sub {
   color: #333 !important;
   background: #fff !important;
 }
-.ant-menu-dark .ant-menu-item > a {
-  color: #333 !important;
-}
 
-.ant-menu-item-selected {
-  background: #f0f2f5 !important;
-}
 .ant-layout-header {
   padding: 0 !important;
 }

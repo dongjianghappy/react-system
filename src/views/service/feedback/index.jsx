@@ -16,69 +16,66 @@ import {
   ButtonGroup,
   Option,
   OptionSelect,
-  ModalGroup
+  ModalGroup,
+  Operatinavbar
 } from '../../../common'
 
 class Index extends React.Component{
 
-    state ={
-        columns: [
-            {
-              title: '选择',
-              dataIndex: 'name',
-            },
-            {
-              title: '用户',
-              dataIndex: 'nickname',
-            },
-            {
-              title: '	内容',
-              dataIndex: 'content',
-            },
-            {
-              title: '状态',
-              dataIndex: 'checked',
-              render: text => <a>审核通过</a>,
-            },
-            {
-                title: '发布时间',
-                dataIndex: 'datetime',
-                render: text => <a>{text}</a>,
-              },
-            {
-                title: '操作',
-                dataIndex: 'price',
-                render: (text, record) => (
-                  <div>
-                    <Space>
-                      <R_button.edit click={this.handleClick} id={record.id} action="edit" title="回复" dispatch="popup" node="drawer" />
-                      <R_button.del click={this.handleClick} id={record.id} title="删除留言" dispatch="popup" node="dialog" fn="getDelete" />
-                    </Space>
-                  </div>
-                ),
-              }
-        ],
-        data: [],
-        total: 0,
-        pages: 0
+    getData = () => {
+      this.props.select({
+        api: "feedback",
+        data: {
+          page: 0,
+          pagesize: 25,
+          coding: "Q0003"
+        },
+        node: "feedback"            
+    })
     }
 
     componentDidMount(){
-      this.props.getListAction()
+      this.getData()
     }
     
 
     render() {
 
-        const { columns } = this.state
-        const {list } = this.props
+        const { feedback } = this.props.module
         return (
             <Card title="意见反馈列表">
-                <Table
-                    columns={columns}
-                    dataSource={list}
-                ></Table>
-              <input id="coding" type="hidden" value="Q0004" />
+            <table width="100%" className="table-striped table-hover col-left-4">
+              <tr className="th">
+                <td className="col-md-1">选择</td>
+                <td className="col-md-1">头像</td>
+                <td className="col-md-1">用户名</td>
+                <td className="col-md-5">反馈内容</td>
+                <td className="col-md-2">反馈日期</td>
+                <td className="col-md-1">状态</td>
+                <td className="col-md-1">操作</td>
+              </tr>
+              {
+              feedback && feedback.map((item, index) => (
+                <tr>
+                  <td><R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={item.id}></R_checkbox></td>
+                  <td><img src={item.photos} style={{borderRadius: '50%', width: '30px', height: '30px'}} /></td>
+                  <td>{item.nickname}</td>
+                  <td>{item.content}</td>
+                  <td>{item.datetime}</td>
+                  <td><Status type="switch" coding="Q0004" field="status" {...item} updateStatus={this.props.updateStatus} /></td>
+                  <td>删除</td>
+                </tr>
+                ))
+              }
+            </table>
+
+                <Operatinavbar 
+                  node={ this.props.node }
+                  button={['all', 'delete', 'open', 'close']}
+                  data={this.props.module}
+                  coding="P0003"
+                  {...this.props}
+                />
             </Card>
         )
     }
@@ -86,11 +83,7 @@ class Index extends React.Component{
 
 const stateToProops = (state) => {
   return {
-    module: "service",
-    state,
-    common: state.common,
-    global: state.common.global,
-    list: state.service.list
+    module: state.service
   }
 }
 

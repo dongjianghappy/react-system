@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Table, Space, Row, Col, Button} from 'antd';
+import { Card, Table, Space, Row, Col, Button, Tabs} from 'antd';
 import { connect } from 'react-redux'
 import {
   Status,
@@ -20,8 +20,13 @@ import {
   ModalGroup,
   Operatinavbar
 } from '../../common'
-import Article from './article'
+import SellList from './components/sell_list'
+import List from './components/list'
+import ApplyList from './components/apply_list.jsx';
+import Article from './components/article'
 import dispatchToProps from '../../store/dispatch'
+
+const { TabPane } = Tabs;
 
 class Links extends React.Component{
 
@@ -75,21 +80,47 @@ class Links extends React.Component{
       },
     ]
 
-
-    componentDidMount(){
+    getData = (data) => {
       this.props.select({
         data: {
           page: 0,
           pagesize: 25,
-          coding: "P0003"
+          coding: "P0003",
+          ...data
         }            
     })
+    }
+
+    componentDidMount(){
+      this.getData({
+        method : 0,
+        apply_checked : 1
+      })
     }
 
     handleClick = (data) => {
       this.props[data.dispatch](data)
     }     
     
+    callback = (key) => {
+      
+      if(key === "1") {
+        this.getData({
+          method : 0,
+          apply_checked : 1
+        })
+      }else if(key === "2") {
+        this.getData({
+          method : 1,
+          apply_checked : 1
+        })
+      }else if(key === "3") {
+        this.getData({
+          apply_checked : 0
+        })
+      }
+    }
+
     render(){
       debugger
       const {list} = this.props.module
@@ -98,78 +129,35 @@ class Links extends React.Component{
               <ModalGroup {...this.props} article={Article} coding="P0003" />
               
                 <div style={{marginBottom: 15}}>
-                  <div className="mb15">
-                    <Space>
-                  <Button>站点管理</Button>
-                  <Button>站点管理</Button>
-                  <R_drawer.drawerForm title="新增导航" name="新增友情链接" coding="P0003" {...this.props} >
-                    <Article />
-                  </R_drawer.drawerForm>
-                    </Space>
-                  </div>
                   <Option option={this.option} select={this.props.select} coding="P0003" />
                 </div>
 
-          <Card title="列表管理">
-          <table width="100%" className="table-striped table-hover col-left-23">
-            <tr className="th">
-              <td className="col-md-1">选择</td>
-              <td className="col-md-2">网站名称</td>
-              <td className="col-md-2">链接地址</td>
-              <td className="col-md-1">来源</td>
-              <td className="col-md-1">类型</td>
-              <td className="col-md-1">价格(元/月)</td>
-              <td className="col-md-1">结束日期</td>
-              <td className="col-md-1">状态</td>
-              <td className="col-md-2">操作</td>
-            </tr>
-            {
-            list && list.map((item, index) => (
-                <tr>
-                  <td><R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={item.id}></R_checkbox></td>
-                  <td>
-                  <Quick
-                    id={item.id}
-                    title={item.name}
-                    field="name"
-                    coding="P0003"
-                    changeData={this.props.changeData}
-                  />
-                  </td>
-                  <td>
-                  <Quick
-                    id={item.id}
-                    title={item.url}
-                    field="url"
-                    coding="P0003"
-                    changeData={this.props.changeData}
-                  />
-                  </td>
-                  <td>{React.$enums.linkType[item.source].name}</td>
-                  <td>{item.type}</td>
-                  <td>{item.price}</td>
-                  <td>{item.datetime}</td>
-                  <td><Status type="switch" coding="P0003" field="status" {...item} updateStatus={this.props.updateStatus} /></td>
-                  <td>
-                    <Space>
-                      <R_drawer.drawerForm title="编辑友链" name="编辑" id={item.id} coding="P0003" {...this.props} >
-                        <Article />
-                      </R_drawer.drawerForm>
-                      {/* <R_button.edit click={this.handleClick} id={item.id} action="edit" title="编辑友链" dispatch="popup" node="drawer" /> */}
-                      <R_button.del click={this.handleClick} id={item.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" />
-                    </Space>
-                  </td>
-                </tr>
-            ))
-            }
-          </table>
-                <Operatinavbar 
-                  node={ this.props.node }
-                  button={['all', 'delete', 'open', 'close']}
-                  data={this.props.module}
-                  coding="P0003"
-                  {...this.props}
-                />
+          <Card>
+            <Tabs 
+                defaultActiveKey="1"  
+                onChange={this.callback}
+                tabBarExtraContent={
+                  <Space>
+                  <R_drawer.drawerForm title="新增导航" name="新增友情链接" coding="P0003" renderList={this.getData} {...this.props} >
+                    <Article />
+                  </R_drawer.drawerForm>
+                </Space>
+                }
+              >
+              <TabPane tab="出售友链" key="1">
+                <SellList type="1" data={list} {...this.props} getData={() => this.getData(1)} />
+              </TabPane>
+              <TabPane tab="交换友链" key="2">
+                <List type="1" data={list} {...this.props} getData={() => this.getData(1)} />
+              </TabPane>
+              <TabPane tab="申请友链" key="3">
+                <ApplyList type="1" data={list} {...this.props} getData={() => this.getData(1)} />
+              </TabPane>
+            </Tabs>
+
+
+
+
                 </Card>
                 <input id="coding" type="hidden" value="P0003" />
             </div>

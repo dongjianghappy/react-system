@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
+    "@ant-design/charts": "^1.0.4",
     "@babel/core": "7.9.0",
     "@svgr/webpack": "4.3.3",
     "@testing-library/jest-dom": "^4.2.4",
@@ -41,6 +42,7 @@
     "jest-resolve": "24.9.0",
     "jest-watch-typeahead": "0.4.2",
     "mini-css-extract-plugin": "0.9.0",
+    "moment": "^2.29.1",
     "optimize-css-assets-webpack-plugin": "5.0.3",
     "pnp-webpack-plugin": "1.6.4",
     "postcss-flexbugs-fixes": "4.1.0",
@@ -53,6 +55,7 @@
     "react": "^16.8.0",
     "react-app-polyfill": "^1.0.6",
     "react-chartist": "^0.14.3",
+    "react-custom-scrollbars": "^4.2.1",
     "react-dev-utils": "^10.2.1",
     "react-dom": "^16.8.0",
     "react-redux": "^7.2.0",
@@ -149,5 +152,9 @@
       "react-app"
     ]
   },
-  "proxy": "http://127.0.0.1"
+  "proxy": "http://127.0.0.1",
+  "devDependencies": {
+    "less": "^3.12.2",
+    "less-loader": "^7.0.2"
+  }
 }

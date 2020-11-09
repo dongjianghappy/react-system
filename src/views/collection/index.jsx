@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Table, Space, Row, Col} from 'antd';
+import { Card, Table, Space, Row, Col, Button} from 'antd';
 import { connect } from 'react-redux'
 import {
   Status,
@@ -20,100 +20,6 @@ import dispatchToProps from '../../store/dispatch'
 
 class Collection extends React.Component{
 
-    option = [
-      {
-        name: "来源",
-        field: 'source',
-        list: [
-          {
-            value: "",
-            name: "全部"
-          },
-          ...React.$enums.linkType
-        ]
-      },
-      {
-        name: "显示",
-        field: 'display',
-        list: [
-          {
-            value: "",
-            name: "全部"
-          },
-          {
-            value: "0",
-            name: "首页"
-          },
-          {
-            value: "1",
-            name: "全站"
-          }
-        ]
-      },
-      {
-        name: "状态",
-        field: 'status',
-        list: [
-          {
-            val: "",
-            name: "全部"
-          },
-          {
-            value: "1",
-            name: "开启"
-          },
-          {
-            value: "0",
-            name: "关闭"
-          }
-        ]
-      },
-    ]
-
-    state ={
-        columns: [
-            {
-              title: '选择',
-              dataIndex: 'name',
-              // render: (text, record) => (
-              //   <R_checkbox onChange={this.props.checkBox} list={this.props.state.link.checkedList} data={record.id}></R_checkbox>
-              // ),
-            },
-            {
-              title: '顺序',
-              dataIndex: 'name',
-            },
-            {
-              title: '节点名称',
-              dataIndex: 'url',
-            },
-            {
-                title: '创建节点日期',
-                dataIndex: 'source',
-                
-              },
-            {
-                title: '入库时间',
-                dataIndex: 'type',
-            render: text => (
-            <a>{text}</a>
-            ),
-              },   
-              {
-                title: '操作',
-                dataIndex: 'operating',
-                // render: (text, record) => (
-                //   <div>
-                //     <Space>
-                //       <R_button.edit click={this.handleClick} id={record.id} action="edit" title="编辑友链" dispatch="popup" node="drawer" />
-                //       <R_button.del click={this.handleClick} id={record.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" />
-                //     </Space>
-                //   </div>
-                // ),
-              },
-        ]
-    }
-
     componentDidMount(){
       this.props.select({
         data: {
@@ -130,28 +36,44 @@ class Collection extends React.Component{
     }     
     
     render(){
-      const {columns} = this.state
-      const {nodeList} = this.props.module
+      const { nodeList } = this.props.module
         return (
             <div>
-              <ModalGroup {...this.props} coding="O0008" />
-              
-                <div style={{marginBottom: 15}}>
-                  <ul className="navbar">
-                    <li>采集列表</li>
-                    <li>选择节点类型</li>
-                    <li className="search"><Condition /></li>
-                  </ul>
-                </div>
+              <Card>
 
-                <Table
-                    rowKey="id"
-                    columns={columns}
-                    dataSource={nodeList}
-                    pagination={ false }
-                />
-                <ButtonGroup {...this.props}></ButtonGroup>
-                <input id="coding" type="hidden" value="O0008" />
+              <div style={{marginBottom: 15}}>
+                <Space>
+                  <Button type="primary">采集列表</Button>
+                  <Button type="primary">选择节点类型</Button>
+                </Space>
+              </div>
+              
+              <table width="100%" class="table-striped artlist col-left-3">
+                <tr class="th">
+                  <td class="col-md-1">选择</td>
+                  <td class="col-md-1">顺序</td>
+                  <td class="col-md-4">节点名称</td>
+                  <td class="col-md-2">创建节点日期</td>
+                  <td class="col-md-2">入库时间</td>
+                  <td class="col-md-2">操作</td>
+                </tr>
+                {
+                      nodeList && nodeList.map((item, index) => (
+                        <tr>
+                          <td><R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={item.id}></R_checkbox></td>
+                          <td>{item.sort}</td>
+                          <td>{item.name}</td>
+                          <td>{item.content}</td>
+                          <td>{item.datetime}</td>
+                          <td>
+                          开始采集 | 内容 | 删除
+                          </td>
+                          
+                        </tr>
+                        ))
+                      }
+              </table>
+              </Card>
             </div>
         )
     }
@@ -159,8 +81,6 @@ class Collection extends React.Component{
 
 const stateToProops = (state) => {
   return {
-    global: state.common.global,
-    state,
     module: state.collection
   }
 }

@@ -31,18 +31,24 @@ const R_form = (props) => {
     const onFinish = values => {
         if(!props.id){
             props.insert({
-                coding: props.coding,
-                content: props.content,
-                ...values,
-                ...props.formData
+                api: props.api,
+                data: {
+                    coding: props.coding,
+                    content: props.content,
+                    ...values,
+                    ...props.formData
+                }
             })
         }else{
             props.update({
-                coding: props.coding,
-                content: props.content,
-                id: props.id,
-                ...values,
-                ...props.formData
+                api: props.api,
+                data: {
+                    coding: props.coding,
+                    content: props.content,
+                    id: props.id,
+                    ...values,
+                    ...props.formData            
+                }
             })
         }
     };

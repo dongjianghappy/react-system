@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Drawer, Button, Form } from 'antd';
+import { Drawer, Button, Form, message } from 'antd';
 
 const layout = {
   labelCol: { span: 4 },
@@ -32,25 +32,37 @@ const DrawerForm = (props) => {
   const onFinish = () => {
     if(!props.id){
       props.insert({
-            coding: props.coding,
-            ...form.getFieldsValue(),
+            api: props.api,
+            data: {
+              coding: props.coding,
+              ...props.data,
+              ...form.getFieldsValue(),
+            }
         }).then(() => {
           setVisible(false);
+          props.renderList()
+          message.info("新增成功")
         })
     }else{
       props.update({
-            coding: props.coding,
-            id: props.id,
-            ...form.getFieldsValue(),
+            api: props.api,
+            data: {
+              coding: props.coding,
+              ...props.data,
+              id: props.id,
+              ...form.getFieldsValue(),              
+            }
         }).then(() => {
           setVisible(false);
+          props.renderList()
+          message.info("编辑成功")
         })
     }
   }
 
   return (
     <>
-      <Button type="primary" onClick={showDrawer}>
+      <Button type={props.type || "primary"} onClick={showDrawer}>
         {
           props.name ? props.name : "Open"
           

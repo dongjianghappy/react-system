@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, Table, Space, Popconfirm, Button, Checkbox, Switch, Pagination, Row, Col} from 'antd';
 import { connect } from 'react-redux'
-import { Status, Dialog, ButtonGroup, OperatingGroup, Operatinavbar, Condition } from '../../components/index.js'
+import { Status, Dialog, ButtonGroup, OperatingGroup, Operatinavbar, Condition, R_checkbox} from '../../components/index.js'
 import AddArticle from './article'
 import dispatchToProps from '../../store/dispatch'
 import api from '../../api';
@@ -12,19 +12,19 @@ class Customize extends React.Component{
     state ={
         columns: [
             {
-              title: '频道名称',
+              title: '',
               dataIndex: 'name',
             },
             {
-              title: '频道ID',
+              title: '',
               dataIndex: 'id',
             },
             {
-              title: '识别id',
+              title: '',
               dataIndex: 'module',
             },
             {
-                title: '附加表',
+                title: '',
                 dataIndex: 'source',
                 render: text => <a>p_addonnews</a>,
               },
@@ -35,7 +35,7 @@ class Customize extends React.Component{
               },   
               
             {
-                title: '模型',
+                title: '',
                 dataIndex: 'price',
                 render: text => <a>自动</a>,
               },
@@ -64,17 +64,33 @@ class Customize extends React.Component{
       const { modelList } = this.props.module
         return (
             <div>
-                <Card
-                title="内容模型管理"
-                >
-                <Table
-                    rowKey="id"
-                    columns={columns}
-                    dataSource={ modelList }
-                    pagination={ false }
-                />
-                <input id="coding" type="hidden" value="P0003" />
-                </Card>
+                <Card title="内容模型管理">
+                <table width="100%" class="table-striped artlist col-left-1">
+                <tr class="th">
+                  <td class="col-md-3">频道名称</td>
+                  <td class="col-md-1">频道ID</td>
+                  <td class="col-md-1">识别id</td>
+                  <td class="col-md-2">附加表</td>
+                  <td class="col-md-1">状态</td>
+                  <td class="col-md-2">模型</td>
+                  <td class="col-md-2">操作</td>
+                </tr>
+                {
+                      modelList && modelList.map((item, index) => (
+                        <tr>
+                          <td>{item.name}</td>
+                          <td>{item.id}</td>
+                          <td>{item.module}</td>
+                          <td>{item.source}</td>
+                          <td>{item.type}</td>
+                          <td>{item.type}</td>
+                          <td><Link to={{pathname:'/admin/customize/list', state:{id: item.id}}}>字段管理</Link></td>
+                          
+                        </tr>
+                        ))
+                      }
+              </table>
+              </Card>
             </div>
         )
     }

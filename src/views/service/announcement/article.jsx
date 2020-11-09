@@ -1,58 +1,43 @@
-import React from 'react'
-import { Card, Table, Button } from 'antd'
+import React, { useState } from 'react'
+import { Card, Form, Input, InputNumber, Button, Radio } from 'antd';
+import { Editor } from '@/components'
 
-export default class Article extends React.Component{
+const Detail = (props) =>{
 
-    state ={
-        columns: [
-            {
-              title: '选择',
-              dataIndex: 'name',
-            },
-            {
-              title: 'ID',
-              dataIndex: 'id',
-            },
-            {
-              title: '	标题',
-              dataIndex: 'title',
-            },
-            {
-                title: '发布时间',
-                dataIndex: 'datetime',
-                render: text => <a>{text}</a>,
-              },
-            {
-                title: '状态',
-                dataIndex: 'type',
-                render: text => <a>{text}</a>,
-              },   
-              
-            {
-                title: '操作',
-                dataIndex: 'price',
-                render: text => <a>{text}</a>,
-              }
-        ],
-        data: [],
-        total: 0,
-        pages: 0
-    }
+    const [content, setContent] = useState("")
 
-    render() {
+    const getContent = (data) => {
+        setContent({
+          content: data
+        })
+    }    
 
-        const { columns } = this.state
+    return (
+        <>
+            <Form.Item name="title" label="伙伴名称" >
+                <Input />
+            </Form.Item>
+            <Form.Item name="sort" label="顺序">
+                <InputNumber />
+            </Form.Item>
+            <Form.Item name="url" label="类型">
+                <Input />
+            </Form.Item>
+            <Form.Item name="status" label="显示">
+                <Radio.Group>
+                <Radio value="1" defaultChecked >是</Radio>
+                <Radio value="0">否</Radio>
+                </Radio.Group>
+            </Form.Item>
+            <Form.Item name="content" label="内容">
+                <Editor 
+                    content=""
+                    getData={getContent}
+                />
+            </Form.Item>
+        </>
+    )
 
-        return (
-            <Card
-            title="公告通知列表"
-            extra={
-                <Button type="primary">发布公告通知</Button>
-              }
-            >
-                撒旦撒旦
-
-            </Card>
-        )
-    }
 }
+
+export default Detail
