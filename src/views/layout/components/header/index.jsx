@@ -81,8 +81,8 @@ const { Search } = Input;
               <Col span="8">
               <Dropdown overlay={menu} className="" placement="bottomCenter" arrow>
               <div>
-                <img src={userInfo.photos} alt="" style={{ marginRight: 5, width: 25, height: 25, borderRadius: '50%'}} />
-                <span>{userInfo.nickname}</span>
+                <img src={userInfo && userInfo.photos} alt="" style={{ marginRight: 5, width: 25, height: 25, borderRadius: '50%'}} />
+                <span>{userInfo && userInfo.nickname}</span>
               </div>
             </Dropdown>
               </Col>

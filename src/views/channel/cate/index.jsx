@@ -9,7 +9,7 @@ import {
   R_drawer,
   R_button,
   Dialog,
-  Condition,
+  Confirm,
   Quick
 } from '../../../components/index.js'
 import {
@@ -56,10 +56,9 @@ class Channel extends React.Component{
               title="分类管理"
               extra={
                 <Space>
-                  <R_drawer.drawerForm title="新增导航" coding={cate} renderList={this.getData} {...this.props} >
+                  <R_drawer.drawerForm name="新增分类" title="新增分类" action="add" coding={cate} renderList={this.getData} {...this.props} >
                     <Detail />
                   </R_drawer.drawerForm>
-                {/* <CateForm size="defualt" butName="新增分类" title="新增分类" /> */}
                 <Button>批量添加</Button>
                 </Space>
               }
@@ -83,15 +82,27 @@ class Channel extends React.Component{
           <td>
             <i class="iconfont icon-jianhao iconslide"></i>
             <Quick id={item.id} title={item.name} field="name" coding={cate} width="50%" changeData={this.props.changeData}/>
+            <R_drawer.drawerForm isText={true} title="新增页面" icon="add" data={{fid: item.id}} action="add" coding={cate} renderList={this.getData} {...this.props} >
+              <Detail />
+            </R_drawer.drawerForm>
           </td>
           <td></td>
           <td><Status coding={cate}  field="status" {...item} updateStatus={this.props.updateStatus} /></td>
           <td>
             <Space>
-              <R_drawer.drawerForm title="编辑分类" id={item.id} renderList={this.getData} coding={cate} {...this.props} >
+              <R_drawer.drawerForm isText={true} name="编辑" title="编辑分类" id={item.id} renderList={this.getData} coding={cate} {...this.props} >
                 <Detail />
               </R_drawer.drawerForm>
-              <R_button.del delete={this.handleClick} id={item.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" />
+              <Confirm 
+                name="删除" 
+                type="text" 
+                config={React.$modalEnum.delete} 
+                coding={cate} 
+                data={{id: item.id}} 
+                fetch={this.props.fetch} 
+                api="delete" 
+                renderList={this.getData}
+              />
             </Space>
           </td>
         </tr>
@@ -107,15 +118,27 @@ class Channel extends React.Component{
                     <i class="cate-two"></i>
                       <i class="iconfont icon-jianhao iconslide"></i>
                       <Quick id={sss.id} title={sss.name} width="42%" field="name" coding={cate} changeData={this.props.changeData}/>
+                      <R_drawer.drawerForm isText={true} title="新增页面" icon="add" data={{fid: sss.id}} action="add" coding={cate} renderList={this.getData} {...this.props} >
+                        <Detail />
+                      </R_drawer.drawerForm>
                     </td>
                     <td class="col-md-1"></td>
                     <td class="col-md-1"><Status coding={cate}  field="status" {...sss} updateStatus={this.props.updateStatus} /></td>
                     <td class="col-md-2">
                       <Space>
-                        <R_drawer.drawerForm title="编辑分类" id={sss.id} renderList={this.getData} coding={cate} {...this.props} >
+                        <R_drawer.drawerForm isText={true} name="编辑" title="编辑分类" id={sss.id} renderList={this.getData} coding={cate} {...this.props} >
                           <Detail />
                         </R_drawer.drawerForm>
-                        <R_button.del delete={this.handleClick} id={sss.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" />
+                        <Confirm 
+                            name="删除" 
+                            type="text" 
+                            config={React.$modalEnum.delete.cate} 
+                            coding={cate} 
+                            data={{id: sss.id}} 
+                            fetch={this.props.fetch} 
+                            api="delete" 
+                            renderList={this.getData}
+                          />
                       </Space>
                     </td>
                   </tr>
@@ -136,10 +159,19 @@ class Channel extends React.Component{
                                 <td className="col-md-1"><Status coding={cate} field="status" {...ddd} updateStatus={this.props.updateStatus} /></td>
                                 <td className="col-md-2">
                                   <Space>
-                                    <R_drawer.drawerForm title="编辑分类" id={ddd.id} renderList={this.getData} coding={cate} {...this.props} >
+                                    <R_drawer.drawerForm isText={true} name="编辑" title="编辑分类" id={ddd.id} renderList={this.getData} coding={cate} {...this.props} >
                                       <Detail />
                                     </R_drawer.drawerForm>
-                                    <R_button.del delete={this.handleClick} id={ddd.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" />
+                                    <Confirm 
+                                      name="删除" 
+                                      type="text" 
+                                      config={React.$modalEnum.delete.cate} 
+                                      coding={cate} 
+                                      data={{id: ddd.id}} 
+                                      fetch={this.props.fetch} 
+                                      api="delete" 
+                                      renderList={this.getData}
+                                    />
                                   </Space>
                                 </td>
                               </tr>

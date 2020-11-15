@@ -20,6 +20,7 @@ import {
 import Article from './article'
 import Buttons from './button'
 import dispatchToProps from '../../store/dispatch'
+// import dispatchToProps from '../../store/dispatch/fnction'
 
 class menuRouter extends React.Component{
 
@@ -102,6 +103,7 @@ class menuRouter extends React.Component{
                             />
                           </td>
                           <td className="col-md-1">
+                          {ss.authority}
                             {
                             ss.component !== "" ?
                             <span style={{backgroundColor: "#52c41a", position: "relative", top: "-1px", display: "inline-block", width: "6px", height: "6px", verticalAlign: "middle", borderRadius: "50%"}}></span>
@@ -111,7 +113,11 @@ class menuRouter extends React.Component{
                           </td>
                           <td className="col-md-4">
                           <Space>
-                            <R_button.button click={this.handleClick} id={ss.id} title="按钮权限" dispatch="popup" component={Buttons} node="drawer" type="show" />
+                            {/* <R_button.button click={this.handleClick} id={ss.id} title="按钮权限" dispatch="popup" component={Buttons} node="drawer" type="show" /> */}
+                            
+                            <R_drawer.DrawerRender title="按钮权限" name="按钮权限" data={{fid: ss.id, type: "1"}} coding="P0015" fetch={this.props.fetch} api="routerSelect" >
+                              <Buttons />
+                            </R_drawer.DrawerRender>                            
                             <R_drawer.drawerForm title="新增页面" name="新增页面" data={{fid: ss.id}} action="add" coding="P0015" renderList={this.getData} {...this.props} >
                               <Article />
                             </R_drawer.drawerForm>
@@ -194,6 +200,7 @@ class menuRouter extends React.Component{
             />
           </td>
           <td>
+          {item.authority}
             {
               item.component !== "" ?
               <span style={{backgroundColor: "#52c41a", position: "relative", top: "-1px", display: "inline-block", width: "6px", height: "6px", verticalAlign: "middle", borderRadius: "50%"}}></span>

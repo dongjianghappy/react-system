@@ -40,7 +40,7 @@ class Sidebar extends React.Component {
   childrenRender = (siderRouter) => {
     return siderRouter.map((item, i) => {
     if(item.children){
-      return (<SubMenu key={i} icon={<i className={`iconfont icon-${item.icon}`}></i>} title={item.name}>
+      return (<SubMenu key={i} icon={<i className={`iconfont icon-${item.icon} mr10`}></i>} title={item.name}>
      {
          item.children.map((list, i) => (
          <Menu.Item key={ i+item.name }>
@@ -53,7 +53,7 @@ class Sidebar extends React.Component {
      }else{
        return (
      <Menu.Item key={ i+100 }>
-         <i className={`iconfont icon-${item.icon}`}></i>
+         <i className={`iconfont icon-${item.icon} mr10`}></i>
          <Link to={item.path}>{ item.name }</Link>
      </Menu.Item>
        )
@@ -65,7 +65,7 @@ class Sidebar extends React.Component {
   SiderRender = (siderRouter) => {
     return siderRouter.map((item, i) => {
     
-      if((item.module === "article" || item.module === "tech") && item.children){
+      if((item.module === "article" || item.module === "tech" || item.module === "source") && item.children){
         return this.childrenRender(item.children)
      
       }else{
@@ -83,7 +83,7 @@ class Sidebar extends React.Component {
         }else{
           return (
         <Menu.Item key={ i+100 }>
-            <i className={`iconfont icon-${item.icon}`}></i>
+            <i className={`iconfont icon-${item.icon} mr10`}></i>
             <Link to={item.path}
                 onClick={this.onCloseChange}
             >{ item.name }</Link>

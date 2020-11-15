@@ -7,18 +7,36 @@ import AddFrom from './components/addFrom'
 
 class SlideshowList extends React.Component{
 
+    state = {
+        content: [],
+        current: "" // 当保存成功后状态消失，其实在页面顺序更新后，在列表右侧可以新增一个刷新的按钮
+    }
+
     componentDidMount(){
-        this.props.select({
+        this.props.fetch({
             api: "slideshowList",
             data: {
                 fid: this.props.location.state.fid
-            },
-            node: "imgList"            
+            }        
+        }).then((res) => {
+            this.setState({
+                content: res.result
+            })
         })
     }
 
+    onMove = (direction, moveItem, index) => {
+        const newData = [...this.state.content]
+        const item = newData.splice(index + (direction === 'up' ? -1 : 1), 1, moveItem)[0] // 这一步是将要替换的删除，并将移动的插入，最后返回被删除的数组
+        newData[index] = item
+        this.setState({
+            current: index + (direction === 'up' ? -1 : 1),
+            content: newData
+        })
+        debugger
+      }
+
     render() {
-        const {imgList} = this.props.module
         return (
             <Card
                 title="轮播图设置"
@@ -31,8 +49,8 @@ class SlideshowList extends React.Component{
                 }
             >
                 {
-                    imgList && imgList.map((item, i) => (
-                        <Row style={{marginTop: 15}}>
+                    this.state.content.map((item, index) => (
+                        <Row style={{marginTop: 15, background: (index === this.state.current ? "#f00" : "none")}}>
                         <Col span={6}>
                             <ModalSpace>
                                 <img src={item.image} width="250" height="100" alt="" />
@@ -46,7 +64,22 @@ class SlideshowList extends React.Component{
                         <Col span={2}>
                             <Status type="switch" coding="P0003" field="status" updateStatus={this.props.updateStatus} />
                         </Col>
-                        <Col span={2}>fd</Col>
+                        <Col span={2}>
+                            <div style={{width: 100, height: 32, float: "left"}}>
+                            {
+                            index !== 0 ?
+                            <Button onClick={() => this.onMove('up', item, index)}>上移动</Button>
+                            : ""
+                            }
+                            </div>
+                            <div style={{width: 100, height: 32, float: "left"}}>
+                            {
+                            index !== this.state.content.length-1 ?
+                            <Button onClick={() => this.onMove('down', item, index)}>下移动</Button>
+                            : ""
+                            }
+                            </div>
+                        </Col>
                     </Row>
                     ))
                 }

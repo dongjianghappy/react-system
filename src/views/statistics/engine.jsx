@@ -11,23 +11,43 @@ const { TabPane } = Tabs;
 class Engine extends React.Component{
 
   getData = (data) => {
-    this.props.select({
-      data: {
-        page: 0,
-        pagesize: 25,
-        coding: "P0003",
-        ...data
-      },
-      node: "engine"            
-  })
+
   }
 
   componentDidMount(){
-    this.getData({
-      method : 0,
-      apply_checked : 1
-    })
+  //   this.props.select({
+  //     api: "enginePercentage",
+  //     data: {
+  //       page: 0,
+  //       pagesize: 25
+  //     },
+  //     node: "engine"            
+  // })
   }
+
+  callback = (key) =>{
+    if(key === '1'){
+    //   this.props.select({
+    //     api: "enginePercentage",
+    //     data: {
+    //       page: 0,
+    //       pagesize: 25
+    //     },
+    //     node: "engine"            
+    // })
+    }else if(key === '2'){
+      this.props.select({
+          data: {
+            page: 0,
+            pagesize: 25,
+            coding: "S0005"
+          },
+          node: "engine"            
+      })
+    }
+  }
+
+
 
     render() {
 
@@ -39,20 +59,16 @@ class Engine extends React.Component{
                 <Card>
                 <Tabs 
                 defaultActiveKey="1"  
-                // onChange={this.callback}
-                // tabBarExtraContent={
-                //   <Space>
-                //   <R_drawer.drawerForm title="新增导航" name="新增友情链接" coding="P0003" renderList={this.getData} {...this.props} >
-                //     <Article />
-                //   </R_drawer.drawerForm>
-                // </Space>
-                // }
+                onChange={this.callback}
               >
-              <TabPane tab="今日搜索" key="1">
-                <EngineList type="1" data={engine} {...this.props} getData={() => this.getData(1)} />
+              <TabPane tab="搜索占比" key="1">
+                <h3>今日占比</h3>
+                <EngineList type="1" data={engine.today} {...this.props} />
+                <h3>所有占比</h3>
+                <EngineList type="1" data={engine.all} {...this.props} />
               </TabPane>
               <TabPane tab="搜索明细" key="2">
-                <EngineDetail type="1" data={engine} {...this.props} getData={() => this.getData(1)} />
+                <EngineDetail type="1" data={engine} {...this.props} />
               </TabPane>
             </Tabs>
 

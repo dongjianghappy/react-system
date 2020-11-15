@@ -32,8 +32,8 @@ const ModalForm = (props) => {
     };
 
     const onFinish = () => {
-      
-        if(!props.id){
+        debugger
+        if(!props.id || props.action === "add"){
           props.insert({
                 api: props.api,
                 data: {

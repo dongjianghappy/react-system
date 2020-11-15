@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {Space, Card, Table, Checkbox, Button, Input, Form, Radio, Select } from 'antd'
-import { Status, R_button, R_drawer, R_checkbox, Dialog, R_form, Quick, R_modal} from '@/components/index.js'
+import { Status, Confirm, R_drawer, R_checkbox, Dialog, R_form, Quick, R_modal} from '@/components/index.js'
 import Article from './article'
   import {
     ButtonGroup,
@@ -37,10 +37,19 @@ const List = (props) =>{
                   <td><Status type="switch" coding="P0003" field="status" {...item} updateStatus={props.updateStatus} /></td>
                   <td>
                     <Space>
-                      <R_drawer.drawerForm title="编辑友链" name="编辑" id={item.id} coding="P0003" renderList={props.getData} {...props} >
+                      <R_drawer.drawerForm isText={true} title="编辑友链" name="编辑" id={item.id} coding="P0003" renderList={props.getData} {...props} >
                         <Article />
                       </R_drawer.drawerForm>
-                      | 删除
+                      <Confirm 
+                        name="删除" 
+                        type="text" 
+                        config={React.$modalEnum.delete} 
+                        coding="P0003" 
+                        data={{id: item.id}} 
+                        fetch={props.fetch} 
+                        api="delete" 
+                        renderList={props.getData}
+                      />
                     </Space>
                   </td>
                 </tr>

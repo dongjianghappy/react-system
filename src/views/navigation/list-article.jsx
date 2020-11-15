@@ -1,75 +1,94 @@
 import React from 'react';
-import {Space, Card, Table, Checkbox, Button, Input, Form, Radio } from 'antd'
-import { Status, R_button, R_drawer, R_checkbox, Dialog, R_form, Quick, Editor} from '../../components/index.js'
-import PropTytes from 'prop-types'
-import {
-  ButtonGroup,
-  Keyword
-} from '../../common'
-import Article from './article'
+import {Space, Card, Table, Checkbox, Button, Input, Form, Radio, message } from 'antd'
+import { Status, R_button, R_drawer, R_checkbox, Dialog, R_form, Keyword, Editor} from '../../components/index.js'
+
 
 import { connect } from 'react-redux'
 import dispatchToProps from '../../store/dispatch'
 
-
+const layout = {
+  labelCol: { span: 2 },
+  wrapperCol: { span: 22 },
+  };
 
 class Single extends React.Component{
+  form = React.createRef()
 
   state = {
-    init: {},
-    tag: [],
-    content: "",
-    keyword: ""
+    data: {}
   }
 
-    changeInput = (data) => {
+  async  componentDidMount(){
+        if(this.props.location.state && this.props.location.state.id){
+         const res = await this.props.fetch({
+              api: "detail",
+              data: {
+                  coding: "P0002",
+                  id: this.props.location.state.id
+              }
+          })
+            this.form.current.setFieldsValue( res.result);
+            const tag = res.result.keyword.split(",")
+            res.result.keyword = tag
+            this.setState({
+              data: res.result
+            })
+      }
+    }   
+    
+    onFinish = values => {
+      if(this.props.location.state && this.props.location.state.id){
+          this.props.update({
+              data: {
+                  coding: "P0002",
+                  id: this.props.location.state.id,
+                  keyword: this.state.data.keyword.join(),
+                  content: this.state.data.content,
+                  ...values,        
+              }
+          }).then((res) => {
+            message.info("编辑成功")
+          })
+      }else{
+          this.props.insert({
+              data: {
+                  coding: "P0002",
+                  keyword: this.state.data.keyword.join(),
+                  content: this.state.data.content,
+                  ...values
+              }
+          }).then((res) => {
+            message.info("新增成功")
+          })
+      }
+  };
+
+    setData = (type, value) => {
+      const data = {...this.state.data}
+      data[type] = value
       this.setState({
-        keyword: data.join()
+        data: data
       })
     }
 
-    getContent = (data) => {
-      this.setState({
-        content: data
-      })
-    }    
-
-    init = (data) => {
-      this.setState({
-        tag: data.keyword.split(",")
-      })
-      this.setState({
-        content: data.content
-      })
-    } 
-
     render(){
-        const { single } = this.props.module
-        const { getFieldDecorator } = PropTytes.any;
         return(
-
             <div>
-              <Card title="新增单页" extra={
-                  <Space>
-                  <Button onClick={()=>this.props.history.push('/admin/single')}>返回</Button>
-                  </Space>
-                }>
-                  <div>
-                  <R_form
-                    init={this.init}
-                    id="" //{this.props.location.state.id}
-                    {...this.props}
-                    formData = {this.state}
-                    coding="P0002"
-                  >
+              <Card>
+              <Form
+              ref={this.form}
+            {...layout}
+            labelAlign="left"
+            onFinish={this.onFinish}
+        >
                     <Form.Item label="名称" name="title" >
                       <Input className="input-sm input-250" />
                     </Form.Item>                    
                     <Form.Item label="页面标题" name="seotitle" >
                       <Input className="input-sm input-350" />
                     </Form.Item>
-                    <Form.Item label="关键词" name="keyword" >
-                      <Keyword tag={['all', 'delete', 'open', 'close']} change={this.changeInput} />
+                    <Form.Item label="关键词" >
+                      <Keyword field="keyword" value={this.state.data.keyword} change={this.setData} fetch={this.props.fetch} />
                     </Form.Item>
                     <Form.Item label="摘要" name="description" >
                       <Input.TextArea className="input-sm" />
@@ -102,29 +121,14 @@ class Single extends React.Component{
                     <Form.Item label="文件名" name="html" >
                       <Input className="input-sm input-150" />
                     </Form.Item>
-                    <Form.Item>
-                        <Editor 
-                          content="倪凯晨"
-                          getData={this.getContent}
-                        />
+                    <Form.Item label="内容">
+                        <Editor field="content" value={this.state.data.content} change={this.setData} />
                     </Form.Item>
 
-
-
-
-
-
-
-
-                    {/* <Form.Item name="content">
-                      <Editor 
-                        content="水水水水水水水"
-                        getData={this.getContent}
-                      />
-                    </Form.Item>                     */}
-                  </R_form>
-                  </div>
-                
+                    <Form.Item label=" " style={{padding: '10px 25px'}}>
+                    <Button type="primary" htmlType="submit">保存</Button>
+                </Form.Item>
+                </Form>
               </Card>
             </div>
         )

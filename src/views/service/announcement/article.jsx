@@ -29,10 +29,11 @@ const Detail = (props) =>{
                 <Radio value="0">否</Radio>
                 </Radio.Group>
             </Form.Item>
-            <Form.Item name="content" label="内容">
+            <Form.Item label="内容">
                 <Editor 
-                    content=""
-                    getData={getContent}
+                    field="content"
+                    value={props.data.content}
+                    change={props.change}
                 />
             </Form.Item>
         </>

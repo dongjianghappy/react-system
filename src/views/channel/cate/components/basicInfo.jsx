@@ -15,7 +15,7 @@ const Form1 = (props) =>{
             <Form.Item label="分类名称" name="name" >
                 <Input className="input-sm input-250" />
             </Form.Item>        
-            <Form.Item label="所属分类" name="fid" >
+            <Form.Item label="所属分类" name="" >
                 
             </Form.Item>      
             <Form.Item label="类型" name="type" >

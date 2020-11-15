@@ -1,7 +1,7 @@
 import React from 'react';
 import {Space, Card, Table, Checkbox, Button, Input } from 'antd'
 import { Link } from 'react-router-dom'
-import { Status, R_button, R_drawer, R_checkbox, Dialog, Quick} from '../../../components/index.js'
+import { Status, Confirm, R_drawer, R_checkbox, Dialog, Quick} from '../../../components/index.js'
 import {
   ButtonGroup,
   Option,
@@ -74,7 +74,7 @@ class Index extends React.Component{
                 </div>
             <Card title="导航列表" extra={
                 <Space>
-                  <R_drawer.drawerForm title="新增导航" name="新增导航" coding="P0001" renderList={this.getData} {...this.props} >
+                  <R_drawer.drawerForm title="新增导航" name="新增导航" action="add" coding="P0001" renderList={this.getData} {...this.props} >
                     <Detail />
                   </R_drawer.drawerForm>
                   {/* <NavigationDrawer {...this.props} title="新增导航" /> */}
@@ -117,7 +117,9 @@ class Index extends React.Component{
               width="80%"
               changeData={this.props.changeData}
             />
-          <img src={require('../../../static/image/spread.gif')} title="添加二级导航" />
+            <R_drawer.drawerForm isText={true} title="新增页面" icon="add" data={{fid: item.id}} action="add" coding="P0001" renderList={this.getData} {...this.props} >
+              <Detail />
+            </R_drawer.drawerForm>
           </td>
           <td>
           <Quick
@@ -131,10 +133,19 @@ class Index extends React.Component{
           <td><Status type="switch" coding="P0003" field="status" {...item} updateStatus={this.props.updateStatus} disabled={checkButtonAuth('b:navigation:main:status')} /></td>
           <td>
           <Space>
-            <R_drawer.drawerForm title="编辑导航" name="编辑" id={item.id} coding="P0001" renderList={this.getData} {...this.props} >
+            <R_drawer.drawerForm isText={true} title="编辑导航" name="编辑" id={item.id} coding="P0001" renderList={this.getData} {...this.props} >
               <Detail />
             </R_drawer.drawerForm>
-            <R_button.del click={this.handleClick} id={item.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" disabled={checkButtonAuth('b:navigation:main:delete')} />
+            <Confirm 
+              name="删除" 
+              type="text" 
+              config={React.$modalEnum.delete} 
+              coding="P0001" 
+              data={{id: item.id}} 
+              fetch={this.props.fetch} 
+              api="delete" 
+              renderList={this.getData}
+            />
           </Space>
           </td>
         </tr>
@@ -180,10 +191,19 @@ class Index extends React.Component{
                           <td className="col-md-1"><Status type="switch" coding="P0003" field="status" {...item} updateStatus={this.props.updateStatus} disabled={checkButtonAuth('b:navigation:main:status')} /></td>
                           <td className="col-md-2">
                           <Space>
-                          <R_drawer.drawerForm title="编辑导航" id={ss.id} renderList={this.getData} coding="P0001" {...this.props} >
+                          <R_drawer.drawerForm isText={true} title="编辑导航" id={ss.id} renderList={this.getData} coding="P0001" {...this.props} >
                             <Detail />
                           </R_drawer.drawerForm>
-                            <R_button.del click={this.handleClick} id={ss.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" disabled={checkButtonAuth('b:navigation:main:delete')} />
+                          <Confirm 
+                            name="删除" 
+                            type="text" 
+                            config={React.$modalEnum.delete} 
+                            coding="P0001" 
+                            data={{id: ss.id}} 
+                            fetch={this.props.fetch} 
+                            api="delete" 
+                            renderList={this.getData}
+                          />
                           </Space>
                           </td>
                         </tr>

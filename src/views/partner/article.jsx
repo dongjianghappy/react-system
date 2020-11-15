@@ -1,16 +1,8 @@
 import React, { useState } from 'react'
 import { Card, Form, Input, InputNumber, Button, Radio } from 'antd';
-import { Editor } from '../../components'
+import { Editor, Upload, UploadModal } from '../../components'
 
-const Detail = (props) =>{
-
-    const [content, setContent] = useState("")
-
-    const getContent = (data) => {
-        setContent({
-          content: data
-        })
-    }    
+const Detail = (props) =>{ 
 
     return (
         <>
@@ -30,11 +22,14 @@ const Detail = (props) =>{
                 </Radio.Group>
             </Form.Item>
             <Form.Item name="display" label="预览图">
+                <Upload image={props.data.image} />
+                <UploadModal />
             </Form.Item>
-            <Form.Item name="content" label="站点简介">
+            <Form.Item label="站点简介">
                 <Editor 
-                    content=""
-                    getData={getContent}
+                    field="content"
+                    value={props.data.content}
+                    change={props.change}
                 />
             </Form.Item>
         </>

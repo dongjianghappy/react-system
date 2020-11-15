@@ -89,7 +89,7 @@ const render = (route) =>{
 
 const App = (props) =>  {
 
-    return isLogined ? 
+    return isLogined() ? 
       <Frame>
         <Switch>
           {

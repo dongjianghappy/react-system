@@ -30,6 +30,12 @@ import R_pagination from './pagination'
 import Search from './search'
 import TableList from './tableList'
 import Sorter from './sorter'
+import Upload from './upload/upload'
+import UploadWall from './upload/upload-walls'
+import UploadModal from './upload/modal'
+import Confirm from './modal/confirm'
+import TitleAttribute from './attribute/title-attribute'
+import Keyword from './keyword'
 
 export  {
     Status,
@@ -59,6 +65,12 @@ export  {
     R_pagination,
     Search,
     TableList,
-    Sorter
+    Sorter,
+    Upload,
+    UploadWall,
+    UploadModal,
+    Confirm,
+    TitleAttribute,
+    Keyword
 };
   

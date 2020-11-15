@@ -1,21 +1,21 @@
 export const getToken = () => {
-    return localStorage.getItem('token')
+    return sessionStorage.getItem('token')
 }
 
 export const setToken = (token) => {
-    return localStorage.setItem('token', token)
+    return sessionStorage.setItem('token', token)
 }
 
 export const isLogined = (token) => {
-    if(localStorage.getItem('token')){
+    debugger
+    if(sessionStorage.getItem('token')){
         return true
     }
-    alert("sd")
     return false
 }
 
 export const clearToken = () => {
-    localStorage.removeItem('token')
+    sessionStorage.removeItem('token')
 }
 
 export const channelInfo = () => {
@@ -35,7 +35,7 @@ export const getChannel = () => {
 }
 
 export const setRightMenu = (data) => {
-    return localStorage.setItem('rightMenu', data)
+    return sessionStorage.setItem('rightMenu', data)
 }
 // 按钮权限
 export const checkButtonAuth = (data) => {

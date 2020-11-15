@@ -18,7 +18,7 @@ const Form1 = (props) =>{
             <Form.Item label="导航连接" name="url" >
                 <Input className="input-sm input-350" />
             </Form.Item>
-            <Form.Item label="所属导航" name="fid" >
+            <Form.Item label="所属导航" name="" >
                 
             </Form.Item>
             <Form.Item label="顺序" name="sort" >

@@ -41,6 +41,7 @@ class ChannelList extends React.Component {
     const routers = module.filter(route => route.type === "plate")
     const channel = module.filter(route => route.type === "channel")
     const { title, type, width } = this.props
+    const qqqq = channelInfo() || []
     return (
       <>
         <span onClick={this.showDrawer}>
@@ -57,7 +58,7 @@ class ChannelList extends React.Component {
           <Row>
           {
             
-            channelInfo().map((item, index) => (
+            qqqq.map((item, index) => (
               <Col span={6} className="channel-list" onClick={() => this.handel(item.module)} >
                 <Card className="m5 align_center">
                 { item.name }

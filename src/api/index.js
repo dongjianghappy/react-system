@@ -19,11 +19,7 @@ export default {
     // 新增
     insert(params) {
         return http.request('common', 'insert', 'post', params)
-    },   
-    // 删除和还原
-    removeAndRestore(params) {
-        return http.request('common', 'removeAndRestore', 'post', params)
-    },   
+    },    
     // 删除
     delete(params) {
         return http.request('common', 'delete', 'post', params)
@@ -41,6 +37,14 @@ export default {
     insertArticle(params) {
         return http.request('article', 'insert', 'post', params)
     }, 
+    // 删除文档
+    deleteArticle(params) {
+        return http.request('article', 'delete', 'post', params)
+    },  
+    // 删除和还原
+    removeAndRestore(params) {
+        return http.request('article', 'removeAndRestore', 'post', params)
+    },  
     // 更改
     updateArticle(params) {
         return http.request('article', 'update', 'post', params)
@@ -179,7 +183,13 @@ export default {
     // 获取标签值
     getFlag(params) {
         return http.request('common', 'tagCheckbox', 'post', params)
+    },   
+    
+    // 获取tag标签
+    getTag(params) {
+        return http.request('common', 'getTag', 'post', params)
     },     
+    
      // 获取路由信息r
      getRouterInfo(params) {
         return http.request('vue', 'routerInfo', 'post', params)
@@ -248,7 +258,17 @@ export default {
     // 在线留言
     messageBoard(params) {
         return http.request('vue', 'messageBoard','post', params)
-    },    
+    },  
+    
+    // 查看留言
+    viewMessageBoard(params) {
+        return http.request('vue', 'view_messageBoard','post', params)
+    },   
+    
+    // 回复留言
+    replyMessageBoard(params) {
+        return http.request('vue', 'reply_messageBoard','post', params)
+    },      
        
     // 在线留言
     feedback(params) {
@@ -264,6 +284,27 @@ export default {
     interviewedTodayStatistics(params) {
         return http.request('vue', 'related_statistics','post', params)
     },      
+    
+    // 今日IPI
+    todayIp(params) {
+        return http.request('vue', 'today_ip','post', params)
+    },  
+
+    // 今日IPI
+    ipDetial(params) {
+        return http.request('vue', 'ip_detial','post', params)
+    },
+    
+    // 来路域名占比
+    domainPercentage(params) {
+        return http.request('vue', 'domain_percentage','post', params)
+    },    
+
+    // 来路域名占比
+    enginePercentage(params) {
+        return http.request('vue', 'engine_percentage','post', params)
+    },   
+    
     
 
 }

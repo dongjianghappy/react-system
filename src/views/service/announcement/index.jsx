@@ -3,7 +3,7 @@ import { Card, Table, Space, Button} from 'antd';
 import { connect } from 'react-redux'
 import {
   Status,
-  R_button,
+  Confirm,
   R_checkbox,
   Dialog,
   Condition,
@@ -23,6 +23,12 @@ import dispatchToProps from '@/store/dispatch'
 
 class Announcement extends React.Component{
   
+  state = {
+    data: {
+      content: ""
+    }
+  }
+
   getData = () => {
     this.props.select({
       data: {
@@ -43,6 +49,22 @@ class Announcement extends React.Component{
       this.props[data.dispatch](data)
     }     
     
+    // 初始化数据
+    renderInit = (data) => {
+      this.setState({
+        data: data
+      })
+    }
+    
+    // 更新数据
+    setData = (type, value) => {
+      const data = {...this.state.data}
+      data[type] = value
+      this.setState({
+        data: data
+      })
+    }
+
     render(){
       const { announcement } = this.props.module
       
@@ -79,10 +101,29 @@ class Announcement extends React.Component{
                     <td><Status type="switch" coding="Q0011" field="status" {...item} updateStatus={this.props.updateStatus} /></td>
                     <td>
                       <Space>
-                      <R_drawer.drawerForm title="编辑公告通知" name="编辑" id={item.id} coding="Q0011" renderList={this.getData} {...this.props} >
-                        <Article />
+                      <R_drawer.drawerForm 
+                        isText={true} 
+                        title="编辑公告通知"
+                         name="编辑" 
+                         renderInit={this.renderInit}
+                         data={this.state.data}
+                         id={item.id} 
+                         coding="Q0011" 
+                         renderList={this.getData} 
+                         {...this.props} 
+                        >
+                        <Article data={this.state.data} change={this.setData} />
                       </R_drawer.drawerForm>
-                      <R_button.del click={this.handleClick} id={item.id} title="删除伙伴" dispatch="popup" node="dialog" fn="getDelete" />
+                      <Confirm 
+                        name="删除" 
+                        type="text" 
+                        config={React.$modalEnum.delete} 
+                        coding="Q0011" 
+                        data={{id: item.id}} 
+                        fetch={this.props.fetch} 
+                        api="delete" 
+                        renderList={this.getData}
+                      />
                     </Space>
                     </td>
                   </tr>

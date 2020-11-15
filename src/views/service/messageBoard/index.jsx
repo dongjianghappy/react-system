@@ -57,20 +57,25 @@ class Index extends React.Component{
               </tr>
               {
               messageBoard && messageBoard.map((item, index) => (
+                <>
                 <tr>
                   <td><R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={item.id}></R_checkbox></td>
                   <td><img src={item.photos} style={{borderRadius: '50%', width: '30px', height: '30px'}} /></td>
                   <td>{item.nickname}</td>
-                  <td>{item.content}</td>
+                  <td>
+                    {
+                    item.reply === "1" ?
+                    <span style={{backgroundColor: "#52c41a", position: "relative", top: "-1px", display: "inline-block", width: "6px", height: "6px", verticalAlign: "middle", borderRadius: "50%"}}></span>
+                    : ""
+                    }
+                    {item.content}</td>
                   <td>{item.datetime}</td>
                   <td><Status type="switch" coding="Q0004" field="status" {...item} updateStatus={this.props.updateStatus} /></td>
                   <td>
-                  <R_modal.modalForm title="回复信息" type="text" name="回复" id={item.id} coding="P0010" renderList={this.getData} {...this.props} >
-                      <Reply />
-                  </R_modal.modalForm>
+                    <Reply name="回复" fetch={this.props.fetch} data={{id: item.id}} renderList={this.getData} />
                   </td>
-                  
                 </tr>
+                </>
                 ))
               }
             </table>

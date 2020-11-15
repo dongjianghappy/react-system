@@ -72,12 +72,13 @@ async componentDidMount(){
 } 
 
 submit = () => {
-  debugger
   this.props.update({
-    m: 'vue',
-    coding: "U0016",
-    id: this.props.location.state.id,
-    grade: this.state.checkedKeys.join()
+    data: {
+      m: 'vue',
+      coding: "U0016",
+      id: this.props.location.state.id,
+      grade: this.state.checkedKeys.join()
+    }
 })
 }
 
@@ -142,9 +143,9 @@ loop = (data, type, nodeKey = "") => {
                   checkedKeys={this.state.checkedKeys}
                   checkable
                   defaultExpandAll={true}
-                  defaultExpandedKeys={['m:basic', 'm:partner']}
-                  defaultSelectedKeys={['m:basic', 'm:partner']}
-                  defaultCheckedKeys={['m:basic', 'm:partner']}
+                  defaultExpandedKeys={this.state.checkedKeys}
+                  defaultSelectedKeys={this.state.checkedKeys}
+                  defaultCheckedKeys={this.state.checkedKeys}
                   onSelect={this.onSelect}
                   onCheck={this.onCheck}
                   treeData={this.loop(this.state.authorityPage, 1)}
@@ -164,9 +165,9 @@ loop = (data, type, nodeKey = "") => {
                   checkedKeys={this.state.checkedKeys}
                   checkable
                   defaultExpandAll={true}
-                  defaultExpandedKeys={['m:basic', 'm:partner']}
-                  defaultSelectedKeys={['m:basic', 'm:partner']}
-                  defaultCheckedKeys={['m:basic', 'm:partner']}
+                  defaultExpandedKeys={this.state.checkedKeys}
+                  defaultSelectedKeys={this.state.checkedKeys}
+                  defaultCheckedKeys={this.state.checkedKeys}
                   onSelect={this.onSelect}
                   onCheck={this.onCheck}
                   treeData={this.loop(this.state.authorityButton, 2)}
@@ -178,8 +179,8 @@ loop = (data, type, nodeKey = "") => {
               </Col>
             </Row>
 
-            <div>
-              <Button onClick={() => this.submit()}>提交</Button>
+            <div className="absolute p10" style={{ background: "#fff", display: "flex", justifyContent: "flex-end", left: 200, right: 0, bottom: 0, width: "auto"}}>
+              <Button type="primary" onClick={() => this.submit()}>保存</Button>
             </div>
           </>
         )

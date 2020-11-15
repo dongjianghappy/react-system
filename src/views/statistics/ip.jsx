@@ -11,24 +11,60 @@ const { TabPane } = Tabs;
 
 class Ip extends React.Component{
 
-    getData = (data) => {
+      componentDidMount(){
         this.props.select({
+          api: "todayIp",
           data: {
+            date: "today",
             page: 0,
             pagesize: 25,
-            coding: "P0003",
-            ...data
           },
           node: "ipList"            
-      })
-      }
-  
-      componentDidMount(){
-        this.getData({
-          method : 0,
-          apply_checked : 1
         })
       }
+
+      callback = (key) =>{
+        if(key === '1'){
+          this.props.select({
+            api: "todayIp",
+            data: {
+              date: "today",
+              page: 0,
+              pagesize: 25,
+            },
+            node: "ipList"            
+          })
+        }else if(key === '2'){
+          this.props.select({
+            api: "todayIp",
+            data: {
+              page: 0,
+              pagesize: 25,
+            },
+            node: "ipList"            
+          })
+        }else if(key === '3'){
+          this.props.select({
+              data: {
+                page: 0,
+                pagesize: 25,
+                coding: "S0000"
+              },
+              node: "ipList"            
+          })
+        }else if(key === '4'){
+          this.props.select({
+              data: {
+                page: 0,
+                pagesize: 25,
+                coding: "S0003"
+              },
+              node: "ipList"            
+          })
+        }
+      }
+
+
 
     render() {
         const {ipList} = this.props.module
@@ -40,22 +76,18 @@ class Ip extends React.Component{
             
             <Tabs 
                 defaultActiveKey="1"  
-                // onChange={this.callback}
-                // tabBarExtraContent={
-                //   <Space>
-                //   <R_drawer.drawerForm title="新增导航" name="新增友情链接" coding="P0003" renderList={this.getData} {...this.props} >
-                //     <Article />
-                //   </R_drawer.drawerForm>
-                // </Space>
-                // }
+                onChange={this.callback}
               >
               <TabPane tab="今日IP" key="1">
                 <IpTodapy type="1" data={ipList} {...this.props} getData={() => this.getData(1)} />
               </TabPane>
-              <TabPane tab="IP明细" key="2">
+              <TabPane tab="IP占比" key="2">
+                <IpTodapy type="1" data={ipList} {...this.props} getData={() => this.getData(1)} />
+              </TabPane>
+              <TabPane tab="IP明细" key="3">
                 <IpDetail type="1" data={ipList} {...this.props} getData={() => this.getData(1)} />
               </TabPane>
-              <TabPane tab="IP库" key="3">
+              <TabPane tab="IP库" key="4">
                 <IpLib type="1" data={ipList} {...this.props} getData={() => this.getData(1)} />
               </TabPane>
             </Tabs>

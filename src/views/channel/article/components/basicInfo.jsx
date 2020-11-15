@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {Space, Card, Table, Checkbox, Button, Input, Form, Radio, Select } from 'antd'
-import { Status, R_button, R_drawer, R_checkbox, Dialog, R_form, Quick, Editor} from '@/components/index.js'
+import { Status, TitleAttribute, R_drawer, R_checkbox, Dialog, R_form, Quick, Editor, Keyword} from '@/components/index.js'
 
   import {
     ButtonGroup,
-    Keyword,
     CheckboxGroup
   } from '@/common'
   const { Option } = Select
@@ -21,10 +20,11 @@ const Form1 = (props) =>{
     return(
         <>
             <Form.Item label="文章标题" name="title" >
-                <Input placeholder="请输入文章标题" className="input-sm input-350" />
+                <Input placeholder="请输入文章标题" className="input-sm input-350" style={{float: "left"}} />
+                {/* <TitleAttribute /> */}
             </Form.Item>   
-            <Form.Item label="tag标签" name="keyword" >
-                {/* <Keyword tag={this.state.tag} change={this.changeInput} /> */}
+            <Form.Item label="tag标签" >
+                <Keyword field="tag" value={props.data.tag} change={props.setData} fetch={props.fetch} />
             </Form.Item>          
             <Form.Item label="所属分类" name="seotitle" >
                 <Input className="input-sm input-350" />
@@ -54,11 +54,8 @@ const Form1 = (props) =>{
             <Form.Item label="演示地址" name="jump_link" >
                 <Input.TextArea placeholder="演示链接地址" className="input-sm" style={{width: "500px", height: "80px"}} />
             </Form.Item>
-            <Form.Item label="正文" name="content">
-                <Editor 
-                    content={props.data.content}
-                    getData={props.getContent}
-                />
+            <Form.Item label="正文">
+                <Editor field="content" value={props.data.content} change={props.setData} />
             </Form.Item>
             <Form.Item label="摘要" name="summary" >
                 <Input.TextArea className="input-sm" placeholder="请输入内容摘要" />

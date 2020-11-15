@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Button, Form, Tabs, message } from 'antd'
+import { Card, Button, Form, Tabs, message, Input } from 'antd'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import dispatchToProps from '@/store/dispatch'
@@ -17,7 +17,7 @@ class Single extends React.Component{
   form = React.createRef()
 
   state = {
-    content: ""
+    data: {}
   }
 
   onFinish = values => {
@@ -26,8 +26,9 @@ class Single extends React.Component{
               api: "updateArticle",
               data: {
                   coding: this.props.location.state.coding,
-                  content: this.state.content,
                   id: this.props.location.state.id,
+                  tag: this.state.data.tag.join(),
+                  content: this.state.data.content,
                   ...values,        
               }
           }).then((res) => {
@@ -38,7 +39,8 @@ class Single extends React.Component{
               api: "insertArticle",
               data: {
                   coding: this.props.location.state.coding,
-                  content: this.state.content,
+                  tag: this.state.data.tag.join(),
+                  content: this.state.data.content,
                   ...values
               }
           }).then((res) => {
@@ -59,17 +61,21 @@ class Single extends React.Component{
               }
           })
             this.form.current.setFieldsValue( res.result);
+            const tag = res.result.tag.split(",")
+            res.result.tag = tag
             this.setState({
-              content: res.result.content
+              data: res.result
             })
       }
-    }
-
-    getContent = (data) => {
+    }   
+    
+    setData = (type, value) => {
+      const data = {...this.state.data}
+      data[type] = value
       this.setState({
-        content: data
+        data: data
       })
-    }    
+    }
 
     render(){
         return(
@@ -83,7 +89,11 @@ class Single extends React.Component{
         >
       <Tabs type="card">
         <TabPane tab="基本信息" key="1">
-          <BasicInfo getContent={this.getContent} data={{content: this.state.content}} />
+          <BasicInfo
+            data={this.state.data}
+            setData={this.setData}
+            {...this.props}
+          />
         </TabPane>
         <TabPane tab="自定义变量" key="2">
           <div className="p15 mb10" style={{background: "#f1f1f1"}}>

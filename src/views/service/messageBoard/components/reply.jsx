@@ -1,64 +1,102 @@
-import React from 'react'
-import { Card, Form, Input, InputNumber, Button, Radio, Select, DatePicker } from 'antd';
+import React, { useState } from 'react'
+import { Avatar, Modal, message, Button, Form, Input } from 'antd';
+import '../letter.less';
 
 
-export default class Forms extends React.Component{
+const Reply = (props) => {
 
+  const [visible, setVisible] = useState(false)
+  const [data, setData] =  useState({})
+  const [replyContent, setreplyContent] =  useState([])
+  const [form] = Form.useForm();
 
-    render(){
-        const { linkType } = React.$enums;
-        return (
-            <>
-                <Form.Item name="name" label="网站名称" rules={[{ required: true }]}>
-                    <Input />
-                </Form.Item>
-                <Form.Item name="url" label="urlzzz地址">
-                    <Input />
-                </Form.Item>
-                <Form.Item name="sort" label="顺序">
-                    <InputNumber />
-                </Form.Item>
-                <Form.Item name="status" label="显示">
-                    <Radio.Group>
-                    <Radio value="1" defaultChecked >是</Radio>
-                    <Radio value="0">否</Radio>
-                    </Radio.Group>
-                </Form.Item>
-                <Form.Item name="display" label="显示页面">
-                    <Radio.Group>
-                    <Radio value="0">首页</Radio>
-                    <Radio value="1">全站</Radio>
-                    </Radio.Group>
-                </Form.Item>
-                <Form.Item name="source" label="来源">
-                  
-                </Form.Item>
-                <Form.Item name="method" label="方式">
-                    <Radio.Group>
-                    <Radio value="1">交换</Radio>
-                    <Radio value="0">出售</Radio>
-                    </Radio.Group>
-                </Form.Item>
-                <Form.Item name="sell" label="出售状态">
-                    <Radio.Group>
-                    <Radio value="1">正常</Radio>
-                    <Radio value="0">过期</Radio>
-                    </Radio.Group>
-                </Form.Item>
-                <Form.Item name="sell_time" label="出售次数">
-                    <Input />
-                </Form.Item>
-                <Form.Item name="price" label="价格">
-                    <Input />
-                </Form.Item>
+  const showModal = () => {
+    setVisible(true)
+    props.fetch({
+      api: "viewMessageBoard",
+      data: {
+        ...props.data
+      }            
+    }).then((res) => {
+      debugger
+      setData(res.result)
+    })
+  };
 
-                <Form.Item name="content" label="站点简介">
-                    <Input.TextArea />
-                </Form.Item>
-                <Form.Item name={['user', 'introduction']} label="上架时间">
-                    <DatePicker /> 到 <DatePicker />
-                </Form.Item>
-            </>
-        )
-    }
+  const onFinish =values => {
+    props.fetch({
+      api: "replyMessageBoard",
+      data: {
+        fid: props.data.id,
+        ...values
+      }            
+    }).then((res) => {
+      data.reply_list.push({
+        username: "东江哥",
+        content: values.content
+      })
+      setData({...data})
+      props.renderList()
+    })
+    form.resetFields()
+    setreplyContent([...replyContent])
+
+  };
+
+  const handleCancel = e => {
+    setVisible(false)
+  };
+
+    return (
+      <>
+        <Button type="text" onClick={showModal}>
+          {
+            props.name || "reply"
+          }
+        </Button>
+        <Modal
+          title="回复留言"
+          visible={visible}
+          onCancel={handleCancel}
+          maskClosable={false}
+          footer={false}
+        >
+          <div className="reply">
+            <ul>
+              <li>
+                <div className="user-info">
+                  <Avatar size="small" className="photos" />{data.nickname}
+                </div>
+                <div className="content">{data.content}</div>
+              </li>
+              {
+                data.reply_list && data.reply_list.map((item, index) => (
+                  <li className="reply-list">
+                  <div className="manager-info">
+                    <Avatar size="small" className="photos" />{item.username}
+                  </div>
+                  <div className="content">{item.content}</div>
+                  {/* 是的呀。很好用哦 */}
+                </li>
+                ))
+              }
+
+            </ul>
+          </div>
+          <div>
+          <Form form={form} onFinish={onFinish}>
+            <Form.Item name="content" rules={[{ required: true, message: '回复内容不能为空！' }]}>
+              <Input.TextArea placeholder="回复留言"></Input.TextArea>
+            </Form.Item>
+            <Form.Item style={{marginBottom: 0}}>
+              <Button type="primary" htmlType="submit" >回复</Button>
+            </Form.Item>
+          </Form>
+          </div>
+        </Modal>
+      </>
+    );
 }
+
+
+export default Reply

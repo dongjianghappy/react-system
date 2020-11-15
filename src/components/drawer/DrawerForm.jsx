@@ -8,6 +8,7 @@ const layout = {
 
 const DrawerForm = (props) => {
   const [visible, setVisible] = useState(false);
+  const [data, setData] = useState({});
   const [form] = Form.useForm();
 
   const showDrawer = () => {
@@ -21,6 +22,8 @@ const DrawerForm = (props) => {
         }          
       }).then((res) => {
         form.setFieldsValue(res.result);
+        setData(res.result)
+        props.renderInit && props.renderInit(res.result)
       })
     }
   };
@@ -30,7 +33,7 @@ const DrawerForm = (props) => {
   };
 
   const onFinish = () => {
-    if(!props.id){
+    if(props.action === 'add'){
       props.insert({
             api: props.api,
             data: {
@@ -40,6 +43,7 @@ const DrawerForm = (props) => {
             }
         }).then(() => {
           setVisible(false);
+          
           props.renderList()
           message.info("新增成功")
         })
@@ -60,14 +64,43 @@ const DrawerForm = (props) => {
     }
   }
 
+  const Text = () => (
+    <>
+    <span onClick={showDrawer}>
+    {
+      props.icon ?
+      <i className={`iconfont icon-${props.icon}`} />
+      : ""
+    }
+    {props.name}
+    </span>
+    </>
+  )
+
+  const Buttons = () => (
+    <>
+    <Button onClick={showDrawer}>
+    {
+      props.icon ?
+      <i className={`iconfont icon-${props.icon}`} />
+      : ""
+    }
+    {props.name ? props.name : "Open"}
+    </Button>
+    </>
+  )
+
+  // 在其他组件调用callback，设置字段值并以{name: value}的方式传回
+  const callback = (params) => {
+    form.setFieldsValue({...params})
+  }
+
   return (
     <>
-      <Button type={props.type || "primary"} onClick={showDrawer}>
-        {
-          props.name ? props.name : "Open"
-          
-        }
-      </Button>
+      {
+        props.isText === true ? <Text /> : <Buttons />
+      }
+
       <Drawer
         title={props.title}
         placement="right"
@@ -91,7 +124,10 @@ const DrawerForm = (props) => {
         }
       >
         <Form {...layout} form={form} labelAlign="left" >
-            {props.children}
+            {props.children && React.cloneElement(props.children, {
+              callback,
+              form
+            })}
         </Form>
       </Drawer>
     </>

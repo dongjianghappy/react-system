@@ -1,62 +1,73 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, Form, Input, InputNumber, Button, Radio, Select, DatePicker, Row, Col } from 'antd';
-import { SelectBox, R_button, Quick } from '../../components'
-import Article from './addButton'
+import { SelectBox, R_button, Quick, R_modal } from '../../components'
+import Modal from './Detail'
 
 
 const { Option } = Select
-export default class Forms extends React.Component{
+const Detail = (props) => {
 
-    state={
-        data: []
-    }
+    const [response, setResponse] = useState([])
 
-    async componentDidMount(){
-        const data = await this.props.fetch({
-            api: "routerSelect",
-            data: {
-              page: 0,
-              pagesize: 10,
-              type: "1",
-              fid: this.props.global.data.id,
-              coding: "P0015"
-            }            
-        })
+    useEffect(() => {
         debugger
-        if(data.result.list !== null){
-            this.setState({
-                data: data.result.list
-            })
-        }
-        debugger
-    }    
+        
+        setResponse(props.response && props.response.list)
+    }, [props.response && props.response.list])
 
-    render(){
-        debugger
+    // state={
+    //     data: []
+    // }
 
-        return (
-            <>
-                
-                <Row className="mb10">
-                    <Col span={6}>按钮名称</Col>
-                    <Col span={2}>顺序</Col>
-                    <Col span={14}>权限标记</Col>
-                    <Col span={2}>操作</Col>
-                </Row>
-                {
-                    this.state.data.map((item) => (
-                        <Row>
-                            <Col span={6}><Quick id={item.id} title={item.name} field="name" coding="P0015" changeData={this.props.changeData}/></Col>
-                            <Col span={2}><Quick id={item.id} title={item.sort} field="sort" coding="P0015" changeData={this.props.changeData}/></Col>
-                            <Col span={14}><Quick id={item.id} title={item.authority} field="authority" coding="P0015" changeData={this.props.changeData}/></Col>
-                            <Col span={2}>删除</Col>
-                        </Row>
-                    ))
-                }
+    // async componentDidMount(){
+    //     const data = await this.props.fetch({
+    //         api: "routerSelect",
+    //         data: {
+    //           page: 0,
+    //           pagesize: 10,
+    //           type: "1",
+    //           fid: this.props.global.data.id,
+    //           coding: "P0015"
+    //         }            
+    //     })
+    //     debugger
+    //     if(data.result.list !== null){
+    //         this.setState({
+    //             data: data.result.list
+    //         })
+    //     }
+    //     debugger
+    // }    
 
-                <Article {...this.props} />
+    return (
+        <>
+            <table width="100%" className="table-striped col-left-13">
+                <tr>
+                    <td className="col-md-2" >按钮名称</td>
+                    <td className="col-md-1" >顺序</td>
+                    <td className="col-md-7" >权限标记</td>
+                    <td className="col-md-2" >操作</td>
+                </tr>
 
-            </>
-        )
-    }
+            {
+                response && response.map((item) => (
+                    <tr>
+                        <td>{item.name}</td>
+                        <td>{item.sort}</td>
+                        <td>{item.authority}</td>
+                        <td>删除</td>
+                    </tr>
+                ))
+            }
+
+            </table>
+            <R_modal.modalForm title="新增按钮权限" name="新增按钮权限" data={{fid: props.data.fid}} action="add" insert={props.insert} coding="P0015"  >
+                <Modal />
+            </R_modal.modalForm>
+            {/* <Article {...this.props} /> */}
+
+        </>
+    )
 }
+
+export default Detail

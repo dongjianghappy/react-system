@@ -2,78 +2,30 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import { Card, Table, Space, Checkbox, Button, Popover, Row, Col, Pagination} from 'antd';
 import { connect } from 'react-redux'
-import { Checked, Dialog, ButtonGroup, buttonGroupArticle, Operatinavbar, Condition, R_button, R_checkbox } from '../../components/index.js'
+import { Checked, Confirm, ButtonGroup, buttonGroupArticle, Operatinavbar, Condition, R_button, R_checkbox } from '../../components/index.js'
 import dispatchToProps from '../../store/dispatch'
 import coding from '../../static/constant/coding'
 
 import Item from 'antd/lib/list/Item';
 
 class Recycle extends React.Component{
-
-    state ={
-        columns: [
-            {
-              title: '选择',
-              dataIndex: 'name',
-              render: (text, record) => (
-               
-                // checked={
-                //     this.props.common.global.checkedList.some((item, index) => item[index].id)
-                // } 
-                
-                <R_checkbox onChange={this.props.checkBox} list={this.props.common.global.checkedList} data={record.id}></R_checkbox>
-              ),
-            },
-            {
-              title: '编号',
-              dataIndex: 'id',
-            },
-            {
-              title: '文档名称',
-              dataIndex: 'title',
-            },
-            {
-                title: '分类',
-                dataIndex: 'parent'
-            },
-            {
-                title: '发布时间',
-                dataIndex: 'dowmload'
-            },
-            {
-                title: '删除时间',
-                dataIndex: 'datetime',
-                render: text => <a>{text}</a>,
-            },
-            {
-            title: '操作',
-            dataIndex: 'operating',
-            render: (text, record) => (
-                <Space size="middle">
-                    <Button type="primary" size="small" onClick={() => `/sucai/article/edit/${record.id}`}>还原</Button>
-                    <R_button.del click={this.handleClick} id={record.id} title="删除当前数据" dispatch="popup" node="dialog" fn="removeAndRestore" />
-                </Space>
-                ),
-            },
-        ],
-        data: [],
-        total: 0,
-        pages: 0,
-        list: [],
-        allChecked: true
-    };
-
-    componentDidMount(){
+    
+    getData = () => {
         const module = window.location.pathname.split("/")[2]
 
         this.props.select({
             api: "articleList",
             data: {
+              recycle: "true",
               page: 0,
               pagesize: 10,
               coding: React.$coding[module].art
             }            
         })
+    }
+
+    componentDidMount(){
+        this.getData()
     }
 
     render(){
@@ -100,26 +52,42 @@ class Recycle extends React.Component{
       <table width="100%" className="table-striped table-hover artlist col-left-23">
 	    <tr class="th">
             <td className="col-md-1">选择</td>
-            <td className="col-md-1">编号</td>
-            <td className="col-md-4">文档名称</td>
+            <td className="col-md-3">文档名称</td>
             <td className="col-md-2">分类</td>
             <td className="col-md-2">发布时间</td>
             <td className="col-md-2">删除时间</td>
-            <td className="col-md-1">操作</td>
+            <td className="col-md-2">操作</td>
 	    </tr>
         {
             list && list.map((item, index) => (
             <tr class="tr-list">
                 <td><R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={item.id}></R_checkbox></td>
-                <td>{item.id}</td>
                 <td>{item.title}</td>
                 <td>{item.parent}</td>
                 <td>{item.datetime}</td>
                 <td>{item.datetime}</td>
                 <td>
                 <Space size="middle">
-                    <Button type="primary" size="small" onClick={() => `/sucai/article/edit/${item.id}`}>还原</Button>
-                    <R_button.del click={this.handleClick} id={item.id} title="删除当前数据" dispatch="popup" node="dialog" fn="removeAndRestore" />
+                <Confirm 
+                    name="还原" 
+                    type="text" 
+                    config={React.$modalEnum.restore.article} 
+                    coding={art} 
+                    data={{id: item.id, operating: "restore"}}
+                    fetch={this.props.fetch} 
+                    api="removeAndRestore" 
+                    renderList={this.getData}
+                />
+                <Confirm 
+                    name="清除" 
+                    type="text" 
+                    config={React.$modalEnum.delete} 
+                    coding={art} 
+                    data={{id: item.id}}
+                    fetch={this.props.fetch} 
+                    api="deleteArticle" 
+                    renderList={this.getData}
+                />
                 </Space>
                 </td>
             </tr>

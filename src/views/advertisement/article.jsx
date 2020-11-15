@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, Form, Input, InputNumber, Button, Radio, Select, DatePicker } from 'antd';
-import { SelectBox } from '../../components'
+
 
 export default class Forms extends React.Component{
 
@@ -32,7 +32,7 @@ export default class Forms extends React.Component{
                 </Form.Item>
 
                 <Form.Item name="source" label="来源">
-                    <SelectBox data={linkType} />
+                   
                 </Form.Item>
                 <Form.Item name="method" label="方式">
                     <Radio.Group>

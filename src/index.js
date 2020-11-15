@@ -10,6 +10,7 @@ import '@/static/css/iconfont/iconfont.css';
 import App from '@/App';
 import * as serviceWorker from '@/serviceWorker';
 import enums from '@/static/constant/enum'
+import modal_enum from '@/static/constant/modal_enum'
 import coding from '@/static/constant/coding'
 import isLogin from '@/utils/validations/loginAuth'
 import '@/Global.less';
@@ -19,6 +20,7 @@ import '@/Global.less';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 
 React.$enums = enums
+React.$modalEnum = modal_enum
 React.$coding = coding
 
 ReactDOM.render(

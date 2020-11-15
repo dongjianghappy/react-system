@@ -1,7 +1,7 @@
 import React from 'react';
 import {Space, Card, Table, Checkbox, Button, Input, Form } from 'antd'
 import { Link } from 'react-router-dom'
-import { Status, R_button, R_drawer, R_checkbox, Dialog, R_form, Quick} from '../../components/index.js'
+import { Status, Confirm, R_drawer, R_checkbox, Dialog, R_form, Quick} from '../../components/index.js'
 import {
   ButtonGroup,
   Option
@@ -135,8 +135,17 @@ class Single extends React.Component{
                         <td><Status type="switch" coding="P0002" field="status" updateStatus={this.props.updateStatus} /></td>
                         <td>
                           <Space>
-                          <Link to={{pathname:'/admin/single/detail', state:{id: item.id}}}>编辑</Link>
-                            <R_button.del click={this.handleClick} id={item.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" />
+                            <Link to={{pathname:'/admin/single/detail', state:{id: item.id, coding: "P0002"}}}>编辑</Link>
+                            <Confirm 
+                              name="删除" 
+                              type="text" 
+                              config={React.$modalEnum.delete} 
+                              coding="P0002" 
+                              data={{id: item.id}} 
+                              fetch={this.props.fetch} 
+                              api="delete" 
+                              renderList={this.getData}
+                            />
                           </Space>
                         </td>
                     </tr>

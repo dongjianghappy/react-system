@@ -6,7 +6,7 @@ import notfound from '../views/notfound'
 // 频道组件
 import ModuleDefault from '../views/channel'
 import Channel from '../views/channel/cate'
-import List from '../views/channel/article/list'
+import List from '../views/channel/article/'
 import Recycle from '../views/channel/recycle'
 import Article from '../views/channel/article/list-article'
 import SettingChannel from '../views/channel/settingchannel'

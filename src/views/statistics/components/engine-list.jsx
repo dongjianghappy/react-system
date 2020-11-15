@@ -13,6 +13,7 @@ import { Status, R_button, R_drawer, R_checkbox, Dialog, R_form, Quick, R_modal}
 
 const List = (props) =>{
 
+
     return(
         <>
             <table width="100%" class="table-striped table-hover col-left-2">
@@ -26,16 +27,16 @@ const List = (props) =>{
                     <td class="col-md-1">360搜索</td>
                     <td class="col-md-1">搜狗</td>
                 </tr>
-                {
-                    props.data && props.data.map((item, index) => (
-                    <tr>
-                        <td>{item.name}</td>
-                        <td>{item.cycle}</td>
-                        <td>{item.integration}</td>
-                        <td>{item.description}</td>
-                    </tr>
-                    ))
-                }
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
                 </table>
         </>
         

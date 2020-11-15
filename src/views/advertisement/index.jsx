@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Table, Space, Checkbox} from 'antd';
+import { Card, Table, Space, Checkbox, Tabs} from 'antd';
 import {
   Status,
   Dialog,
@@ -16,9 +16,11 @@ import {
   Operatinavbar
 } from '../../common'
 import { connect } from 'react-redux'
-import Article from './article'
+import Detail from './components/detail'
 import dispatchToProps from '../../store/dispatch'
-
+import Statistics from './components/statistics'
+import List from './components/list'
+const { TabPane } = Tabs;
 
 class Advertisement extends React.Component{
     
@@ -76,71 +78,18 @@ class Advertisement extends React.Component{
     },
   ]
 
-    state ={
-        columns: [
-            {
-              title: '选择',
-              dataIndex: 'name',
-              render: (text, record) => (
-                <R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={record.id}></R_checkbox>
-              ),
-            },
-            {
-              title: '广告名称',
-              dataIndex: 'name',
-            },
-            {
-              title: '尺寸类型',
-              dataIndex: 'url',
-            },
-            {
-                title: '广告位置',
-                dataIndex: 'source',
-                render: text => <a>{text}</a>,
-              },
-            {
-                title: '每月/元',
-                dataIndex: 'type',
-                render: text => <a>{text}</a>,
-              },   
-            {
-                title: '时间',
-                dataIndex: 'datetime',
-                render: text => <a>{text}</a>,
-              },                
-
-              
-              {
-                title: '状态',
-                dataIndex: 'status',
-                render:(text, record) => (
-                  <Status type="switch" coding="P0008" field="status" {...record} updateStatus={this.props.updateStatus} />
-                )
-              },
-              {
-                title: '操作',
-                dataIndex: 'operating',
-                render: (text, record) => (
-                  <Space>
-                    <R_button.edit click={this.handleClick} id={record.id} action="edit" title="广告编辑" dispatch="popup" node="drawer" />
-                    <R_button.del click={this.handleClick} id={record.id} title="删除广告" dispatch="popup" node="dialog" fn="getDelete" />
-                  </Space>
-                  ),
-              },
-        ],
-        data: [],
-        total: 0,
-        pages: 0
-    }
+  getData = () => {
+    this.props.select({
+      data: {
+        page: 0,
+        pagesize: 25,
+        coding: "P0008"
+      }            
+  })
+  }
 
     componentDidMount(){
-      this.props.select({
-        data: {
-          page: 0,
-          pagesize: 25,
-          coding: "P0008"
-        }            
-    })
+      this.getData()
     }
 
     handleClick = (data) => {
@@ -148,66 +97,35 @@ class Advertisement extends React.Component{
     }    
 
     render(){
-
-        const {columns, data} = this.state
         const {list, total, pages} = this.props.module
 
         return (
             <div>
-                <ModalGroup {...this.props} article={Article} coding="P0008" />
 
-                <div style={{marginBottom: 15}}>
-                  <ul className="navbar">
-                    <li>广告管理</li>
-                    <li><R_button.link click={this.handleClick} action="add" name="新增广告" title="新增广告" dispatch="popup" node="drawer" /></li>
-                    <li>生成JSON文件</li>
-                    <li className="search"><Condition /></li>
-                  </ul>
-                  <Option option={this.option} select={this.props.select} coding="P0008" />
-                  
-                </div>
-
+                <Statistics />
                 <Card>
-                  <table width="100%" className="table-striped table-hover col-left-2">
-                    <tr>
-                      <td className="col-md-1">选择</td>
-                      <td className="col-md-2">广告名称</td>
-                      <td className="col-md-1">尺寸类型</td>
-                      <td className="col-md-2">广告位置</td>
-                      <td className="col-md-1">每月/元</td>
-                      <td className="col-md-2">时间</td>
-                      <td className="col-md-1">状态</td>
-                      <td className="col-md-2">操作</td>
-                    </tr>
-                    {
-                  list && list.map((item, index) => (
-                    <tr className="tr-list">
-                      <td><R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={item.id}></R_checkbox></td>
-                      <td><Quick id={item.id} title={item.name} field="name" coding="P0005" changeData={this.props.changeData}/></td>
-                      <td>{item.size_type}</td>
-                      <td>{item.size}</td>
-                      <td>{item.price}</td>
-                      <td>{item.last_time}</td>
-                      <td><Status type="switch" coding="P0008" field="status" {...item} updateStatus={this.props.updateStatus} /></td>
-                      <td>
-                        <Space>
-                          <R_button.edit click={this.handleClick} id={item.id} action="edit" title="广告编辑" dispatch="popup" node="drawer" />
-                          <R_button.del click={this.handleClick} id={item.id} title="删除广告" dispatch="popup" node="dialog" fn="getDelete" />
-                        </Space>
-                      </td>
-                    </tr>
-                    ))
-                  }
-                  </table>
-                
-                <Operatinavbar 
-                  node={ this.props.node }
-                  button={['all', 'delete', 'open', 'close']}
-                  data={this.props.module}
-                  coding="P0008"
-                  {...this.props}
-                />
-                <input id="coding" type="hidden" value="P0008" />
+
+                <Tabs 
+                defaultActiveKey="1"  
+                onChange={this.callback}
+                tabBarExtraContent={
+                  <Space>
+                  <R_drawer.drawerForm title="新增广告" name="新增广告" action="add" coding="P0008" renderList={this.getData} {...this.props} >
+                    <Detail />
+                  </R_drawer.drawerForm>
+                </Space>
+                }
+              >
+              <TabPane tab="广告管理" key="1">
+                <List type="1" data={list} {...this.props} getData={() => this.getData(1)} />
+              </TabPane>
+              <TabPane tab="广告申请" key="2">
+                {/* <List type="1" data={list} {...this.props} getData={() => this.getData(1)} /> */}
+              </TabPane>
+              <TabPane tab="订单列表" key="3">
+                {/* <ApplyList type="1" data={list} {...this.props} getData={() => this.getData(1)} /> */}
+              </TabPane>
+            </Tabs>
                 </Card>
             </div>
         )

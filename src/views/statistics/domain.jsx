@@ -10,23 +10,48 @@ const { TabPane } = Tabs;
 
 class Domain extends React.Component{
 
-    getData = (data) => {
+      componentDidMount(){
         this.props.select({
+          api: "domainPercentage",
           data: {
+            date: "today",
             page: 0,
             pagesize: 25,
-            coding: "P0003",
-            ...data
           },
           node: "domain"            
-      })
-      }
-  
-      componentDidMount(){
-        this.getData({
-          method : 0,
-          apply_checked : 1
         })
+      }
+
+      callback = (key) =>{
+        if(key === '1'){
+          this.props.select({
+            api: "domainPercentage",
+            data: {
+              date: "today",
+              page: 0,
+              pagesize: 25,
+            },
+            node: "domain"            
+          })
+        }else if(key === '2'){
+          this.props.select({
+            api: "domainPercentage",
+            data: {
+              page: 0,
+              pagesize: 25,
+            },
+            node: "domain"            
+          })
+        }else if(key === '3'){
+          this.props.select({
+              data: {
+                page: 0,
+                pagesize: 25,
+                coding: "S0001"
+              },
+              node: "domain"            
+          })
+        }
       }
 
     render() {
@@ -37,19 +62,15 @@ class Domain extends React.Component{
                 <Card>
                 <Tabs 
                 defaultActiveKey="1"  
-                // onChange={this.callback}
-                // tabBarExtraContent={
-                //   <Space>
-                //   <R_drawer.drawerForm title="新增导航" name="新增友情链接" coding="P0003" renderList={this.getData} {...this.props} >
-                //     <Article />
-                //   </R_drawer.drawerForm>
-                // </Space>
-                // }
+                onChange={this.callback}
               >
-              <TabPane tab="今日来路域名" key="1">
+              <TabPane tab="今日域名占比" key="1">
                 <DomainList type="1" data={domain} {...this.props} getData={() => this.getData(1)} />
               </TabPane>
-              <TabPane tab="来路域名明细" key="2">
+              <TabPane tab="来路域名占比" key="2">
+                <DomainList type="1" data={domain} {...this.props} getData={() => this.getData(1)} />
+              </TabPane>
+              <TabPane tab="来路域名明细" key="3">
                 <DomainDetail type="1" data={domain} {...this.props} getData={() => this.getData(1)} />
               </TabPane>
             </Tabs>

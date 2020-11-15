@@ -54,7 +54,7 @@ class Slideshow extends React.Component{
                   }
                 >
                   {item.name}
-                  <R_drawer.drawerForm type="text" title="编辑友链" name="编辑" id={item.id} coding="T0000" renderList={this.getData} {...this.props} >
+                  <R_drawer.drawerForm isText={true} title="编辑友链" name="编辑" id={item.id} coding="T0000" renderList={this.getData} {...this.props} >
                         <Detail />
                       </R_drawer.drawerForm>                  
                 </Card>

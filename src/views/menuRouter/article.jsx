@@ -1,46 +1,46 @@
 import React from 'react'
-import { Card, Form, Input, InputNumber, Button, Radio, Select, DatePicker, Checkbox } from 'antd';
-import { SelectBox } from '../../components'
+import { Form, Input, Radio } from 'antd';
 
-const { Option } = Select
-export default class Forms extends React.Component{
+const Forms = (props) => {
 
-
-    render(){
-        const { module } = React.$enums;
         return (
             <>
                 <Form.Item name="name" label="页面" rules={[{ required: true }]}>
-                    <Input />
+                    <Input placeholder="请输入页面名称" />
                 </Form.Item>
                 <Form.Item name="path" label="路径">
-                    <Input />
+                    <Input placeholder="请输入路径" />
                 </Form.Item>
                 <Form.Item name="sort" label="顺序">
-                    <Input />
+                    <Input placeholder="请输入顺序" />
                 </Form.Item>
                 <Form.Item name="component" label="组件">
-                    <Input />
+                    <Input placeholder="请输入组件" />
                 </Form.Item>
-                <Form.Item name="authority" label="权限">
-                    <Input />
-                </Form.Item>
-                <Form.Item name="channel" label="频道">
-                    <Radio.Group>
-                        <Radio value="1" defaultChecked >是</Radio>
-                        <Radio value="0">否</Radio>
-                        </Radio.Group>
+                <Form.Item name="authority" label="权限" rules={[{ required: true }]}>
+                    <Input placeholder="请输入以m:name格式的权限标记" />
                 </Form.Item>
                 <Form.Item name="module" label="标识">
                     <Input />
                 </Form.Item>
-                <Form.Item label="菜单" name="isShow" valuePropName="checked">
-                    <Checkbox>勾选时做为菜单展示侧边栏</Checkbox>
+                <Form.Item label="菜单" name="isShow" >
+                    <Radio.Group>
+                        <Radio value="true" defaultChecked >侧边栏展示</Radio>
+                        <Radio value="false">侧边栏不展示</Radio>
+                    </Radio.Group>
+                </Form.Item>
+                <Form.Item label="是否点击" name="disabled" >
+                    <Radio.Group>
+                        <Radio value="true" defaultChecked >可点击</Radio>
+                        <Radio value="false">不可点击</Radio>
+                    </Radio.Group>
                 </Form.Item>
                 <Form.Item name="icon" label="图标">
-                    <Input />
+                    <Input placeholder="icon图标" />
                 </Form.Item>
             </>
         )
-    }
+
 }
+
+export default Forms

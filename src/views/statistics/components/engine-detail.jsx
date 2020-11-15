@@ -17,7 +17,7 @@ const List = (props) =>{
         <>
             <table width="100%" class="table-striped table-hover col-left-34">
                 <tr class="th">
-                    <td class="col-md-1">序号</td>
+                    <td class="col-md-1">id</td>
                     <td class="col-md-1">搜索引擎</td>
                     <td class="col-md-3">页面来源</td>
                     <td class="col-md-3">受访页面</td>
@@ -28,10 +28,13 @@ const List = (props) =>{
                 {
                     props.data && props.data.map((item, index) => (
                     <tr>
-                        <td>{item.name}</td>
-                        <td>{item.cycle}</td>
-                        <td>{item.integration}</td>
-                        <td>{item.description}</td>
+                        <td>{item.id}</td>
+                        <td>{item.source}</td>
+                        <td>{item.source_url}</td>
+                        <td>{item.url}</td>
+                        <td>{item.system}</td>
+                        <td>{item.ip}</td>
+                        <td>{item.datetime}</td>
                     </tr>
                     ))
                 }
