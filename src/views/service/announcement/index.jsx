@@ -1,155 +1,149 @@
-import React from 'react'
-import { Card, Table, Space, Button} from 'antd';
-import { connect } from 'react-redux'
+import React from "react";
+import { Card, Space } from "antd";
 import {
-  Status,
-  Confirm,
-  R_checkbox,
-  Dialog,
-  Condition,
-  R_drawer,
-  Quick
-} from '@/components/index.js'
-import {
-  Navbar,
-  ButtonGroup,
-  Option,
-  OptionSelect,
-  ModalGroup,
-  Operatinavbar
-} from '@/common'
-import Article from './article'
-import dispatchToProps from '@/store/dispatch'
+  connect,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+} from "@/utils";
+import { Status, Confirm, WeCheckbox, WeDrawer, Quick } from "@/components";
+import { Operatinavbar } from "@/common";
+import Article from "./article";
 
-class Announcement extends React.Component{
-  
-  state = {
-    data: {
-      content: ""
-    }
-  }
+const { add, del, edit } = authorized.announcement;
+const { announcement: coding } = codings;
 
+class Announcement extends React.Component {
   getData = () => {
-    this.props.select({
+    this.props.dispatch.select({
       data: {
         page: 0,
         pagesize: 25,
-        coding: "Q0011"
+        coding,
       },
-      node: "announcement"            
-  })
+      node: "announcement",
+    });
+  };
+
+  componentDidMount() {
+    this.getData();
   }
 
-    componentDidMount(){
-      this.getData()
-    }
+  render() {
+    const { dispatch, module } = this.props;
 
-
-    handleClick = (data) => {
-      this.props[data.dispatch](data)
-    }     
-    
-    // 初始化数据
-    renderInit = (data) => {
-      this.setState({
-        data: data
-      })
-    }
-    
-    // 更新数据
-    setData = (type, value) => {
-      const data = {...this.state.data}
-      data[type] = value
-      this.setState({
-        data: data
-      })
-    }
-
-    render(){
-      const { announcement } = this.props.module
-      
-        return (
-            <div>
-                <ModalGroup {...this.props} article={Article} coding="Q0011" />
-            
-                <Card
-                  title="公告通知"
-                  extra={
-                    <R_drawer.drawerForm title="发布公告通知" name="发布公告通知" coding="Q0011" renderList={this.getData} {...this.props} >
-                      <Article />
-                    </R_drawer.drawerForm>
-                  }
-                >
-                <table width="100%" className="table-striped table-hover col-left-3">
-                  <tr className="th">
-                    <td className="col-md-1">选择</td>
-                    <td className="col-md-1">顺序</td>
-                    <td className="col-md-7">伙伴名称</td>
-                    <td className="col-md-1">状态</td>
-                    <td className="col-md-2">操作</td>
-                  </tr>
-                  {
-                  announcement && announcement.map((item, index) => (
-                  <tr class="tr-list">
-                    <td><R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={item.id}></R_checkbox></td>
-                    <td>
-                      <Quick id={item.id} title={item.sort} field="sort" coding="Q0011" changeData={this.props.changeData}/>
-                    </td>
-                    <td>
-                    <Quick id={item.id} title={item.title} field="title" width="50%" coding="Q0011" changeData={this.props.changeData}/>
-                    </td>
-                    <td><Status type="switch" coding="Q0011" field="status" {...item} updateStatus={this.props.updateStatus} /></td>
-                    <td>
-                      <Space>
-                      <R_drawer.drawerForm 
-                        isText={true} 
+    return (
+      <div>
+        <Card
+          title="公告通知"
+          extra={
+            checkButtonAuth("b:manage:announcement:add") ? (
+              <WeDrawer.Form
+                name="发布公告通知"
+                icon="add"
+                data={{ coding }}
+                renderList={this.getData}
+                authorized={checkButtonAuth("add")}
+                {...this.props}
+              >
+                <Article />
+              </WeDrawer.Form>
+            ) : (
+              ""
+            )
+          }
+        >
+          <table width="100%" className="table-striped table-hover col-left-3">
+            <tr className="th">
+              <td className="col-md-1">选择</td>
+              <td className="col-md-1">顺序</td>
+              <td className="col-md-7">伙伴名称</td>
+              <td className="col-md-1">状态</td>
+              <td className="col-md-2">操作</td>
+            </tr>
+            {module.announcement &&
+              module.announcement.map((item, index) => (
+                <tr class="tr-list">
+                  <td>
+                    <WeCheckbox
+                      data={{ id: item.id }}
+                      {...this.props}
+                    ></WeCheckbox>
+                  </td>
+                  <td>
+                    <Quick
+                      title={item.sort}
+                      data={{ id: item.id, field: "sort", coding }}
+                      authorized={checkButtonAuth("edit")}
+                      {...this.props}
+                    />
+                  </td>
+                  <td>
+                    <Quick
+                      title={item.title}
+                      data={{ id: item.id, field: "title", coding }}
+                      authorized={checkButtonAuth("edit")}
+                      {...this.props}
+                      width="50%"
+                    />
+                  </td>
+                  <td>
+                    <Status
+                      data={{ item, field: "status", coding }}
+                      authorized={checkButtonAuth("edit")}
+                      {...this.props}
+                    />
+                  </td>
+                  <td>
+                    <Space>
+                      <WeDrawer.Form
                         title="编辑公告通知"
-                         name="编辑" 
-                         renderInit={this.renderInit}
-                         data={this.state.data}
-                         id={item.id} 
-                         coding="Q0011" 
-                         renderList={this.getData} 
-                         {...this.props} 
-                        >
-                        <Article data={this.state.data} change={this.setData} />
-                      </R_drawer.drawerForm>
-                      <Confirm 
-                        name="删除" 
-                        type="text" 
-                        config={React.$modalEnum.delete} 
-                        coding="Q0011" 
-                        data={{id: item.id}} 
-                        fetch={this.props.fetch} 
-                        api="delete" 
+                        name="编辑"
+                        isText={true}
+                        action="edit"
+                        data={{ id: item.id, coding }}
                         renderList={this.getData}
+                        authorized={checkButtonAuth("edit")}
+                        {...this.props}
+                      >
+                        <Article />
+                      </WeDrawer.Form>
+                      <Confirm
+                        name="删除"
+                        config={{
+                          operating: "delete",
+                          message: React.$modalEnum,
+                        }}
+                        data={{ coding, id: item.id }}
+                        api="delete"
+                        renderList={this.getData}
+                        authorized={checkButtonAuth("delete")}
+                        {...this.props}
                       />
                     </Space>
-                    </td>
-                  </tr>
-                  ))
-                }
-                </table>
-                
-                <Operatinavbar 
-                  node={ this.props.node }
-                  button={['all', 'delete', 'open', 'close']}
-                  data={this.props.module}
-                  coding="Q0011"
-                  {...this.props}
-                />
-                <input id="coding" type="hidden" value="Q0011" />
-                </Card>
-            </div>
-        )
-    }
-}
+                  </td>
+                </tr>
+              ))}
+          </table>
 
-const stateToProops = (state) => {
-  return {
-    global: state.common.global,
-    module: state.service
+          <Operatinavbar
+            button={["all", "delete", "open", "close"]}
+            data={{ list: module.checkedList, coding }}
+            renderList={this.getData}
+            checkButtonAuth={checkButtonAuth}
+            authorized={authorized.announcement}
+            {...this.props}
+          />
+        </Card>
+      </div>
+    );
   }
 }
 
-export default connect(stateToProops, dispatchToProps)(Announcement)
+export default connect(
+  (state) => ({
+    module: state.service,
+  }),
+  dispatchToProps
+)(Announcement);

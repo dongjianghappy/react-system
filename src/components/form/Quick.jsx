@@ -2,12 +2,14 @@ import React, { useState, useRef } from 'react'
 import { Button, message } from 'antd'
 
 const Quick = (props) => {
+
+    const {dispatch, data} = props
     const [value, setValue] = useState("")
     const Ref = useRef()
 
     const  getFocus= (e) => {
 
-        if(props.disabled){
+        if(props.disabled || !props.authorized){
             return true
         }
 
@@ -22,11 +24,16 @@ const Quick = (props) => {
       Ref.current.classList.remove("inputline")
       Ref.current.removeAttribute("contenteditable")
       if(value !== Ref.current.innerHTML){
-          props.changeData({
-              coding: props.coding,
-              id: props.id,
-              field: props.field,
-              value: Ref.current.innerHTML,
+          dispatch.update({
+              api: "changeData",
+              data: {
+                coding: data.coding,
+                id: data.id,
+                field: data.field,
+                value: Ref.current.innerHTML
+              }
+          }).then((res) => {
+            message.info("编辑成功")
           })
       }
     }

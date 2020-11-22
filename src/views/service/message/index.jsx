@@ -1,66 +1,71 @@
-import React from 'react';
-import { Card, Row, Col, Space, Button } from 'antd'
-import { connect } from 'react-redux'
-import dispatchToProps from '@/store/dispatch'
-
+import React from "react";
+import { Card, Space, Button } from "antd";
 import {
-  R_checkbox
-} from '@/components/index.js'
+  connect,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+} from "@/utils";
 
+import { WeCheckbox } from "@/components";
 
-class Basic extends React.Component{
+const { add, del, edit } = authorized.partner;
+const { message: coding } = codings.service;
 
-    componentDidMount(){
-      this.props.select({
-        data: {
-          page: 0,
-          pagesize: 25,
-          coding: "Q0006"
-        },
-        node: "message"            
-      })
-    }
+class ServiceMessage extends React.Component {
+  getData = () => {
+    this.props.dispatch.select({
+      data: {
+        page: 0,
+        pagesize: 25,
+        coding,
+      },
+      node: "message",
+    });
+  };
 
-    render(){
-        
-        const { message } = this.props.module
+  componentDidMount() {
+    this.getData();
+  }
 
-        return(
-           <>
-                <Card title="系统消息">
-                  <table width="100%" className="table-striped col-left-12">
-                      {/* <tr className="th">
-                      <td>频道</td>
-                      <td>频道首页</td>
-                      <td>日期</td>
-                      </tr> */}
-                      {
-                          message && message.map((item, index) => (
-                              <tr className="tr-list">
-                                  <td className="col-md-1"><R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={item.id}></R_checkbox></td>
-                                  <td className="col-md-10">{item.title}</td>
-                                  <td className="col-md-1">{item.date_time}</td>
-                              </tr>
-                          ))
-                      }
-                  </table>
-                  
-                  <div className="mt25">
-                    <Space>
-                      <Button>删除消息</Button>
-                      <Button>标记已读</Button>
-                    </Space>
-                  </div>
-                </Card>
-           </>
-        )
-    }
-}
+  render() {
+    const { message } = this.props.module;
 
-const stateToProops = (state) => {
-  return {
-    module: state.service
+    return (
+      <>
+        <Card title="系统消息">
+          <table width="100%" className="table-striped col-left-12">
+            {message &&
+              message.map((item, index) => (
+                <tr className="tr-list">
+                  <td className="col-md-1">
+                    <WeCheckbox
+                      data={{ id: item.id }}
+                      {...this.props}
+                    ></WeCheckbox>
+                  </td>
+                  <td className="col-md-10">{item.title}</td>
+                  <td className="col-md-1">{item.date_time}</td>
+                </tr>
+              ))}
+          </table>
+
+          <div className="mt25">
+            <Space>
+              <Button>删除消息</Button>
+              <Button>标记已读</Button>
+            </Space>
+          </div>
+        </Card>
+      </>
+    );
   }
 }
 
-export default connect(stateToProops, dispatchToProps)(Basic)
+export default connect(
+  (state) => ({
+    module: state.service,
+  }),
+  dispatchToProps
+)(ServiceMessage);

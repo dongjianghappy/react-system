@@ -1,90 +1,107 @@
-import React from 'react'
-import { Card, Table, Button, Space } from 'antd'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import dispatchToProps from '@/store/dispatch'
+import React from "react";
+import { Card, Avatar } from "antd";
 import {
-  Status,
-  R_checkbox,
-  R_drawer,
-  R_button,
-  Dialog,
-  Condition
-} from '../../../components/index.js'
-import {
-  Navbar,
-  ButtonGroup,
-  Option,
-  OptionSelect,
-  ModalGroup,
-  Operatinavbar
-} from '../../../common'
+  connect,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+} from "@/utils";
 
-class Index extends React.Component{
+import { Status, Confirm, WeCheckbox, WeDrawer } from "@/components";
+import { Operatinavbar } from "@/common";
 
-    getData = () => {
-      this.props.select({
-        api: "feedback",
-        data: {
-          page: 0,
-          pagesize: 25,
-          coding: "Q0003"
-        },
-        node: "feedback"            
-    })
-    }
+const { del, edit } = authorized.feedback;
+const { feedback: coding } = codings;
 
-    componentDidMount(){
-      this.getData()
-    }
-    
+class Index extends React.Component {
+  getData = () => {
+    this.props.dispatch.select({
+      api: "feedback",
+      data: {
+        page: 0,
+        pagesize: 25,
+        coding,
+      },
+      node: "feedback",
+    });
+  };
 
-    render() {
+  componentDidMount() {
+    this.getData();
+  }
 
-        const { feedback } = this.props.module
-        return (
-            <Card title="意见反馈列表">
-            <table width="100%" className="table-striped table-hover col-left-4">
-              <tr className="th">
-                <td className="col-md-1">选择</td>
-                <td className="col-md-1">头像</td>
-                <td className="col-md-1">用户名</td>
-                <td className="col-md-5">反馈内容</td>
-                <td className="col-md-2">反馈日期</td>
-                <td className="col-md-1">状态</td>
-                <td className="col-md-1">操作</td>
+  render() {
+    const { feedback } = this.props.module;
+    return (
+      <Card title="意见反馈列表">
+        <table width="100%" className="table-striped table-hover col-left-4">
+          <tr className="th">
+            <td className="col-md-1">选择</td>
+            <td className="col-md-1">头像</td>
+            <td className="col-md-1">用户名</td>
+            <td className="col-md-5">反馈内容</td>
+            <td className="col-md-2">反馈日期</td>
+            <td className="col-md-1">状态</td>
+            <td className="col-md-1">操作</td>
+          </tr>
+          {feedback &&
+            feedback.map((item, index) => (
+              <tr>
+                <td>
+                  <WeCheckbox
+                    data={{ id: item.id }}
+                    {...this.props}
+                  ></WeCheckbox>
+                </td>
+                <td>
+                  <Avatar src={item.photos} />
+                </td>
+                <td>{item.nickname}</td>
+                <td>{item.content}</td>
+                <td>{item.datetime}</td>
+                <td>
+                  <Status
+                    data={{ item, field: "checked", coding }}
+                    authorized={checkButtonAuth("edit")}
+                    {...this.props}
+                  />
+                </td>
+                <td>
+                  <Confirm
+                    name="删除"
+                    config={{
+                      operating: "delete",
+                      message: React.$modalEnum,
+                    }}
+                    data={{ coding, id: item.id }}
+                    api="delete"
+                    renderList={this.getData}
+                    authorized={checkButtonAuth("delete")}
+                    {...this.props}
+                  />
+                </td>
               </tr>
-              {
-              feedback && feedback.map((item, index) => (
-                <tr>
-                  <td><R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={item.id}></R_checkbox></td>
-                  <td><img src={item.photos} style={{borderRadius: '50%', width: '30px', height: '30px'}} /></td>
-                  <td>{item.nickname}</td>
-                  <td>{item.content}</td>
-                  <td>{item.datetime}</td>
-                  <td><Status type="switch" coding="Q0004" field="status" {...item} updateStatus={this.props.updateStatus} /></td>
-                  <td>删除</td>
-                </tr>
-                ))
-              }
-            </table>
+            ))}
+        </table>
 
-                <Operatinavbar 
-                  node={ this.props.node }
-                  button={['all', 'delete', 'open', 'close']}
-                  data={this.props.module}
-                  coding="P0003"
-                  {...this.props}
-                />
-            </Card>
-        )
-    }
+        <Operatinavbar
+          button={["all", "delete", "open", "close"]}
+          data={{ list: module.checkedList, coding }}
+          renderList={this.getData}
+          checkButtonAuth={checkButtonAuth}
+          authorized={authorized.partner}
+          {...this.props}
+        />
+      </Card>
+    );
+  }
 }
 
 const stateToProops = (state) => {
   return {
-    module: state.service
-  }
-}
+    module: state.service,
+  };
+};
 
-export default connect(stateToProops, dispatchToProps)(Index)
+export default connect(stateToProops, dispatchToProps)(Index);

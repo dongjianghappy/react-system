@@ -8,10 +8,10 @@ import Delete from './button/delete'
 // import R_button from './button/button'
 import ButtonGroup from './button/buttonGroup'
 import ButtonGroupArticle from './button/buttonGroupArticle'
-// 弹窗组
-// import R_drawer from './drawer/Drawer'
-import R_modal from './modal/inde'
-import R_drawer from './drawer'
+
+import WeModal from './modal/inde'
+import WeDrawer from './drawer'
+import WeAlert from './alert'
 import R_form from './form/form'
 import Dialog from './modal'
 import ModalForm from './/modal/modalForm'
@@ -23,7 +23,7 @@ import Operatinavbar from './operatinavbar'
 import Condition from './condition'
 import OperatingGroup from './button/operatingGroup'
 import SelectBox from './select'
-import R_checkbox from './button/checkbox'
+import WeCheckbox from './button/checkbox'
 import Quick from './form/Quick'
 import Editor from './editor'
 import R_pagination from './pagination'
@@ -43,8 +43,9 @@ export  {
     Add,
     Edit,
     Delete,
-    R_modal,
-    R_drawer,
+    WeModal,
+    WeDrawer,
+    WeAlert,
     R_button,
     ButtonGroup,
     ButtonGroupArticle,
@@ -59,7 +60,7 @@ export  {
     OperatingGroup,
     SelectBox,
     Drawers,
-    R_checkbox,
+    WeCheckbox,
     Quick,
     Editor,
     R_pagination,

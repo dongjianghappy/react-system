@@ -1,101 +1,125 @@
-import React from 'react'
-import { Card, Table, Button, Space } from 'antd'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import dispatchToProps from '@/store/dispatch'
-import Reply from './components/reply'
+import React from "react";
+import { Card, Avatar } from "antd";
 import {
-  Status,
-  R_checkbox,
-  R_drawer,
-  R_button,
-  Dialog,
-  R_modal
-} from '../../../components/index.js'
-import {
-  Navbar,
-  ButtonGroup,
-  Option,
-  OptionSelect,
-  ModalGroup,
-  Operatinavbar
-} from '../../../common'
+  connect,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+} from "@/utils";
+import Reply from "./components/reply";
+import { Status, WeCheckbox } from "@/components/index.js";
+import { Operatinavbar } from "@/common";
 
-class Index extends React.Component{
+const { reply, del, edit } = authorized.messageBoard;
+const { messageBoard: coding } = codings;
 
-    getData = () => {
-      this.props.select({
-        api: "messageBoard",
-        data: {
-          page: 0,
-          pagesize: 25,
-          coding: "Q0004"
-        },
-        node: "messageBoard"            
-    })
-    }
+class Index extends React.Component {
+  getData = () => {
+    this.props.dispatch.select({
+      api: "messageBoard",
+      data: {
+        page: 0,
+        pagesize: 25,
+        coding,
+      },
+      node: "messageBoard",
+    });
+  };
 
-    componentDidMount(){
-      this.getData()
-    }
-    
+  componentDidMount() {
+    this.getData();
+  }
 
-    render() {
-
-        const { messageBoard } = this.props.module
-        return (
-            <Card title="留言列表">
-            <table width="100%" className="table-striped table-hover col-left-4">
-              <tr className="th">
-                <td className="col-md-1">选择</td>
-                <td className="col-md-1">头像</td>
-                <td className="col-md-1">用户名</td>
-                <td className="col-md-5">留言内容</td>
-                <td className="col-md-2">留言日期</td>
-                <td className="col-md-1">状态</td>
-                <td className="col-md-1">操作</td>
-              </tr>
-              {
-              messageBoard && messageBoard.map((item, index) => (
-                <>
+  render() {
+    const { messageBoard } = this.props.module;
+    return (
+      <Card title="留言列表">
+        <table width="100%" className="table-striped table-hover col-left-4">
+          <tr className="th">
+            <td className="col-md-1">选择</td>
+            <td className="col-md-1">头像</td>
+            <td className="col-md-1">用户名</td>
+            <td className="col-md-5">留言内容</td>
+            <td className="col-md-2">留言日期</td>
+            <td className="col-md-1">状态</td>
+            <td className="col-md-1">操作</td>
+          </tr>
+          {messageBoard &&
+            messageBoard.map((item, index) => (
+              <>
                 <tr>
-                  <td><R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={item.id}></R_checkbox></td>
-                  <td><img src={item.photos} style={{borderRadius: '50%', width: '30px', height: '30px'}} /></td>
+                  <td>
+                    <WeCheckbox
+                      data={{ id: item.id }}
+                      {...this.props}
+                    ></WeCheckbox>
+                  </td>
+                  <td>
+                    <Avatar src={item.photos} />
+                  </td>
                   <td>{item.nickname}</td>
                   <td>
-                    {
-                    item.reply === "1" ?
-                    <span style={{backgroundColor: "#52c41a", position: "relative", top: "-1px", display: "inline-block", width: "6px", height: "6px", verticalAlign: "middle", borderRadius: "50%"}}></span>
-                    : ""
-                    }
-                    {item.content}</td>
+                    {item.reply === "1" ? (
+                      <span
+                        style={{
+                          backgroundColor: "#52c41a",
+                          position: "relative",
+                          top: "-1px",
+                          display: "inline-block",
+                          width: "6px",
+                          height: "6px",
+                          verticalAlign: "middle",
+                          borderRadius: "50%",
+                        }}
+                      ></span>
+                    ) : (
+                      ""
+                    )}
+                    {item.content}
+                  </td>
                   <td>{item.datetime}</td>
-                  <td><Status type="switch" coding="Q0004" field="status" {...item} updateStatus={this.props.updateStatus} /></td>
                   <td>
-                    <Reply name="回复" fetch={this.props.fetch} data={{id: item.id}} renderList={this.getData} />
+                    <Status
+                      data={{ item, field: "checked", coding }}
+                      authorized={checkButtonAuth("edit")}
+                      {...this.props}
+                    />
+                  </td>
+                  <td>
+                    {item.reply === "1" ? (
+                      "已回复"
+                    ) : (
+                      <Reply
+                        name="回复"
+                        data={{ item }}
+                        authorized={checkButtonAuth("reply")}
+                        renderList={this.getData}
+                        {...this.props}
+                      />
+                    )}
                   </td>
                 </tr>
-                </>
-                ))
-              }
-            </table>
+              </>
+            ))}
+        </table>
 
-                <Operatinavbar 
-                  node={ this.props.node }
-                  button={['all', 'delete', 'open', 'close']}
-                  data={this.props.module}
-                  coding="P0003"
-                  {...this.props}
-                />
-            </Card>
-        )
-    }
-}
-
-const stateToProops = (state) => {
-  return {
-    module: state.service
+        <Operatinavbar
+          button={["all", "delete", "open", "close"]}
+          data={{ list: module.checkedList, coding }}
+          renderList={this.getData}
+          checkButtonAuth={checkButtonAuth}
+          authorized={authorized.partner}
+          {...this.props}
+        />
+      </Card>
+    );
   }
 }
 
-export default connect(stateToProops, dispatchToProps)(Index)
+export default connect(
+  (state) => ({
+    module: state.service,
+  }),
+  dispatchToProps
+)(Index);

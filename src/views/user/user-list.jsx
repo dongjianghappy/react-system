@@ -1,141 +1,144 @@
-import React from 'react';
-import { Card, Table, Space, Popconfirm, Button, Checkbox, Input, DatePicker} from 'antd';
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { Status, Dialog, Operatinavbar, Condition, R_checkbox } from '../../components/index.js'
-import dispatchToProps from '../../store/dispatch'
-import SetUser from './components/drawer/setUser'
- 
-const { Search } = Input;
-const { RangePicker } = DatePicker;
+import React from "react";
+import { Card, Space, Button, Avatar } from "antd";
+import {
+  connect,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+} from "@/utils";
 
-class UserList extends React.Component{
+import { Confirm, WeCheckbox, WeDrawer } from "@/components";
+import Detail from "./components/Detail";
 
-    constructor(props){
-      super(props)
-    }
+const { add, del, edit } = authorized.partner;
+const { partner: coding } = codings;
 
-    state ={
-        columns: [
-            {
-              title: '选择',
-              dataIndex: 'name',
-              render: text => <a><Checkbox></Checkbox></a>,
-            },
-            {
-              title: '头像',
-              dataIndex: 'phone',
-            },
-            {
-              title: '会员账号',
-              dataIndex: 'account',
-            },{
-                title: '用户名',
-                dataIndex: 'nickname',
-                render: text => <a>{text}</a>,
-              },
-              {
-                title: '电子邮件',
-                dataIndex: 'email',
-              },
-              {
-                title: '注册日期',
-                dataIndex: 'last_login_time',
-              },{
-                  title: '在线/天',
-                  dataIndex: 'online',
-                  render: text => <a>{text}</a>,
-                },
-              {
-                title: '操作',
-                dataIndex: 'operating',
-                render: (text, record) => (
-                    <Space size="middle">
-                      <Button type="primary" size="small">推送</Button>
-                      <Button type="primary" size="small">详情</Button>
-                    </Space>
-                  ),
-              },
-        ],
-        data: [],
-        total: 0,
-        pages: 0
-    }
+class UserList extends React.Component {
+  getData = () => {
+    this.props.dispatch.select({
+      api: "userList",
+      node: "user",
+    });
+  };
+  componentDidMount() {
+    this.getData();
+  }
 
-    componentDidMount(){
-      this.props.select({
-        api: 'userList',
-        node: 'user'           
-      })
-    }
-
-
-    render(){
-      const {columns} = this.state
-
-        const {user} = this.props.module
-        return(
-
-          <Card title="用户列表" extra={
-            <Space>
+  render() {
+    const { user } = this.props.module;
+    return (
+      <Card
+        title="用户列表"
+        extra={
+          <Space>
             <Button type="primary">新增用户</Button>
-            </Space>
-      }>
-
-            <table width="100%" className="table-striped table-hover col-left-23">
-              <tr className="th">
-                <td className="col-md-1">选择</td>
-                <td className="col-md-1">头像</td>
-                <td className="col-md-2">会员账号</td>
-                <td className="col-md-2">用户名</td>
-                <td className="col-md-2">电子邮箱</td>
-                <td className="col-md-2">注册日期</td>
-                <td className="col-md-1">在线/天</td>
-                <td className="col-md-1">操作</td>
+          </Space>
+        }
+      >
+        <table width="100%" className="table-striped table-hover col-left-23">
+          <tr className="th">
+            <td className="col-md-1">选择</td>
+            <td className="col-md-1">头像</td>
+            <td className="col-md-1">会员账号</td>
+            <td className="col-md-2">用户名</td>
+            <td className="col-md-2">电子邮箱</td>
+            <td className="col-md-2">注册日期</td>
+            <td className="col-md-1">在线/天</td>
+            <td className="col-md-2">操作</td>
+          </tr>
+          {user &&
+            user.map((item, index) => (
+              <tr>
+                <td>
+                  <WeCheckbox
+                    data={{ id: item.id }}
+                    {...this.props}
+                  ></WeCheckbox>
+                </td>
+                <td>
+                  <span className="relative">
+                    <Avatar src={item.photos} />
+                    <i
+                      className="iconfont  icon-female  absolute font12"
+                      style={{ bottom: 0 }}
+                    ></i>
+                  </span>
+                </td>
+                <td>
+                  {item.account}
+                  {item.role !== "0" ? (
+                    <span
+                      style={{
+                        backgroundColor: "#52c41a",
+                        position: "relative",
+                        left: "9px",
+                        display: "inline-block",
+                        width: "6px",
+                        height: "6px",
+                        verticalAlign: "middle",
+                        borderRadius: "50%",
+                      }}
+                    ></span>
+                  ) : (
+                    ""
+                  )}
+                </td>
+                <td>{item.nickname}</td>
+                <td>{item.email}</td>
+                <td>{item.last_login_time}</td>
+                <td>{item.online}</td>
+                <td>
+                  <Space size="middle">
+                    <Button type="primary" size="small"></Button>
+                    <Confirm
+                      name={item.recommend === "1" ? "取消推送" : "推送"}
+                      config={{
+                        operating:
+                          item.recommend === "1"
+                            ? "cancelRecommend"
+                            : "recommend",
+                        message: React.$modalEnum.user,
+                      }}
+                      data={{ coding, uid: item.account }}
+                      api="push"
+                      renderList={this.getData}
+                      authorized={checkButtonAuth(del)}
+                      {...this.props}
+                    />
+                    <WeDrawer.show
+                      name="设置"
+                      title="用户设置"
+                      data={{ uid: item.account }}
+                      api="userDetail"
+                      // renderList={this.getData}
+                      // authorized={checkButtonAuth("edit")}
+                      {...this.props}
+                    >
+                      <Detail />
+                    </WeDrawer.show>
+                    {/* <SetUser
+                      type="primary"
+                      size="small"
+                      name="设置"
+                      title="用户信息"
+                      {...this.props}
+                      id={item.id}
+                      {...item}
+                    /> */}
+                  </Space>
+                </td>
               </tr>
-              {
-              user && user.map((item, index) => (
-                <tr>
-                  <td><R_checkbox onChange={this.props.checkBox} list={this.props.module.checkedList} data={item.id}></R_checkbox></td>
-                  <td>
-                    <span className="relative">
-                      <img src={item.photos} style={{borderRadius: '50%', width: '30px', height: '30px'}} />
-                      <i className="iconfont  icon-female  absolute font12" style={{bottom: 0}}></i>
-                    </span>
-                  </td>
-                  <td>
-                    {item.account}
-                    {
-                      item.role !== '0' ?
-                      <span style={{backgroundColor: "#52c41a", position: "relative", left: "9px", display: "inline-block", width: "6px", height: "6px", verticalAlign: "middle", borderRadius: "50%"}}></span>
-                      : ""
-                    }
-                  </td>
-                  <td>{item.nickname}</td>
-                  <td>{item.email}</td>
-                  <td>{item.last_login_time}</td>
-                  <td>{item.online}</td>
-                  <td>
-                    <Space size="middle">
-                      <Button type="primary" size="small">推送</Button>
-                      <SetUser type="primary" size="small" name="设置" title="用户信息" {...this.props} id={item.id} {...item} />
-                    </Space>
-                  </td>
-                </tr>
-                ))
-              }
-            </table>
-            </Card>
-        )
-    }
-}
-
-const stateToProops = (state) => {
-  return {
-    global: state.common.global,
-    state,
-    module: state.user
+            ))}
+        </table>
+      </Card>
+    );
   }
 }
 
-export default connect(stateToProops, dispatchToProps)(UserList)
+export default connect(
+  (state) => ({
+    module: state.user,
+  }),
+  dispatchToProps
+)(UserList);

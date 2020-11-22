@@ -7,6 +7,7 @@ const layout = {
 };
 
 const DrawerRender = (props) => {
+  const {dispatch} = props
   const [visible, setVisible] = useState(false);
   const [response, setResponse] = useState({});
 
@@ -14,7 +15,7 @@ const DrawerRender = (props) => {
     debugger
     setVisible(true);
     if(props.data){
-      props.fetch({
+      dispatch.fetch({
         api: props.api || "detail",
         data: {
           coding: props.coding,
@@ -70,7 +71,7 @@ const DrawerRender = (props) => {
       }
 
       <Drawer
-        title={props.title}
+        title={props.title || props.name}
         placement="right"
         closable={false}
         onClose={onClose}

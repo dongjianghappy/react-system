@@ -5,7 +5,6 @@ import {
     GET_DETAIL,
     DELETE_ITEM,
     GET_DATA_ACTION,
-    UPDATE_STATUS,
     CHECK_CHANGE,
     OPEN_AND_CLOSE,
     GET_BAISC_INFO
@@ -60,22 +59,6 @@ const commonReducers = (state, action) => {
 
             return newState
             break
-
-        case UPDATE_STATUS :
-            newState = JSON.parse(JSON.stringify(state))
-            newState.list.filter(item => {
-                if(item.id === action.data) {
-                    if(action.field === "status"){
-                        item.status = item.status === '0' ? '1' : '0'
-                    }else{
-                        item.checked = item.checked === '0' ? '1' : '0'
-                    }
-                    
-                }
-            })
-            return newState
-            break
-
 
             // 全选
             case CHECK_CHANGE :
@@ -136,10 +119,12 @@ const commonReducers = (state, action) => {
 
             if(action.node){
                 newState[action.node] = data
+                newState.node = action.node
             }else{
                 newState.total = action.data.total
                 newState.page = action.data.pages
                 newState.list = data
+                newState.node = "list"
             }
 
             // newState[action.node] = data
@@ -154,6 +139,7 @@ const commonReducers = (state, action) => {
             //         }
             //     })
             // }
+            newState.checkedList = [] // 查询数据清空选择列表
             return newState
             break
 

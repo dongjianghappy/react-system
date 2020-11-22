@@ -6,12 +6,6 @@ const Detail = (props) =>{
 
     const [content, setContent] = useState("")
 
-    const getContent = (data) => {
-        setContent({
-          content: data
-        })
-    }    
-
     return (
         <>
             <Form.Item name="title" label="伙伴名称" >
@@ -30,11 +24,11 @@ const Detail = (props) =>{
                 </Radio.Group>
             </Form.Item>
             <Form.Item label="内容">
-                <Editor 
+                {/* <Editor 
                     field="content"
                     value={props.data.content}
                     change={props.change}
-                />
+                /> */}
             </Form.Item>
         </>
     )

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Drawer, Button, Form, message } from 'antd';
+import warning from '../modal/warning'
 
 const layout = {
   labelCol: { span: 4 },
@@ -7,18 +8,21 @@ const layout = {
 };
 
 const DrawerForm = (props) => {
+  const {dispatch, action} = props
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState({});
   const [form] = Form.useForm();
 
   const showDrawer = () => {
-    setVisible(true);
-    if(props.id){
-      props.fetch({
+    if(!props.authorized){
+      return warning()
+    }
+
+    if(action === 'edit'){
+      dispatch.fetch({
         api: "detail",
         data: {
-          coding: props.coding,
-          id: props.id
+          ...props.data
         }          
       }).then((res) => {
         form.setFieldsValue(res.result);
@@ -26,6 +30,8 @@ const DrawerForm = (props) => {
         props.renderInit && props.renderInit(res.result)
       })
     }
+
+    setVisible(true);
   };
 
   const onClose = () => {
@@ -33,45 +39,42 @@ const DrawerForm = (props) => {
   };
 
   const onFinish = () => {
-    if(props.action === 'add'){
-      props.insert({
+    if(action === 'add'){
+      dispatch.insert({
             api: props.api,
             data: {
-              coding: props.coding,
               ...props.data,
               ...form.getFieldsValue(),
             }
         }).then(() => {
-          setVisible(false);
-          
-          props.renderList()
           message.info("新增成功")
+          setVisible(false);
+          props.renderList()
         })
     }else{
-      props.update({
+      dispatch.update({
             api: props.api,
             data: {
-              coding: props.coding,
               ...props.data,
-              id: props.id,
               ...form.getFieldsValue(),              
             }
         }).then(() => {
+          message.info("编辑成功11")
           setVisible(false);
           props.renderList()
-          message.info("编辑成功")
         })
     }
   }
 
   const Text = () => (
     <>
-    <span onClick={showDrawer}>
+    <span onClick={showDrawer} >
     {
       props.icon ?
       <i className={`iconfont icon-${props.icon}`} />
       : ""
     }
+    {props.disabled}
     {props.name}
     </span>
     </>
@@ -79,7 +82,7 @@ const DrawerForm = (props) => {
 
   const Buttons = () => (
     <>
-    <Button onClick={showDrawer}>
+    <Button type={props.type || "primary"} onClick={showDrawer} disabled={props.disabled} >
     {
       props.icon ?
       <i className={`iconfont icon-${props.icon}`} />
@@ -102,7 +105,7 @@ const DrawerForm = (props) => {
       }
 
       <Drawer
-        title={props.title}
+        title={props.title || props.name}
         placement="right"
         closable={false}
         onClose={onClose}
@@ -133,5 +136,10 @@ const DrawerForm = (props) => {
     </>
   );
 };
+
+DrawerForm.defaultProps = {
+  action: "add",
+  isText: false
+}
 
 export default DrawerForm

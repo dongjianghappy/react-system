@@ -1,144 +1,150 @@
-import React from 'react'
-import { Card, Table, Space, Checkbox, Tabs} from 'antd';
+import React from "react";
+import { Card, Space, Tabs } from "antd";
+
 import {
-  Status,
-  Dialog,
-  Condition,
-  R_button,
-  R_checkbox,
-  R_drawer,
-  Quick
-} from '../../components/index.js'
-import {
-  ButtonGroup,
-  Option,
-  ModalGroup,
-  Operatinavbar
-} from '../../common'
-import { connect } from 'react-redux'
-import Detail from './components/detail'
-import dispatchToProps from '../../store/dispatch'
-import Statistics from './components/statistics'
-import List from './components/list'
+  connect,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+} from "@/utils";
+import { WeDrawer } from "@/components";
+
+import Detail from "./components/detail";
+
+import Statistics from "./components/statistics";
+import List from "./components/list";
 const { TabPane } = Tabs;
 
-class Advertisement extends React.Component{
-    
+const { add, del, edit } = authorized.advertisement;
+const { advertisement: coding } = codings;
+
+class Advertisement extends React.Component {
   option = [
     {
       name: "来源",
-      field: 'source',
+      field: "source",
       list: [
         {
           value: "",
-          name: "全部"
+          name: "全部",
         },
-        ...React.$enums.adSource
-      ]
+        ...React.$enums.adSource,
+      ],
     },
     {
       name: "显示",
-      field: 'display',
+      field: "display",
       list: [
         {
           value: "",
-          name: "全部"
+          name: "全部",
         },
-        ...React.$enums.adDisplay
-      ]
+        ...React.$enums.adDisplay,
+      ],
     },
     {
       name: "类型",
-      field: 'type',
+      field: "type",
       list: [
         {
           value: "",
-          name: "全部"
+          name: "全部",
         },
-        ...React.$enums.adType
-      ]
+        ...React.$enums.adType,
+      ],
     },
     {
       name: "状态",
-      field: 'status',
+      field: "status",
       list: [
         {
           val: "",
-          name: "全部"
+          name: "全部",
         },
         {
           value: "1",
-          name: "开启"
+          name: "开启",
         },
         {
           value: "0",
-          name: "关闭"
-        }
-      ]
+          name: "关闭",
+        },
+      ],
     },
-  ]
+  ];
 
   getData = () => {
-    this.props.select({
+    this.props.dispatch.select({
       data: {
         page: 0,
         pagesize: 25,
-        coding: "P0008"
-      }            
-  })
+        coding,
+      },
+    });
+  };
+
+  componentDidMount() {
+    this.getData();
   }
 
-    componentDidMount(){
-      this.getData()
-    }
+  handleClick = (data) => {
+    this.props[data.dispatch](data);
+  };
 
-    handleClick = (data) => {
-      this.props[data.dispatch](data)
-    }    
+  render() {
+    const { list } = this.props.module;
 
-    render(){
-        const {list, total, pages} = this.props.module
-
-        return (
-            <div>
-
-                <Statistics />
-                <Card>
-
-                <Tabs 
-                defaultActiveKey="1"  
-                onChange={this.callback}
-                tabBarExtraContent={
-                  <Space>
-                  <R_drawer.drawerForm title="新增广告" name="新增广告" action="add" coding="P0008" renderList={this.getData} {...this.props} >
+    return (
+      <div>
+        <Statistics />
+        <Card>
+          <Tabs
+            defaultActiveKey="1"
+            onChange={this.callback}
+            tabBarExtraContent={
+              <Space>
+                {checkButtonAuth(add) ? (
+                  <WeDrawer.Form
+                    name="新增广告"
+                    icon="add"
+                    data={{ coding }}
+                    renderList={this.getData}
+                    authorized={checkButtonAuth(add)}
+                    {...this.props}
+                  >
                     <Detail />
-                  </R_drawer.drawerForm>
-                </Space>
-                }
-              >
-              <TabPane tab="广告管理" key="1">
-                <List type="1" data={list} {...this.props} getData={() => this.getData(1)} />
-              </TabPane>
-              <TabPane tab="广告申请" key="2">
-                {/* <List type="1" data={list} {...this.props} getData={() => this.getData(1)} /> */}
-              </TabPane>
-              <TabPane tab="订单列表" key="3">
-                {/* <ApplyList type="1" data={list} {...this.props} getData={() => this.getData(1)} /> */}
-              </TabPane>
-            </Tabs>
-                </Card>
-            </div>
-        )
-    }
-}
-
-const stateToProops = (state) => {
-  console.log(state);
-  return {
-    global: state.common.global,
-    state,
-    module: state.advertisement
+                  </WeDrawer.Form>
+                ) : (
+                  ""
+                )}
+              </Space>
+            }
+          >
+            <TabPane tab="广告管理" key="1">
+              <List
+                type="1"
+                data={list}
+                {...this.props}
+                getData={() => this.getData(1)}
+              />
+            </TabPane>
+            <TabPane tab="广告申请" key="2">
+              {/* <List type="1" data={list} {...this.props} getData={() => this.getData(1)} /> */}
+            </TabPane>
+            <TabPane tab="订单列表" key="3">
+              {/* <ApplyList type="1" data={list} {...this.props} getData={() => this.getData(1)} /> */}
+            </TabPane>
+          </Tabs>
+        </Card>
+      </div>
+    );
   }
 }
 
-export default connect(stateToProops, dispatchToProps)(Advertisement)
+export default connect(
+  (state) => ({
+    module: state.advertisement,
+  }),
+  dispatchToProps
+)(Advertisement);

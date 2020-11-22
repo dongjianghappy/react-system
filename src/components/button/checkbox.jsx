@@ -1,31 +1,30 @@
-import React from 'react'
-import { Checkbox } from 'antd'
+import React from "react";
+import { Checkbox } from "antd";
 
 export default (props) => {
+  const { dispatch, module } = props;
 
-    function onChange(e) {
-        debugger
-        props.onChange({
-            checked: e.target.checked,
-            type: "single",
-            value: {
-                id: props.data
-            }
-            
-        })
-        console.log(`checked = ${e.target.checked}`);
-      }
+  function handelChange(e) {
+    debugger;
 
-      const ches = () => (
-        props.list.some((item, index) => {
-            return item.id === props.data
-        })
-      )
+    dispatch.checkBox({
+      checked: e.target.checked,
+      type: "single",
+      value: {
+        ...props.data,
+      },
+    });
+  }
 
-    return (
-        <div>
-                <Checkbox checked={ches()} onChange={onChange}></Checkbox>{console.log(props.list)}
-        </div>
-    
-    )
-}
+  const checked = () =>
+    module.checkedList.some((item, index) => {
+      debugger;
+      return item.id === props.data.id;
+    });
+
+  return (
+    <div>
+      <Checkbox checked={checked()} onChange={handelChange}></Checkbox>
+    </div>
+  );
+};

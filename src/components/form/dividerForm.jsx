@@ -1,31 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Card, Table, Space, Popconfirm, Button, Checkbox, Switch, List, Divider,  Form, Input} from 'antd';
-import { DeleteOutlined , UnorderedListOutlined, PlusOutlined} from '@ant-design/icons';
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import {
-    Status,
-    R_checkbox,
-    R_drawer,
-    R_button,
-    Dialog,
-    Condition
-  } from '../../components/index.js'
-  import {
-    Navbar,
-    ButtonGroup,
-    Option,
-    OptionSelect,
-    ModalGroup
-  } from '../../common'
-
-import dispatchToProps from '@/store/dispatch'
-
+import { Form, Input} from 'antd';
+import { R_button } from '@/components'
 
 const Index =  (props) => {
+    const {dispatch, data} = props
     const [isEdit, setIsEdit] = useState(true)
     const [field, setField] = useState({})
-    const couterRef = useRef();
 
     useEffect(() => {
         if(isEdit){
@@ -46,12 +26,14 @@ const Index =  (props) => {
             e.target.textContent = "保存"
         }else{
             e.target.textContent = "编辑"
-            const aa = await props.updateInfo({
-                m: 'vue',
-                coding: props.coding,
-                ...field
+            const aa = await dispatch.update({
+                api: "updateInfo",
+                data: {
+                    coding: props.coding,
+                    ...field
+                },
             }).then((a) => {
-                props.handle()
+                props.renderList()
             })
         }
         
@@ -77,7 +59,6 @@ const Index =  (props) => {
         
         <>
         {
-            // formRef.current && formRef.current.setFieldsValue(props.dataSource);
 
 <div className="module-wrap">
     <div className="module-content basic-info">

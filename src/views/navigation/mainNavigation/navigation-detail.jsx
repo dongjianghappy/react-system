@@ -1,16 +1,16 @@
-import React from 'react';
-import { Card, Row, Col, Space, Button, Form, Input, Tabs } from 'antd'
-import { connect } from 'react-redux'
-import dispatchToProps from '../../../store/dispatch'
+import React from "react";
+import { Card, Row, Col, Space, Button, Form, Input, Tabs } from "antd";
+import { connect } from "react-redux";
+import dispatchToProps from "../../../store/dispatch";
 
 import {
   Status,
-  R_checkbox,
-  R_drawer,
+  WeCheckbox,
+  WeDrawer,
   R_button,
   ModalForm,
-  Condition
-} from '../../../components/index.js'
+  Condition,
+} from "../../../components/index.js";
 import {
   Node,
   Navbar,
@@ -18,10 +18,10 @@ import {
   Option,
   OptionSelect,
   ModalGroup,
-  Keyword
-} from '../../../common'
-import BasicInfo from './components/basicInfo'
-import PageInfo from './components/pageInfo'
+  Keyword,
+} from "../../../common";
+import BasicInfo from "./components/basicInfo";
+import PageInfo from "./components/pageInfo";
 
 const { TabPane } = Tabs;
 const layout = {
@@ -33,116 +33,113 @@ const tailLayout = {
   wrapperCol: { offset: 2, span: 22 },
 };
 
-
-class Basic extends React.Component{
-
+class Basic extends React.Component {
   state = {
     data: {},
-    flagList: []
-  }
+    flagList: [],
+  };
 
-     formRef = React.createRef()
+  formRef = React.createRef();
 
-     componentDidMount (){
-      if(this.props.location.state){
-        this.props.fetch({
+  componentDidMount() {
+    if (this.props.location.state) {
+      this.props
+        .fetch({
           api: "detail",
           data: {
             coding: "P0001",
-            id: this.props.location.state.id
-          }          
-        }).then((res) => {
-          this.formRef.current.setFieldsValue(res.result);
+            id: this.props.location.state.id,
+          },
         })
-      }
-      
-      this.props.fetch({
+        .then((res) => {
+          this.formRef.current.setFieldsValue(res.result);
+        });
+    }
+
+    this.props
+      .fetch({
         api: "getFlag",
         data: {
-          channel_id: 0
-        }          
-      }).then((res) => {
-        this.setState({
-          flagList: res.result
-        })
+          channel_id: 0,
+        },
       })
-    }
-  
-    handle = () => {
-      this.props.InfoQuery()
-    }
+      .then((res) => {
+        this.setState({
+          flagList: res.result,
+        });
+      });
+  }
 
-    handleClick = (data) => {
-      this.props[data.dispatch](data)
-    }       
+  handle = () => {
+    this.props.InfoQuery();
+  };
 
-    onFinish = values => {
-      if(!this.props.id){
-        this.props.insert({
-              coding: "P0001",
-              ...values,
-          })
-      }else{
-        this.props.fetch({
-            api: 'update',
-            data: {
-              coding: "P0001",
-              id: this.props.id,
-              ...values,
-            }
-          })
-      }
+  handleClick = (data) => {
+    this.props[data.dispatch](data);
+  };
+
+  onFinish = (values) => {
+    if (!this.props.id) {
+      this.props.insert({
+        coding: "P0001",
+        ...values,
+      });
+    } else {
+      this.props.fetch({
+        api: "update",
+        data: {
+          coding: "P0001",
+          id: this.props.id,
+          ...values,
+        },
+      });
     }
- 
+  };
 
   callback = (key) => {
     console.log(key);
-  }
+  };
 
+  render() {
+    return (
+      <>
+        <Card>
+          <Node node={this.props.node} fn={this.props.nodeMethod} />
+          <div style={{ marginBottom: 15 }}>
+            <h2 className="font18">新增导航</h2>
+          </div>
 
-    render(){
-
-        return(
-           <>
-           <Card>
-           <Node node={ this.props.node } fn={ this.props.nodeMethod} />
-            <div style={{marginBottom: 15}}>
-              <h2 className="font18">新增导航</h2>
-            </div>
-
-            <div style={{ padding: 25}}>
-              <Form
-                {...layout}
-                ref={this.formRef}
-                labelAlign="left"
-                onFinish={this.onFinish}
-              >
-                  <Tabs onChange={this.callback} type="card">
-                    <TabPane tab="导航信息" key="1">
-                      <BasicInfo flags={this.state.flagList} />
-                    </TabPane>
-                    <TabPane tab="页面设置" key="2">
-                      <PageInfo />
-                    </TabPane>
-                  </Tabs>,
-                <Form.Item
-                  {...tailLayout}
-                >
-                  <Button type="primary" htmlType="submit">
+          <div style={{ padding: 25 }}>
+            <Form
+              {...layout}
+              ref={this.formRef}
+              labelAlign="left"
+              onFinish={this.onFinish}
+            >
+              <Tabs onChange={this.callback} type="card">
+                <TabPane tab="导航信息" key="1">
+                  <BasicInfo flags={this.state.flagList} />
+                </TabPane>
+                <TabPane tab="页面设置" key="2">
+                  <PageInfo />
+                </TabPane>
+              </Tabs>
+              ,
+              <Form.Item {...tailLayout}>
+                <Button type="primary" htmlType="submit">
                   提交
-                  </Button>
-                </Form.Item>
-              </Form>
-            </div>
-            
-            </Card>
-           </>
-        )
-    }
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+        </Card>
+      </>
+    );
+  }
 }
 
 const stateToProops = (state) => {
-  return {}
-}
+  return {};
+};
 
-export default connect(stateToProops, dispatchToProps)(Basic)
+export default connect(stateToProops, dispatchToProps)(Basic);

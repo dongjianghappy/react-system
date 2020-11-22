@@ -9,10 +9,10 @@ const Operatinavbar = (props) => {
     return (
       <Row>
       <Col span={8}>
-        <ButtonGroup node={ props.node } {...props} button={props.button}></ButtonGroup>
+        <ButtonGroup {...props}></ButtonGroup>
       </Col>
       <Col span={16} style={{textAlign: "right"}}>
-        <Pagination data={props.module} select={props.select} api={props.api} search={props.search} coding={props.coding} />
+        <Pagination {...props} />
       </Col>
       </Row>
     )

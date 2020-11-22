@@ -15,6 +15,7 @@ const initState = {
     praise: [],
     collect: [],
     download: [],
+    label: [],
     ...initListState
 }
 

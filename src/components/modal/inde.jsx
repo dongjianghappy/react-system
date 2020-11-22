@@ -1,8 +1,9 @@
-import modalForm from './modalForms'
-
+import modalForm from "./modalForms";
+import Cate from "./modalCate";
 
 const modal = {
-    modalForm
-}
+  modalForm,
+  Cate,
+};
 
-export default modal
+export default modal;

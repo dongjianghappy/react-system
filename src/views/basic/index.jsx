@@ -1,92 +1,92 @@
-import React from 'react';
-import { Card, Row, Col, Space, Button } from 'antd'
-import { createStore } from 'redux'
-import reducer from '../../reducers/counter'
-import Info from './components/info'
-import Logo from './components/logo'
-import Custom from './components/custom'
-import DividerForm from '@/components/form/dividerForm'
-import { connect } from 'react-redux'
-import dispatchToProps from '../../store/dispatch'
-import Article from './components/addCustom'
+import React from "react";
+import { Card, Space, Button } from "antd";
 import {
-  Status,
-  R_checkbox,
-  R_drawer,
-  R_button,
-  ModalForm,
-  Condition,
-  R_modal
-} from '../../components/index.js'
-import {
-  Node,
-  Navbar,
-  ButtonGroup,
-  Option,
-  OptionSelect,
-  ModalGroup
-} from '../../common'
-class Basic extends React.Component{
+  connect,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+} from "@/utils";
+import DividerForm from "@/components/form/dividerForm";
+import Article from "./components/addCustom";
+import { WeModal } from "@/components";
 
-    getData = () => {
-      this.props.select({
-        api: "basicInfo",
-        data: {
-          page: 0,
-          pagesize: 10,
-          coding: "P0000"
-        }          
-      })
-    }
+const { add, del, edit } = authorized.basic;
+const { basic: coding } = codings;
 
-    componentDidMount(){
-      this.getData()
-    }
-  
-    handle = () => {
-      this.props.InfoQuery()
-    }
+class Basic extends React.Component {
+  getData = () => {
+    this.props.dispatch.select({
+      api: "basicInfo",
+      data: {
+        page: 0,
+        pagesize: 10,
+        coding,
+      },
+    });
+  };
 
-    handleClick = (data) => {
-      this.props[data.dispatch](data)
-    }       
+  componentDidMount() {
+    this.getData();
+  }
 
-    render(){
-        const { list } = this.props.module
-        const baisc = list.filter(route => route.isdelete === '1' && route.name !== 'logo')
-        const logo = list.filter(route => route.isdelete === '1' && route.name === 'logo')
-        const custom = list.filter(route => route.isdelete === '0')
-        return(
-           <>
-           <Card>
-
-
-             
-           <Node node={ this.props.node } fn={ this.props.nodeMethod} />
-
-           <div style={{marginBottom: 15}}>
+  render() {
+    const { list } = this.props.module;
+    const baisc = list.filter(
+      (route) => route.isdelete === "1" && route.name !== "logo"
+    );
+    const logo = list.filter(
+      (route) => route.isdelete === "1" && route.name === "logo"
+    );
+    const custom = list.filter((route) => route.isdelete === "0");
+    return (
+      <>
+        <Card>
+          <div style={{ marginBottom: 15 }}>
             <Space>
               <Button type="primary">网站信息</Button>
-              <R_modal.modalForm title="自定义字段" name="自定义字段" coding="P0000" renderList={this.getData} {...this.props} >
-                  <Article />
-              </R_modal.modalForm>
+              <WeModal.modalForm
+                name="自定义字段"
+                action="add"
+                dispatch={this.props.dispatch}
+                data={{ coding: "P0000" }}
+                renderList={this.getData}
+                authorized={checkButtonAuth(add)}
+              >
+                <Article />
+              </WeModal.modalForm>
             </Space>
-            </div>
-
-            <DividerForm title="基本信息" dataSource={baisc} {...this.props} coding="P0000" handle={this.handle} ></DividerForm>
-            <DividerForm title="网站LOGO" dataSource={logo} {...this.props} coding="P0000" handle={this.handle} ></DividerForm>
-            <DividerForm title="自定义管理" dataSource={custom} {...this.props} coding="P0000" handle={this.handle} ></DividerForm>
-            </Card>
-            <input id="coding" type="hidden" value="P0000" />
-           </>
-        )
-    }
-}
-
-const stateToProops = (state) => {
-  return {
-    module: state.basic
+          </div>
+          <DividerForm
+            title="基本信息"
+            dataSource={baisc}
+            data={{ coding: "P0000" }}
+            dispatch={this.props.dispatch}
+            renderList={this.getData}
+          ></DividerForm>
+          <DividerForm
+            title="网站LOGO"
+            dataSource={logo}
+            data={{ coding: "P0000" }}
+            dispatch={this.props.dispatch}
+            renderList={this.getData}
+          ></DividerForm>
+          <DividerForm
+            title="自定义管理"
+            dataSource={custom}
+            data={{ coding: "P0000" }}
+            dispatch={this.props.dispatch}
+            renderList={this.getData}
+          ></DividerForm>
+        </Card>
+      </>
+    );
   }
 }
 
-export default connect(stateToProops, dispatchToProps)(Basic)
+export default connect(
+  (state) => ({
+    module: state.basic,
+  }),
+  dispatchToProps
+)(Basic);

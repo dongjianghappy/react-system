@@ -1,77 +1,99 @@
-import React from 'react'
-import { Card, Button, Row, Col, Avatar } from 'antd'
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
-import { connect } from 'react-redux'
-import dispatchToProps from '../../store/dispatch'
-import Detail from './components/detail'
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Card, Row, Col } from "antd";
 import {
-    R_drawer
-  } from '../../components/index.js'
+  connect,
+  Link,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+} from "@/utils";
 
-const { Meta } = Card;
+import Detail from "./components/detail";
+import { WeDrawer } from "@/components";
 
-class Slideshow extends React.Component{
+const { add, edit } = authorized.slideshow.cate;
+const { cate: coding } = codings.slideshow;
 
-    getData = () => {
-        this.props.select({
-            api: "slideshow"          
-        })
-    }
+class Slideshow extends React.Component {
+  getData = () => {
+    this.props.dispatch.select({
+      api: "slideshow",
+    });
+  };
 
-    componentDidMount(){
-        this.getData()
-    }
+  componentDidMount() {
+    this.getData();
+  }
 
-    render() {
+  render() {
+    const { list } = this.props.module;
 
-        const {list} = this.props.module
-
-        return (
-            <Card 
-                title="幻灯片管理"
-                extra={
-                <R_drawer.drawerForm title="新增幻灯片" name="新增幻灯片" coding="T0000" {...this.props} >
-                    <Detail />
-                </R_drawer.drawerForm>
-                }
+    return (
+      <Card
+        title="幻灯片管理"
+        extra={
+          checkButtonAuth(add) ? (
+            <WeDrawer.Form
+              name="新增幻灯片"
+              icon="add"
+              data={{ coding }}
+              renderList={this.getData}
+              authorized={checkButtonAuth(add)}
+              {...this.props}
             >
-
-                <Row>
-                   
-                    {
-                        list && list.map((item, i) => (
-                            <Col span={6}>
-                            <Card
+              <Detail />
+            </WeDrawer.Form>
+          ) : (
+            ""
+          )
+        }
+      >
+        <Row>
+          {list &&
+            list.map((item, i) => (
+              <Col span={6}>
+                <Card
                   style={{ margin: 10, padding: 10 }}
                   cover={
-                    <Link to={{pathname:'/admin/slideshow/list', state:{fid: item.id}}}>
-                    <img
-                      alt="example"
-                      src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                    />
+                    <Link
+                      to={{
+                        pathname: "/admin/slideshow/list",
+                        state: { fid: item.id },
+                      }}
+                    >
+                      <img
+                        alt="example"
+                        src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                      />
                     </Link>
                   }
                 >
                   {item.name}
-                  <R_drawer.drawerForm isText={true} title="编辑友链" name="编辑" id={item.id} coding="T0000" renderList={this.getData} {...this.props} >
-                        <Detail />
-                      </R_drawer.drawerForm>                  
+                  <WeDrawer.Form
+                    name="编辑"
+                    isText={true}
+                    action="edit"
+                    data={{ id: item.id, coding }}
+                    renderList={this.getData}
+                    authorized={checkButtonAuth(edit)}
+                    {...this.props}
+                  >
+                    <Detail />
+                  </WeDrawer.Form>
                 </Card>
-                            </Col>
-                        ))
-                    }
-                   
-                </Row>
-            </Card>
-        )
-    }
+              </Col>
+            ))}
+        </Row>
+      </Card>
+    );
+  }
 }
 
 const stateToProops = (state) => {
-    return {
-        module: state.slideshow
-    }
-  }
+  return {
+    module: state.slideshow,
+  };
+};
 
-export default connect(stateToProops, dispatchToProps)(Slideshow)
+export default connect(stateToProops, dispatchToProps)(Slideshow);

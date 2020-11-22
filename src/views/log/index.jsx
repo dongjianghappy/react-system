@@ -1,62 +1,61 @@
-import React from 'react'
-import { Card, Tabs } from 'antd'
-
-import { connect } from 'react-redux'
-import dispatchToProps from '../../store/dispatch'
-import List from './components/list'
+import React from "react";
+import { Card, Tabs } from "antd";
+import { connect, dispatchToProps, codings } from "@/utils";
+import List from "./components/list";
 const { TabPane } = Tabs;
 
-class Manager extends React.Component{
+const { manager: coding1, user: coding2 } = codings.log;
+class Log extends React.Component {
+  getData = (coding) => {
+    this.props.dispatch.select({
+      data: {
+        page: 0,
+        pagesize: 25,
+        coding,
+      },
+    });
+  };
 
-    getData = (coding) => {
-      this.props.select({
-        data: {
-          page: 0,
-          pagesize: 25,
-          coding
-        }            
-    })
-    }
+  componentDidMount() {
+    this.getData(coding1);
+  }
 
-    componentDidMount(){
-      this.getData("U0006")
-    }
+  callback = (key) => {
+    this.getData(key === "1" ? coding1 : coding2);
+  };
 
-    callback = (key) => {
-      
-      if(key === "1") {
-        this.getData("U0006")
-      }else if(key === "2") {
-        this.getData("U0005")
-      }
-    }
-
-
-    render() {
-        const { list } = this.props.module
-        return (
-            <Card>
-   <Tabs 
-      defaultActiveKey="1"  
-      onChange={this.callback}
-    >
-    <TabPane tab="管理员登录日志" key="1">
-      <List type="1" data={list} {...this.props} getData={() => this.getData(1)} coding="U0006" />
-    </TabPane>
-    <TabPane tab="用户登录日志" key="2">
-      <List type="1" data={list} {...this.props} getData={() => this.getData(1)} coding="U0005" />
-    </TabPane>
-  </Tabs>
-
-            </Card>
-        )
-    }
-}
-
-const stateToProops = (state) => {
-  return {
-      module: state.log
+  render() {
+    const { list } = this.props.module;
+    return (
+      <Card>
+        <Tabs defaultActiveKey="1" onChange={this.callback}>
+          <TabPane tab="管理员登录日志" key="1">
+            <List
+              type="1"
+              data={{ list, coding: coding1 }}
+              {...this.props}
+              getData={() => this.getData(1)}
+              coding={coding1}
+            />
+          </TabPane>
+          <TabPane tab="用户登录日志" key="2">
+            <List
+              type="1"
+              data={list}
+              {...this.props}
+              getData={() => this.getData(1)}
+              coding={{ list, coding: coding2 }}
+            />
+          </TabPane>
+        </Tabs>
+      </Card>
+    );
   }
 }
 
-export default connect(stateToProops, dispatchToProps)(Manager)
+export default connect(
+  (state) => ({
+    module: state.log,
+  }),
+  dispatchToProps
+)(Log);

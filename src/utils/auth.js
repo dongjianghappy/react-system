@@ -7,7 +7,6 @@ export const setToken = (token) => {
 }
 
 export const isLogined = (token) => {
-    debugger
     if(sessionStorage.getItem('token')){
         return true
     }
@@ -40,9 +39,10 @@ export const setRightMenu = (data) => {
 // 按钮权限
 export const checkButtonAuth = (data) => {
     const authority = sessionStorage.getItem('gradeList').split(",")
-    if(authority.indexOf(data) > -1){
-        return false
-    }else{
+
+    if(authority[0] === "*" || authority.indexOf(data) > -1){
         return true
+    }else{
+        return false
     }
 }

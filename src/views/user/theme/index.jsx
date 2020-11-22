@@ -1,50 +1,60 @@
-import React from 'react';
-import { Card, Table, Space, Popconfirm, Button, Checkbox, Input, DatePicker, Row, Col} from 'antd';
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { Status, Dialog, Operatinavbar, Condition, R_modal } from '@/components/index.js'
-import dispatchToProps from '@/store/dispatch'
+import React from "react";
+import { Card, Space, Button, Row, Col } from "antd";
 import {
-  R_button,
-} from '@/components/index.js'
-import Detail from './components/detail'
+  connect,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+} from "@/utils";
 
-const { Search } = Input;
-const { RangePicker } = DatePicker;
+import { WeModal } from "@/components";
+import Detail from "./components/detail";
 
-class UserList extends React.Component{
+const { add, del, edit } = authorized.user.theme;
+const { theme: coding } = codings.user;
 
-    getData = () => {
-      this.props.select({
-        api: 'theme',
-        node: 'theme'           
-      })
-    }
+class UserTheme extends React.Component {
+  getData = () => {
+    this.props.dispatch.select({
+      api: "theme",
+      node: "theme",
+    });
+  };
 
-    componentDidMount(){
-      this.getData()
-    }
+  componentDidMount() {
+    this.getData();
+  }
 
-    render(){
-        const {theme} = this.props.module
-        return(
-
-          <>
-            <Card>
-            <div style={{marginBottom: 15}}>
+  render() {
+    const { theme } = this.props.module;
+    return (
+      <>
+        <Card>
+          <div style={{ marginBottom: 15 }}>
             <Space>
               <Button type="primary">所有主题</Button>
-              <R_modal.modalForm title="新增主题" name="新增主题" coding="M10001" renderList={this.getData} {...this.props} >
-                <Detail />
-              </R_modal.modalForm>
-            </Space>
-            </div>
 
-            <Row>
-            {
-            theme.map((item, index) => (
+              {checkButtonAuth(add) ? (
+                <WeModal.modalForm
+                  name="新增主题"
+                  data={{ coding }}
+                  renderList={this.getData}
+                  authorized={checkButtonAuth(add)}
+                  {...this.props}
+                >
+                  <Detail />
+                </WeModal.modalForm>
+              ) : (
+                ""
+              )}
+            </Space>
+          </div>
+
+          <Row>
+            {theme.map((item, index) => (
               <Col span="6">
-              <Card
+                <Card
                   style={{ margin: 10, padding: 10 }}
                   cover={
                     <img
@@ -54,27 +64,29 @@ class UserList extends React.Component{
                   }
                 >
                   {item.name}
-                  <R_modal.modalForm title="编辑主题" type="text" name={<i className="iconfont icon-edit" />} id={item.id} coding="M10001" renderList={this.getData} {...this.props} >
+                  <WeModal.modalForm
+                    name="编辑主题"
+                    action="edit"
+                    data={{ id: item.id, coding }}
+                    renderList={this.getData}
+                    authorized={checkButtonAuth(edit)}
+                    {...this.props}
+                  >
                     <Detail />
-                  </R_modal.modalForm>
-                  
+                  </WeModal.modalForm>
                 </Card>
-                </Col>
-              ))
-            }
-            </Row>
-            </Card>
-          </>
-        )
-    }
-}
-
-const stateToProops = (state) => {
-  return {
-    global: state.common.global,
-    state,
-    module: state.user
+              </Col>
+            ))}
+          </Row>
+        </Card>
+      </>
+    );
   }
 }
 
-export default connect(stateToProops, dispatchToProps)(UserList)
+export default connect(
+  (state) => ({
+    module: state.user,
+  }),
+  dispatchToProps
+)(UserTheme);

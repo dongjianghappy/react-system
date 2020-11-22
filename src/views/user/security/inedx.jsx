@@ -1,99 +1,105 @@
-import React from 'react';
-import { Card, Row, Col, Space, Button } from 'antd'
-import { createStore } from 'redux'
+import React from "react";
+import { Card, Space, Button } from "antd";
 
-
-import DividerForm from '@/components/form/dividerForm'
-import { connect } from 'react-redux'
-import dispatchToProps from '@/store/dispatch'
-import Detail from './components/detail'
 import {
-  Status,
-  R_checkbox,
-  R_drawer,
-  R_button,
-  ModalForm,
-  Condition,
-  R_modal
-} from '@/components/index.js'
-import {
-  Node,
-  Navbar,
-  ButtonGroup,
-  Option,
-  OptionSelect,
-  ModalGroup
-} from '@/common'
-class Basic extends React.Component{
+  connect,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+} from "@/utils";
 
-    getData = () => {
-      this.props.select({
-        data: {
-          page: 0,
-          pagesize: 10,
-          coding: "U0009"
-        },
-        node: "security"        
-      })
-    }
+import Detail from "./components/detail";
+import { Confirm, WeModal } from "@/components";
 
-    componentDidMount(){
-      this.getData()
-    }
-  
-    handle = () => {
-      this.props.InfoQuery()
-    }
+const { add, del, edit } = authorized.user.security;
+const { security: coding } = codings.user;
 
-    handleClick = (data) => {
-      debugger
-      this.props[data.dispatch](data)
-    }       
+class UserSecurity extends React.Component {
+  getData = () => {
+    this.props.dispatch.select({
+      data: {
+        page: 0,
+        pagesize: 10,
+        coding,
+      },
+      node: "security",
+    });
+  };
 
-    render(){
-        const { security } = this.props.module
+  componentDidMount() {
+    this.getData();
+  }
 
-        return(
-           <>
-           <Card>
+  render() {
+    const { security } = this.props.module;
 
-           <div style={{marginBottom: 15}}>
+    return (
+      <>
+        <Card>
+          <div style={{ marginBottom: 15 }}>
             <Space>
               <Button type="primary">安全问题</Button>
-              <R_modal.modalForm title="新增问题" name="新增问题" coding="U0009" renderList={this.getData} {...this.props} >
-                <Detail />
-              </R_modal.modalForm>
+              {checkButtonAuth(add) ? (
+                <WeModal.modalForm
+                  name="新增问题"
+                  data={{ coding }}
+                  renderList={this.getData}
+                  authorized={checkButtonAuth(add)}
+                  {...this.props}
+                >
+                  <Detail />
+                </WeModal.modalForm>
+              ) : (
+                ""
+              )}
             </Space>
-            </div>
+          </div>
 
-           <table width="100%" class="table-striped table-hover col-left-2">
-                {
-                    security && security.map((item, index) => (
-                    <tr>
-                        <td class="col-md-1">问题一</td>
-                        <td class="col-md-21">{item.quetion}</td>
-                        <td class="col-md-2">
-                        <Space size="middle">
-                            <R_modal.modalForm title="编辑应用" name="编辑" id={item.id} coding="U0009" renderList={this.getData} {...this.props} >
-                                <Detail />
-                            </R_modal.modalForm>
-                            <Button type="primary" size="small">删除</Button>
-                        </Space>
-                        </td>
-                    </tr>
-                    ))
-                }
-                </table>
-            </Card>
-           </>
-        )
-    }
-}
-
-const stateToProops = (state) => {
-  return {
-    module: state.user
+          <table width="100%" class="table-striped table-hover col-left-2">
+            {security &&
+              security.map((item, index) => (
+                <tr>
+                  <td class="col-md-1">问题一</td>
+                  <td class="col-md-21">{item.quetion}</td>
+                  <td class="col-md-2">
+                    <Space size="middle">
+                      <WeModal.modalForm
+                        name="编辑问题"
+                        action="edit"
+                        data={{ id: item.id, coding }}
+                        renderList={this.getData}
+                        authorized={checkButtonAuth(edit)}
+                        {...this.props}
+                      >
+                        <Detail />
+                      </WeModal.modalForm>
+                      <Confirm
+                        name="删除"
+                        config={{
+                          operating: "delete",
+                          message: React.$modalEnum,
+                        }}
+                        data={{ coding, id: item.id }}
+                        api="delete"
+                        renderList={this.getData}
+                        authorized={checkButtonAuth(del)}
+                        {...this.props}
+                      />
+                    </Space>
+                  </td>
+                </tr>
+              ))}
+          </table>
+        </Card>
+      </>
+    );
   }
 }
 
-export default connect(stateToProops, dispatchToProps)(Basic)
+export default connect(
+  (state) => ({
+    module: state.user,
+  }),
+  dispatchToProps
+)(UserSecurity);

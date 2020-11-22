@@ -11,7 +11,6 @@ import {
     GET_DATA_ACTION, 
     CHECK_CHANGE, 
     OPEN_AND_CLOSE,
-    UPDATE_STATUS, 
     GET_SLIDESHOW_ACTION,
     GET_SLIDESHOW_LIST_ACTION,
     GET_SPACE_ACTION,
@@ -56,38 +55,6 @@ export const getDataAction = (data) =>({
     data
 })
 
-// export const getListAction = (params) =>{
-//     return async (dispatch) => {
-//       const data = await api.select({
-//         m: 'vue',
-//         n: 'cateList',
-//         ...params
-//       })
-
-//       const action = getDataAction(data.result)
-//       dispatch(action)
-//     }
-// }
-
-
-
-
-
-
-export const updateStatus = (params) =>{
-    return async (dispatch) => {
-        await api.updateStatus({
-            ...params
-        })
-
-        const action = {
-            type: UPDATE_STATUS,
-            data: params.id,
-            field: params.status
-        }
-        dispatch(action)
-    }
-}
 
 // 删除或移除
 export const removeAndRestore = async (params) =>{

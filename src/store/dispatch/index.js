@@ -2,7 +2,6 @@ import {
   checkChange, 
   drawerAction,
   dialogAction,
-  updateStatus, 
   removeAndRestore,
    openAndClose, 
    slideshowAction,
@@ -127,16 +126,6 @@ const dispatchToProps = (dispatch) => {
           })
       },        
 
-        
-        // 更改状态
-        updateStatus(params) {
-
-          const action = updateStatus({
-            ...params
-          })
-          dispatch(action)
-        },
-
         // 删除数据
         removeAndRestore(params) {
           const el = document.getElementById("coding")
@@ -144,16 +133,6 @@ const dispatchToProps = (dispatch) => {
             coding: el.value,
             id: params.global.data.id
           })
-        },
-        // 开启或关闭
-        openAndClose(params) {
-          const el = document.getElementById("coding")
-          const action = openAndClose({
-            coding: el.value,
-            ...params
-          })
-          dispatch(action)
-          
         },
                 
         // 图片空间

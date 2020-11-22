@@ -82,7 +82,18 @@ export default {
      // 用户查询
      userList(params) {
         return http.request('vue_user', 'userList', 'post', params)
-    },  
+    }, 
+
+     // 用户查询
+     userDetail(params) {
+        return http.request('vue_user', 'userDetail', 'post', params)
+    }, 
+    
+     // 用户推送
+     push(params) {
+        return http.request('user', 'push', 'post', params)
+    },   
+
     // 用户权限
     userGrade(params) {
         return http.request('vue_user', 'userGrade', 'post', params)

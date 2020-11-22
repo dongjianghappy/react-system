@@ -1,23 +1,34 @@
 import React from 'react'
 import { Modal, message, Button } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import warning from '../modal/warning'
 
 const Confirm = (props) => {
 
+  const { dispatch, config } = props
+  const information = config &&  config.message && config.message[config.operating] || {}
+
   const showConfirm = () => {
+
+    if(props.render && props.render()){
+      return
+    }
+
     Modal.confirm({
-      title: props.config.title,
+      title: information.title,
       icon: <ExclamationCircleOutlined />,
       content: props.config.content,
       onOk() {
-        props.fetch({
+        debugger
+        dispatch.fetch({
           api: props.api,
           data: {
             coding: props.coding,
-            ...props.data
+            ...props.data,
+            ...props.params
           }
         }).then(() => {
-          message.info(props.config.info);
+          message.info(information.info);
           props.renderList && props.renderList()
         })
       },
@@ -27,20 +38,9 @@ const Confirm = (props) => {
     });
   }
 
-  // // 警告提示
-  const showWarning = () => {
-    Modal.warning({
-      title: '警告',
-      content: props.config.waring,
-    });
-  }
-
-
-
-
   const Text = () => (
     <>
-    <span onClick={!props.authorized ? showConfirm : showWarning}>
+    <span onClick={props.authorized ? showConfirm : warning}>
     {
       props.icon ?
       <i className={`iconfont icon-${props.icon}`} />
@@ -52,7 +52,7 @@ const Confirm = (props) => {
 
   const Buttons = () => (
     <>
-    <Button onClick={props.authorized ? showConfirm : showWarning}>
+    <Button onClick={props.authorized ? showConfirm : warning}>
     {
       props.icon ?
       <i className={`iconfont icon-${props.icon}`} />
@@ -65,10 +65,14 @@ const Confirm = (props) => {
   return (
     <>
       {
-        props.type === "text" ? <Text /> : <Buttons />
+        props.isText === true ? <Text /> : <Buttons />
       }
     </>
   )
+}
+
+Confirm.defaultProps = {
+  isText: true
 }
 
 export default Confirm

@@ -1,4 +1,5 @@
 const codings = {
+	"": "",
 	article: {
 		name: "article",
 		art: "A0000",
@@ -74,30 +75,47 @@ const codings = {
 		collect: "K0005",
 	},
 	navigation: {
-		cate: "P0001",
-		art: "P0002"
+		main: "P0001",
+		single: "P0002"
 	},
 	slideshow: {
 		cate: "T0000",
 		art: "T0001"
 	},
-	links: {
-		cate: "T0000",
-		link: "P0003",
-		order: "P0007"
+	// links: {
+	// 	cate: "T0000",
+	// 	link: "P0003",
+	// 	order: "P0007"
+	// },
+	basic: "P0000",
+	service: {
+		message: "Q0006",
+		job: "Q0012",
+		resume: "Q0013"
 	},
-	parent: {
-		parent: "P0005"
+	link: "P0003",
+	partner: "P0005",
+	announcement: "Q0011",
+	messageBoard: "Q0004",
+	feedback: "Q0003",
+	menuRouter: "P0015",
+	appstore: "P0010",
+	spread: "P0006",
+	advertisement: "P0008",
+	label: "O0002",
+	log:{
+		manager: "U0006",
+		user: "U0005"
 	},
+	collection: {
+		cate: "O0008",
+		art: "O0009"
+	},
+	mysql: "",
+	customize: "P0011",
 	site: {
 		art: "O0005"
 	},	
-	spread: {
-		art: "P0006"
-	},
-	advertisement: {
-		advertisement: "P0008"
-	},
 	anpassen: {
 		art: "P0011"
 	},
@@ -113,6 +131,17 @@ const codings = {
 	collection: {
 		cate: "O0008",
 		art: "O0009"
+	},
+	user: {
+		recommend: "",
+		grade: "U0003",
+		role: "U0016",
+		roleGrade: "U0015",
+		group: "U0017",
+		sign: "U0011",
+		banuser: "",
+		security: "U0009",
+		theme: "M10001"
 	}
 }
 

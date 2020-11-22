@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, Form, Input } from 'antd'
+import { Row, Col } from 'antd'
 
-import R_button from '../components/button'
 import {
     Search
   } from '../components/index.js'
 
 const ButtonGroup = (props) => {
+    const { dispatch } = props
     const [init, setInit] = useState({status: true})
     const [current, setCurrent] = useState({})
     const [condition, setCondition] = useState({})
@@ -37,9 +37,9 @@ const ButtonGroup = (props) => {
 
         condition[e.target.getAttribute("field")] = e.target.getAttribute("value")
         setCondition({...condition})
-
-        const params = Object.assign(props.search, condition)
-        props.select({
+        debugger
+        const params = Object.assign(dispatch.search, condition)
+        dispatch.select({
             api: props.api,
             data: {
                 coding: props.coding,

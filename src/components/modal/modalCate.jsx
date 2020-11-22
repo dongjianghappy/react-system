@@ -1,106 +1,153 @@
-import React, { Fragment, useState, useEffect } from 'react'
-import { Button, Modal, message, Card, Row, Col } from 'antd'
-import { connect } from 'react-redux'
-import dispatchToProps from '../../store/dispatch'
+import React, { Fragment, useState, useEffect } from "react";
+import { Button, Modal, message, Card, Row, Col } from "antd";
+import "./style.less";
+
 const ModalCate = (props) => {
+  const { dispatch, coding, catcoing, data } = props;
 
-    const [visible, setVisible] = useState(false)
-    const [list, setList] = useState([])
-    const [current, setCurrent] = useState("")
+  const [visible, setVisible] = useState(false);
+  const [list, setList] = useState([]);
+  const [current, setCurrent] = useState({});
 
-    const showModal = async () => {
+  const showModal = async () => {
+    dispatch
+      .fetch({
+        api: "cateList",
+        data: {
+          coding: catcoing,
+        },
+        storage: true,
+      })
+      .then((res) => {
+        setList(res.result);
+      });
+    setVisible(true);
+    setCurrent({});
+  };
 
-         await props.select2({
-            api: "cateList",
-            data: {
-              coding: props.coding
-            },
-            storage: true          
-        }).then((res) => {
-            setList(res.result)
-        })
-        setVisible(true)
-    };
+  const handleOk = async () => {
+    dispatch
+      .fetch({
+        api: "moveAticle",
+        data: {
+          coding,
+          id: data.id,
+          fid: current.value,
+        },
+      })
+      .then((res) => {
+        props.renderList && props.renderList();
+        message.info("新增成功");
+      });
+    setVisible(false);
+  };
 
-    const handleOk = async () => {
-        await props.fetch({
-            api: "moveAticle",
-            data: {
-              coding: props.artCoding,
-              id: props.id,
-              fid: current
-            },      
-        }).then((res) => {
-            alert("更改成功")
-        })
-        setVisible(false)
-    };
+  const handleCancel = (e) => {
+    setVisible(false);
+  };
 
-    const handleCancel = e => {
-        setVisible(false)
-    };
+  const handelSelect = (params) => {
+    setCurrent(params);
+  };
+  return (
+    <>
+      <div onClick={showModal} className="pointer">
+        {props.children}
+      </div>
 
-    const handelSelect = (v) => {
-        setCurrent(v)
-    }
-        return (
-            <Fragment>
-                <div  onClick={showModal} className="pointer">{props.children}</div>
-                
-                <Modal
-                    title={props.title || "分类选择"}
-                    width={props.width ? props.width*1 : '50%'}
-                    height={500}
-                    visible={visible}
-                    onCancel={handleCancel}
-                    footer={
-                        props.footerBtn !== null ? 
-                        [
-                            <Button key="back" onClick={handleCancel}>
-                              取消
-                            </Button>,
-                            <Button key="submit" type="primary"  onClick={handleOk}>
-                              确定
-                            </Button>,
-                          ]
-                        : null
+      <Modal
+        title={props.title || "分类选择"}
+        width={props.width ? props.width * 1 : "50%"}
+        visible={visible}
+        centered
+        onCancel={handleCancel}
+        footer={
+          props.footerBtn !== null
+            ? [
+                <Button key="back" onClick={handleCancel}>
+                  取消
+                </Button>,
+                <Button key="submit" type="primary" onClick={handleOk}>
+                  确定
+                </Button>,
+              ]
+            : null
+        }
+      >
+        <div style={{ padding: "10px" }}>当前：{current.name}</div>
+        <div className="cate-wrap">
+          {list.map((item) => (
+            <div key={item.id}>
+              <div style={{ padding: "10px 0" }}>
+                <div style={{ padding: "10px 0", fontWeight: "bold" }}>
+                  <span
+                    style={{ padding: "6px 10px" }}
+                    className={current.id === item.id ? "current" : ""}
+                    onClick={() =>
+                      handelSelect({
+                        id: item.id,
+                        name: item.name,
+                        value: `|${item.id}|`,
+                      })
                     }
-                >
-                    {
-                        list.map((item, index) => (
-                            <div>
-                                <h2>{item.name}</h2>
+                  >
+                    {item.name}
+                  </span>
+                </div>
 
-                                {
-                                    item.list.map((sss, index) => (
-                                        <Row>
-                                        <Col span="2" className="p5 cl-red" onClick={()=>handelSelect(`|${item.id}|${sss.id}|`)}>{sss.name}</Col>
-                                        <Col span="22">
-                                        <Row>
-                                        {
-                                            sss.list.map((aaa, index) => (
-                                                <Col className="p5" onClick={()=>handelSelect(`|${item.id}|${sss.id}|${aaa.id}|`)}>{aaa.name}</Col>
-                                                
-                                            ))
-                                        }
-                                        </Row>
-                                        </Col>
-                                        </Row>
-                                    ))
-                                }
-                            </div>
-                        ))
-                    }
-                </Modal>
-            </Fragment>
-        )
+                {item.list.map((items) => (
+                  <div
+                    key={items.id}
+                    style={{ position: "relative", paddingLeft: 60 }}
+                  >
+                    <div
+                      style={{
+                        position: "absolute",
+                        left: 0,
+                        padding: "6px 0",
+                      }}
+                    >
+                      <span
+                        style={{ padding: "6px 10px" }}
+                        className={current.id === items.id ? "current" : ""}
+                        onClick={() =>
+                          handelSelect({
+                            id: items.id,
+                            name: `${item.name} > ${items.name}`,
+                            value: `|${item.id}|${items.id}|`,
+                          })
+                        }
+                      >
+                        {items.name}
+                      </span>
+                    </div>
+                    <div style={{ display: "flex", flexWrap: "wrap" }}>
+                      {items.list.map((aaa) => (
+                        <div
+                          key={aaa.id}
+                          style={{ padding: "6px 10px" }}
+                          className={current.id === aaa.id ? "current" : ""}
+                          onClick={() =>
+                            handelSelect({
+                              id: aaa.id,
+                              name: `${item.name} > ${items.name} > ${aaa.name}`,
+                              value: `|${item.id}|${items.id}|${aaa.id}|`,
+                            })
+                          }
+                        >
+                          {aaa.name}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </Modal>
+    </>
+  );
+};
 
-}
-
-const stateToProops = (state) => {
-    return {
-        list: state.space
-    }
-  }
-
-export default connect(stateToProops, dispatchToProps)(ModalCate)
+export default ModalCate;

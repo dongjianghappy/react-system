@@ -1,14 +1,10 @@
-import form from './form'
-import show from './show'
-import drawerForm from './DrawerForm'
-import DrawerRender from './DrawerRender'
+import Form from './DrawerForm'
+import show from './DrawerRender'
 
 
-const drawer = {
-    form,
+const WeDrawer = {
+    Form,
     show,
-    drawerForm,
-    DrawerRender
 }
 
-export default drawer
+export default WeDrawer

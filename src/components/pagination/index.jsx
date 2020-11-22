@@ -2,25 +2,26 @@ import React from 'react'
 import { Pagination } from 'antd';
 
 const R_pagination = (props) => {
-    
+
+    const { module, dispatch } = props
+
     const onChange = (pageNumber, page) => {
-        props.select({
+        dispatch.select({
             api: props.api,
             data: {
               page: pageNumber,
               pagesize: page,
-              coding: props.coding,
-              ...props.search
+              ...props.data
+
             }            
         })
-        console.log('Page: ', pageNumber);
     }
 
     return (
         <Pagination 
             showQuickJumper
             pagesize={15}
-            total={props.data.total}
+            total={module.total}
             onChange={onChange}
             locale={{jump_to:"跳至"}}
             style={{marginTop: 25}}

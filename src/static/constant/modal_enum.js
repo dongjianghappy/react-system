@@ -29,11 +29,60 @@ const confirm = {
     info: "删除成功",
     waring: "你暂时没有删除权限，请联系管理员!"
   },
+  alldelete: {
+    title: "你确定要删除已选的数据吗!!!",
+    content: "删除后不可回复哟！",
+    info: "删除成功",
+    waring: "你暂时没有删除权限，请联系管理员!"
+  },  
   open: {
     title: "你确定要开启这条数据吗",
     content: "qww",
     info: "开启成功"
-  }
+  },
+  allopen: {
+    title: "你确定开启已选的数据吗!!!",
+    content: "开启后可在网站上显示哟！",
+    info: "开启成功",
+    waring: "你暂时没有删除权限，请联系管理员!"
+  }, 
+  allclose: {
+    title: "你确定关闭已选的数据吗!!!",
+    content: "关闭后网站上将不再显示哟！",
+    info: "关闭成功",
+    waring: "你暂时没有删除权限，请联系管理员!"
+  },   
+  user: {
+    recommend: {
+      title: "是否要推送该会员?",
+      info: "推送成功"
+    },
+    cancelRecommend: {
+      title: "是否要取消推送该会员?",
+      info: "取消成功"
+    },
+    deleteGrade: {
+      title: "确定要删除该应用或功能?",
+      info: "删除成功"
+    },    
+    role: {
+      delete: {
+        title: "确定要删除该角色?",
+        info: "删除成功"
+      }, 
+    },
+    sign: {
+      delete: {
+        title: "确定要删除该选项吗?",
+        info: "删除成功"
+      }, 
+    },      
+    nav: {
+      title: "标题",
+      content: "内容"
+    },
+  },    
+  waring: "你没有权限操作，请联系管理员!"
 }
 
 

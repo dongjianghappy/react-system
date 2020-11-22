@@ -1,4 +1,4 @@
-import { INPUT_CHANGE, INSERT, DELETE, UPDATE, GET_DETAIL, DRAWER, DIALOG, ADD_ITEM, DELETE_ITEM, GET_DATA_ACTION, CHECK_CHANGE, OPEN_AND_CLOSE, UPDATE_STATUS } from '../actionTypes'
+import { INPUT_CHANGE, INSERT, DELETE, UPDATE, GET_DETAIL, DRAWER, DIALOG, ADD_ITEM, DELETE_ITEM, GET_DATA_ACTION, CHECK_CHANGE, OPEN_AND_CLOSE } from '../actionTypes'
 
 import { initListState } from './commonState'
 
@@ -158,29 +158,6 @@ const reducers = (state = initState, action) => {
             return newState
             break
 
-        case UPDATE_STATUS :
-            newState = JSON.parse(JSON.stringify(state))
-            newState.list.list.filter(item => {
-                if(item.id === action.data) {
-                    if(action.field === "status"){
-                        item.status = item.status === '0' ? '1' : '0'
-                    }else{
-                        item.checked = item.checked === '0' ? '1' : '0'
-                    }
-                    
-                }
-            })
-            return newState
-            break
-        
-        // 查询列表
-        // case SELECT_LIST :
-        //     newState = JSON.parse(JSON.stringify(state))
-
-            
-        //     return newState
-        //     break
-            
         default :
             return state
 

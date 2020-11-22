@@ -1,72 +1,242 @@
-import React, { useState, useEffect } from 'react';
-import {Space, Card, Table, Checkbox, Button, Input, Form, Radio, Select } from 'antd'
-import { Status, Confirm, R_drawer, R_checkbox, Dialog, R_form, Quick, R_modal} from '@/components/index.js'
-import Article from './article'
-  import {
-    ButtonGroup,
-    Keyword,
-    CheckboxGroup,
-    Operatinavbar
-  } from '@/common'
+import React from "react";
+import { Space } from "antd";
+import { checkButtonAuth, authorized, codings } from "@/utils";
+import { Status, Confirm, WeDrawer, WeCheckbox, Quick } from "@/components";
+import Article from "./article";
+import { Operatinavbar } from "@/common";
 
-  const { Option } = Select
+const { add, del, edit } = authorized.link;
+const { link: coding } = codings;
 
+const List = (props) => {
+  const { module } = props;
+  const { list } = module;
 
-const List = (props) =>{
+  const render = () => {
+    if (props.listType === "1") {
+      return (
+        <table width="100%" className="table-striped table-hover col-left-23">
+          <tr className="th">
+            <td className="col-md-1"> 选择</td>
+            <td className="col-md-2">网站名称 </td>
+            <td className="col-md-2">链接地址</td>
+            <td className="col-md-1">来源</td>
+            <td className="col-md-1">类型</td>
+            <td className="col-md-1">价格(元/月)</td>
+            <td className="col-md-1">结束日期</td>
+            <td className="col-md-1">状态</td>
+            <td className="col-md-2">操作</td>
+          </tr>
+          {list &&
+            list.map((item, index) => (
+              <tr>
+                <td>
+                  <WeCheckbox {...props} data={{ id: item.id }}></WeCheckbox>
+                </td>
+                <td>
+                  <Quick
+                    {...props}
+                    title={item.name}
+                    data={{ id: item.id, field: "name", coding }}
+                    authorized={checkButtonAuth("edit")}
+                  />
+                </td>
+                <td>
+                  <Quick
+                    {...props}
+                    title={item.url}
+                    data={{ id: item.id, field: "url", coding }}
+                    authorized={checkButtonAuth("edit")}
+                  />
+                </td>
+                <td></td>
+                <td>{item.type}</td>
+                <td>{item.price}</td>
+                <td>{item.datetime}</td>
+                <td>
+                  <Status
+                    {...props}
+                    data={{ item, field: "status", coding }}
+                    authorized={checkButtonAuth("edit")}
+                  />
+                </td>
+                <td>
+                  <Space>
+                    <WeDrawer.Form
+                      {...props}
+                      title="编辑友情链接"
+                      name="编辑"
+                      isText={true}
+                      action="edit"
+                      data={{ id: item.id, coding }}
+                      renderList={props.getData}
+                      authorized={checkButtonAuth("edit")}
+                    >
+                      <Article />
+                    </WeDrawer.Form>
+                    <Confirm
+                      {...props}
+                      name="删除"
+                      config={{
+                        operating: "delete",
+                        message: React.$modalEnum,
+                      }}
+                      data={{ coding, id: item.id }}
+                      api="delete"
+                      renderList={props.getData}
+                      authorized={checkButtonAuth("delete")}
+                    />
+                  </Space>
+                </td>
+              </tr>
+            ))}
+        </table>
+      );
+    } else if (props.listType === "2") {
+      return (
+        <table width="100%" className="table-striped table-hover col-left-23">
+          <tr className="th">
+            <td className="col-md-1">选择</td>
+            <td className="col-md-2">网站名称</td>
+            <td className="col-md-6">链接地址</td>
+            <td className="col-md-1">状态</td>
+            <td className="col-md-2">操作</td>
+          </tr>
+          {list &&
+            list.map((item, index) => (
+              <tr>
+                <td>
+                  <WeCheckbox {...props} data={{ id: item.id }}></WeCheckbox>
+                </td>
+                <td>
+                  <Quick
+                    {...props}
+                    title={item.name}
+                    data={{ id: item.id, field: "name", coding }}
+                    authorized={checkButtonAuth("edit")}
+                  />
+                </td>
+                <td>
+                  <Quick
+                    {...props}
+                    title={item.url}
+                    data={{ id: item.id, field: "url", coding }}
+                    authorized={checkButtonAuth("edit")}
+                  />
+                </td>
+                <td>
+                  <Status
+                    {...props}
+                    data={{ item, field: "status", coding }}
+                    authorized={checkButtonAuth("edit")}
+                  />
+                </td>
+                <td>
+                  <Space>
+                    <WeDrawer.Form
+                      {...props}
+                      title="编辑友情链接"
+                      name="编辑"
+                      isText={true}
+                      action="edit"
+                      data={{ id: item.id, coding }}
+                      renderList={props.getData}
+                      authorized={checkButtonAuth("edit")}
+                    >
+                      <Article />
+                    </WeDrawer.Form>
+                    <Confirm
+                      {...props}
+                      name="删除"
+                      config={{
+                        operating: "delete",
+                        message: React.$modalEnum,
+                      }}
+                      data={{ coding, id: item.id }}
+                      api="delete"
+                      renderList={props.getData}
+                      authorized={checkButtonAuth("delete")}
+                    />
+                  </Space>
+                </td>
+              </tr>
+            ))}
+        </table>
+      );
+    } else if (props.listType === "3") {
+      return (
+        <table width="100%" className="table-striped table-hover col-left-23">
+          <tr class="th">
+            <td class="col-md-1">选择</td>
+            <td class="col-md-2">网站名称</td>
+            <td class="col-md-2">链接地址</td>
+            <td class="col-md-2">站长</td>
+            <td class="col-md-2">QQ</td>
+            <td class="col-md-2">申请时间</td>
+            <td class="col-md-1">操作</td>
+          </tr>
+          {list &&
+            list.map((item, index) => (
+              <tr>
+                <td>
+                  <WeCheckbox {...props} data={{ id: item.id }}></WeCheckbox>
+                </td>
+                <td>
+                  <Quick
+                    {...props}
+                    title={item.name}
+                    data={{ id: item.id, field: "name", coding }}
+                    authorized={checkButtonAuth("edit")}
+                  />
+                </td>
+                <td>
+                  <Quick
+                    {...props}
+                    title={item.url}
+                    data={{ id: item.id, field: "url", coding }}
+                    authorized={checkButtonAuth("edit")}
+                  />
+                </td>
+                <td>{item.webmaster}</td>
+                <td>{item.qq}</td>
+                <td>{item.datetime}</td>
+                <td>
+                  <Space>
+                    <Confirm
+                      {...props}
+                      name="删除"
+                      config={{
+                        operating: "delete",
+                        message: React.$modalEnum,
+                      }}
+                      data={{ coding, id: item.id }}
+                      api="delete"
+                      renderList={props.getData}
+                      authorized={checkButtonAuth("delete")}
+                    />
+                    审核
+                  </Space>
+                </td>
+              </tr>
+            ))}
+        </table>
+      );
+    }
+  };
 
-    return(
-        <>
-          <table width="100%" className="table-striped table-hover col-left-23">
-            <tr className="th">
-              <td className="col-md-1">选择</td>
-              <td className="col-md-2">网站名称</td>
-              <td className="col-md-6">链接地址</td>
-              <td className="col-md-1">状态</td>
-              <td className="col-md-2">操作</td>
-            </tr>
-            {
-            props.data && props.data.map((item, index) => (
-                <tr>
-                  <td><R_checkbox onChange={props.checkBox} list={props.module.checkedList} data={item.id}></R_checkbox></td>
-                  <td>
-                  <Quick id={item.id} title={item.name} field="name" coding="P0003" changeData={props.changeData} />
-                  </td>
-                  <td>
-                  <Quick id={item.id} title={item.url} field="url" coding="P0003" changeData={props.changeData} />
-                  </td>
-                  <td><Status type="switch" coding="P0003" field="status" {...item} updateStatus={props.updateStatus} /></td>
-                  <td>
-                    <Space>
-                      <R_drawer.drawerForm isText={true} title="编辑友链" name="编辑" id={item.id} coding="P0003" renderList={props.getData} {...props} >
-                        <Article />
-                      </R_drawer.drawerForm>
-                      <Confirm 
-                        name="删除" 
-                        type="text" 
-                        config={React.$modalEnum.delete} 
-                        coding="P0003" 
-                        data={{id: item.id}} 
-                        fetch={props.fetch} 
-                        api="delete" 
-                        renderList={props.getData}
-                      />
-                    </Space>
-                  </td>
-                </tr>
-            ))
-            }
-          </table>
-                <Operatinavbar 
-                  node={ props.node }
-                  button={['all', 'delete', 'open', 'close']}
-                  data={props.module}
-                  coding="P0003"
-                  {...props}
-                />
-        </>
-        
-    )
+  return (
+    <>
+      {render()}
+      <Operatinavbar
+        {...props}
+        button={["all", "delete", "open", "close"]}
+        data={{ list: module.checkedList, coding }}
+        renderList={props.getData}
+        checkButtonAuth={checkButtonAuth}
+        authorized={authorized}
+      />
+    </>
+  );
+};
 
-}
-
-export default List
+export default List;
