@@ -1,42 +1,61 @@
-import React, { useState } from 'react'
-import { Card, Form, Input, InputNumber, Button, Radio } from 'antd';
-import { Editor, Upload, UploadModal } from '../../components'
+import React, { useState } from "react";
+import { Card, Form, Input, InputNumber, Button, Radio } from "antd";
+import { Editor, Upload, UploadModal, WeModal } from "@/components";
 
-const Detail = (props) =>{ 
+import pic1 from "@/static/pic/1.jpg";
+import pic2 from "@/static/pic/2.jpg";
+import pic3 from "@/static/pic/3.jpg";
+import pic4 from "@/static/pic/4.jpg";
+import pic5 from "@/static/pic/5.jpg";
+import pic6 from "@/static/pic/6.jpg";
+import pic7 from "@/static/pic/7.jpg";
+import pic8 from "@/static/pic/8.jpg";
+import pic9 from "@/static/pic/9.jpg";
+import pic10 from "@/static/pic/10.jpg";
 
-    debugger
+const Detail = (props) => {
+  debugger;
 
-    return (
-        <>
-            <Form.Item name="name" label="伙伴名称" rules={[{ required: true }]}>
-                <Input />
-            </Form.Item>
-            <Form.Item name="url" label="url地址">
-                <Input />
-            </Form.Item>
-            <Form.Item name="sort" label="顺序">
-                <InputNumber />
-            </Form.Item>
-            <Form.Item name="status" label="显示">
-                <Radio.Group>
-                <Radio value="1" defaultChecked >是</Radio>
-                <Radio value="0">否</Radio>
-                </Radio.Group>
-            </Form.Item>
-            <Form.Item name="display" label="预览图">
-                {/* <Upload image={props.data.image} /> */}
-                <UploadModal />
-            </Form.Item>
-            <Form.Item label="站点简介">
-                {/* <Editor 
+  return (
+    <>
+      <Form.Item name="name" label="伙伴名称" rules={[{ required: true }]}>
+        <Input />
+      </Form.Item>
+      <Form.Item name="url" label="url地址">
+        <Input />
+      </Form.Item>
+      <Form.Item name="sort" label="顺序">
+        <InputNumber />
+      </Form.Item>
+      <Form.Item name="status" label="显示">
+        <Radio.Group>
+          <Radio value="1" defaultChecked>
+            是
+          </Radio>
+          <Radio value="0">否</Radio>
+        </Radio.Group>
+      </Form.Item>
+      <Form.Item name="display" label="预览图">
+        {/* <Upload image={props.data.image} /> */}
+        <WeModal.Picture
+          src={
+            "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+          }
+        />
+        <WeModal.Album
+          data={[pic1, pic2, pic3, pic4, pic5, pic6, pic7, pic8, pic10]}
+        />
+        <UploadModal />
+      </Form.Item>
+      <Form.Item label="站点简介">
+        {/* <Editor 
                     field="content"
                     value={props.data.content}
                     change={props.change}
                 /> */}
-            </Form.Item>
-        </>
-    )
+      </Form.Item>
+    </>
+  );
+};
 
-}
-
-export default Detail
+export default Detail;

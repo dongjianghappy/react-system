@@ -8,9 +8,9 @@ import {
   authorized,
   codings,
 } from "@/utils";
-import { Status, Confirm, WeCheckbox, Quick } from "../../components/index.js";
+import { Status, Confirm, WeCheckbox, Quick, NavGroup } from "../../components";
 import { ButtonGroup, Option } from "../../common";
-
+const { Nav } = NavGroup;
 const { add, del, edit } = authorized.navigation.main;
 const { single: coding } = codings.navigation;
 
@@ -68,131 +68,129 @@ class Single extends React.Component {
 
     return (
       <div>
-        <div style={{ marginBottom: 15 }}>
-          <Option
-            option={this.state.option}
-            select={this.props.select}
-            api="navigation"
-            node="main"
-          />
-        </div>
-
-        <Card
-          title="单页列表"
+        <NavGroup
           extra={
-            <Space>
-              {checkButtonAuth(add) ? (
-                <Button
-                  onClick={() =>
-                    this.props.history.push("/admin/single/detail")
-                  }
-                  authorized={checkButtonAuth(add)}
-                >
-                  新增单页
-                </Button>
-              ) : (
-                ""
-              )}
-            </Space>
+            checkButtonAuth(add) ? (
+              <Button
+                onClick={() => this.props.history.push("/admin/single/detail")}
+                authorized={checkButtonAuth(add)}
+              >
+                新增单页
+              </Button>
+            ) : (
+              ""
+            )
           }
         >
-          <table width="100%" className="table-striped col-left-345">
-            <tr className="th">
-              <td className="col-md-1">选择</td>
-              <td className="col-md-1">顺序</td>
-              <td className="col-md-2">名称</td>
-              <td className="col-md-2">路径</td>
-              <td className="col-md-2">文件</td>
-              <td className="col-md-1">标识</td>
-              <td className="col-md-1">状态</td>
-              <td className="col-md-2">操作</td>
-            </tr>
-            {module.single &&
-              module.single.map((item, index) => (
-                <tr className="tr-list" key={item.id}>
-                  <td>
-                    <WeCheckbox
-                      data={{ id: item.id }}
-                      {...this.props}
-                    ></WeCheckbox>
-                  </td>
-                  <td>
-                    <Quick
-                      title={item.sort}
-                      data={{ id: item.id, field: "sort", coding }}
-                      authorized={checkButtonAuth(edit)}
-                      {...this.props}
-                    />
-                  </td>
-                  <td>
-                    <Quick
-                      title={item.title}
-                      data={{ id: item.id, field: "title", coding }}
-                      authorized={checkButtonAuth(edit)}
-                      {...this.props}
-                    />
-                  </td>
-                  <td>
-                    <Quick
-                      title={item.dir_file}
-                      data={{ id: item.id, field: "dir_file", coding }}
-                      authorized={checkButtonAuth(edit)}
-                      {...this.props}
-                    />
-                  </td>
-                  <td>
-                    <Quick
-                      title={item.html}
-                      data={{ id: item.id, field: "html", coding }}
-                      authorized={checkButtonAuth(edit)}
-                      {...this.props}
-                    />
-                  </td>
-                  <ta></ta>
-                  <td>
-                    <Status
-                      data={{ item, field: "status", coding }}
-                      authorized={checkButtonAuth(edit)}
-                      {...this.props}
-                    />
-                  </td>
-                  <td>
-                    <Space>
-                      <Link
-                        disabled={checkButtonAuth(edit)}
-                        to={{
-                          pathname: "/admin/single/detail",
-                          state: { id: item.id, coding: "P0002" },
-                        }}
-                      >
-                        编辑
-                      </Link>
-                      <Confirm
-                        name="删除"
-                        config={{
-                          operating: "delete",
-                          message: React.$modalEnum,
-                        }}
-                        data={{ coding, id: item.id }}
-                        api="delete"
-                        renderList={this.getData}
-                        authorized={checkButtonAuth(del)}
-                        {...this.props}
-                      />
-                    </Space>
-                  </td>
+          <Nav name="公告通知" value="1">
+            <Card className="mb15">
+              <Option
+                option={this.state.option}
+                select={this.props.select}
+                api="navigation"
+                node="main"
+              />
+            </Card>
+            <Card>
+              <table width="100%" className="table-striped col-left-345">
+                <tr className="th">
+                  <td className="col-md-1">选择</td>
+                  <td className="col-md-1">顺序</td>
+                  <td className="col-md-2">名称</td>
+                  <td className="col-md-2">路径</td>
+                  <td className="col-md-2">文件</td>
+                  <td className="col-md-1">标识</td>
+                  <td className="col-md-1">状态</td>
+                  <td className="col-md-2">操作</td>
                 </tr>
-              ))}
-          </table>
-          <ButtonGroup
-            button={["all", "delete", "open", "close"]}
-            data={{ list: module.checkedList, coding }}
-            renderList={this.getData}
-            checkButtonAuth={checkButtonAuth}
-            authorized={authorized.partner}
-            {...this.props}
-          />
-        </Card>
+                {module.single &&
+                  module.single.map((item, index) => (
+                    <tr className="tr-list" key={item.id}>
+                      <td>
+                        <WeCheckbox
+                          data={{ id: item.id }}
+                          {...this.props}
+                        ></WeCheckbox>
+                      </td>
+                      <td>
+                        <Quick
+                          title={item.sort}
+                          data={{ id: item.id, field: "sort", coding }}
+                          authorized={checkButtonAuth(edit)}
+                          {...this.props}
+                        />
+                      </td>
+                      <td>
+                        <Quick
+                          title={item.title}
+                          data={{ id: item.id, field: "title", coding }}
+                          authorized={checkButtonAuth(edit)}
+                          {...this.props}
+                        />
+                      </td>
+                      <td>
+                        <Quick
+                          title={item.dir_file}
+                          data={{ id: item.id, field: "dir_file", coding }}
+                          authorized={checkButtonAuth(edit)}
+                          {...this.props}
+                        />
+                      </td>
+                      <td>
+                        <Quick
+                          title={item.html}
+                          data={{ id: item.id, field: "html", coding }}
+                          authorized={checkButtonAuth(edit)}
+                          {...this.props}
+                        />
+                      </td>
+                      <ta></ta>
+                      <td>
+                        <Status
+                          data={{ item, field: "status", coding }}
+                          authorized={checkButtonAuth(edit)}
+                          {...this.props}
+                        />
+                      </td>
+                      <td>
+                        <Space>
+                          <Link
+                            disabled={checkButtonAuth(edit)}
+                            to={{
+                              pathname: "/admin/single/detail",
+                              state: { id: item.id, coding: "P0002" },
+                            }}
+                          >
+                            编辑
+                          </Link>
+                          <Confirm
+                            name="删除"
+                            config={{
+                              operating: "delete",
+                              message: React.$modalEnum,
+                            }}
+                            data={{ coding, id: item.id }}
+                            api="delete"
+                            renderList={this.getData}
+                            authorized={checkButtonAuth(del)}
+                            {...this.props}
+                          />
+                        </Space>
+                      </td>
+                    </tr>
+                  ))}
+              </table>
+              <ButtonGroup
+                button={["all", "delete", "open", "close"]}
+                data={{ list: module.checkedList, coding }}
+                renderList={this.getData}
+                checkButtonAuth={checkButtonAuth}
+                authorized={authorized.partner}
+                {...this.props}
+              />
+            </Card>
+          </Nav>
+        </NavGroup>
       </div>
     );
   }

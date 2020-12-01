@@ -163,7 +163,6 @@ class menuRouter extends React.Component {
                   data={{ id: ss.id, coding }}
                   renderList={this.getData}
                   authorized={checkButtonAuth("edit")}
-                  api="routerSelect"
                   {...this.props}
                 >
                   <Article />
@@ -298,7 +297,6 @@ class menuRouter extends React.Component {
                             data={{ id: item.id, coding }}
                             renderList={this.getData}
                             authorized={checkButtonAuth("edit")}
-                            api="routerSelect"
                             {...this.props}
                           >
                             <Article />

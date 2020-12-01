@@ -1,7 +1,14 @@
 import React from "react";
 import { Space, Button, Popover } from "antd";
 import { Link, checkButtonAuth, authorized, codings } from "@/utils";
-import { Confirm, WeCheckbox, Sorter, Status, WeModal } from "@/components";
+import {
+  Confirm,
+  WeCheckbox,
+  Sorter,
+  Status,
+  WeModal,
+  ContentTag,
+} from "@/components";
 
 const mod = window.location.pathname.split("/")[2] || "";
 
@@ -39,7 +46,10 @@ const List = (props) => {
                 <WeCheckbox data={{ id: item.id }} {...props}></WeCheckbox>
               </td>
               <td>{item.id}</td>
-              <td>{item.title}</td>
+              <td>
+                {item.title}
+                <ContentTag item={item} />
+              </td>
               <td>
                 <WeModal.Cate
                   {...props}
@@ -85,7 +95,6 @@ const List = (props) => {
                       message: React.$modalEnum,
                     }}
                     data={{ coding, id: item.id }}
-                    icon="write"
                     api="removeAndRestore"
                     renderList={props.getData}
                     authorized={checkButtonAuth(del)}

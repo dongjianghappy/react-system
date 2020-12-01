@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Card, Form, Input, Tabs } from "antd";
+import { Card, Form, Input } from "antd";
 import {
   connect,
   dispatchToProps,
@@ -8,13 +8,14 @@ import {
   authorized,
   codings,
 } from "@/utils";
+import { NavGroup } from "@/components";
 
 import { Option } from "@/common";
 import Flags from "../components/flags";
 import Statistics from "./components/statistics";
 import List from "./components/list";
 
-const { TabPane } = Tabs;
+const { Nav } = NavGroup;
 
 const mod = window.location.pathname.split("/")[2] || "";
 
@@ -87,68 +88,79 @@ class Index extends React.Component {
 
     return (
       <div>
-        <div style={{ marginBottom: 15 }}>
-          <Option
-            api="articleList"
-            option={this.option}
-            select={this.props.select}
-            search={{
-              show: true,
-              params: this.props.common.global.search,
-              searchField: this.props.searchField,
-              render: () => (
-                <>
-                  <Form.Item name="title">
-                    <Input
-                      placeholder="关键词查找"
-                      prefix={<i className="iconfont icon-search" />}
-                      className="input-250 input-sm mr10"
-                    />
-                  </Form.Item>
-                </>
-              ),
-            }}
-            coding={coding}
-          />
-        </div>
-
         <Statistics />
 
-        <Card>
-          <Tabs
-            defaultActiveKey="1"
-            onChange={this.callback}
-            tabBarExtraContent={
-              checkButtonAuth(add) ? (
-                <Link
-                  to={{
-                    pathname: "/admin/article/detail",
-                    state: { coding: coding, channel_id: 3 },
-                  }}
-                >
-                  新增文档
-                </Link>
-              ) : (
-                ""
-              )
-            }
-          >
-            <TabPane tab="文档管理" key="1">
+        <NavGroup
+          extra={
+            checkButtonAuth(add) ? (
+              <Link
+                to={{
+                  pathname: "/admin/article/detail",
+                  state: { coding: coding, channel_id: 3 },
+                }}
+              >
+                新增文档
+              </Link>
+            ) : (
+              ""
+            )
+          }
+        >
+          <Nav name="文档管理" value="1">
+            <Card className="mb15">
+              <Option
+                api="articleList"
+                option={this.option}
+                select={this.props.select}
+                search={{
+                  show: true,
+                  params: this.props.common.global.search,
+                  searchField: this.props.searchField,
+                  render: () => (
+                    <>
+                      <Form.Item name="title">
+                        <Input
+                          placeholder="关键词查找"
+                          prefix={<i className="iconfont icon-search" />}
+                          className="input-250 input-sm mr10"
+                        />
+                      </Form.Item>
+                    </>
+                  ),
+                }}
+                coding={coding}
+              />
+            </Card>
+            <Card>
               <List
                 type="1"
                 data={module.list}
                 {...this.props}
                 renderList={this.getData}
               />
-            </TabPane>
-            <TabPane tab="正在审核" key="2">
-              {/* <List type="1" data={list} {...this.props} getData={() => this.getData(1)} /> */}
-            </TabPane>
-            <TabPane tab="已退回" key="3">
-              {/* <ApplyList type="1" data={list} {...this.props} getData={() => this.getData(1)} /> */}
-            </TabPane>
-          </Tabs>
-        </Card>
+            </Card>
+          </Nav>
+          <Nav name="正在审核" value="2">
+            <Card>
+              <List
+                type="1"
+                data={module.list}
+                {...this.props}
+                renderList={this.getData}
+              />
+            </Card>
+          </Nav>
+          <Nav name="已退回" value="3">
+            <Card>
+              <List
+                type="1"
+                data={module.list}
+                {...this.props}
+                renderList={this.getData}
+              />
+            </Card>
+          </Nav>
+        </NavGroup>
       </div>
     );
   }

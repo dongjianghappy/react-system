@@ -36,6 +36,9 @@ import UploadModal from './upload/modal'
 import Confirm from './modal/confirm'
 import TitleAttribute from './attribute/title-attribute'
 import Keyword from './keyword'
+import NavGroup from './NavGroup'
+import ContentTag from './common/contentTag'
+import BasicInfo from './basicInfo'
 
 export  {
     Status,
@@ -72,6 +75,9 @@ export  {
     UploadModal,
     Confirm,
     TitleAttribute,
-    Keyword
+    Keyword,
+    NavGroup,
+    ContentTag,
+    BasicInfo
 };
   

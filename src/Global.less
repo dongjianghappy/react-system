@@ -10,81 +10,85 @@
   .ant-menu-submenu-open
   > .ant-menu-submenu-title
   > .ant-menu-submenu-arrow::before {
-  background: #1890ff !important;
+  background: #eee !important;
 }
 .ant-menu-dark
   .ant-menu-submenu-open
   > .ant-menu-submenu-title
   > .ant-menu-submenu-arrow::after {
-  background: #1890ff !important;
+  background: #eee !important;
 }
 
 .ant-menu-dark
   .ant-menu-submenu-active
   > .ant-menu-submenu-title:hover
   > .ant-menu-submenu-arrow::before {
-  background: #1890ff !important;
+  background: #eee !important;
 }
 
 .ant-menu-dark
   .ant-menu-submenu-active
   > .ant-menu-submenu-title:hover
   > .ant-menu-submenu-arrow::after {
-  background: #1890ff !important;
+  background: #eee !important;
+}
+
+.ant-menu-dark .ant-menu-submenu-title:hover,
+.ant-menu-inline .ant-menu-submenu-title {
+  color: #eee !important;
 }
 
 .ant-menu.ant-menu-dark
   .ant-menu-submenu-title
   .ant-menu-submenu-arrow::before {
-  background: #333 !important;
+  background: none !important;
+}
+
+.ant-menu-dark .ant-menu-submenu-active {
+  background: none !important;
 }
 
 .ant-menu.ant-menu-dark .ant-menu-submenu-title .ant-menu-submenu-arrow::after {
-  background: #333 !important;
+  background: none !important;
 }
 
 .ant-menu-dark {
   .ant-menu-item {
     a {
       padding-left: 8px;
-      color: #333 !important;
+      color: #eee !important;
     }
     &.ant-menu-item-active {
-      background: #fafafa !important;
+      background: none !important;
       a {
-        color: #1890ff !important;
+        color: #fff !important;
       }
     }
     &.ant-menu-item-selected {
-      background: #f0f2f5 !important;
+      background: none !important;
       a {
-        color: #333 !important;
+        color: #eee !important;
         font-weight: 600;
       }
     }
   }
   .ant-menu-submenu-open {
     .ant-menu-submenu-title {
-      background: #eee !important;
+      background: none !important;
     }
   }
   .ant-menu-inline.ant-menu-sub {
-    background: #fafafa !important;
+    background: none !important;
   }
 }
 
-// .ant-menu-inline-collapsed,
-// .ant-menu-submenu-vertical > .ant-menu-submenu-title {
-//   // width: 60px !important;
-//   i {
-//     margin-left: -10px !important;
-//     margin-right: 1000px !important;
-//     font-size: 24px;
-//   }
-// }
-// .ant-layout-sider-collapsed {
-//   flex: 0 0 60px !important;
-//   max-width: 60px !important;
-//   min-width: 60px !important;
-//   width: 60px !important;
-// }
+.iconfont {
+  color: #eee !important;
+}
+
+.icon-write {
+  color: #52c41a !important;
+}
+.icon-recycle {
+  color: #40a9ff !important;
+}

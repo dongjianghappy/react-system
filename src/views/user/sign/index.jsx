@@ -9,12 +9,12 @@ import {
   codings,
 } from "@/utils";
 
-import { WeModal } from "@/components";
+import { WeModal, NavGroup } from "@/components";
 
 import List from "./components/list";
 import Detail from "./components/detail";
 
-const { TabPane } = Tabs;
+const { Nav } = NavGroup;
 
 const { add } = authorized.user.sign;
 const { sign: coding } = codings.user;
@@ -38,41 +38,37 @@ class UserSign extends React.Component {
   render() {
     const { sign } = this.props.module;
     return (
-      <Card>
-        <Tabs
-          defaultActiveKey="1"
-          onChange={this.callback}
-          tabBarExtraContent={
-            <Space>
-              {checkButtonAuth(add) ? (
-                <WeModal.modalForm
-                  name="新增选项"
-                  data={{ coding }}
-                  renderList={this.getData}
-                  authorized={checkButtonAuth(add)}
-                  {...this.props}
-                >
-                  <Detail />
-                </WeModal.modalForm>
-              ) : (
-                ""
-              )}
-            </Space>
-          }
-        >
-          <TabPane tab="积分设置" key="1">
+      <NavGroup
+        onChange={this.callback}
+        extra={
+          checkButtonAuth(add) ? (
+            <WeModal.modalForm
+              name="新增选项"
+              data={{ coding }}
+              renderList={this.getData}
+              authorized={checkButtonAuth(add)}
+              {...this.props}
+            >
+              <Detail />
+            </WeModal.modalForm>
+          ) : (
+            ""
+          )
+        }
+      >
+        <Nav name="积分设置" value="1">
+          <Card>
             <List
               type="1"
               data={sign}
               {...this.props}
               renderList={() => this.getData(1)}
             />
-          </TabPane>
-          <TabPane tab="积分兑换" key="2">
-            {/* <EmailList type="1" data={audit} {...this.props} getData={() => this.getData(1)} /> */}
-          </TabPane>
-        </Tabs>
-      </Card>
+          </Card>
+        </Nav>
+
+        <Nav name="积分兑换" value="2"></Nav>
+      </NavGroup>
     );
   }
 }

@@ -6,21 +6,9 @@ import DividerForm from "@/components/form/dividerForm";
 import { connect } from "react-redux";
 import dispatchToProps from "../../store/dispatch";
 import Custom from "./components/custom";
-import {
-  Status,
-  WeCheckbox,
-  WeDrawer,
-  R_button,
-  ModalForm,
-  Condition,
-} from "../../components/index.js";
-import {
-  Navbar,
-  ButtonGroup,
-  Option,
-  OptionSelect,
-  ModalGroup,
-} from "../../common";
+import { WeModal, NavGroup } from "@/components";
+
+const { Nav } = NavGroup;
 class Basic extends React.Component {
   componentDidMount() {
     this.props.select({
@@ -56,55 +44,38 @@ class Basic extends React.Component {
     debugger;
     return (
       <>
-        <Card>
-          <ModalGroup {...this.props} coding="P0003" />
-          <div style={{ marginBottom: 15 }}>
-            <ul className="navbar">
-              <li>服务信息</li>
-              <li>
-                <ModalForm
-                  action="add"
-                  type="text"
-                  {...this.props}
-                  coding="Q0002"
-                  butName="新增信息"
-                >
-                  <Custom />
-                </ModalForm>
-              </li>
-            </ul>
-          </div>
-
-          <DividerForm
-            title="基本信息"
-            dataSource={baisc}
-            {...this.props}
-            coding="Q0002"
-            handle={this.handle}
-          ></DividerForm>
-          <DividerForm
-            title="自定义"
-            dataSource={custom}
-            {...this.props}
-            coding="Q0002"
-            handle={this.handle}
-          ></DividerForm>
-        </Card>
-        {/* <Row gutter={16}>
-            <Col span={12}>
-            <Card title="基本信息">
-            <Info />
-
+        <NavGroup
+          extra={
+            <WeModal.modalForm
+              name="自定义字段"
+              action="add"
+              dispatch={this.props.dispatch}
+              data={{ coding: "P0000" }}
+              renderList={this.getData}
+            >
+              <Custom />
+            </WeModal.modalForm>
+          }
+        >
+          <Nav name="服务信息" icon="111" value="1">
+            <Card>
+              <DividerForm
+                title="基本信息"
+                dataSource={baisc}
+                {...this.props}
+                coding="Q0002"
+                handle={this.handle}
+              ></DividerForm>
+              <DividerForm
+                title="自定义"
+                dataSource={custom}
+                {...this.props}
+                coding="Q0002"
+                handle={this.handle}
+              ></DividerForm>
             </Card>
-            </Col>
-            <Col span={12}>
-            <Logo />
-            <Custom />
-
-            </Col>
-            </Row>  */}
-
-        <input id="coding" type="hidden" value="Q0002" />
+          </Nav>
+        </NavGroup>
       </>
     );
   }

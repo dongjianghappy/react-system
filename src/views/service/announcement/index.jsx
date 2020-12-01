@@ -7,12 +7,20 @@ import {
   authorized,
   codings,
 } from "@/utils";
-import { Status, Confirm, WeCheckbox, WeDrawer, Quick } from "@/components";
+import {
+  Status,
+  Confirm,
+  WeCheckbox,
+  WeDrawer,
+  Quick,
+  NavGroup,
+} from "@/components";
 import { Operatinavbar } from "@/common";
 import Article from "./article";
 
 const { add, del, edit } = authorized.announcement;
 const { announcement: coding } = codings;
+const { Nav } = NavGroup;
 
 class Announcement extends React.Component {
   getData = () => {
@@ -35,8 +43,7 @@ class Announcement extends React.Component {
 
     return (
       <div>
-        <Card
-          title="公告通知"
+        <NavGroup
           extra={
             checkButtonAuth("b:manage:announcement:add") ? (
               <WeDrawer.Form
@@ -54,88 +61,95 @@ class Announcement extends React.Component {
             )
           }
         >
-          <table width="100%" className="table-striped table-hover col-left-3">
-            <tr className="th">
-              <td className="col-md-1">选择</td>
-              <td className="col-md-1">顺序</td>
-              <td className="col-md-7">伙伴名称</td>
-              <td className="col-md-1">状态</td>
-              <td className="col-md-2">操作</td>
-            </tr>
-            {module.announcement &&
-              module.announcement.map((item, index) => (
-                <tr class="tr-list">
-                  <td>
-                    <WeCheckbox
-                      data={{ id: item.id }}
-                      {...this.props}
-                    ></WeCheckbox>
-                  </td>
-                  <td>
-                    <Quick
-                      title={item.sort}
-                      data={{ id: item.id, field: "sort", coding }}
-                      authorized={checkButtonAuth("edit")}
-                      {...this.props}
-                    />
-                  </td>
-                  <td>
-                    <Quick
-                      title={item.title}
-                      data={{ id: item.id, field: "title", coding }}
-                      authorized={checkButtonAuth("edit")}
-                      {...this.props}
-                      width="50%"
-                    />
-                  </td>
-                  <td>
-                    <Status
-                      data={{ item, field: "status", coding }}
-                      authorized={checkButtonAuth("edit")}
-                      {...this.props}
-                    />
-                  </td>
-                  <td>
-                    <Space>
-                      <WeDrawer.Form
-                        title="编辑公告通知"
-                        name="编辑"
-                        isText={true}
-                        action="edit"
-                        data={{ id: item.id, coding }}
-                        renderList={this.getData}
-                        authorized={checkButtonAuth("edit")}
-                        {...this.props}
-                      >
-                        <Article />
-                      </WeDrawer.Form>
-                      <Confirm
-                        name="删除"
-                        config={{
-                          operating: "delete",
-                          message: React.$modalEnum,
-                        }}
-                        data={{ coding, id: item.id }}
-                        api="delete"
-                        renderList={this.getData}
-                        authorized={checkButtonAuth("delete")}
-                        {...this.props}
-                      />
-                    </Space>
-                  </td>
+          <Nav name="公告通知" value="1">
+            <Card>
+              <table
+                width="100%"
+                className="table-striped table-hover col-left-3"
+              >
+                <tr className="th">
+                  <td className="col-md-1">选择</td>
+                  <td className="col-md-1">顺序</td>
+                  <td className="col-md-7">伙伴名称</td>
+                  <td className="col-md-1">状态</td>
+                  <td className="col-md-2">操作</td>
                 </tr>
-              ))}
-          </table>
+                {module.announcement &&
+                  module.announcement.map((item, index) => (
+                    <tr class="tr-list">
+                      <td>
+                        <WeCheckbox
+                          data={{ id: item.id }}
+                          {...this.props}
+                        ></WeCheckbox>
+                      </td>
+                      <td>
+                        <Quick
+                          title={item.sort}
+                          data={{ id: item.id, field: "sort", coding }}
+                          authorized={checkButtonAuth("edit")}
+                          {...this.props}
+                        />
+                      </td>
+                      <td>
+                        <Quick
+                          title={item.title}
+                          data={{ id: item.id, field: "title", coding }}
+                          authorized={checkButtonAuth("edit")}
+                          {...this.props}
+                          width="50%"
+                        />
+                      </td>
+                      <td>
+                        <Status
+                          data={{ item, field: "status", coding }}
+                          authorized={checkButtonAuth("edit")}
+                          {...this.props}
+                        />
+                      </td>
+                      <td>
+                        <Space>
+                          <WeDrawer.Form
+                            title="编辑公告通知"
+                            name="编辑"
+                            isText={true}
+                            action="edit"
+                            data={{ id: item.id, coding }}
+                            renderList={this.getData}
+                            authorized={checkButtonAuth("edit")}
+                            {...this.props}
+                          >
+                            <Article />
+                          </WeDrawer.Form>
+                          <Confirm
+                            name="删除"
+                            config={{
+                              operating: "delete",
+                              message: React.$modalEnum,
+                            }}
+                            data={{ coding, id: item.id }}
+                            api="delete"
+                            renderList={this.getData}
+                            authorized={checkButtonAuth("delete")}
+                            {...this.props}
+                          />
+                        </Space>
+                      </td>
+                    </tr>
+                  ))}
+              </table>
 
-          <Operatinavbar
-            button={["all", "delete", "open", "close"]}
-            data={{ list: module.checkedList, coding }}
-            renderList={this.getData}
-            checkButtonAuth={checkButtonAuth}
-            authorized={authorized.announcement}
-            {...this.props}
-          />
-        </Card>
+              <Operatinavbar
+                button={["all", "delete", "open", "close"]}
+                data={{ list: module.checkedList, coding }}
+                renderList={this.getData}
+                checkButtonAuth={checkButtonAuth}
+                authorized={authorized.announcement}
+                {...this.props}
+              />
+            </Card>
+          </Nav>
+        </NavGroup>
       </div>
     );
   }

@@ -7,7 +7,9 @@ import {
   authorized,
   codings,
 } from "@/utils";
-import { Confirm, Condition, WeCheckbox } from "@/components";
+import { Confirm, Condition, WeCheckbox, NavGroup } from "@/components";
+
+const { Nav } = NavGroup;
 
 const mod = window.location.pathname.split("/")[2] || "";
 const { add, del, edit } = authorized.announcement;
@@ -35,73 +37,68 @@ class Recycle extends React.Component {
 
     return (
       <div>
-        <div style={{ marginBottom: 15 }}>
-          <ul className="navbar">
-            <li>回收站</li>
-            <li className="search">
-              <Condition />
-            </li>
-          </ul>
-        </div>
-
-        <Card>
-          <table
-            width="100%"
-            className="table-striped table-hover artlist col-left-23"
-          >
-            <tr class="th">
-              <td className="col-md-1">选择</td>
-              <td className="col-md-3">文档名称</td>
-              <td className="col-md-2">分类</td>
-              <td className="col-md-2">发布时间</td>
-              <td className="col-md-2">删除时间</td>
-              <td className="col-md-2">操作</td>
-            </tr>
-            {module.list &&
-              module.list.map((item, index) => (
-                <tr class="tr-list">
-                  <td>
-                    <WeCheckbox
-                      data={{ id: item.id }}
-                      {...this.props}
-                    ></WeCheckbox>
-                  </td>
-                  <td>{item.title}</td>
-                  <td>{item.parent}</td>
-                  <td>{item.datetime}</td>
-                  <td>{item.datetime}</td>
-                  <td>
-                    <Space size="middle">
-                      <Confirm
-                        name="还原"
-                        config={{
-                          operating: "restore",
-                          message: React.$modalEnum,
-                        }}
-                        data={{ coding, id: item.id }}
-                        api="removeAndRestore"
-                        renderList={this.getData}
-                        authorized={checkButtonAuth("delete")}
-                        {...this.props}
-                      />
-                      <Confirm
-                        name="清除"
-                        config={{
-                          operating: "delete",
-                          message: React.$modalEnum,
-                        }}
-                        data={{ coding, id: item.id }}
-                        api="deleteArticle"
-                        renderList={this.getData}
-                        authorized={checkButtonAuth("delete")}
-                        {...this.props}
-                      />
-                    </Space>
-                  </td>
+        <NavGroup>
+          <Nav name="推广管理" value="1">
+            <Card>
+              <table
+                width="100%"
+                className="table-striped table-hover artlist col-left-23"
+              >
+                <tr class="th">
+                  <td className="col-md-1">选择</td>
+                  <td className="col-md-3">文档名称</td>
+                  <td className="col-md-2">分类</td>
+                  <td className="col-md-2">发布时间</td>
+                  <td className="col-md-2">删除时间</td>
+                  <td className="col-md-2">操作</td>
                 </tr>
-              ))}
-          </table>
-        </Card>
+                {module.list &&
+                  module.list.map((item, index) => (
+                    <tr class="tr-list">
+                      <td>
+                        <WeCheckbox
+                          data={{ id: item.id }}
+                          {...this.props}
+                        ></WeCheckbox>
+                      </td>
+                      <td>{item.title}</td>
+                      <td>{item.parent}</td>
+                      <td>{item.datetime}</td>
+                      <td>{item.datetime}</td>
+                      <td>
+                        <Space size="middle">
+                          <Confirm
+                            name="还原"
+                            config={{
+                              operating: "restore",
+                              message: React.$modalEnum,
+                            }}
+                            data={{ coding, id: item.id }}
+                            api="removeAndRestore"
+                            renderList={this.getData}
+                            authorized={checkButtonAuth("delete")}
+                            {...this.props}
+                          />
+                          <Confirm
+                            name="清除"
+                            config={{
+                              operating: "delete",
+                              message: React.$modalEnum,
+                            }}
+                            data={{ coding, id: item.id }}
+                            api="deleteArticle"
+                            renderList={this.getData}
+                            authorized={checkButtonAuth("delete")}
+                            {...this.props}
+                          />
+                        </Space>
+                      </td>
+                    </tr>
+                  ))}
+              </table>
+            </Card>
+          </Nav>
+        </NavGroup>
       </div>
     );
   }

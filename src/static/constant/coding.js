@@ -142,7 +142,8 @@ const codings = {
 		banuser: "",
 		security: "U0009",
 		theme: "M10001"
-	}
+	},
+	space: ""
 }
 
 export default codings

@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import '@/App.css'
 import Frame from '@view/layout'
+import Space from '@view/space'
 import { mainRouter, adminRouter } from '@/router'
 import { isLogined } from '@/utils/auth'
 
@@ -87,19 +88,75 @@ const render = (route) =>{
   })
 }
 
-const App = (props) =>  {
 
-    return isLogined() ? 
-      <Frame>
+
+
+const Channels = (path) => {
+
+  const module = path.split("/")[2]
+
+  if(module === "space"){
+    return(
+      <Space>
         <Switch>
           {
-            render(adminRouter)
+            adminRouter.map( route => {
+              return (
+
+                route.children ?
+
+                route.children.map((list, i) => (
+                    
+                  <Route
+                    key={list.path}
+                    path={list.path}
+                    exact={list.exact}
+                    render={ listProps => {
+                      console.log(list.exact);
+                      return <list.component {...listProps} />
+                    }}
+                  />
+                ))
+                
+                :
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  exact={route.exact}
+                  render={ routeProps => {
+                    return <route.component {...routeProps} />
+                  }}
+                />
+              )
+            })
           }
           <Redirect to={adminRouter[0].path} from="/admin" />
           <Redirect to="/404" />
         </Switch>
-      </Frame>    
-  
+      </Space>
+    )
+  }else{
+    return(
+      <Frame>
+      <Switch>
+        {
+          render(adminRouter)
+        }
+        <Redirect to={adminRouter[0].path} from="/admin" />
+        <Redirect to="/404" />
+      </Switch>
+    </Frame>  
+    )
+  }
+}
+
+
+
+
+const App = (props) =>  {
+
+    return isLogined() ? 
+      Channels(props.location.pathname)  
     : (
       <Redirect to="/login" />
     )

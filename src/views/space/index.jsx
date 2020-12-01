@@ -1,62 +1,40 @@
-import React, { Fragment } from 'react'
-import { Button, Modal, message, Card, Row, Col } from 'antd'
-import { connect } from 'react-redux'
-import dispatchToProps from '../../store/dispatch'
-class Main  extends React.Component{
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
+import { Layout } from 'antd';
 
-    state = { visible: false };
+import Toper from './components/header'
+import Sidebar from './components/sidebar'
+import Position from './components/position'
+import Main from './components/content'
 
-    componentDidMount(){
-        this.props.getSpace()
-    }
+const { Content } = Layout;
 
-    handleOk = e => {
-    this.props.handleOk()
-    this.setState({
-        visible: false,
-    });
-    };
-
-    handleCancel = e => {
-    console.log(e);
-    this.setState({
-        visible: false,
-    });
-    };
-
-    openFile = e =>{
-        console.log("dds");
-    }
-
-    render() {
-        const { visible } = this.state
-        const { butName, title, type, width, className } = this.props
-        const list = this.props.list.list.fileList
-        return (
-            <Fragment>
-                <Row style={{height: 320}}>
-                {
-                    list && list.map((item, i) => (
-                        <Col span={3} style={{padding: 5}}>
-                            <Card style={{height:100}}>
-                                <div>{item.type === '文件夹' ? 
-                                <img src={item.path} width="40" onClick={this.openFile} />
-                                : <img src={item.img_url} width="100%" />}</div>
-                                <div>{item.name}</div>
-                            </Card>
-                        </Col>
-                    ))
-                }
-                </Row>
-            </Fragment>
-        )
-    }
+const Spaces = (props) =>  {
+    return (
+      <Layout>
+          <Router>
+          <Toper/>
+          <Layout>
+            <Sidebar />
+            <Layout style={{overflow:'hidden'}}>
+              <Position/ >
+              <Content
+                className="site-layout-background"
+                style={{
+                  padding: 25,
+                  margin: 0,
+                  minHeight: 280,
+                  overflow: "auto"
+                }}
+              >
+               <Main></Main>
+              </Content>
+            </Layout>
+          </Layout>
+          </Router>
+        </Layout>
+    )
 }
 
-const stateToProops = (state) => {
-    return {
-        list: state.space
-    }
-  }
+export default Spaces
 
-export default connect(stateToProops, dispatchToProps)(Main)

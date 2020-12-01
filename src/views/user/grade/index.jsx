@@ -8,10 +8,11 @@ import {
   codings,
 } from "@/utils";
 
-import { WeModal } from "@/components";
+import { WeModal, NavGroup } from "@/components";
 import List from "./components/list.jsx";
 import Detail from "./components/detail";
 
+const { Nav } = NavGroup;
 const { add } = authorized.user.grade;
 const { grade: coding } = codings.user;
 
@@ -44,44 +45,41 @@ class UserGrade extends React.Component {
     const { grade } = this.props.module;
     return (
       <>
-        <Card>
-          <Tabs
-            defaultActiveKey={(type && type.toString()) || "1"}
-            onChange={this.callback}
-            tabBarExtraContent={
-              checkButtonAuth(add) ? (
-                <WeModal.modalForm
-                  name="新增功能应用权限"
-                  data={{ coding }}
-                  renderList={this.getData}
-                  authorized={checkButtonAuth(add)}
-                  {...this.props}
-                >
-                  <Detail />
-                </WeModal.modalForm>
-              ) : (
-                ""
-              )
-            }
-          >
-            <TabPane tab="功能权限" key="1">
-              <List
-                type="1"
-                data={grade}
+        <NavGroup
+          onChange={this.callback}
+          extra={
+            checkButtonAuth(add) ? (
+              <WeModal.modalForm
+                name="新增功能应用权限"
+                data={{ coding }}
+                renderList={this.getData}
+                authorized={checkButtonAuth(add)}
                 {...this.props}
-                renderList={() => this.getData(1)}
-              />
-            </TabPane>
-            <TabPane tab="应用权限" key="2">
-              <List
-                type="2"
-                data={grade}
-                {...this.props}
-                renderList={() => this.getData(2)}
-              />
-            </TabPane>
-          </Tabs>
-        </Card>
+              >
+                <Detail />
+              </WeModal.modalForm>
+            ) : (
+              ""
+            )
+          }
+        >
+          <Nav name="所有主题" value="1">
+            <List
+              type="1"
+              data={grade}
+              {...this.props}
+              renderList={() => this.getData(1)}
+            />
+          </Nav>
+          <Nav name="所有主题" value="2">
+            <List
+              type="2"
+              data={grade}
+              {...this.props}
+              renderList={() => this.getData(2)}
+            />
+          </Nav>
+        </NavGroup>
       </>
     );
   }

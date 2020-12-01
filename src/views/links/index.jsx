@@ -7,14 +7,14 @@ import {
   authorized,
   codings,
 } from "@/utils";
-import { WeDrawer } from "@/components";
+import { WeDrawer, NavGroup } from "@/components";
 import { Option } from "@/common";
 import List from "./components/list";
 import Article from "./components/article";
 
 const { add, del, edit } = authorized.link;
 const { link: coding } = codings;
-
+const { Nav } = NavGroup;
 const { TabPane } = Tabs;
 
 class Links extends React.Component {
@@ -107,32 +107,30 @@ class Links extends React.Component {
   render() {
     return (
       <div>
-        <div style={{ marginBottom: 15 }}>
-          <Option option={this.option} data={{ coding }} {...this.props} />
-        </div>
-
-        <Card>
-          <Tabs
-            defaultActiveKey="1"
-            onChange={this.callback}
-            tabBarExtraContent={
-              checkButtonAuth("add") ? (
-                <WeDrawer.Form
-                  name="新增友情链接"
-                  icon="add"
-                  data={{ coding }}
-                  renderList={this.getData}
-                  authorized={checkButtonAuth("add")}
-                  {...this.props}
-                >
-                  <Article />
-                </WeDrawer.Form>
-              ) : (
-                ""
-              )
-            }
-          >
-            <TabPane tab="出售友链" key="1">
+        <NavGroup
+          onChange={this.callback}
+          extra={
+            checkButtonAuth("add") ? (
+              <WeDrawer.Form
+                name="新增友情链接"
+                icon="add"
+                data={{ coding }}
+                renderList={this.getData}
+                authorized={checkButtonAuth("add")}
+                {...this.props}
+              >
+                <Article />
+              </WeDrawer.Form>
+            ) : (
+              ""
+            )
+          }
+        >
+          <Nav name="出售友链" icon="111" value="1">
+            <Card className="mb15">
+              <Option option={this.option} data={{ coding }} {...this.props} />
+            </Card>
+            <Card>
               <List
                 listType="1"
                 data={{ coding, apply_checked: 1, method: 0 }}
@@ -140,8 +138,10 @@ class Links extends React.Component {
                 authorized={this.authorized}
                 {...this.props}
               />
-            </TabPane>
-            <TabPane tab="交换友链" key="2">
+            </Card>
+          </Nav>
+          <Nav name="交换友链" value="2">
+            <Card className="mb15">
               <List
                 listType="2"
                 data={{ coding, apply_checked: 1, method: 1 }}
@@ -149,8 +149,10 @@ class Links extends React.Component {
                 authorized={this.authorized}
                 {...this.props}
               />
-            </TabPane>
-            <TabPane tab="申请友链" key="3">
+            </Card>
+          </Nav>
+          <Nav name="申请友链" value="3">
+            <Card className="mb15">
               <List
                 listType="3"
                 data={{ coding, apply_checked: 0 }}
@@ -158,9 +160,9 @@ class Links extends React.Component {
                 authorized={this.authorized}
                 {...this.props}
               />
-            </TabPane>
-          </Tabs>
-        </Card>
+            </Card>
+          </Nav>
+        </NavGroup>
       </div>
     );
   }

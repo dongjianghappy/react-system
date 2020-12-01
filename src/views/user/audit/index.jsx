@@ -9,11 +9,11 @@ import {
   codings,
 } from "@/utils";
 
-import { WeCheckbox } from "@/components";
+import { WeCheckbox, NavGroup } from "@/components";
 import EmailList from "./components/email-list";
 import List from "./components/list";
 
-const { TabPane } = Tabs;
+const { Nav } = NavGroup;
 
 class UserList extends React.Component {
   getData = (data) => {
@@ -47,26 +47,28 @@ class UserList extends React.Component {
   render() {
     const { audit } = this.props.module;
     return (
-      <Card>
-        <Tabs defaultActiveKey="1" onChange={this.callback}>
-          <TabPane tab="注册审核" key="1">
+      <NavGroup onChange={this.callback}>
+        <Nav name="积分设置" value="1">
+          <Card>
             <List
               type="1"
               data={audit}
               {...this.props}
               getData={() => this.getData(1)}
             />
-          </TabPane>
-          <TabPane tab="邮件审核" key="2">
+          </Card>
+        </Nav>
+        <Nav name="积分设置" value="2">
+          <Card>
             <EmailList
               type="1"
               data={audit}
               {...this.props}
               getData={() => this.getData(1)}
             />
-          </TabPane>
-        </Tabs>
-      </Card>
+          </Card>
+        </Nav>
+      </NavGroup>
     );
   }
 }
