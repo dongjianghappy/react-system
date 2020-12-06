@@ -7,7 +7,7 @@ import {
   authorized,
   codings,
 } from "@/utils";
-import { Status, WeDrawer, ModalSpace } from "@/components";
+import { Status, WeDrawer, WeModal } from "@/components";
 import AddFrom from "./components/addFrom";
 
 const { add, edit } = authorized.slideshow.art;
@@ -78,9 +78,9 @@ class SlideshowList extends React.Component {
             }}
           >
             <Col span={6}>
-              <ModalSpace authorized={checkButtonAuth(edit)}>
+              <WeModal.Space authorized={checkButtonAuth(edit)}>
                 <img src={item.image} width="250" height="100" alt="" />
-              </ModalSpace>
+              </WeModal.Space>
             </Col>
             <Col span={14}>
               <div>

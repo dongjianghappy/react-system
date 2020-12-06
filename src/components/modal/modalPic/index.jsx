@@ -24,9 +24,30 @@ const ModalPicture = (props) => {
         {props.children || <PictureOutlined />}
       </div>
 
-      <Modal title="image.png" visible={visible} centered onCancel={handleCancel} footer={false}>
-        <div style={{ height: 462 }}>
-          <img src={props.src} width="100%" />
+      <Modal
+        title="image.png"
+        visible={visible}
+        centered
+        onCancel={handleCancel}
+        footer={false}
+      >
+        <div
+          style={{
+            height: 462,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <img
+            src={props.src}
+            style={{
+              maxWidth: "100%",
+              maxHeight: "100%",
+              width: "auto",
+              height: "auto",
+            }}
+          />
         </div>
       </Modal>
     </>

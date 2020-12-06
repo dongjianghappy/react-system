@@ -1,17 +1,16 @@
-import React from 'react'
-import { Modal, message, Button } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
-import warning from '../modal/warning'
+import React from "react";
+import { Modal, message, Button } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import warning from "../modal/warning";
 
 const Confirm = (props) => {
-
-  const { dispatch, config } = props
-  const information = config &&  config.message && config.message[config.operating] || {}
+  const { dispatch, config } = props;
+  const information =
+    (config && config.message && config.message[config.operating]) || {};
 
   const showConfirm = () => {
-
-    if(props.render && props.render()){
-      return
+    if (props.render && props.render()) {
+      return;
     }
 
     Modal.confirm({
@@ -19,60 +18,51 @@ const Confirm = (props) => {
       icon: <ExclamationCircleOutlined />,
       content: props.config.content,
       onOk() {
-        debugger
-        dispatch.fetch({
-          api: props.api,
-          data: {
-            coding: props.coding,
-            ...props.data,
-            ...props.params
-          }
-        }).then(() => {
-          message.info(information.info);
-          props.renderList && props.renderList()
-        })
+        debugger;
+        dispatch
+          .fetch({
+            api: props.api,
+            data: {
+              coding: props.coding,
+              ...props.data,
+              ...props.params,
+            },
+          })
+          .then(() => {
+            message.info(information.info);
+            debugger;
+            props.renderList && props.renderList();
+          });
       },
       onCancel() {
-        console.log('Cancel');
+        console.log("Cancel");
       },
     });
-  }
+  };
 
   const Text = () => (
     <>
-    <span onClick={props.authorized ? showConfirm : warning}>
-    {
-      props.icon ?
-      <i className={`iconfont icon-${props.icon}`} />
-      : ""
-    }
-    {props.name}</span>
+      <span onClick={props.authorized ? showConfirm : warning}>
+        {props.icon ? <i className={`iconfont icon-${props.icon}`} /> : ""}
+        {props.name}
+      </span>
     </>
-  )
+  );
 
   const Buttons = () => (
     <>
-    <Button onClick={props.authorized ? showConfirm : warning}>
-    {
-      props.icon ?
-      <i className={`iconfont icon-${props.icon}`} />
-      : ""
-    }
-    {props.name}</Button>
+      <Button onClick={props.authorized ? showConfirm : warning}>
+        {props.icon ? <i className={`iconfont icon-${props.icon}`} /> : ""}
+        {props.name}
+      </Button>
     </>
-  )
+  );
 
-  return (
-    <>
-      {
-        props.isText === true ? <Text /> : <Buttons />
-      }
-    </>
-  )
-}
+  return <>{props.isText === true ? <Text /> : <Buttons />}</>;
+};
 
 Confirm.defaultProps = {
-  isText: true
-}
+  isText: true,
+};
 
-export default Confirm
+export default Confirm;

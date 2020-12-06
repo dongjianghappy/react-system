@@ -39,6 +39,8 @@ import Keyword from './keyword'
 import NavGroup from './NavGroup'
 import ContentTag from './common/contentTag'
 import BasicInfo from './basicInfo'
+import Preview from './preview'
+
 
 export  {
     Status,
@@ -78,6 +80,7 @@ export  {
     Keyword,
     NavGroup,
     ContentTag,
-    BasicInfo
+    BasicInfo,
+    Preview
 };
   

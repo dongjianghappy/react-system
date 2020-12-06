@@ -122,9 +122,10 @@ class Spread extends React.Component {
                           <WeDrawer.Form
                             title="编辑推广内容"
                             name="编辑"
-                            id={item.id}
-                            coding="P0006"
+                            action="edit"
+                            data={{ id: item.id, coding }}
                             renderList={this.getData}
+                            authorized={checkButtonAuth(edit)}
                             {...this.props}
                           >
                             <Article />

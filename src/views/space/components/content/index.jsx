@@ -1,67 +1,174 @@
-import React, { Fragment } from "react";
-import { Button, Modal, message, Card, Row, Col } from "antd";
-import { connect } from "react-redux";
-import { Editor, Upload, UploadModal, WeModal } from "@/components";
-import dispatchToProps from "../../../../store/dispatch";
+import React from "react";
+import { Card, Row, Col } from "antd";
+import { connect, dispatchToProps } from "@/utils";
+import { WeModal } from "@/components";
+import Operating from "./operating";
+import Position from "./position";
+
 class Main extends React.Component {
-  state = { visible: false };
+  state = {
+    visible: false,
+    data: [],
+    prev: "",
+    dir: "../upload/",
+    currentDir: "",
+    file: "",
+    checkedList: [],
+    image: "",
+  };
+
+  getData = (type, data, filesss) => {
+    let file = "";
+    let dir = "";
+
+    switch (type) {
+      // 返回
+      case "return":
+        dir = this.state.dir.split("/");
+        file = data ? `${data}` : "";
+        dir.splice(dir.length - 2, 2);
+        this.setState({
+          dir: `${dir.join("/")}/`,
+        });
+        break;
+
+      // 打开目录
+      case "open":
+        file = data ? `&${data}` : "";
+        dir = `${this.state.dir}${filesss}/`;
+        this.setState({
+          dir,
+          file: filesss,
+        });
+        break;
+      // 初始化
+      default:
+        file = data || "";
+    }
+
+    this.setState({
+      currentDir: file,
+    });
+    this.props.dispatch
+      .fetch({
+        api: "space",
+        data: {
+          file,
+        },
+      })
+      .then((res) => {
+        this.setState({
+          data: res.result.fileList,
+          prev: res.result.prev_dir,
+        });
+      });
+  };
 
   componentDidMount() {
-    this.props.getSpace();
+    this.getData();
   }
 
-  handleOk = (e) => {
-    this.props.handleOk();
-    this.setState({
-      visible: false,
-    });
-  };
+  choose = (data) => {
+    // let index = this.state.checkedList.indexOf(data);
+    // if (index !== -1) {
+    //   this.state.checkedList.splice(index, 1);
+    // } else {
+    //   this.state.checkedList.push(data);
+    // }
 
-  handleCancel = (e) => {
-    console.log(e);
-    this.setState({
-      visible: false,
-    });
-  };
+    // this.setState({
+    //   checkedList: this.state.checkedList,
+    // });
 
-  openFile = (e) => {
-    console.log("dds");
+    this.setState({
+      image: data,
+    });
+    this.props.getData(data);
   };
 
   render() {
-    const { visible } = this.state;
-    const { butName, title, type, width, className } = this.props;
-    const list = this.props.list.list.fileList;
     return (
-      <Fragment>
-        <Row style={{ height: 320 }}>
-          {list &&
-            list.map((item, i) => (
-              <Col span={3} style={{ padding: 5 }}>
-                <Card style={{ height: 100 }}>
-                  <div onClick={this.caaa}>
-                    {item.type === "文件夹" ? (
-                      <img src={item.path} width="40" onClick={this.openFile} />
+      <>
+        <Position
+          dir={this.state.dir}
+          goback={() => this.getData("return", this.state.prev)}
+          renderList={() => this.getData("init", this.state.currentDir)}
+          {...this.props}
+        />
+        <div
+          style={{
+            position: "absolute",
+            top: 50,
+            bottom: "0",
+            overflow: "hidden",
+            overflowY: "auto",
+          }}
+        >
+          <Row>
+            {this.state.data &&
+              this.state.data.map((item, i) => (
+                <Col span={this.props.span} style={{ padding: 5 }}>
+                  <Card
+                    className={`space-wrap relative align_center ${
+                      this.state.image === item.path ? "current" : ""
+                    }`}
+                  >
+                    <div
+                      className={`space-${
+                        item.type === "文件夹" ? "file" : "picture"
+                      }`}
+                    >
+                      {item.type === "文件夹" ? (
+                        <>
+                          <div>
+                            <img
+                              src={item.path}
+                              width="40"
+                              onClick={() =>
+                                this.getData("open", item.file, item.name)
+                              }
+                            />
+                          </div>
+                          <div className="nowrap">{item.name}</div>
+                        </>
+                      ) : (
+                        <>
+                          {this.props.show === "space" ? (
+                            <WeModal.Picture src={item.img_url}>
+                              <img src={item.img_url} />
+                            </WeModal.Picture>
+                          ) : (
+                            <div onClick={() => this.choose(item.path)}>
+                              <img src={item.img_url} />
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
+                    {this.props.show === "space" && item.type !== "文件夹" ? (
+                      <Operating
+                        item={item}
+                        renderList={() =>
+                          this.getData("init", this.state.currentDir)
+                        }
+                        {...this.props}
+                      />
                     ) : (
-                      <WeModal.Picture src={item.img_url}>
-                        <img src={item.img_url} width="100%" />
-                      </WeModal.Picture>
+                      ""
                     )}
-                  </div>
-                  <div>{item.name}</div>
-                </Card>
-              </Col>
-            ))}
-        </Row>
-      </Fragment>
+                  </Card>
+                </Col>
+              ))}
+          </Row>
+        </div>
+      </>
     );
   }
 }
 
-const stateToProops = (state) => {
-  return {
-    list: state.space,
-  };
-};
-
-export default connect(stateToProops, dispatchToProps)(Main);
+export default connect(
+  (state) => ({
+    module: state.space,
+  }),
+  dispatchToProps
+)(Main);

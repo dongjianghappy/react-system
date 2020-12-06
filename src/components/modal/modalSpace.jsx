@@ -1,53 +1,64 @@
 import React, { Fragment } from "react";
-import { Button, Modal, message, Card, Row, Col } from "antd";
-import { connect } from "react-redux";
-import dispatchToProps from "../../store/dispatch";
+import { Button, Modal, message } from "antd";
+// import { connect } from "react-redux";
+// import dispatchToProps from "../../store/dispatch";
+
+import { connect, dispatchToProps } from "@/utils";
 import warning from "../modal/warning";
+import Main from "@/views/space/components/content";
 
 class ModalSpace extends React.Component {
-  state = { visible: false };
+  state = { visible: false, image: "" };
 
   showModal = () => {
     if (!this.props.authorized) {
       return warning();
     }
-    this.props.getSpace();
+    debugger;
     this.setState({
       visible: true,
     });
   };
 
   handleOk = (e) => {
-    this.props.handleOk();
+    if (this.state.image.length === 0) {
+      return message.info("请选择图片");
+    }
+
+    this.props.callback({
+      image: `|${this.state.image}|`,
+    });
+    this.props.setValue([this.state.image]);
     this.setState({
       visible: false,
     });
   };
 
   handleCancel = (e) => {
-    console.log(e);
     this.setState({
       visible: false,
     });
   };
 
-  openFile = (e) => {
-    console.log("dds");
+  getData = (data) => {
+    this.setState({
+      image: data,
+    });
   };
 
   render() {
     const { visible } = this.state;
-    const { butName, title, type, width, className } = this.props;
-    const list = this.props.list.list.fileList;
+
     return (
       <Fragment>
         <div onClick={this.showModal}>{this.props.children}</div>
 
         <Modal
-          title={title || "图片空间"}
-          width={width ? width * 1 : "80%"}
+          title={"图片空间"}
+          width={"80%"}
           visible={visible}
           onCancel={this.handleCancel}
+          centered
           footer={
             this.props.footerBtn !== null
               ? [
@@ -61,36 +72,15 @@ class ModalSpace extends React.Component {
               : null
           }
         >
-          <Card
-            bordered={false}
-            extra={
-              <div>
-                当前目录含有16文件<a href="#">返回上级目录</a>
-              </div>
-            }
+          <div
+            className="relative"
+            style={{
+              height: 450,
+              paddingTop: 50,
+            }}
           >
-            <Row style={{ height: 320 }}>
-              {list &&
-                list.map((item, i) => (
-                  <Col span={3} style={{ padding: 5 }}>
-                    <Card style={{ height: 100 }}>
-                      <div>
-                        {item.type === "文件夹" ? (
-                          <img
-                            src={item.path}
-                            width="40"
-                            onClick={this.openFile}
-                          />
-                        ) : (
-                          <img src={item.img_url} width="100%" />
-                        )}
-                      </div>
-                      <div>{item.name}</div>
-                    </Card>
-                  </Col>
-                ))}
-            </Row>
-          </Card>
+            <Main show="modal" span="3" getData={this.getData}></Main>
+          </div>
         </Modal>
       </Fragment>
     );
@@ -98,9 +88,7 @@ class ModalSpace extends React.Component {
 }
 
 const stateToProops = (state) => {
-  return {
-    list: state.space,
-  };
+  return {};
 };
 
 export default connect(stateToProops, dispatchToProps)(ModalSpace);

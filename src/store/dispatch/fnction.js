@@ -139,10 +139,9 @@ const dispatchToProps = (dispatch) => {
                 
         // 图片空间
         getSpace(params) {
-          const action = spaceAction({
-            ...params
+          return spaceAction({
+            file: params
           })
-          dispatch(action)
       },  
       
         // 默认页面

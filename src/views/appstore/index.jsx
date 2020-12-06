@@ -9,7 +9,7 @@ import {
   codings,
 } from "@/utils";
 
-import { Status, WeModal } from "../../components/index.js";
+import { Status, WeModal } from "../../components";
 import Detail from "./components/detail";
 
 const { add, del, edit } = authorized.appstore;

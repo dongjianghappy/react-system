@@ -52,8 +52,8 @@ export default class http {
 				if(response.data.result === true){
 
 				}else{
-                    if(response.data.responseBody !== null){
-                        return response.data.responseBody;
+                    if(response.data.result !== null){
+                        return response.data.result;
                     }
 				}
 			}else{
@@ -77,11 +77,13 @@ export default class http {
         params.m = params.m ? params.m : m;
         const request  = this.axios()
 
+        let url = params.m === "space" ? `inter_vue.php?m=${params.m}&n=${params.n}${params.file && params.file !== "/" ? params.file : ""}` : 'inter_vue.php'
+
         this.requestHeaders(request)
         this.responseHeaders(request)
         return new Promise((resolve, reject) => {
             request.request({
-                url: 'inter_vue.php',
+                url: url,
                 method,
                 data: params
             })

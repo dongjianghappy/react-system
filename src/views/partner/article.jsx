@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Form, Input, InputNumber, Button, Radio } from "antd";
-import { Editor, Upload, UploadModal, WeModal } from "@/components";
+import { Editor, Upload, UploadModal, WeModal, Preview } from "@/components";
 
 import pic1 from "@/static/pic/1.jpg";
 import pic2 from "@/static/pic/2.jpg";
@@ -14,12 +14,12 @@ import pic9 from "@/static/pic/9.jpg";
 import pic10 from "@/static/pic/10.jpg";
 
 const Detail = (props) => {
-  debugger;
+  const { params, form, callback } = props;
 
   return (
     <>
       <Form.Item name="name" label="伙伴名称" rules={[{ required: true }]}>
-        <Input />
+        <Input size="large" />
       </Form.Item>
       <Form.Item name="url" label="url地址">
         <Input />
@@ -37,7 +37,7 @@ const Detail = (props) => {
       </Form.Item>
       <Form.Item name="display" label="预览图">
         {/* <Upload image={props.data.image} /> */}
-        <WeModal.Picture
+        {/* <WeModal.Picture
           src={
             "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
           }
@@ -45,14 +45,17 @@ const Detail = (props) => {
         <WeModal.Album
           data={[pic1, pic2, pic3, pic4, pic5, pic6, pic7, pic8, pic10]}
         />
-        <UploadModal />
+        <UploadModal /> */}
+        <Preview
+          authorized={true}
+          data={params.data}
+          callback={callback}
+          form={form}
+          params={params}
+        />
       </Form.Item>
       <Form.Item label="站点简介">
-        {/* <Editor 
-                    field="content"
-                    value={props.data.content}
-                    change={props.change}
-                /> */}
+        <Editor value={form.getFieldValue().content} callback={callback} />
       </Form.Item>
     </>
   );

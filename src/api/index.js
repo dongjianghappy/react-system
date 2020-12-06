@@ -142,12 +142,17 @@ export default {
 
     // 图片空间
     space(params) {
-        return http.request('space', 'space', 'post', params)
+        return http.request('space', 'space', 'get', params)
     },
     // 创建文件夹
     createfile(params) {
         return http.request('space', 'createfile', 'post', params)
     }, 
+
+    // 删除图片
+    deletefile(params) {
+        return http.request('space', 'deletefile', 'post', params)
+    },     
 
     // 自定义
     anpassen(params) {
