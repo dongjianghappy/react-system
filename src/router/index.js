@@ -119,13 +119,13 @@ const asyncRoutes = [
     //     isShow: false,
     //     component: SlideshowList 
     // },     
-    {
-        name: "修改文档",
-        path: "/admin/article/detail",
-        component: Article, 
-        isShow: false,
-        exact: true 
-    },
+    // {
+    //     name: "修改文档",
+    //     path: "/admin/article/detail",
+    //     component: Article, 
+    //     isShow: false,
+    //     exact: true 
+    // },
     //  // 导航开始
     //  {
     //     name: "导航管理",
@@ -172,6 +172,7 @@ const arrss = {
     ModuleDefault,
     Channel,
     List,
+    Article,
     Links,
     Advertisement,
     Announcement,

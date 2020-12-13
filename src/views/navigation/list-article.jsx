@@ -19,6 +19,7 @@ import {
   R_form,
   Keyword,
   Editor,
+  Preview,
 } from "../../components/index.js";
 
 import { connect } from "react-redux";
@@ -30,10 +31,10 @@ const layout = {
 };
 
 class Single extends React.Component {
-  form = React.createRef();
+  formRef = React.createRef();
 
   state = {
-    data: {},
+    dataSource: {},
   };
 
   async componentDidMount() {
@@ -45,7 +46,7 @@ class Single extends React.Component {
           id: this.props.location.state.id,
         },
       });
-      this.form.current.setFieldsValue(res.result);
+      this.formRef.current.setFieldsValue(res.result);
       const tag = res.result.keyword.split(",");
       res.result.keyword = tag;
       this.setState({
@@ -55,6 +56,27 @@ class Single extends React.Component {
   }
 
   onFinish = (values) => {
+    if (
+      this.formRef.current.getFieldValue().image &&
+      this.formRef.current.getFieldValue().image.length > 0 &&
+      Array.isArray(this.formRef.current.getFieldValue().image)
+    ) {
+      debugger;
+      if (
+        this.formRef.current.getFieldValue().image[0].indexOf("http") === -1
+      ) {
+        values.image = `|${this.formRef.current
+          .getFieldValue()
+          .image.join("|")}|`;
+      } else {
+        delete values.image;
+      }
+    }
+
+    if (values.keyword) {
+      values.keyword = `|${values.keyword.replace(/,/g, "|")}|`;
+    }
+
     if (this.props.location.state && this.props.location.state.id) {
       this.props
         .update({
@@ -85,12 +107,13 @@ class Single extends React.Component {
     }
   };
 
-  setData = (type, value) => {
-    const data = { ...this.state.data };
-    data[type] = value;
+  callback = (params) => {
+    debugger;
+    Object.assign(this.state.dataSource, params);
     this.setState({
-      data: data,
+      dataSource: this.state.dataSource,
     });
+    this.formRef.current.setFieldsValue({ ...params });
   };
 
   render() {
@@ -98,7 +121,7 @@ class Single extends React.Component {
       <div>
         <Card>
           <Form
-            ref={this.form}
+            ref={this.formRef}
             {...layout}
             labelAlign="left"
             onFinish={this.onFinish}
@@ -109,12 +132,12 @@ class Single extends React.Component {
             <Form.Item label="页面标题" name="seotitle">
               <Input className="input-sm input-350" />
             </Form.Item>
-            <Form.Item label="关键词">
+            <Form.Item label="关键词" name="keyword">
               <Keyword
                 field="keyword"
-                value={this.state.data.keyword}
-                change={this.setData}
-                fetch={this.props.fetch}
+                value={this.state.dataSource.keyword}
+                callback={this.callback}
+                {...this.props}
               />
             </Form.Item>
             <Form.Item label="摘要" name="description">
@@ -131,6 +154,16 @@ class Single extends React.Component {
                 <Radio value="1">是</Radio>
                 <Radio value="0">否</Radio>
               </Radio.Group>
+            </Form.Item>
+            <Form.Item label="预览图" name="image">
+              <div style={{ width: 530 }}>
+                <Preview
+                  authorized={true}
+                  value={this.state.dataSource.image}
+                  callback={this.callback}
+                  params={this.props}
+                />
+              </div>
             </Form.Item>
             <Form.Item label="生成目录">
               <Radio.Group>
@@ -151,11 +184,10 @@ class Single extends React.Component {
             <Form.Item label="文件名" name="html">
               <Input className="input-sm input-150" />
             </Form.Item>
-            <Form.Item label="内容">
+            <Form.Item label="内容" name="content">
               <Editor
-                field="content"
-                value={this.state.data.content}
-                change={this.setData}
+                value={this.state.dataSource.content}
+                callback={this.callback}
               />
             </Form.Item>
 

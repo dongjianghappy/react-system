@@ -20,12 +20,14 @@ import {
   Quick,
   Editor,
   Keyword,
-} from "@/components/index.js";
+  Preview,
+} from "@/components";
 
 import { ButtonGroup, CheckboxGroup } from "@/common";
 const { Option } = Select;
 
 const Form1 = (props) => {
+  const { dataSource, callback } = props;
   // const [content, setContent] = useState("12")
 
   // useEffect(() => {
@@ -35,20 +37,26 @@ const Form1 = (props) => {
 
   return (
     <>
-      <Form.Item label="文章标题" name="title">
-        <Input
-          placeholder="请输入文章标题"
-          className="input-sm input-350"
-          style={{ float: "left" }}
-        />
-        {/* <TitleAttribute /> */}
+      <Form.Item label="文章标题">
+        <Input.Group compact>
+          <Form.Item name="title">
+            <Input
+              placeholder="请输入文章标题"
+              className="input-sm input-350"
+              style={{ float: "left" }}
+            />
+          </Form.Item>
+          <Form.Item name="source_url">
+            <TitleAttribute />
+          </Form.Item>
+        </Input.Group>
       </Form.Item>
-      <Form.Item label="tag标签">
+      <Form.Item label="tag标签" name="tag">
         <Keyword
+          {...props}
           field="tag"
-          value={props.data.tag}
-          change={props.setData}
-          fetch={props.fetch}
+          value={dataSource.tag}
+          callback={callback}
         />
       </Form.Item>
       <Form.Item label="所属分类" name="seotitle">
@@ -76,6 +84,16 @@ const Form1 = (props) => {
       <Form.Item label="下载地址">
         <Input placeholder="下载链接地址" className="input-sm input-350" />
       </Form.Item>
+      <Form.Item label="预览图" name="image">
+        <div style={{ width: 530 }}>
+          <Preview
+            authorized={true}
+            value={dataSource.image}
+            callback={callback}
+            params={props}
+          />
+        </div>
+      </Form.Item>
       <Form.Item label="演示地址" name="jump_link">
         <Input.TextArea
           placeholder="演示链接地址"
@@ -83,12 +101,8 @@ const Form1 = (props) => {
           style={{ width: "500px", height: "80px" }}
         />
       </Form.Item>
-      <Form.Item label="正文">
-        <Editor
-          field="content"
-          value={props.data.content}
-          change={props.setData}
-        />
+      <Form.Item label="正文" name="content">
+        <Editor value={dataSource.content} callback={callback} />
       </Form.Item>
       <Form.Item label="摘要" name="summary">
         <Input.TextArea className="input-sm" placeholder="请输入内容摘要" />

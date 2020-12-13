@@ -1,27 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { Drawer, Button, Form, Tabs } from 'antd';
-import BasicInfo from './basicInfo'
-import PageInfo from './pageInfo'
+import React, { useState, useEffect } from "react";
+import { Drawer, Button, Form, Tabs } from "antd";
+import BasicInfo from "./basicInfo";
+import PageInfo from "./pageInfo";
 
 const { TabPane } = Tabs;
 
 const Detail = (props) => {
-
+  const { params, dataSource, callback } = props;
+  debugger;
   const [flagList, setFlagList] = useState([]);
 
- 
   useEffect(() => {
-    if(props.id){
-      props.fetch({
-        api: "getFlag",
-        data: {
-          channel_id: 0
-        }          
-      }).then((res) => {
-        setFlagList([...res.result])
-      })
+    if (props.id) {
+      props
+        .fetch({
+          api: "getFlag",
+          data: {
+            channel_id: 0,
+          },
+        })
+        .then((res) => {
+          setFlagList([...res.result]);
+        });
     }
-  }, [])
+  }, []);
 
   return (
     <>
@@ -30,11 +32,15 @@ const Detail = (props) => {
           <BasicInfo flags={flagList} />
         </TabPane>
         <TabPane tab="页面设置" key="2">
-          <PageInfo />
+          <PageInfo
+            dataSource={dataSource}
+            callback={callback}
+            params={params}
+          />
         </TabPane>
       </Tabs>
     </>
   );
 };
 
-export default Detail
+export default Detail;

@@ -9,9 +9,15 @@ import {
   Input,
   Radio,
   Checkbox,
+  message,
 } from "antd";
-import { connect } from "react-redux";
-import dispatchToProps from "../../store/dispatch";
+import {
+  connect,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+} from "@/utils";
 
 import {
   Status,
@@ -20,7 +26,9 @@ import {
   R_button,
   ModalForm,
   Condition,
-} from "../../components/index.js";
+  Preview,
+  Keyword,
+} from "@/components";
 import {
   Node,
   Navbar,
@@ -28,7 +36,6 @@ import {
   Option,
   OptionSelect,
   ModalGroup,
-  Keyword,
 } from "../../common";
 
 const layout = {
@@ -40,46 +47,84 @@ const tailLayout = {
   wrapperCol: { offset: 2, span: 22 },
 };
 
+const mod = window.location.pathname.split("/")[2] || "";
+const aaa = JSON.parse(sessionStorage.getItem("channel"));
+
+const bbb = aaa && aaa.filter((item) => item.module === mod);
+
 class Basic extends React.Component {
   state = {
-    data: {},
+    dataSource: {},
   };
 
   formRef = React.createRef();
 
-  async componentDidMount() {
-    const res = await this.props.fetch({
-      api: "detail",
-      data: {
-        coding: "O0000",
-        id: 2,
-      },
-    });
-    debugger;
-    this.formRef.current.setFieldsValue(res.result);
+  componentDidMount() {
+    this.props.dispatch
+      .fetch({
+        api: "detail",
+        data: {
+          coding: "O0000",
+          id: bbb[0].value,
+        },
+      })
+      .then((res) => {
+        this.formRef.current.setFieldsValue(res.result);
+        this.setState({
+          dataSource: res.result,
+        });
+      });
   }
 
-  handle = () => {
-    this.props.InfoQuery();
-  };
-
-  handleClick = (data) => {
-    this.props[data.dispatch](data);
-  };
-
   onFinish = (values) => {
-    this.props.update({
-      coding: "O0000",
-      id: 2,
-      ...values,
+    if (
+      this.formRef.current.getFieldValue().image &&
+      this.formRef.current.getFieldValue().image.length > 0 &&
+      Array.isArray(this.formRef.current.getFieldValue().image)
+    ) {
+      debugger;
+      if (
+        this.formRef.current.getFieldValue().image[0].indexOf("http") === -1
+      ) {
+        values.image = `|${this.formRef.current
+          .getFieldValue()
+          .image.join("|")}|`;
+      } else {
+        delete values.image;
+      }
+    }
+
+    if (values.keyword) {
+      values.keyword = `|${values.keyword.replace(/,/g, "|")}|`;
+    }
+
+    this.props.dispatch
+      .update({
+        data: {
+          coding: "O0000",
+          id: bbb[0].value,
+          ...values,
+        },
+      })
+      .then(() => {
+        message.info("编辑成功");
+      });
+  };
+
+  // 在其他组件调用callback，设置字段值并以{name: value}的方式传回
+  callback = (params) => {
+    Object.assign(this.state.dataSource, params);
+    this.setState({
+      dataSource: this.state.dataSource,
     });
+    this.formRef.current.setFieldsValue({ ...params });
   };
 
   render() {
+    debugger;
     return (
       <>
         <Card>
-          <Node node={this.props.node} fn={this.props.nodeMethod} />
           <div style={{ marginBottom: 15 }}>
             <h2 className="font18">频道信息</h2>
           </div>
@@ -109,7 +154,16 @@ class Basic extends React.Component {
                   <Radio value="0">否</Radio>
                 </Radio.Group>
               </Form.Item>
-              <Form.Item label="预览图">图片</Form.Item>
+              <Form.Item label="预览图" name="image">
+                <div style={{ width: 530 }}>
+                  <Preview
+                    authorized={true}
+                    value={this.state.dataSource.image}
+                    callback={this.callback}
+                    params={this.props}
+                  />
+                </div>
+              </Form.Item>
               <Form.Item label="页面标题">
                 <Input.Group compact>
                   <Form.Item name="seotitle" className="mr5">
@@ -126,10 +180,11 @@ class Basic extends React.Component {
                   </Form.Item>
                 </Input.Group>
               </Form.Item>
-              <Form.Item label="关键字">
+              <Form.Item label="关键字" name="keyword">
                 <Keyword
-                  tag={["all", "delete", "open", "close"]}
-                  change={this.changeInput}
+                  value={this.state.dataSource.keyword}
+                  callback={this.callback}
+                  {...this.props}
                 />
               </Form.Item>
               <Form.Item label="描述">
@@ -161,8 +216,6 @@ class Basic extends React.Component {
   }
 }
 
-const stateToProops = (state) => {
+export default connect((state) => {
   return {};
-};
-
-export default connect(stateToProops, dispatchToProps)(Basic);
+}, dispatchToProps)(Basic);

@@ -143,7 +143,9 @@ const codings = {
 		security: "U0009",
 		theme: "M10001"
 	},
-	space: ""
+	space: "",
+	static: "",
+	single:""
 }
 
 export default codings

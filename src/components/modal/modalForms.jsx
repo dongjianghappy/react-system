@@ -59,6 +59,7 @@ const ModalForm = (props) => {
           props.renderList && props.renderList();
         });
     } else {
+      debugger;
       dispatch
         .update({
           api: props.api,
@@ -75,16 +76,33 @@ const ModalForm = (props) => {
     }
   };
 
+  const Text = () => (
+    <>
+      <span onClick={showModal}>
+        {props.icon ? <i className={`iconfont icon-${props.icon}`} /> : ""}
+        {props.name}
+      </span>
+    </>
+  );
+
+  const Buttons = () => (
+    <>
+      <Button onClick={showModal}>
+        {props.icon ? <i className={`iconfont icon-${props.icon}`} /> : ""}
+        {props.name ? props.name : "Open"}
+      </Button>
+    </>
+  );
+
   return (
     <>
-      <Button type={props.type || "primary"} onClick={showModal}>
-        {props.name ? props.name : "Open Modal"}
-      </Button>
+      {props.isText === true ? <Text /> : <Buttons />}
       <Modal
         title={props.title || props.name}
         visible={visible}
         onOk={onFinish}
         onCancel={handleCancel}
+        width={props.width}
       >
         <Form {...layout} form={form} labelAlign="left">
           {props.children}

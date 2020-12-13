@@ -1,11 +1,19 @@
 import React from "react";
 import { Card, Button, Form, Tabs, message, Input } from "antd";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import dispatchToProps from "@/store/dispatch";
+import {
+  connect,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+  Link,
+} from "@/utils";
 import { WeAlert } from "@/components";
 import CustomField from "./components/customField";
 import BasicInfo from "./components/basicInfo";
+
+const mod = window.location.pathname.split("/")[2] || "";
+const { art: coding, cate: catcoing } = codings[mod];
 
 const { TabPane } = Tabs;
 
@@ -15,22 +23,41 @@ const layout = {
 };
 
 class Single extends React.Component {
-  form = React.createRef();
+  formRef = React.createRef();
 
   state = {
-    data: {},
+    dataSource: {},
   };
 
   onFinish = (values) => {
+    if (
+      this.formRef.current.getFieldValue().image &&
+      this.formRef.current.getFieldValue().image.length > 0 &&
+      Array.isArray(this.formRef.current.getFieldValue().image)
+    ) {
+      debugger;
+      if (
+        this.formRef.current.getFieldValue().image[0].indexOf("http") === -1
+      ) {
+        values.image = `|${this.formRef.current
+          .getFieldValue()
+          .image.join("|")}|`;
+      } else {
+        delete values.image;
+      }
+    }
+
+    if (values.tag) {
+      values.tag = `|${values.tag.replace(/,/g, "|")}|`;
+    }
+
     if (this.props.location.state && this.props.location.state.id) {
-      this.props
+      this.props.dispatch
         .fetch({
           api: "updateArticle",
           data: {
-            coding: this.props.location.state.coding,
+            coding: coding,
             id: this.props.location.state.id,
-            tag: this.state.data.tag.join(),
-            content: this.state.data.content,
             ...values,
           },
         })
@@ -38,13 +65,11 @@ class Single extends React.Component {
           message.info("编辑成功");
         });
     } else {
-      this.props
+      this.props.dispatch
         .fetch({
           api: "insertArticle",
           data: {
-            coding: this.props.location.state.coding,
-            tag: this.state.data.tag.join(),
-            content: this.state.data.content,
+            coding: coding,
             ...values,
           },
         })
@@ -58,28 +83,26 @@ class Single extends React.Component {
     // this.props.getFlagAction()
 
     if (this.props.location.state && this.props.location.state.id) {
-      const res = await this.props.fetch({
+      const res = await this.props.dispatch.fetch({
         api: "articleDetail",
         data: {
-          coding: this.props.location.state.coding,
+          coding: coding,
           id: this.props.location.state.id,
         },
       });
-      this.form.current.setFieldsValue(res.result);
-      const tag = res.result.tag.split(",");
-      res.result.tag = tag;
+      this.formRef.current.setFieldsValue(res.result);
       this.setState({
-        data: res.result,
+        dataSource: res.result,
       });
     }
   }
 
-  setData = (type, value) => {
-    const data = { ...this.state.data };
-    data[type] = value;
+  callback = (params) => {
+    Object.assign(this.state.dataSource, params);
     this.setState({
-      data: data,
+      dataSource: this.state.dataSource,
     });
+    this.formRef.current.setFieldsValue({ ...params });
   };
 
   render() {
@@ -87,7 +110,7 @@ class Single extends React.Component {
       <div>
         <Card>
           <Form
-            ref={this.form}
+            ref={this.formRef}
             {...layout}
             labelAlign="left"
             onFinish={this.onFinish}
@@ -96,7 +119,8 @@ class Single extends React.Component {
               <TabPane tab="基本信息" key="1">
                 <BasicInfo
                   data={this.state.data}
-                  setData={this.setData}
+                  dataSource={this.state.dataSource}
+                  callback={this.callback}
                   {...this.props}
                 />
               </TabPane>

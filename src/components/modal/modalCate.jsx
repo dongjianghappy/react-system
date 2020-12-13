@@ -3,8 +3,9 @@ import { Button, Modal, message, Card, Row, Col } from "antd";
 import "./style.less";
 
 const ModalCate = (props) => {
-  const { dispatch, coding, catcoing, data } = props;
-
+  const { dispatch, data } = props;
+  const { coding, catcoing } = data;
+  debugger;
   const [visible, setVisible] = useState(false);
   const [list, setList] = useState([]);
   const [current, setCurrent] = useState({});

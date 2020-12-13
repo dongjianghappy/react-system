@@ -155,7 +155,7 @@ class Single extends React.Component {
                       <td>
                         <Space>
                           <Link
-                            disabled={checkButtonAuth(edit)}
+                            disabled={!checkButtonAuth(edit)}
                             to={{
                               pathname: "/admin/single/detail",
                               state: { id: item.id, coding: "P0002" },

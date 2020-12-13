@@ -14,8 +14,8 @@ import pic9 from "@/static/pic/9.jpg";
 import pic10 from "@/static/pic/10.jpg";
 
 const Detail = (props) => {
-  const { params, form, callback } = props;
-
+  const { params, dataSource, callback } = props;
+  debugger;
   return (
     <>
       <Form.Item name="name" label="伙伴名称" rules={[{ required: true }]}>
@@ -35,7 +35,7 @@ const Detail = (props) => {
           <Radio value="0">否</Radio>
         </Radio.Group>
       </Form.Item>
-      <Form.Item name="display" label="预览图">
+      <Form.Item name="image" label="预览图">
         {/* <Upload image={props.data.image} /> */}
         {/* <WeModal.Picture
           src={
@@ -49,13 +49,13 @@ const Detail = (props) => {
         <Preview
           authorized={true}
           data={params.data}
+          value={dataSource.image}
           callback={callback}
-          form={form}
           params={params}
         />
       </Form.Item>
       <Form.Item label="站点简介">
-        <Editor value={form.getFieldValue().content} callback={callback} />
+        <Editor value={dataSource.content} callback={callback} />
       </Form.Item>
     </>
   );

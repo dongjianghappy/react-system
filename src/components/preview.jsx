@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {} from "antd";
 import { WeModal } from "@/components";
 
 const Preview = (props) => {
-  const { params, form, renderDetail, callback } = props;
-  const [image, setImage] = useState([]);
+  const { params, value, renderDetail, callback } = props;
+  // const [image, setImage] = useState([]);
 
-  const setValue = (data) => {
-    setImage(data);
-  };
+  // const setValue = (data) => {
+  //   setImage(data);
+  // };
 
   return (
     <>
@@ -17,21 +17,8 @@ const Preview = (props) => {
           className="space-picture p10"
           style={{ background: "#fafafa", flex: 2, height: "auto" }}
         >
-          <WeModal.Picture
-            src={
-              image[0] ||
-              (form.getFieldValue().image && form.getFieldValue().image[0])
-            }
-          >
-            <img
-              src={
-                image[0] ||
-                (form.getFieldValue().image && form.getFieldValue().image[0])
-              }
-              width="250"
-              height="100"
-              alt=""
-            />
+          <WeModal.Picture src={value && value[0]}>
+            <img src={value && value[0]} width="250" height="100" alt="" />
           </WeModal.Picture>
         </div>
         <div style={{ flex: 1 }}>
@@ -40,7 +27,7 @@ const Preview = (props) => {
               authorized={true}
               data={params.data}
               callback={callback}
-              setValue={setValue}
+              // setValue={setValue}
             >
               <div
                 style={{

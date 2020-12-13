@@ -175,6 +175,21 @@ export default {
         return http.request('vue', 'delete_columns', 'post', params)
     },  
     
+    // 申请审核
+    applyCheck(params) {
+        return http.request('vue', 'applyCheck', 'post', params)
+    }, 
+    
+    // 内容审核
+    checkContent(params) {
+        return http.request('vue', 'checkContent', 'post', params)
+    },   
+    
+    // 内容退回
+    managementReturn(params) {
+        return http.request('vue', 'managementReturn', 'post', params)
+    },      
+    
     // 获取自定义字段
     getColumns(params) {
         return http.request('vue', 'getColumns', 'post', params)
@@ -319,7 +334,12 @@ export default {
     // 来路域名占比
     enginePercentage(params) {
         return http.request('vue', 'engine_percentage','post', params)
-    },   
+    },  
+    
+    // 开始采集
+    collection(params) {
+        return http.request('vue', 'collection','post', params)
+    },      
     
     
 

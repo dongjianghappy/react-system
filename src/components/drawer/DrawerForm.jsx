@@ -10,7 +10,7 @@ const layout = {
 const DrawerForm = (props) => {
   const { dispatch, action } = props;
   const [visible, setVisible] = useState(false);
-  const [data, setData] = useState({});
+  const [dataSource, setDataSource] = useState({});
   const [form] = Form.useForm();
 
   const getData = () => {
@@ -23,7 +23,7 @@ const DrawerForm = (props) => {
       })
       .then((res) => {
         form.setFieldsValue(res.result);
-        setData(res.result);
+        setDataSource(res.result);
         props.renderInit && props.renderInit(res.result);
       });
   };
@@ -47,9 +47,21 @@ const DrawerForm = (props) => {
   const onFinish = () => {
     // 如果是数组则没有选择，所以不需要进行更新
     if (Array.isArray(form.getFieldValue().image)) {
-      delete form.getFieldValue().image;
+      if (form.getFieldValue().image[0].indexOf("http") === -1) {
+        form.getFieldValue().image = `|${form
+          .getFieldValue()
+          .image.join("|")}|`;
+      } else {
+        delete form.getFieldValue().image;
+      }
     }
-    debugger;
+
+    if (form.getFieldValue().keyword) {
+      form.getFieldValue().keyword = `|${form
+        .getFieldValue()
+        .keyword.replace(/,/g, "|")}|`;
+    }
+
     if (action === "add") {
       dispatch
         .insert({
@@ -104,8 +116,10 @@ const DrawerForm = (props) => {
     </>
   );
 
-  // 在其他组件调用callback，设置字段值并以{name: value}的方式传回
+  // 在其子他组件调用callback，设置字段值并以{name: value}的方式传回
   const callback = (params) => {
+    Object.assign(dataSource, params);
+    setDataSource({ ...dataSource });
     form.setFieldsValue({ ...params });
   };
 
@@ -138,10 +152,11 @@ const DrawerForm = (props) => {
         <Form {...layout} form={form} labelAlign="left">
           {props.children &&
             React.cloneElement(props.children, {
-              callback,
-              form,
-              params: props,
-              renderDetail: getData,
+              callback, // 回到函数
+              // form,
+              dataSource, // 数据源
+              params: props, // props属性
+              renderDetail: getData, // 初始化接口
             })}
         </Form>
       </Drawer>

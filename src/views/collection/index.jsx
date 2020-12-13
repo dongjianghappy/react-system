@@ -8,13 +8,15 @@ import {
   codings,
 } from "@/utils";
 
-import { Confirm, WeCheckbox } from "@/components";
+import { Confirm, WeCheckbox, WeModal } from "@/components";
+import Detail from "./components/detail";
+import CollectionNode from "./components/collection";
 
 const { add, del, start } = authorized.collection.cate;
 const { cate: coding } = codings.collection;
 
 class Collection extends React.Component {
-  componentDidMount() {
+  getData = () => {
     this.props.dispatch.select({
       data: {
         page: 0,
@@ -23,6 +25,10 @@ class Collection extends React.Component {
       },
       node: "nodeList",
     });
+  };
+
+  componentDidMount() {
+    this.getData();
   }
 
   handleClick = (data) => {
@@ -37,7 +43,15 @@ class Collection extends React.Component {
           <div style={{ marginBottom: 15 }}>
             <Space>
               <Button type="primary">采集列表</Button>
-              <Button type="primary">选择节点类型</Button>
+              <WeModal.modalForm
+                name="选择节点类型"
+                data={{ coding }}
+                renderList={this.getData}
+                authorized={checkButtonAuth(add)}
+                {...this.props}
+              >
+                <Detail />
+              </WeModal.modalForm>
             </Space>
           </div>
 
@@ -61,10 +75,21 @@ class Collection extends React.Component {
                   </td>
                   <td>{item.sort}</td>
                   <td>{item.name}</td>
-                  <td>{item.content}</td>
+                  <td>{item.datetime}</td>
                   <td>{item.datetime}</td>
                   <td>
-                    开始采集 | 内容 |
+                    <WeModal.modalForm
+                      name="开始采集"
+                      width={650}
+                      data={{ fid: item.id, coding }}
+                      renderList={this.getData}
+                      authorized={checkButtonAuth(add)}
+                      api="collection"
+                      {...this.props}
+                    >
+                      <CollectionNode />
+                    </WeModal.modalForm>{" "}
+                    | 内容 |
                     <Confirm
                       name="删除"
                       config={{

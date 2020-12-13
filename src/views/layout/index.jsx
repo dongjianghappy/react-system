@@ -37,26 +37,25 @@ const Index = (props) => {
   return (
     <Layout>
       <Router>
-        <Sidebar screen={screen} routes={routes} handle={handleClick} />
-
+        <Toper onScreens={onScreens} screen={screen} handle={handleClick} />
         <Layout>
-          <Toper onScreens={onScreens} screen={screen} handle={handleClick} />
-          {/* <Layout style={{ overflow: "hidden" }}> */}
-          <Position handle={handleClick} routes={routes} />
-          <Content
-            className="site-layout-background"
-            style={{
-              padding: 25,
-              margin: 0,
-              minHeight: 280,
-              overflow: "auto",
-            }}
-          >
-            {props.children}
-            <Footer />
-          </Content>
+          <Sidebar screen={screen} routes={routes} handle={handleClick} />
+          <Layout style={{ overflow: "hidden" }}>
+            <Position handle={handleClick} routes={routes} />
+            <Content
+              className="site-layout-background"
+              style={{
+                padding: 25,
+                margin: 0,
+                minHeight: 280,
+                overflow: "auto",
+              }}
+            >
+              {props.children}
+              <Footer />
+            </Content>
+          </Layout>
         </Layout>
-        {/* </Layout> */}
       </Router>
     </Layout>
   );

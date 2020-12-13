@@ -12,8 +12,10 @@ import { NavGroup } from "@/components";
 
 import { Option } from "@/common";
 import Flags from "../components/flags";
-import Statistics from "./components/statistics";
+import Statistics from "./components/statistics-row";
 import List from "./components/list";
+import CheckedList from "./components/checked_list";
+import ReturnList from "./components/return_list";
 
 const { Nav } = NavGroup;
 
@@ -67,12 +69,30 @@ class Index extends React.Component {
   };
 
   componentDidMount() {
-    this.getData();
+    this.getData({
+      management_checked: 1,
+    });
     this.props.dispatch.getFlagAction();
   }
 
   handleClick = (data) => {
     this.props[data.dispatch](data);
+  };
+
+  callback = (key) => {
+    if (key === "1") {
+      this.getData({
+        management_checked: 1,
+      });
+    } else if (key === "2") {
+      this.getData({
+        management_checked: 0,
+      });
+    } else if (key === "3") {
+      this.getData({
+        management_checked: -1,
+      });
+    }
   };
 
   render() {
@@ -88,14 +108,13 @@ class Index extends React.Component {
 
     return (
       <div>
-        <Statistics />
-
         <NavGroup
+          onChange={this.callback}
           extra={
             checkButtonAuth(add) ? (
               <Link
                 to={{
-                  pathname: "/admin/article/detail",
+                  pathname: `/admin/${mod}/detail`,
                   state: { coding: coding, channel_id: 3 },
                 }}
               >
@@ -131,6 +150,9 @@ class Index extends React.Component {
                 coding={coding}
               />
             </Card>
+            <Card className="mb15">
+              <Statistics />
+            </Card>
             <Card>
               <List
                 type="1"
@@ -142,7 +164,7 @@ class Index extends React.Component {
           </Nav>
           <Nav name="正在审核" value="2">
             <Card>
-              <List
+              <CheckedList
                 type="1"
                 data={module.list}
                 {...this.props}
@@ -152,7 +174,7 @@ class Index extends React.Component {
           </Nav>
           <Nav name="已退回" value="3">
             <Card>
-              <List
+              <ReturnList
                 type="1"
                 data={module.list}
                 {...this.props}

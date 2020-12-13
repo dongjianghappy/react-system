@@ -59,7 +59,7 @@ const Index = function (props) {
 
   return (
     <Header className="header">
-      {/* <div className="logo" onClick={() => route("/admin", "basic")}>
+      <div className="logo" onClick={() => route("/admin", "basic")}>
         <img
           alt="logo"
           src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"
@@ -67,7 +67,7 @@ const Index = function (props) {
           style={{ marginRight: 10 }}
         />
         管理控制平台
-      </div> */}
+      </div>
       <div className="header-wrap">
         <div className="header-left">
           <Row>

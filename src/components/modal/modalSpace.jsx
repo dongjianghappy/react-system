@@ -14,7 +14,6 @@ class ModalSpace extends React.Component {
     if (!this.props.authorized) {
       return warning();
     }
-    debugger;
     this.setState({
       visible: true,
     });
@@ -26,9 +25,8 @@ class ModalSpace extends React.Component {
     }
 
     this.props.callback({
-      image: `|${this.state.image}|`,
+      image: [this.state.image],
     });
-    this.props.setValue([this.state.image]);
     this.setState({
       visible: false,
     });

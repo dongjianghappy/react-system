@@ -214,7 +214,18 @@ const List = (props) => {
                       renderList={props.getData}
                       authorized={checkButtonAuth("delete")}
                     />
-                    审核
+                    <Confirm
+                      {...props}
+                      name="审核"
+                      config={{
+                        operating: "check",
+                        message: React.$modalEnum,
+                      }}
+                      data={{ coding, id: item.id }}
+                      api="applyCheck"
+                      renderList={props.getData}
+                      authorized={checkButtonAuth("delete")}
+                    />
                   </Space>
                 </td>
               </tr>

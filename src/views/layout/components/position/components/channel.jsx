@@ -1,13 +1,22 @@
-import React from 'react'
-import { Drawer, Button, Row, Col, Card, Tooltip } from 'antd';
+import React from "react";
+import { Drawer, Button, Row, Col, Card, Tooltip } from "antd";
+import { Status, WeModal } from "@/components";
+import { adminRouter } from "@/router";
+import { withRouter } from "react-router-dom";
+import Detail from "./detail";
 
-import { adminRouter } from '@/router'
-import { withRouter } from 'react-router-dom';
-import { checkButtonAuth, channelInfo } from '@/utils/auth'
+import {
+  connect,
+  Link,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+} from "@/utils";
 
+import { channelInfo } from "@/utils/auth";
 
-const { Meta } = Card;
-
+const { article: coding } = codings;
 
 class ChannelList extends React.Component {
   state = { visible: false, childrenDrawer: false };
@@ -15,7 +24,6 @@ class ChannelList extends React.Component {
   formRef = React.createRef();
 
   showDrawer = () => {
-    
     this.setState({
       visible: true,
     });
@@ -28,45 +36,51 @@ class ChannelList extends React.Component {
   };
 
   handel = (path) => {
-    debugger
+    debugger;
     this.setState({
       visible: false,
     });
-    this.props.click("/admin/"+path, path)
-  }
+    this.props.click("/admin/" + path, path);
+  };
 
   render() {
-
     const { module } = React.$enums;
-    const routers = module.filter(route => route.type === "plate")
-    const channel = module.filter(route => route.type === "channel")
-    const { title, type, width } = this.props
-    const qqqq = channelInfo() || []
+    const routers = module.filter((route) => route.type === "plate");
+    const channel = module.filter((route) => route.type === "channel");
+    const { title, type, width } = this.props;
+    const qqqq = channelInfo() || [];
     return (
       <>
         <span onClick={this.showDrawer}>
-        <Tooltip placement="bottom" title="频道"><i className="iconfont icon-app pointer"></i></Tooltip></span>
+          <Tooltip placement="bottom" title="频道">
+            <i className="iconfont icon-app pointer"></i>
+          </Tooltip>
+        </span>
 
         <Drawer
+          title="频道"
           placement="right"
-          style={{ top: 110 }}
+          style={{ top: 63 }}
           width={650}
           closable={false}
           onClose={this.onClose}
           visible={this.state.visible}
         >
           <Row>
-          {
-            
-            qqqq.map((item, index) => (
-              <Col span={6} className="channel-list" onClick={() => this.handel(item.module)} >
-                <Card className="m5 align_center">
-                { item.name }
-                </Card>
+            {qqqq.map((item, index) => (
+              <Col span={6} className="channel-list">
+                <div className="m5 align_center p0">
+                  <img
+                    src={item.image}
+                    style={{ width: "100%", height: 80 }}
+                    onClick={() => this.handel(item.module)}
+                  />
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <div>{item.name}</div>
+                  </div>
+                </div>
               </Col>
-          ))
-          
-          }
+            ))}
           </Row>
         </Drawer>
       </>
@@ -74,5 +88,6 @@ class ChannelList extends React.Component {
   }
 }
 
-export default withRouter(ChannelList)
-
+export default withRouter(
+  connect((state) => ({}), dispatchToProps)(ChannelList)
+);

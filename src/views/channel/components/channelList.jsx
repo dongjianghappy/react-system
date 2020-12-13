@@ -57,7 +57,7 @@ class ChannelList extends React.Component {
 
         <Drawer
           placement="right"
-          style={{ top: 110 }}
+          style={{ top: 63 }}
           width={200}
           closable={false}
           onClose={this.onClose}
@@ -65,16 +65,25 @@ class ChannelList extends React.Component {
         >
           {this.props.children}
           <ul className="navigation">
-            {routers.map((list, i) => (
-              <li
-                key={i}
-                className="font16"
-                onClick={() => this.handel(list.value)}
-              >
-                <i className={`iconfont icon-${list.icon} mr10`}></i>
-                {list.name}
-              </li>
-            ))}
+            {routers.map((list, i) =>
+              list.value === "space" ? (
+                <li>
+                  <a href="/admin/space" target="_blank">
+                    <i className={`iconfont icon-${list.icon} mr10`}></i>
+                    {list.name}
+                  </a>
+                </li>
+              ) : (
+                <li
+                  key={i}
+                  className="font16"
+                  onClick={() => this.handel(list.value)}
+                >
+                  <i className={`iconfont icon-${list.icon} mr10`}></i>
+                  {list.name}
+                </li>
+              )
+            )}
           </ul>
         </Drawer>
       </>

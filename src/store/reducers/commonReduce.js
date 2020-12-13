@@ -13,7 +13,7 @@ import {
 
 const mod = ['channel', 'setting', 'basic',]
 
-const channel = ['article', 'source',];
+const channel = ['article', 'source', 'tech', 'picture'];
 const setting = ['log', 'customize', 'mysql'];
 const basic = ['navigation', 'slideshow', 'single'];
 

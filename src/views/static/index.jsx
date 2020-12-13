@@ -1,187 +1,341 @@
-import React from 'react'
-import { Card, Button, Row, Col, Avatar, Dropdown, Menu, Input, Popover } from 'antd'
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
-import { connect } from 'react-redux'
-import dispatchToProps from '../../store/dispatch'
-import { Dialog } from '../../components'
-import SlideshowFrom from './components/slideshowFrom'
-import { Link } from 'react-router-dom';
-import Item from './components/item'
+import React from "react";
+import {
+  Card,
+  Button,
+  Row,
+  Col,
+  Input,
+  Popover,
+  Progress,
+  Modal,
+  message,
+} from "antd";
+import {
+  EditOutlined,
+  EllipsisOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
+import {
+  connect,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+} from "@/utils";
+
+import "./tablelist.less";
 
 const { Meta } = Card;
 
-class Static extends React.Component{
+class Static extends React.Component {
+  // 范围默认是是数据库中查询出来的
+  state = {
+    visible: false,
+    title: "",
+    status: "进行中",
+    bar: 0,
+  };
 
-    state = {
-        channel: [],
-        sorter: "desc"
-    }
+  // sorter = [
+  //   {
+  //     name: "递减",
+  //     value: "desc",
+  //   },
+  //   {
+  //     name: "递增",
+  //     value: "asc",
+  //   },
+  // ];
 
-    sorter = [
-        {
-            name: "递减",
-            value: "desc"
-        },
-        {
-            name: "递增",
-            value: "asc"
-        }
-    ]
+  sorter = {
+    desc: "递减",
+    asc: "递增",
+  };
 
-    async componentDidMount(){
-        const res = await this.props.fetch({
-            api: "static"          
-        })
-        
+  componentDidMount() {
+    this.props.dispatch
+      .fetch({
+        api: "static",
+      })
+      .then((res) => {
         this.setState({
-            data: res.result
-        })
-    }
-
-    updatehandle = () => {
-        this.props.getUpdateStatic({
-            action: "index",
-            model: "index"
-        })
-    }
-
-    sss = (data) => {
-
-        this.setState({
-            sorter: data
-        })
-
-        alert(this.state.sorter)
-    }
-
-    render() {
-
-        const { data } = this.state
-        debugger
-        return (
-            <>  
-            <Card title="静态生成">
-                {/* <Row className="align_center h50" style={{background: "#f9f9f9", lineHeight: '50px'}}>
-                    <Col span={3}>名称</Col>
-                    <Col span={7}>首页</Col>
-                    <Col span={7}>栏目页</Col>
-                    <Col span={7}>详情页</Col>
-                </Row> */}
-                <table width="100%">
-
-                
-                {
-                    data && data && data.map((item, i) => (
-                        <tr>
-                        <td className="col-md-1 align_center" style={{padding: 1}}>
-                            <Card className="bold" style={{background: "#fafafa"}}>{item.name}</Card>
-                        </td>
-                        <td className="col-md-3" style={{padding: 1}}>
-                        <Card style={{background: "#fafafa"}}>
-                                    <Row>
-                                        <Col span="12">状态</Col>
-                                        <Col span="12"><i className="iconfont icon-play" style={{color: "#08d52b"}} /></Col>
-                                    </Row>
-                                </Card>
-                        </td>
-                        <td className="col-md-3" style={{padding: 1}}>
-                        <Card style={{background: "#fafafa"}}>
-                                    <Row>
-                                        <Col span="12">状态</Col>
-                                        <Col span="12"><i className="iconfont icon-play" /></Col>
-                                    </Row>
-                                </Card>
-                        </td>
-                        <td className="col-md-5" style={{padding: 1}}>
-                        <Card style={{background: "#fafafa"}}>
-                                    <Row justify="center">
-                                        <Col span="6">状态</Col>
-                                        <Col span="6">
-                                            <Popover placement="bottom" content={
-                                                <div>
-                                                    {
-                                                        this.sorter.map((item, index) => (
-                                                            <p onClick={() => this.sss(item.value)}>{item.name}</p>
-                                                        ))
-                                                    }
-                                                </div>
-                                            }>
-                                            <Button type="link" size="small">递减s</Button>
-                                            </Popover>
-                                        </Col>
-                                        <Col span="6">
-                                            <Popover placement="bottom" content={
-                                                <div>
-                                                    <Input value="1" className="input-sm input-50" />
-                                                    <span className="pl15 pr15">至</span>
-                                                    <Input value="100" className="input-sm input-50" />
-                                                    <span className="pl15 pointer">确定</span>
-                                                </div>
-                                            }>
-                                            <Button type="link" size="small">范围</Button>
-                                            </Popover>
-                                        </Col>
-                                        <Col span="6"><i className="iconfont icon-play" /></Col>
-                                    </Row>
-                                </Card>
-                        </td>
-                    </tr>
-                        // <Row className="align_center" >
-                        //     <Col span={3} className="p5">
-                        //         <Card style={{background: "#f5f5f5", boxShadow: 'rgba(0, 21, 41, 0.08) 0px 1px 4px'}}>{item.name}</Card>
-                        //     </Col>
-                        //     <Col span={7} className="p5">
-                                // <Card style={{background: "#f0f0f0", boxShadow: 'rgba(0, 21, 41, 0.08) 0px 1px 4px'}}>
-                                //     <Row>
-                                //         <Col span="12">状态</Col>
-                                //         <Col span="12">更新</Col>
-                                //     </Row>
-                                // </Card>
-                        //     </Col>
-                        //     <Col span={7} className="p5">
-                        //         <Card style={{background: "#d9d9d9", boxShadow: 'rgba(0, 21, 41, 0.08) 0px 1px 4px'}}>
-                        //             <Row>
-                        //                 <Col span="12">状态</Col>
-                        //                 <Col span="12">更新</Col>
-                        //             </Row>
-                        //         </Card>
-                        //     </Col>
-                        //     <Col span={7} className="p5">
-                        //         <Card style={{background: "#bfbfbf", boxShadow: 'rgba(0, 21, 41, 0.08) 0px 1px 4px'}}>
-                        //             <Row>
-                        //                 <Col span="6">状态</Col>
-                        //                 <Col span="6">
-                        //                     <Dropdown overlay={this.menu} placement="bottomCenter" arrow>
-                        //                     <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                        //                         递减
-                        //                     </a>
-                        //                     </Dropdown>
-                        //                 </Col>
-                        //                 <Col span="6">
-                        //                     <Dropdown overlay={this.range} placement="bottomCenter" arrow>
-                        //                     <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                        //                         范围
-                        //                     </a>
-                        //                     </Dropdown>                                            
-                        //                 </Col>
-                        //                 <Col span="6">更新</Col>
-                        //             </Row>
-                        //         </Card>
-                        //     </Col>
-                        // </Row>
-                    ))
-                }
-                </table>
-                </Card>
-            </>
-        )
-    }
-}
-
-const stateToProops = (state) => {
-    return {
-        module: state.navigation
-    }
+          data: res.result,
+        });
+      });
   }
 
-export default connect(stateToProops, dispatchToProps)(Static)
+  updatehandle = () => {};
+
+  sort = (id, data) => {
+    this.state.data.map((item) => {
+      if (item.id === id) {
+        item.sort = data;
+      }
+    });
+
+    this.setState({
+      data: this.state.data,
+    });
+  };
+
+  change = (e, id, field) => {
+    const { value } = e.target;
+    let val = "";
+
+    if (value.length > 1 && value.substr(0, 1) === "0") {
+      val = value.substr(1);
+    } else {
+      val = value;
+    }
+
+    this.state.data.map((item) => {
+      if (item.id === id) {
+        item[field] = val === "" ? 1 : val;
+      }
+    });
+
+    this.setState({
+      data: this.state.data,
+    });
+  };
+
+  run = (prams) => {
+    this.setState({
+      title: prams.title,
+      status: "请稍等...",
+      bar: prams.bar || 0,
+      visible: true,
+    });
+
+    this.props.dispatch
+      .fetch({
+        api: "updateStatic",
+        data: {
+          ...prams.data,
+        },
+      })
+      .then((res) => {
+        debugger;
+        this.setState(
+          {
+            status: res.result.status,
+            bar: res.result.bar,
+          },
+          () => {
+            if (res.result.again) {
+              const { action, model, method } = prams.data;
+              this.run({
+                title: prams.title,
+                bar: res.result.bar,
+                data: {
+                  action,
+                  model,
+                  id: res.result.outset,
+                  method,
+                  total: res.result.total,
+                },
+              });
+            } else {
+              setTimeout(() => {
+                this.setState({
+                  visible: false,
+                });
+              }, 2000);
+            }
+          }
+        );
+      });
+  };
+
+  Infos = () => (
+    <>
+      <div id="screen" style={{ display: "block" }}></div>
+      <div
+        style={{
+          background: "#fff",
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          zIndex: 1000,
+          marginTop: -75,
+          marginLeft: -200,
+          padding: 32,
+          width: 400,
+          height: 150,
+        }}
+        visible={this.state.visible}
+        title={"sdsd"}
+        content={<Progress percent={30} />}
+        onOk={false}
+      >
+        <div className="mb15">
+          {this.state.title} {this.state.status}
+        </div>
+        <div>
+          <Progress percent={this.state.bar} />
+        </div>
+      </div>
+    </>
+  );
+
+  render() {
+    const { data } = this.state;
+
+    return (
+      <>
+        {this.state.visible ? <this.Infos /> : ""}
+
+        <Card title="静态生成">
+          <table width="100%" className="table-striped table-hover static-wrap">
+            {data &&
+              data.map((item, i) => (
+                <tr>
+                  <td style={{ width: 120 }}>
+                    <Card style={{ height: 105 }}>
+                      <h3>{item.name}</h3>
+                    </Card>
+                  </td>
+                  <td>
+                    <Card>
+                      <Row>
+                        <Col span="24" style={{ paddingBottom: 10 }}>
+                          <span className="name">首页</span>
+                        </Col>
+                        <Col span="20" style={{ display: "flex" }}>
+                          <Progress percent={0} size="small" />
+                        </Col>
+                        <Col span="4" className="updateButton">
+                          <span
+                            onClick={() =>
+                              this.run({
+                                title: `正在更新${item.name}首页`,
+                                data: { action: "index", model: item.model },
+                              })
+                            }
+                          >
+                            更新
+                          </span>
+                        </Col>
+                      </Row>
+                    </Card>
+                  </td>
+                  <td>
+                    <Card>
+                      <Row>
+                        <Col span="24" style={{ paddingBottom: 10 }}>
+                          <span className="name">栏目</span>
+                        </Col>
+                        <Col span="20" style={{ display: "flex" }}>
+                          <Progress percent={0} size="small" />
+                        </Col>
+                        <Col span="4" className="updateButton">
+                          <span
+                            onClick={() =>
+                              this.run({
+                                title: `正在更新${item.name}栏目页`,
+                                data: { action: "menu", model: item.model },
+                              })
+                            }
+                          >
+                            更新
+                          </span>
+                        </Col>
+                      </Row>
+                    </Card>
+                  </td>
+                  <td>
+                    <Card>
+                      <Row>
+                        <Col span="24" style={{ paddingBottom: 10 }}>
+                          <span className="name">详情</span>
+                        </Col>
+
+                        <Col span="5" className="sort">
+                          <Popover
+                            placement="bottom"
+                            trigger="click"
+                            content={
+                              <div>
+                                {Object.keys(this.sorter).map((key) => (
+                                  <p onClick={() => this.sort(item.id, key)}>
+                                    {this.sorter[key]}
+                                  </p>
+                                ))}
+                              </div>
+                            }
+                          >
+                            <span>排序: </span>
+                            <span>{this.sorter[item.sort]}</span>
+                          </Popover>
+                        </Col>
+                        <Col span="8" className="limit" style={{ width: 150 }}>
+                          <Popover
+                            placement="bottom"
+                            trigger="click"
+                            content={
+                              <div>
+                                <Input
+                                  defaultValue={item.limitStart}
+                                  maxLength={5}
+                                  style={{ width: 100 }}
+                                  onChange={(e) =>
+                                    this.change(e, item.id, "limitStart")
+                                  }
+                                />
+                                <span className="pl15 pr15"> 至 </span>
+                                <Input
+                                  defaultValue={item.limitEnd}
+                                  maxLength={5}
+                                  style={{ width: 100 }}
+                                  onChange={(e) =>
+                                    this.change(e, item.id, "limitEnd")
+                                  }
+                                />
+                              </div>
+                            }
+                          >
+                            <span>
+                              范围: {item.limitStart} - {item.limitEnd}
+                            </span>
+                          </Popover>
+                        </Col>
+
+                        <Col span="9" style={{ display: "flex" }}>
+                          <Progress percent={0} size="small" />
+                        </Col>
+                        <Col span="2" className="updateButton">
+                          <span
+                            onClick={() =>
+                              this.run({
+                                title: `正在更新${item.name}详情页`,
+                                data: {
+                                  action: "article",
+                                  model: item.model,
+                                  id: `${item.limitStart}-${item.limitEnd}`,
+                                  method: "desc",
+                                  total: item.limitEnd - item.limitStart,
+                                },
+                              })
+                            }
+                          >
+                            更新
+                          </span>
+                        </Col>
+                      </Row>
+                    </Card>
+                  </td>
+                </tr>
+              ))}
+          </table>
+        </Card>
+      </>
+    );
+  }
+}
+
+export default connect(
+  (state) => ({
+    module: state.navigation,
+  }),
+  dispatchToProps
+)(Static);

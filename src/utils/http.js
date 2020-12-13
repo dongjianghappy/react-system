@@ -10,7 +10,7 @@ export default class http {
         if(!options){
             this.baseConfig = {
                 baseURL: '/admincms/api/', // 设置跨域代理接口统一的前置地址
-                timeout: 5000,
+                timeout: 60000,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
                 }

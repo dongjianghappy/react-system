@@ -36,7 +36,7 @@ export const MODUDLE = [
         icon: "62gongzuokongjian"
     },
     {
-        value: "space",
+        value: "weibo",
         name: "微博",
         type: "plate",
         icon: "star"
@@ -316,6 +316,17 @@ export const NAV_TYPE = [
     }
 ]
 
+// 关键词类型
+export const COLLECTTION_TYPE = [
+    {
+        value: "0",
+        name: "普通文章"
+    },
+    {
+        value: "1",
+        name: "图片内容"
+    }
+]
 
  const enums = {
     module: MODUDLE,
@@ -333,7 +344,8 @@ export const NAV_TYPE = [
     articleOderBy: ARTICLE_ORDERBY,
     keywordTyoe: KEYWORD_TYPE,
     orderType: ORDER_TYPE,
-    navType: NAV_TYPE
+    navType: NAV_TYPE,
+    collectionType: COLLECTTION_TYPE
 }
 
 export default enums

@@ -151,7 +151,7 @@ class Sidebar extends React.Component {
 
     return (
       <Sider collapsed={this.props.screen} className="site-layout-background">
-        <div className="menus">LOGO</div>
+        <div className="menus">TECHNOLOGY</div>
         <Menu
           theme="dark"
           defaultSelectedKeys={["1"]}

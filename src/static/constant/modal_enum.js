@@ -52,6 +52,11 @@ const confirm = {
     info: "关闭成功",
     waring: "你暂时没有删除权限，请联系管理员!"
   },   
+  check: {
+    title: "是否确定审核通过?",
+    info: "审核成功",
+    waring: "你暂时没有删除权限，请联系管理员!"
+  },
   user: {
     recommend: {
       title: "是否要推送该会员?",
