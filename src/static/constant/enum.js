@@ -41,6 +41,12 @@ export const MODUDLE = [
         type: "plate",
         icon: "star"
     },
+    {
+        value: "tag",
+        name: "标签",
+        type: "plate",
+        icon: "tags"
+    },
 ]
 
 export const TEXT_TYPE = [

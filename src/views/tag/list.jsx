@@ -1,123 +1,177 @@
-import React from 'react';
-import { Card, Table, Space, Popconfirm, Button, Checkbox, Input, DatePicker} from 'antd';
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import dispatchToProps from '../../store/dispatch'
+import React from "react";
+import { Card, Space } from "antd";
 import {
-    R_button,
-    Condition
-  } from '../../components/index.js'
-  import {
-    Option
-  } from '../../common'
-const { Search } = Input;
-const { RangePicker } = DatePicker;
+  connect,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+} from "@/utils";
+import {
+  Status,
+  Confirm,
+  WeCheckbox,
+  WeModal,
+  Quick,
+  NavGroup,
+} from "@/components";
+import { Operatinavbar } from "@/common";
+import Detail from "./components/detail";
+import Article from "./article";
 
-class TagList extends React.Component{
+const { add, del, edit } = authorized.partner;
+const { art: coding, cate: catcoing } = codings.tag;
+const { Nav } = NavGroup;
 
-    option = [
-        {
-          name: "所有",
-          field: 'type',
-          list: [
-            {
-              value: "",
-              name: "全部"
-            },
-            ...React.$enums.keywordTyoe
-          ]
-        }
-      ]
+class Index extends React.Component {
+  state = {
+    type: "0",
+    name: "",
+  };
+  getData = () => {
+    const mod = window.location.pathname.split("/")[4] || "";
+    let type = 0;
+    switch (mod) {
+      case "core":
+        this.setState({
+          type: "1",
+          name: "核心",
+        });
+        type = 1;
+        break;
+      case "target":
+        this.setState({
+          type: "2",
+          name: "目标",
+        });
+        type = 2;
+        break;
+      default:
+        this.setState({
+          type: "0",
+          name: "长尾",
+        });
+        type = 0;
+    }
 
+    this.props.dispatch.select({
+      data: {
+        page: 0,
+        pagesize: 25,
+        type,
+        coding,
+      },
+    });
+  };
 
-    state ={
-        columns: [
-            {
-              title: '选择',
-              dataIndex: 'id',
-              render: text => <a><Checkbox></Checkbox></a>,
-            },
-            {
-              title: 'id',
-              dataIndex: 'id',
-            },
-            {
-              title: '名称',
-              dataIndex: 'name',
-            },{
-                title: '分类',
-                dataIndex: 'nickname',
-                render: text => <a>{text}</a>,
-              },
-              {
-                title: '频道',
-                dataIndex: 'email',
-              },
-              {
-                title: '属性',
-                dataIndex: 'last_login_time',
-              },
-              {
-                title: '操作',
-                dataIndex: 'operating',
-                render: (text, record) => (
-                    <Space size="middle">
-                      <R_button.del click={this.handleClick} id={record.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" />
+  componentDidMount() {
+    this.getData();
+  }
+
+  render() {
+    const { module } = this.props;
+
+    return (
+      <>
+        <Card
+          title={`${this.state.name}词`}
+          extra={
+            <WeModal.modalForm
+              name="新增标签"
+              data={{ coding, type: this.state.type }}
+              renderList={this.getData}
+              authorized={checkButtonAuth(add)}
+              {...this.props}
+            >
+              <Article />
+            </WeModal.modalForm>
+          }
+        >
+          <table width="100%" className="table-striped table-hover col-left-3">
+            <tr className="th">
+              <td className="col-md-1">选择</td>
+              <td className="col-md-1">id</td>
+              <td className="col-md-8">名称</td>
+              {/* <td className="col-md-2">类型</td> */}
+              <td className="col-md-1">属性</td>
+              <td className="col-md-1">操作</td>
+            </tr>
+            {module.list &&
+              module.list.map((item, index) => (
+                <tr class="tr-list">
+                  <td>
+                    <WeCheckbox
+                      data={{ id: item.id }}
+                      {...this.props}
+                    ></WeCheckbox>
+                  </td>
+                  <td>{item.id}</td>
+                  <td>
+                    <Quick
+                      title={item.name}
+                      data={{ id: item.id, field: "name", coding }}
+                      authorized={checkButtonAuth("edit")}
+                      {...this.props}
+                      width="50%"
+                    />
+                  </td>
+                  {/* <td>
+                    <WeModal.Cate
+                      {...this.props}
+                      data={{ id: item.id, coding, catcoing }}
+                    >
+                      {item.parent ? item.parent : "未分类"}
+                    </WeModal.Cate>
+                  </td> */}
+                  <td>
+                    <WeModal.modalForm
+                      name={this.state.name}
+                      isText={true}
+                      action="edit"
+                      data={{ id: item.id, coding }}
+                      renderList={this.getData}
+                      authorized={checkButtonAuth(edit)}
+                      {...this.props}
+                    >
+                      <Detail />
+                    </WeModal.modalForm>
+                  </td>
+                  <td>
+                    <Space>
+                      <Confirm
+                        name="删除"
+                        config={{
+                          operating: "delete",
+                          message: React.$modalEnum,
+                        }}
+                        data={{ coding, id: item.id }}
+                        api="delete"
+                        renderList={this.getData}
+                        authorized={checkButtonAuth("delete")}
+                        {...this.props}
+                      />
                     </Space>
-                  ),
-              },
-        ],
-        data: [],
-        total: 0,
-        pages: 0
-    }
-
-    componentDidMount(){
-      this.props.select({
-        data: {
-            page: 0,
-            pagesize: 10,
-            coding: 'O0003'
-        }          
-      })
-    }
-
-
-    render(){
-      const {columns} = this.state
-
-        const {list} = this.props.module
-        return(
-
-            <>
-                <div style={{marginBottom: 15}}>
-                  <ul className="navbar">
-                    <li>关键词库管理</li>
-                    <li className="search"><Condition /></li>
-                  </ul>
-                  <Option option={this.option} select={this.props.select} coding="P0003" />
-                </div>
-
-
-
-                <Table
-                    rowKey="id"
-                    columns={columns}
-                    dataSource={list}
-                    pagination={false}
-                />
-
-            </>
-        )
-    }
-}
-
-const stateToProops = (state) => {
-  return {
-    global: state.common.global,
-    state,
-    module: state.tag
+                  </td>
+                </tr>
+              ))}
+          </table>
+          <Operatinavbar
+            button={["all", "delete", "open", "close"]}
+            data={{ list: module.checkedList, coding }}
+            renderList={this.getData}
+            checkButtonAuth={checkButtonAuth}
+            authorized={authorized.partner}
+            {...this.props}
+          />
+        </Card>
+      </>
+    );
   }
 }
 
-export default connect(stateToProops, dispatchToProps)(TagList)
+export default connect(
+  (state) => ({
+    module: state.tag,
+  }),
+  dispatchToProps
+)(Index);

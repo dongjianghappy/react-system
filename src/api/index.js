@@ -339,6 +339,11 @@ export default {
     // 开始采集
     collection(params) {
         return http.request('vue', 'collection','post', params)
+    },  
+    
+    // 生成订单
+    createOrder(params) {
+        return http.request('vue', 'createOrder','post', params)
     },      
     
     

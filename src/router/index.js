@@ -35,6 +35,8 @@ import AdvertisementLocation from '../views/advertisement/location'
 import Partner from '../views/partner'
 // 用户组件
 import User from '../views/user'
+import UserBasic from '../views/user/basic'
+import UserPassword from '../views/user/basic/UserPassword'
 import UserList from '../views/user/user-list'
 import UserGrade from '../views/user/grade'
 import UserRole from '../views/user/role'
@@ -200,6 +202,8 @@ const arrss = {
     Engine,
     Ip,
     User,
+    UserBasic,
+    UserPassword,
     UserList,
     UserGrade,
     UserRole,

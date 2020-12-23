@@ -1,23 +1,30 @@
 import React from "react";
 import { Card, Row, Col, Space, Button } from "antd";
-import { createStore } from "redux";
-import reducer from "../../reducers/counter";
-import DividerForm from "@/components/form/dividerForm";
-import { connect } from "react-redux";
-import dispatchToProps from "../../store/dispatch";
+import {
+  connect,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+} from "@/utils";
+
 import Custom from "./components/custom";
-import { WeModal, NavGroup } from "@/components";
+import { WeModal, NavGroup, BasicInfo } from "@/components";
 
 const { Nav } = NavGroup;
 class Basic extends React.Component {
-  componentDidMount() {
-    this.props.select({
+  getData = () => {
+    this.props.dispatch.select({
       api: "basicInfo",
       data: {
         coding: "Q0002",
       },
       node: "list",
     });
+  };
+
+  componentDidMount() {
+    this.getData();
   }
 
   handle = () => {
@@ -26,7 +33,7 @@ class Basic extends React.Component {
       data: {
         page: 0,
         pagesize: 10,
-        coding: "P0003",
+        coding: "Q0002",
       },
     });
   };
@@ -37,7 +44,7 @@ class Basic extends React.Component {
   };
 
   render() {
-    const { list } = this.props;
+    const { list } = this.props.module;
 
     const baisc = list.filter((route) => route.isdelete === "1");
     const custom = list.filter((route) => route.isdelete === "0");
@@ -50,8 +57,9 @@ class Basic extends React.Component {
               name="自定义字段"
               action="add"
               dispatch={this.props.dispatch}
-              data={{ coding: "P0000" }}
+              data={{ coding: "Q0002" }}
               renderList={this.getData}
+              authorized={true}
             >
               <Custom />
             </WeModal.modalForm>
@@ -59,20 +67,20 @@ class Basic extends React.Component {
         >
           <Nav name="服务信息" icon="111" value="1">
             <Card>
-              <DividerForm
+              <BasicInfo
                 title="基本信息"
                 dataSource={baisc}
-                {...this.props}
-                coding="Q0002"
-                handle={this.handle}
-              ></DividerForm>
-              <DividerForm
-                title="自定义"
+                data={{ coding: "Q0002" }}
+                dispatch={this.props.dispatch}
+                renderList={this.getData}
+              ></BasicInfo>
+              <BasicInfo
+                title="自定义管理"
                 dataSource={custom}
-                {...this.props}
-                coding="Q0002"
-                handle={this.handle}
-              ></DividerForm>
+                data={{ coding: "Q0002" }}
+                dispatch={this.props.dispatch}
+                renderList={this.getData}
+              ></BasicInfo>
             </Card>
           </Nav>
         </NavGroup>
@@ -81,14 +89,9 @@ class Basic extends React.Component {
   }
 }
 
-const stateToProops = (state) => {
-  return {
-    module: "service",
-    state,
-    common: state.common,
-    global: state.common.global,
-    list: state.service.list,
-  };
-};
-
-export default connect(stateToProops, dispatchToProps)(Basic);
+export default connect(
+  (state) => ({
+    module: state.service,
+  }),
+  dispatchToProps
+)(Basic);

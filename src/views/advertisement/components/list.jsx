@@ -1,7 +1,14 @@
 import React from "react";
-import { Space } from "antd";
-import { checkButtonAuth, authorized, codings } from "@/utils";
-import { Status, Confirm, WeDrawer, WeCheckbox, Quick } from "@/components";
+import { Space, Popover } from "antd";
+import { Link, checkButtonAuth, authorized, codings } from "@/utils";
+import {
+  Status,
+  Confirm,
+  WeDrawer,
+  WeCheckbox,
+  Quick,
+  Order,
+} from "@/components";
 import Detail from "./detail";
 import { Operatinavbar } from "@/common";
 
@@ -77,6 +84,21 @@ const List = (props) => {
                     renderList={props.getData}
                     authorized={checkButtonAuth(del)}
                   />
+                  <Popover
+                    title="订单信息"
+                    placement="left"
+                    content={() => (
+                      <Order
+                        {...props}
+                        Link={Link}
+                        dataSource={item}
+                        data={{ fid: item.id, type: 0, coding }}
+                        api="createOrder"
+                      />
+                    )}
+                  >
+                    生成订单
+                  </Popover>
                 </Space>
               </td>
             </tr>

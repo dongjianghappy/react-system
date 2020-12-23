@@ -1,100 +1,151 @@
-import React from 'react';
-import { Card, Table, Space, Popconfirm, Button, Checkbox, Input, DatePicker} from 'antd';
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { Status, Dialog, Operatinavbar, Condition } from '../../components/index.js'
-import dispatchToProps from '../../store/dispatch'
+import React from "react";
+import { Card, Space } from "antd";
 import {
-    R_button
-  } from '../../components/index.js'
+  connect,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+} from "@/utils";
+import {
+  Status,
+  Confirm,
+  WeCheckbox,
+  WeModal,
+  Quick,
+  NavGroup,
+} from "@/components";
+import { Operatinavbar } from "@/common";
+import Detail from "./article";
 
-const { Search } = Input;
-const { RangePicker } = DatePicker;
+const { add, del, edit } = authorized.partner;
+const { cate: coding } = codings.tag;
+const { Nav } = NavGroup;
 
-class Tag extends React.Component{
+class Index extends React.Component {
+  getData = () => {
+    this.props.dispatch.select({
+      data: {
+        page: 0,
+        pagesize: 100,
+        coding,
+      },
+    });
+  };
 
-    state ={
-        columns: [
-            {
-              title: '选择',
-              dataIndex: 'name',
-              render: text => <a><Checkbox></Checkbox></a>,
-            },
-            {
-              title: '顺序',
-              dataIndex: 'sort',
-            },
-            {
-              title: '名称',
-              dataIndex: 'name',
-            },{
-                title: '状态',
-                dataIndex: 'status',
-                render:(text, record) => (
-                  <Status type="switch" coding="O0006" field="status" {...record} updateStatus={this.props.updateStatus} />
-                )
-              },
-              {
-                title: '操作',
-                dataIndex: 'operating',
-                render: (text, record) => (
-                    <Space size="middle">
-                      <R_button.del click={this.handleClick} id={record.id} title="删除友链" dispatch="popup" node="dialog" fn="getDelete" />
-                    </Space>
-                  ),
-              },
-        ],
-        data: [],
-        total: 0,
-        pages: 0
-    }
+  componentDidMount() {
+    this.getData();
+  }
 
-    componentDidMount(){
-      this.props.select({
-        data: {
-            page: 0,
-            pagesize: 100,
-            coding: 'O0006'
-        },
-        node: 'cate'           
-      })
-    }
+  render() {
+    const { module } = this.props;
 
-
-    render(){
-      const {columns} = this.state
-
-        const {cate} = this.props.module
-        return(
-
-            <>
-                <div style={{marginBottom: 15}}>
-                  <ul className="navbar">
-                    <li>关键词分类</li>
-                    <li><R_button.link click={this.handleClick} action="add" name="新增标签类型" title="新增标签类型" dispatch="popup" node="drawer" /></li>
-                  </ul>
-                </div>
-
-
-
-                <Table
-                    rowKey="id"
-                    columns={columns}
-                    dataSource={cate}
-                    pagination={false}
-                />
-
-            </>
-        )
-    }
-}
-
-const stateToProops = (state) => {
-  return {
-    global: state.common.global,
-    state,
-    module: state.tag
+    return (
+      <div>
+        <NavGroup
+          extra={
+            checkButtonAuth("add") ? (
+              <WeModal.modalForm
+                name="新增标签类型"
+                action="edit"
+                data={{ coding }}
+                renderList={this.getData}
+                authorized={checkButtonAuth(add)}
+                {...this.props}
+              >
+                <Detail />
+              </WeModal.modalForm>
+            ) : (
+              ""
+            )
+          }
+        >
+          <Nav name="标签类型" icon="111" value="1">
+            <Card>
+              <table
+                width="100%"
+                className="table-striped table-hover col-left-3"
+              >
+                <tr className="th">
+                  <td className="col-md-1">选择</td>
+                  <td className="col-md-1">顺序</td>
+                  <td className="col-md-7">名称</td>
+                  <td className="col-md-1">状态</td>
+                  <td className="col-md-2">操作</td>
+                </tr>
+                {module.list &&
+                  module.list.map((item, index) => (
+                    <tr class="tr-list">
+                      <td>
+                        <WeCheckbox
+                          data={{ id: item.id }}
+                          {...this.props}
+                        ></WeCheckbox>
+                      </td>
+                      <td>
+                        <Quick
+                          title={item.sort}
+                          data={{ id: item.id, field: "sort", coding }}
+                          authorized={checkButtonAuth("edit")}
+                          {...this.props}
+                        />
+                      </td>
+                      <td>
+                        <Quick
+                          title={item.name}
+                          data={{ id: item.id, field: "name", coding }}
+                          authorized={checkButtonAuth("edit")}
+                          {...this.props}
+                          width="50%"
+                        />
+                      </td>
+                      <td>
+                        <Status
+                          data={{ item, field: "status", coding }}
+                          authorized={checkButtonAuth("edit")}
+                          {...this.props}
+                        />
+                      </td>
+                      <td>
+                        <Space>
+                          <WeModal.modalForm
+                            name="编辑标签类型"
+                            action="edit"
+                            data={{ id: item.id, coding }}
+                            renderList={this.getData}
+                            authorized={checkButtonAuth(edit)}
+                            {...this.props}
+                          >
+                            <Detail />
+                          </WeModal.modalForm>
+                          <Confirm
+                            name="删除"
+                            config={{
+                              operating: "delete",
+                              message: React.$modalEnum,
+                            }}
+                            data={{ coding, id: item.id }}
+                            api="delete"
+                            renderList={this.getData}
+                            authorized={checkButtonAuth("delete")}
+                            {...this.props}
+                          />
+                        </Space>
+                      </td>
+                    </tr>
+                  ))}
+              </table>
+            </Card>
+          </Nav>
+        </NavGroup>
+      </div>
+    );
   }
 }
 
-export default connect(stateToProops, dispatchToProps)(Tag)
+export default connect(
+  (state) => ({
+    module: state.tag,
+  }),
+  dispatchToProps
+)(Index);

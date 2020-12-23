@@ -119,9 +119,6 @@ const codings = {
 	anpassen: {
 		art: "P0011"
 	},
-	tag: {
-		art: "O0006"
-	},
 	website: {
 		art: "K20000"
 	},
@@ -131,6 +128,10 @@ const codings = {
 	collection: {
 		cate: "O0008",
 		art: "O0009"
+	},
+	tag: {
+		cate: "O0006",
+		art: "O0003"
 	},
 	user: {
 		recommend: "",

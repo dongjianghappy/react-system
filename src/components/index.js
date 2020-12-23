@@ -40,6 +40,7 @@ import NavGroup from './NavGroup'
 import ContentTag from './common/contentTag'
 import BasicInfo from './basicInfo'
 import Preview from './preview'
+import Order from './order'
 
 
 export  {
@@ -81,6 +82,7 @@ export  {
     NavGroup,
     ContentTag,
     BasicInfo,
-    Preview
+    Preview,
+    Order
 };
   

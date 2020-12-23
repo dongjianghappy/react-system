@@ -130,7 +130,6 @@ class Index extends React.Component {
               <Option
                 api="articleList"
                 option={this.option}
-                select={this.props.select}
                 search={{
                   show: true,
                   params: this.props.common.global.search,
@@ -148,6 +147,7 @@ class Index extends React.Component {
                   ),
                 }}
                 coding={coding}
+                {...this.props}
               />
             </Card>
             <Card className="mb15">

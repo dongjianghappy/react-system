@@ -1,125 +1,136 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Form, Input } from "antd";
-import { R_button } from "@/components";
+import React, { useState } from "react";
+import { Form, Input, message } from "antd";
+import { checkButtonAuth } from "@/utils";
+import { Confirm } from "@/components";
+import "./module.less";
 
 const layout = {
   labelCol: { span: 2 },
-  wrapperCol: { span: 16 },
+  wrapperCol: { span: 22 },
 };
 
-const Index = (props) => {
-  const { dispatch, data } = props;
+const BasicInfo = (props) => {
+  const { dispatch, title, dataSource, data } = props;
   const [isEdit, setIsEdit] = useState(true);
   const [field, setField] = useState({});
 
-  useEffect(() => {
-    if (isEdit) {
-      setFiled();
-    }
-  });
-
+  // 设置需要编辑字段对象
   const setFiled = () => {
-    props.dataSource.map((item) => (field[item.name] = item.value));
+    dataSource.map((item) => (field[item.name] = item.value));
     setField(field);
   };
 
+  // 编辑、取消、保存
   const handle = async (e) => {
-    setIsEdit(!isEdit);
+    debugger;
     if (isEdit) {
-      e.target.textContent = "保存";
+      setFiled();
     } else {
-      e.target.textContent = "编辑";
-      const aa = await dispatch
+      dispatch
         .update({
           api: "updateInfo",
           data: {
-            coding: props.coding,
+            coding: data.coding,
             ...field,
           },
         })
         .then((a) => {
+          message.info("编辑成功");
           props.renderList();
         });
     }
+    setIsEdit(!isEdit);
   };
 
-  const handleClick = (data) => {
-    props[data.dispatch](data);
-  };
-
+  // 表单更改实时更新field数据
   const changeInput = (e) => {
     field[e.currentTarget.id] = e.target.value;
-    debugger;
-    setField({ ...field });
-  };
 
-  const handDelete = (e) => {
-    props.getDelete({
-      id: e.id,
-    });
+    setField({ ...field });
   };
 
   return (
     <>
-      {
-        <div className="module-wrap">
-          <div className="module-content basic-info">
-            <div className="info-module">
-              <span className="name">{props.title}</span>
-              <div className="line"></div>
-              <span
-                data-coding=""
-                className="update-info editbtn"
-                onClick={(e) => handle(e)}
-              >
-                {isEdit ? "编辑" : "保存"}
-              </span>
-            </div>
-            <ul className="info">
-              {isEdit ? (
-                props.dataSource &&
-                props.dataSource.map((item, index) => (
-                  <li key={item.name} style={{ padding: "5px 0px 5px 60px" }}>
-                    <label>{item.remark}</label>
-                    <div style={{ display: "flex" }}>
-                      <div style={{ flex: 1 }}>{item.value}</div>
-                      <div className="align_right" style={{ width: "50px" }}>
-                        {item.isdelete === "0" ? (
-                          <R_button.link
-                            click={handleClick}
-                            id={item.id}
-                            title="删除"
-                            dispatch="popup"
-                            node="dialog"
-                            fn="getDelete"
-                          />
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                    </div>
-                  </li>
-                ))
-              ) : (
-                <Form initialValues={field} {...layout} labelAlign="left">
-                  {props.dataSource &&
-                    props.dataSource.map((item, index) => (
-                      <Form.Item label={item.remark} name={item.name}>
-                        {item.text_type === "single" ? (
-                          <Input onChange={changeInput} />
-                        ) : (
-                          <Input.TextArea />
-                        )}
-                      </Form.Item>
-                    ))}
-                </Form>
-              )}
-            </ul>
+      <div className="module-wrap">
+        <div className="module-content basic-infos">
+          <div className="info-module">
+            <span className="name">{title}</span>
+            <div className="line"> </div>
+            {isEdit ? (
+              <>
+                <span
+                  data-coding=""
+                  className="update-info editbtn"
+                  onClick={() => handle()}
+                >
+                  编辑
+                </span>
+              </>
+            ) : (
+              <>
+                <span
+                  data-coding=""
+                  className="update-info cancelbtn"
+                  onClick={() => handle()}
+                >
+                  取消
+                </span>
+                <span
+                  data-coding=""
+                  className="update-info editbtn"
+                  onClick={() => handle()}
+                >
+                  保存
+                </span>
+              </>
+            )}
           </div>
+          <ul className="info">
+            {isEdit ? (
+              dataSource &&
+              dataSource.map((item, index) => (
+                <li key={index}>
+                  <div className="label">{item.remark}：</div>
+                  <div className="content">{item.value}</div>
+                  <div className="delete" style={{ width: "50px" }}>
+                    {item.isdelete === "0" ? (
+                      <Confirm
+                        {...props}
+                        name="删除"
+                        config={{
+                          operating: "delete",
+                          message: React.$modalEnum,
+                        }}
+                        data={{ id: item.id, ...data }}
+                        api="delete"
+                        renderList={props.renderList}
+                        authorized={true}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                </li>
+              ))
+            ) : (
+              <Form initialValues={field} {...layout} labelAlign="left">
+                {dataSource &&
+                  dataSource.map((item, index) => (
+                    <Form.Item label={item.remark} name={item.name} key={index}>
+                      {item.text_type === "single" ? (
+                        <Input onChange={changeInput} />
+                      ) : (
+                        <Input.TextArea onChange={changeInput} />
+                      )}
+                    </Form.Item>
+                  ))}
+              </Form>
+            )}
+          </ul>
         </div>
-      }
+      </div>
     </>
   );
 };
 
-export default Index;
+export default BasicInfo;

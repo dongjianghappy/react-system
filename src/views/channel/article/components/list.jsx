@@ -9,6 +9,7 @@ import {
   WeModal,
   ContentTag,
 } from "@/components";
+import More from "./more";
 
 const mod = window.location.pathname.split("/")[2] || "";
 
@@ -34,7 +35,7 @@ const List = (props) => {
           </td>
           <td className="col-md-3">名称</td>
           <td className="col-md-2">分类</td>
-          <td className="col-md-1">浏览 | 下载</td>
+          <td className="col-md-1">浏览</td>
           <td className="col-md-1">发布时间</td>
           <td className="col-md-1">状态</td>
           <td className="col-md-2">操作</td>
@@ -66,9 +67,7 @@ const List = (props) => {
                   {item.parent ? item.parent : "未分类"}
                 </ModalCate> */}
               </td>
-              <td>
-                {item.visit}|{item.download}
-              </td>
+              <td>{item.visit}</td>
               <td>{item.datetime}</td>
               <td>
                 <Status
@@ -101,16 +100,15 @@ const List = (props) => {
                     {...props}
                   />
                   <Popover
+                    title="更多信息"
                     placement="left"
-                    content={
-                      <div style={{ width: 350 }}>
-                        <p>编号：{item.id}</p>
-                        <p>标签: {item.label}</p>
-                        <p>作者: {item.id}</p>
-                        <p>来源: {item.source}</p>
-                        <p>更新时间: {item.datetime}</p>
-                      </div>
-                    }
+                    content={() => (
+                      <More
+                        {...props}
+                        dataSource={item}
+                        data={{ fid: item.id, type: 0, coding }}
+                      />
+                    )}
                   >
                     <Button type="link" size="small">
                       更多
