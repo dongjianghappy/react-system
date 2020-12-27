@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Row, Col, Input, Button } from "antd";
+import { Card, Row, Col, Input, Button, message } from "antd";
 import {
   connect,
   dispatchToProps,
@@ -17,9 +17,14 @@ class SlideshowList extends React.Component {
   state = {
     content: [],
     current: "", // 当保存成功后状态消失，其实在页面顺序更新后，在列表右侧可以新增一个刷新的按钮
+    form: [],
   };
 
   componentDidMount() {
+    this.getData();
+  }
+
+  getData = () => {
     this.props.dispatch
       .fetch({
         api: "slideshowList",
@@ -28,11 +33,22 @@ class SlideshowList extends React.Component {
         },
       })
       .then((res) => {
+        let arr = [];
+        res.result.map((item) => {
+          arr.push({
+            id: item.id,
+            title: item.title,
+            url: item.url,
+            image: item.image,
+          });
+        });
+
         this.setState({
           content: res.result,
+          form: arr,
         });
       });
-  }
+  };
 
   onMove = (direction, moveItem, index) => {
     const newData = [...this.state.content];
@@ -46,7 +62,62 @@ class SlideshowList extends React.Component {
       current: index + (direction === "up" ? -1 : 1),
       content: newData,
     });
-    debugger;
+
+    let arr = [];
+    newData.map((item, index) => {
+      arr.push({
+        id: item.id,
+        sort: 1 + index,
+        title: item.title,
+        url: item.url,
+        image: item.image,
+      });
+    });
+
+    this.setState({
+      form: arr,
+    });
+  };
+
+  handleInput(e, data) {
+    this.state.form.map((item) => {
+      if (item.id === data.id) {
+        item[data.field] = e.target.value;
+      }
+    });
+
+    this.setState({
+      form: this.state.form,
+    });
+  }
+
+  handleSave() {
+    this.props.dispatch
+      .update({
+        data: {
+          coding,
+          list: this.state.form,
+        },
+      })
+      .then((res) => {
+        return message.info("编辑成功");
+        this.getData();
+      });
+  }
+
+  callback = (params) => {
+    this.props.dispatch
+      .fetch({
+        api: "saveImage",
+        data: {
+          coding,
+          id: params.id,
+          image: params.image[0],
+        },
+      })
+      .then((res) => {
+        this.getData();
+      });
   };
 
   render() {
@@ -78,75 +149,100 @@ class SlideshowList extends React.Component {
             }}
           >
             <Col span={6}>
-              <WeModal.Space authorized={checkButtonAuth(edit)}>
+              <WeModal.Space
+                authorized={true}
+                data={{ id: item.id }}
+                callback={this.callback}
+              >
                 <img src={item.image} width="250" height="100" alt="" />
               </WeModal.Space>
             </Col>
-            <Col span={14}>
+            <Col span={12}>
               <div>
-                图片地址：
                 <Input
-                  placeholder="图片地址"
-                  style={{ width: 350 }}
-                  value={item.title}
+                  addonBefore="图片地址"
+                  style={{ width: 450 }}
+                  value={item.image}
+                  onChange={(e) =>
+                    this.handleInput(e, { id: item.id, field: "image" })
+                  }
                 />
               </div>
               <div style={{ marginTop: 5 }}>
-                连接地址：
                 <Input
-                  placeholder="链接地址"
-                  style={{ width: 350 }}
+                  addonBefore="连接地址"
+                  style={{ width: 450 }}
                   value={item.url}
+                  onChange={(e) =>
+                    this.handleInput(e, { id: item.id, field: "url" })
+                  }
                 />
               </div>
               <div style={{ marginTop: 5 }}>
-                文字说明：
                 <Input
-                  placeholder="文字说明"
-                  style={{ width: 350 }}
-                  value={item.description}
+                  addonBefore="文字说明"
+                  style={{ width: 450 }}
+                  value={item.title}
+                  onChange={(e) =>
+                    this.handleInput(e, { id: item.id, field: "title" })
+                  }
                 />
               </div>
             </Col>
-            <Col span={2}>
+            <Col
+              span={3}
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
+              }}
+            >
               <Status
-                data={{ item, field: "status", coding }}
-                authorized={checkButtonAuth("edit")}
+                data={{ item, field: "checked", coding }}
+                authorized={checkButtonAuth(edit)}
                 {...this.props}
               />
             </Col>
-            <Col span={2}>
-              <div style={{ width: 100, height: 32, float: "left" }}>
-                {index !== 0 ? (
-                  <Button onClick={() => this.onMove("up", item, index)}>
-                    上移动
-                  </Button>
-                ) : (
-                  ""
-                )}
-              </div>
-              <div style={{ width: 100, height: 32, float: "left" }}>
-                {index !== this.state.content.length - 1 ? (
-                  <Button onClick={() => this.onMove("down", item, index)}>
-                    下移动
-                  </Button>
-                ) : (
-                  ""
-                )}
-              </div>
+            <Col
+              span={3}
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
+              }}
+            >
+              <Button
+                onClick={() => this.onMove("up", item, index)}
+                className="deg180"
+                style={{ width: 60, height: 60 }}
+              >
+                <i className="iconfont icon-arrow1 moving"></i>
+              </Button>
+              <Button
+                onClick={() => this.onMove("down", item, index)}
+                style={{ width: 60, height: 60 }}
+              >
+                <i className="iconfont icon-arrow1"></i>
+              </Button>
             </Col>
           </Row>
         ))}
-        <Button style={{ marginTop: 25 }}>保存</Button>
+        <Button
+          type="primary"
+          size="large"
+          onClick={() => this.handleSave()}
+          style={{ marginTop: 25 }}
+        >
+          保存
+        </Button>
       </Card>
     );
   }
 }
 
-const stateToProops = (state) => {
-  return {
+export default connect(
+  (state) => ({
     module: state.slideshow,
-  };
-};
-
-export default connect(stateToProops, dispatchToProps)(SlideshowList);
+  }),
+  dispatchToProps
+)(SlideshowList);

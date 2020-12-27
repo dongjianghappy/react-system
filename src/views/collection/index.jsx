@@ -18,6 +18,7 @@ const { cate: coding } = codings.collection;
 class Collection extends React.Component {
   getData = () => {
     this.props.dispatch.select({
+      api: "nodeList",
       data: {
         page: 0,
         pagesize: 10,
@@ -55,14 +56,13 @@ class Collection extends React.Component {
             </Space>
           </div>
 
-          <table width="100%" class="table-striped artlist col-left-3">
+          <table width="100%" class="table-striped artlist col-left-2">
             <tr class="th">
               <td class="col-md-1">选择</td>
-              <td class="col-md-1">顺序</td>
               <td class="col-md-4">节点名称</td>
               <td class="col-md-2">创建节点日期</td>
-              <td class="col-md-2">入库时间</td>
-              <td class="col-md-2">操作</td>
+              <td class="col-md-2">数量(入库/总共)</td>
+              <td class="col-md-3">操作</td>
             </tr>
             {nodeList &&
               nodeList.map((item, index) => (
@@ -73,13 +73,15 @@ class Collection extends React.Component {
                       {...this.props}
                     ></WeCheckbox>
                   </td>
-                  <td>{item.sort}</td>
                   <td>{item.name}</td>
                   <td>{item.datetime}</td>
-                  <td>{item.datetime}</td>
+                  <td>
+                    {item.num}/{item.tem_num}
+                  </td>
                   <td>
                     <WeModal.modalForm
                       name="开始采集"
+                      isText={true}
                       width={650}
                       data={{ fid: item.id, coding }}
                       renderList={this.getData}
@@ -88,8 +90,28 @@ class Collection extends React.Component {
                       {...this.props}
                     >
                       <CollectionNode />
-                    </WeModal.modalForm>{" "}
-                    | 内容 |
+                    </WeModal.modalForm>
+                    <span className="line">|</span>
+                    <span
+                      onClick={() =>
+                        this.props.history.push(
+                          `/admin/collection/list?fid=${item.id}&name=${item.name}`
+                        )
+                      }
+                    >
+                      列表
+                    </span>
+                    <span style={{ padding: "0 5px" }}>|</span>
+                    <span
+                      onClick={() =>
+                        this.props.history.push(
+                          `/admin/collection/temlist?fid=${item.id}&name=${item.name}`
+                        )
+                      }
+                    >
+                      临时列表
+                    </span>
+                    <span style={{ padding: "0 5px" }}>|</span>
                     <Confirm
                       name="删除"
                       config={{

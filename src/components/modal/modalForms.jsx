@@ -87,7 +87,7 @@ const ModalForm = (props) => {
 
   const Buttons = () => (
     <>
-      <Button onClick={showModal}>
+      <Button onClick={showModal} type={props.type ? props.type : "default"}>
         {props.icon ? <i className={`iconfont icon-${props.icon}`} /> : ""}
         {props.name ? props.name : "Open"}
       </Button>

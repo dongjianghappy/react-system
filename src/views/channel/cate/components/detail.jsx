@@ -9,7 +9,7 @@ const { TabPane } = Tabs;
 const Detail = (props) => {
   const { params, dataSource, callback } = props;
   const [flagList, setFlagList] = useState([]);
-
+  debugger;
   useEffect(() => {
     if (props.id) {
       props
@@ -30,6 +30,7 @@ const Detail = (props) => {
       <Tabs type="card">
         <TabPane tab="基本信息" key="1">
           <BasicInfo
+            coding={params.data.coding}
             dataSource={dataSource}
             callback={callback}
             params={params}

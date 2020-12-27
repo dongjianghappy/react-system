@@ -13,7 +13,7 @@ import { Confirm, Status, WeCheckbox } from "@/components";
 import { Operatinavbar } from "@/common";
 
 const { del, edit } = authorized.collection.art;
-const { art: coding } = codings.collection;
+const { artTem: coding } = codings.collection;
 
 class CollectionList extends React.Component {
   state = {
@@ -25,6 +25,7 @@ class CollectionList extends React.Component {
     const param = this.state.params.fid ? { fid: this.state.params.fid } : {};
     debugger;
     this.props.dispatch.select({
+      api: "temCollectionList",
       data: {
         page: 0,
         pagesize: 10,
@@ -58,10 +59,8 @@ class CollectionList extends React.Component {
           <table width="100%" class="table-striped artlist col-left-23">
             <tr class="th">
               <td class="col-md-1">选择</td>
-              <td class="col-md-4">标题</td>
-              <td class="col-md-2">节点</td>
-              <td class="col-md-2">入库时间</td>
-              <td class="col-md-2">状态</td>
+              <td class="col-md-7">标题</td>
+              <td class="col-md-2">采集时间</td>
               <td class="col-md-1">操作</td>
             </tr>
             {nodeList &&
@@ -74,16 +73,26 @@ class CollectionList extends React.Component {
                     ></WeCheckbox>
                   </td>
                   <td>{item.title}</td>
-                  <td>{item.content}</td>
                   <td>{item.datetime}</td>
                   <td>
-                    <Status
-                      data={{ item, field: "checked", coding }}
-                      authorized={checkButtonAuth(edit)}
-                      {...this.props}
-                    />
-                  </td>
-                  <td>
+                    {item.num === 0 ? (
+                      <Confirm
+                        name="入库"
+                        config={{
+                          operating: "import",
+                          message: React.$modalEnum,
+                        }}
+                        data={{ coding, id: item.id }}
+                        api="collectionImport"
+                        renderList={this.getData}
+                        authorized={checkButtonAuth(del)}
+                        {...this.props}
+                      />
+                    ) : (
+                      "已导入"
+                    )}
+
+                    <span style={{ padding: "0 5px" }}>|</span>
                     <Confirm
                       name="删除"
                       config={{

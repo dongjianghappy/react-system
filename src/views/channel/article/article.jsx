@@ -7,6 +7,7 @@ import {
   authorized,
   codings,
   Link,
+  getQuery,
 } from "@/utils";
 import { WeAlert } from "@/components";
 import CustomField from "./components/customField";
@@ -26,6 +27,7 @@ class Single extends React.Component {
   formRef = React.createRef();
 
   state = {
+    params: {},
     dataSource: {},
   };
 
@@ -51,13 +53,13 @@ class Single extends React.Component {
       values.tag = `|${values.tag.replace(/,/g, "|")}|`;
     }
 
-    if (this.props.location.state && this.props.location.state.id) {
+    if (this.state.params.id) {
       this.props.dispatch
         .fetch({
           api: "updateArticle",
           data: {
             coding: coding,
-            id: this.props.location.state.id,
+            id: this.state.params.id,
             ...values,
           },
         })
@@ -65,6 +67,7 @@ class Single extends React.Component {
           message.info("编辑成功");
         });
     } else {
+      this.state.params.fid && (values.fid = `|${this.state.params.fid}|`);
       this.props.dispatch
         .fetch({
           api: "insertArticle",
@@ -82,19 +85,29 @@ class Single extends React.Component {
   async componentDidMount() {
     // this.props.getFlagAction()
 
-    if (this.props.location.state && this.props.location.state.id) {
-      const res = await this.props.dispatch.fetch({
-        api: "articleDetail",
-        data: {
-          coding: coding,
-          id: this.props.location.state.id,
-        },
-      });
-      this.formRef.current.setFieldsValue(res.result);
-      this.setState({
-        dataSource: res.result,
-      });
-    }
+    this.setState(
+      {
+        params: getQuery(),
+      },
+      () => {
+        if (this.state.params.id) {
+          this.props.dispatch
+            .fetch({
+              api: "articleDetail",
+              data: {
+                coding: coding,
+                id: this.state.params.id,
+              },
+            })
+            .then((res) => {
+              this.formRef.current.setFieldsValue(res.result);
+              this.setState({
+                dataSource: res.result,
+              });
+            });
+        }
+      }
+    );
   }
 
   callback = (params) => {
@@ -118,6 +131,7 @@ class Single extends React.Component {
             <Tabs type="card">
               <TabPane tab="基本信息" key="1">
                 <BasicInfo
+                  coding={{ art: coding, cate: catcoing }}
                   data={this.state.data}
                   dataSource={this.state.dataSource}
                   callback={this.callback}
@@ -139,7 +153,7 @@ class Single extends React.Component {
                 ></WeAlert>
                 <CustomField
                   {...this.props}
-                  channel_id={this.props.location.state.channel_id}
+                  channel={this.state.params.channel}
                 />
               </TabPane>
             </Tabs>

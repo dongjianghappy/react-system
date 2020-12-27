@@ -40,13 +40,12 @@ class UserList extends React.Component {
           <Card>
             <table
               width="100%"
-              className="table-striped table-hover col-left-23"
+              className="table-striped table-hover col-left-2"
             >
               <tr className="th">
                 <td className="col-md-1">选择</td>
-                <td className="col-md-1">头像</td>
-                <td className="col-md-1">会员账号</td>
-                <td className="col-md-2">用户名</td>
+                <td className="col-md-2">用户</td>
+                <td className="col-md-2">会员账号</td>
                 <td className="col-md-2">电子邮箱</td>
                 <td className="col-md-2">注册日期</td>
                 <td className="col-md-1">在线/天</td>
@@ -62,13 +61,14 @@ class UserList extends React.Component {
                       ></WeCheckbox>
                     </td>
                     <td>
-                      <span className="relative">
+                      <span className="relative mr10">
                         <Avatar src={item.photos} />
                         <i
                           className="iconfont  icon-female  absolute font12"
                           style={{ bottom: 0 }}
                         ></i>
                       </span>
+                      {item.nickname}
                     </td>
                     <td>
                       {item.account}
@@ -89,7 +89,6 @@ class UserList extends React.Component {
                         ""
                       )}
                     </td>
-                    <td>{item.nickname}</td>
                     <td>{item.email}</td>
                     <td>{item.last_login_time}</td>
                     <td>{item.online}</td>

@@ -1,29 +1,14 @@
 import React from "react";
+import { Card, Checkbox, Button, Input, Form, Radio, message } from "antd";
 import {
-  Space,
-  Card,
-  Table,
-  Checkbox,
-  Button,
-  Input,
-  Form,
-  Radio,
-  message,
-} from "antd";
-import {
-  Status,
-  R_button,
-  WeDrawer,
-  WeCheckbox,
-  Dialog,
-  R_form,
-  Keyword,
-  Editor,
-  Preview,
-} from "../../components/index.js";
-
-import { connect } from "react-redux";
-import dispatchToProps from "../../store/dispatch";
+  connect,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+  getQuery,
+} from "@/utils";
+import { Keyword, Editor, Preview } from "@/components";
 
 const layout = {
   labelCol: { span: 2 },
@@ -34,25 +19,36 @@ class Single extends React.Component {
   formRef = React.createRef();
 
   state = {
+    params: {},
     dataSource: {},
   };
 
-  async componentDidMount() {
-    if (this.props.location.state && this.props.location.state.id) {
-      const res = await this.props.fetch({
-        api: "detail",
-        data: {
-          coding: "P0002",
-          id: this.props.location.state.id,
-        },
-      });
-      this.formRef.current.setFieldsValue(res.result);
-      const tag = res.result.keyword.split(",");
-      res.result.keyword = tag;
-      this.setState({
-        data: res.result,
-      });
-    }
+  componentDidMount() {
+    this.setState(
+      {
+        params: getQuery(),
+      },
+      () => {
+        if (this.state.params.id) {
+          this.props.dispatch
+            .fetch({
+              api: "detail",
+              data: {
+                coding: "P0002",
+                id: this.state.params.id,
+              },
+            })
+            .then((res) => {
+              this.formRef.current.setFieldsValue(res.result);
+              const tag = res.result.keyword.split(",");
+              res.result.keyword = tag;
+              this.setState({
+                data: res.result,
+              });
+            });
+        }
+      }
+    );
   }
 
   onFinish = (values) => {
@@ -77,12 +73,12 @@ class Single extends React.Component {
       values.keyword = `|${values.keyword.replace(/,/g, "|")}|`;
     }
 
-    if (this.props.location.state && this.props.location.state.id) {
-      this.props
+    if (this.state.params.id) {
+      this.props.dispatch
         .update({
           data: {
             coding: "P0002",
-            id: this.props.location.state.id,
+            id: this.state.params.id,
             keyword: this.state.data.keyword.join(),
             content: this.state.data.content,
             ...values,
@@ -92,12 +88,14 @@ class Single extends React.Component {
           message.info("编辑成功");
         });
     } else {
-      this.props
+      debugger;
+      this.props.dispatch
         .insert({
           data: {
             coding: "P0002",
-            keyword: this.state.data.keyword.join(),
-            content: this.state.data.content,
+            // keyword: this.state.data.keyword.join(),
+            // content: this.state.data.content,
+            channel_id: this.state.params.channel,
             ...values,
           },
         })
@@ -119,7 +117,7 @@ class Single extends React.Component {
   render() {
     return (
       <div>
-        <Card>
+        <Card title={`${this.state.params.id ? "编辑" : "新增"}单页`}>
           <Form
             ref={this.formRef}
             {...layout}
@@ -149,9 +147,11 @@ class Single extends React.Component {
             <Form.Item label="导航标识">
               <Input className="input-sm input-150" />
             </Form.Item>
-            <Form.Item label="是否启用">
+            <Form.Item label="启用" name="status">
               <Radio.Group>
-                <Radio value="1">是</Radio>
+                <Radio value="1" defaultChecked>
+                  是
+                </Radio>
                 <Radio value="0">否</Radio>
               </Radio.Group>
             </Form.Item>
@@ -203,10 +203,9 @@ class Single extends React.Component {
   }
 }
 
-const stateToProops = (state) => {
-  return {
+export default connect(
+  (state) => ({
     module: state.navigation,
-  };
-};
-
-export default connect(stateToProops, dispatchToProps)(Single);
+  }),
+  dispatchToProps
+)(Single);

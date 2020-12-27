@@ -178,6 +178,280 @@ class Static extends React.Component {
     </>
   );
 
+  main = (item) => {
+    return (
+      <tr>
+        <td style={{ width: 120 }}>
+          <Card style={{ height: 105 }}>
+            <h3>{item.name}</h3>
+          </Card>
+        </td>
+        <td>
+          <Card>
+            <Row>
+              <Col span="24" style={{ paddingBottom: 10 }}>
+                <span className="name">首页</span>
+              </Col>
+              <Col span="20" style={{ display: "flex" }}>
+                <Progress percent={0} size="small" />
+              </Col>
+              <Col span="4" className="updateButton">
+                <span
+                  onClick={() =>
+                    this.run({
+                      title: `正在更新${item.name}首页`,
+                      data: { action: "index", model: item.model },
+                    })
+                  }
+                >
+                  更新
+                </span>
+              </Col>
+            </Row>
+          </Card>
+        </td>
+        <td>
+          <Card>
+            <Row>
+              <Col span="24" style={{ paddingBottom: 10 }}>
+                <span className="name">单页</span>
+              </Col>
+              <Col span="20" style={{ display: "flex" }}>
+                <Progress percent={0} size="small" />
+              </Col>
+              <Col span="4" className="updateButton">
+                <span
+                  onClick={() =>
+                    this.run({
+                      title: `正在更新${item.name}栏目页`,
+                      data: { action: "single", model: "common_single" },
+                    })
+                  }
+                >
+                  更新
+                </span>
+              </Col>
+            </Row>
+          </Card>
+        </td>
+        <td>
+          <Card>
+            <Row>
+              <Col span="24" style={{ paddingBottom: 10 }}>
+                <span className="name">标签</span>
+              </Col>
+
+              <Col span="5" className="sort">
+                <Popover
+                  placement="bottom"
+                  trigger="click"
+                  content={
+                    <div>
+                      {Object.keys(this.sorter).map((key) => (
+                        <p onClick={() => this.sort(item.id, key)}>
+                          {this.sorter[key]}
+                        </p>
+                      ))}
+                    </div>
+                  }
+                >
+                  <span>排序: </span>
+                  <span>{this.sorter[item.sort]}</span>
+                </Popover>
+              </Col>
+              <Col span="8" className="limit" style={{ width: 150 }}>
+                <Popover
+                  placement="bottom"
+                  trigger="click"
+                  content={
+                    <div>
+                      <Input
+                        defaultValue={item.limitStart}
+                        maxLength={5}
+                        style={{ width: 100 }}
+                        onChange={(e) => this.change(e, item.id, "limitStart")}
+                      />
+                      <span className="pl15 pr15"> 至 </span>
+                      <Input
+                        defaultValue={item.limitEnd}
+                        maxLength={5}
+                        style={{ width: 100 }}
+                        onChange={(e) => this.change(e, item.id, "limitEnd")}
+                      />
+                    </div>
+                  }
+                >
+                  <span>
+                    范围: {item.limitStart} - {item.limitEnd}
+                  </span>
+                </Popover>
+              </Col>
+
+              <Col span="9" style={{ display: "flex" }}>
+                <Progress percent={0} size="small" />
+              </Col>
+              <Col span="2" className="updateButton">
+                <span
+                  onClick={() =>
+                    this.run({
+                      title: `正在更新标签页`,
+                      data: {
+                        action: "tag",
+                        model: "source",
+                        id: `${item.limitStart}-${item.limitEnd}`,
+                        method: "desc",
+                        total: item.limitEnd - item.limitStart,
+                      },
+                    })
+                  }
+                >
+                  更新
+                </span>
+              </Col>
+            </Row>
+          </Card>
+        </td>
+      </tr>
+    );
+  };
+
+  chanel = (item) => {
+    return (
+      <tr>
+        <td style={{ width: 120 }}>
+          <Card style={{ height: 105 }}>
+            <h3>{item.name}</h3>
+          </Card>
+        </td>
+        <td>
+          <Card>
+            <Row>
+              <Col span="24" style={{ paddingBottom: 10 }}>
+                <span className="name">首页</span>
+              </Col>
+              <Col span="20" style={{ display: "flex" }}>
+                <Progress percent={0} size="small" />
+              </Col>
+              <Col span="4" className="updateButton">
+                <span
+                  onClick={() =>
+                    this.run({
+                      title: `正在更新${item.name}首页`,
+                      data: { action: "index", model: item.model },
+                    })
+                  }
+                >
+                  更新
+                </span>
+              </Col>
+            </Row>
+          </Card>
+        </td>
+        <td>
+          <Card>
+            <Row>
+              <Col span="24" style={{ paddingBottom: 10 }}>
+                <span className="name">栏目</span>
+              </Col>
+              <Col span="20" style={{ display: "flex" }}>
+                <Progress percent={0} size="small" />
+              </Col>
+              <Col span="4" className="updateButton">
+                <span
+                  onClick={() =>
+                    this.run({
+                      title: `正在更新${item.name}栏目页`,
+                      data: { action: "menu", model: item.model },
+                    })
+                  }
+                >
+                  更新
+                </span>
+              </Col>
+            </Row>
+          </Card>
+        </td>
+        <td>
+          <Card>
+            <Row>
+              <Col span="24" style={{ paddingBottom: 10 }}>
+                <span className="name">详情</span>
+              </Col>
+
+              <Col span="5" className="sort">
+                <Popover
+                  placement="bottom"
+                  trigger="click"
+                  content={
+                    <div>
+                      {Object.keys(this.sorter).map((key) => (
+                        <p onClick={() => this.sort(item.id, key)}>
+                          {this.sorter[key]}
+                        </p>
+                      ))}
+                    </div>
+                  }
+                >
+                  <span>排序: </span>
+                  <span>{this.sorter[item.sort]}</span>
+                </Popover>
+              </Col>
+              <Col span="8" className="limit" style={{ width: 150 }}>
+                <Popover
+                  placement="bottom"
+                  trigger="click"
+                  content={
+                    <div>
+                      <Input
+                        defaultValue={item.limitStart}
+                        maxLength={5}
+                        style={{ width: 100 }}
+                        onChange={(e) => this.change(e, item.id, "limitStart")}
+                      />
+                      <span className="pl15 pr15"> 至 </span>
+                      <Input
+                        defaultValue={item.limitEnd}
+                        maxLength={5}
+                        style={{ width: 100 }}
+                        onChange={(e) => this.change(e, item.id, "limitEnd")}
+                      />
+                    </div>
+                  }
+                >
+                  <span>
+                    范围: {item.limitStart} - {item.limitEnd}
+                  </span>
+                </Popover>
+              </Col>
+
+              <Col span="9" style={{ display: "flex" }}>
+                <Progress percent={0} size="small" />
+              </Col>
+              <Col span="2" className="updateButton">
+                <span
+                  onClick={() =>
+                    this.run({
+                      title: `正在更新${item.name}详情页`,
+                      data: {
+                        action: "article",
+                        model: item.model,
+                        id: `${item.limitStart}-${item.limitEnd}`,
+                        method: "desc",
+                        total: item.limitEnd - item.limitStart,
+                      },
+                    })
+                  }
+                >
+                  更新
+                </span>
+              </Col>
+            </Row>
+          </Card>
+        </td>
+      </tr>
+    );
+  };
+
   render() {
     const { data } = this.state;
 
@@ -187,145 +461,11 @@ class Static extends React.Component {
 
         <Card title="静态生成">
           <table width="100%" className="table-striped table-hover static-wrap">
+            {data && data.map((item, i) => item.id === "0" && this.main(item))}
+          </table>
+          <table width="100%" className="table-striped table-hover static-wrap">
             {data &&
-              data.map((item, i) => (
-                <tr>
-                  <td style={{ width: 120 }}>
-                    <Card style={{ height: 105 }}>
-                      <h3>{item.name}</h3>
-                    </Card>
-                  </td>
-                  <td>
-                    <Card>
-                      <Row>
-                        <Col span="24" style={{ paddingBottom: 10 }}>
-                          <span className="name">首页</span>
-                        </Col>
-                        <Col span="20" style={{ display: "flex" }}>
-                          <Progress percent={0} size="small" />
-                        </Col>
-                        <Col span="4" className="updateButton">
-                          <span
-                            onClick={() =>
-                              this.run({
-                                title: `正在更新${item.name}首页`,
-                                data: { action: "index", model: item.model },
-                              })
-                            }
-                          >
-                            更新
-                          </span>
-                        </Col>
-                      </Row>
-                    </Card>
-                  </td>
-                  <td>
-                    <Card>
-                      <Row>
-                        <Col span="24" style={{ paddingBottom: 10 }}>
-                          <span className="name">栏目</span>
-                        </Col>
-                        <Col span="20" style={{ display: "flex" }}>
-                          <Progress percent={0} size="small" />
-                        </Col>
-                        <Col span="4" className="updateButton">
-                          <span
-                            onClick={() =>
-                              this.run({
-                                title: `正在更新${item.name}栏目页`,
-                                data: { action: "menu", model: item.model },
-                              })
-                            }
-                          >
-                            更新
-                          </span>
-                        </Col>
-                      </Row>
-                    </Card>
-                  </td>
-                  <td>
-                    <Card>
-                      <Row>
-                        <Col span="24" style={{ paddingBottom: 10 }}>
-                          <span className="name">详情</span>
-                        </Col>
-
-                        <Col span="5" className="sort">
-                          <Popover
-                            placement="bottom"
-                            trigger="click"
-                            content={
-                              <div>
-                                {Object.keys(this.sorter).map((key) => (
-                                  <p onClick={() => this.sort(item.id, key)}>
-                                    {this.sorter[key]}
-                                  </p>
-                                ))}
-                              </div>
-                            }
-                          >
-                            <span>排序: </span>
-                            <span>{this.sorter[item.sort]}</span>
-                          </Popover>
-                        </Col>
-                        <Col span="8" className="limit" style={{ width: 150 }}>
-                          <Popover
-                            placement="bottom"
-                            trigger="click"
-                            content={
-                              <div>
-                                <Input
-                                  defaultValue={item.limitStart}
-                                  maxLength={5}
-                                  style={{ width: 100 }}
-                                  onChange={(e) =>
-                                    this.change(e, item.id, "limitStart")
-                                  }
-                                />
-                                <span className="pl15 pr15"> 至 </span>
-                                <Input
-                                  defaultValue={item.limitEnd}
-                                  maxLength={5}
-                                  style={{ width: 100 }}
-                                  onChange={(e) =>
-                                    this.change(e, item.id, "limitEnd")
-                                  }
-                                />
-                              </div>
-                            }
-                          >
-                            <span>
-                              范围: {item.limitStart} - {item.limitEnd}
-                            </span>
-                          </Popover>
-                        </Col>
-
-                        <Col span="9" style={{ display: "flex" }}>
-                          <Progress percent={0} size="small" />
-                        </Col>
-                        <Col span="2" className="updateButton">
-                          <span
-                            onClick={() =>
-                              this.run({
-                                title: `正在更新${item.name}详情页`,
-                                data: {
-                                  action: "article",
-                                  model: item.model,
-                                  id: `${item.limitStart}-${item.limitEnd}`,
-                                  method: "desc",
-                                  total: item.limitEnd - item.limitStart,
-                                },
-                              })
-                            }
-                          >
-                            更新
-                          </span>
-                        </Col>
-                      </Row>
-                    </Card>
-                  </td>
-                </tr>
-              ))}
+              data.map((item, i) => item.id !== "0" && this.chanel(item))}
           </table>
         </Card>
       </>

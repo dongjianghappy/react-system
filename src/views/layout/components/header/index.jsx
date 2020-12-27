@@ -66,7 +66,7 @@ const Index = function (props) {
           width="25"
           style={{ marginRight: 10 }}
         />
-        管理控制平台
+        07素材网管理平台
       </div>
       <div className="header-wrap">
         <div className="header-left">
@@ -85,16 +85,10 @@ const Index = function (props) {
               <Menu.Item key="4"><Link to="/admin/todolist" >测试</Link></Menu.Item>
             </Menu> */}
             </Col>
-            <Col
-              offset={1}
-              className="font18 cl-white"
-              onClick={() => route("/admin", "basic")}
-            >
-              07素材网管理平台
-            </Col>
-            <Col offset={3}>
+
+            {/* <Col offset={3}>
               <Search placeholder="站内搜索" />
-            </Col>
+            </Col> */}
           </Row>
         </div>
         <div className="header-right">

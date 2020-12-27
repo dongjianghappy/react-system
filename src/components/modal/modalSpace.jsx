@@ -26,6 +26,7 @@ class ModalSpace extends React.Component {
 
     this.props.callback({
       image: [this.state.image],
+      ...this.props.data,
     });
     this.setState({
       visible: false,

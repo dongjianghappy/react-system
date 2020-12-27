@@ -15,7 +15,7 @@ import pic10 from "@/static/pic/10.jpg";
 
 const Detail = (props) => {
   const { params, dataSource, callback } = props;
-  debugger;
+
   return (
     <>
       <Form.Item name="name" label="伙伴名称" rules={[{ required: true }]}>
@@ -54,7 +54,7 @@ const Detail = (props) => {
           params={params}
         />
       </Form.Item>
-      <Form.Item label="站点简介">
+      <Form.Item label="站点简介" name="content">
         <Editor value={dataSource.content} callback={callback} />
       </Form.Item>
     </>

@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { Card, Form, Input, InputNumber, Button, Radio } from "antd";
+import { Form, Input, InputNumber, Radio, Select } from "antd";
 import { Editor } from "@/components";
-
+const { Option } = Select;
 const Detail = (props) => {
-  const [content, setContent] = useState("");
-  const { params, form, callback } = props;
-
+  const { dataSource, callback } = props;
+  const { announcementType } = React.$enums;
   return (
     <>
       <Form.Item name="title" label="伙伴名称">
@@ -14,8 +13,12 @@ const Detail = (props) => {
       <Form.Item name="sort" label="顺序">
         <InputNumber />
       </Form.Item>
-      <Form.Item name="url" label="类型">
-        <Input />
+      <Form.Item name="type" label="类型">
+        <Select className="w150" defaultValue="1">
+          {announcementType.map((item) => (
+            <Option value={item.value}>{item.name}</Option>
+          ))}
+        </Select>
       </Form.Item>
       <Form.Item name="status" label="显示">
         <Radio.Group>
@@ -25,13 +28,8 @@ const Detail = (props) => {
           <Radio value="0">否</Radio>
         </Radio.Group>
       </Form.Item>
-      <Form.Item label="内容">
-        <Editor value={form.getFieldValue().content} callback={callback} />
-        {/* <Editor 
-                    field="content"
-                    value={props.data.content}
-                    change={props.change}
-                /> */}
+      <Form.Item label="内容" name="content">
+        <Editor value={dataSource.content} callback={callback} />
       </Form.Item>
     </>
   );

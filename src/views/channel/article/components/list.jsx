@@ -78,15 +78,16 @@ const List = (props) => {
               </td>
               <td>
                 <Space size="middle">
-                  <Link
+                  <span
                     disabled={!checkButtonAuth(del)}
-                    to={{
-                      pathname: `/admin/${mod}/detail`,
-                      state: { id: item.id, coding: "A0000", channel_id: 3 },
-                    }}
+                    onClick={() =>
+                      props.history.push(
+                        `/admin/article/detail?channel=2&id=${item.id}`
+                      )
+                    }
                   >
                     编辑
-                  </Link>
+                  </span>
                   <Confirm
                     name="删除"
                     config={{

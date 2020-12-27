@@ -334,6 +334,18 @@ export const COLLECTTION_TYPE = [
     }
 ]
 
+// 公告类型
+export const ANNOUNCEMENT_TYPE = [
+    {
+        value: "1",
+        name: "公告"
+    },
+    {
+        value: "2",
+        name: "通知"
+    }
+]
+
  const enums = {
     module: MODUDLE,
     textType: TEXT_TYPE,
@@ -351,7 +363,8 @@ export const COLLECTTION_TYPE = [
     keywordTyoe: KEYWORD_TYPE,
     orderType: ORDER_TYPE,
     navType: NAV_TYPE,
-    collectionType: COLLECTTION_TYPE
+    collectionType: COLLECTTION_TYPE,
+    announcementType: ANNOUNCEMENT_TYPE
 }
 
 export default enums

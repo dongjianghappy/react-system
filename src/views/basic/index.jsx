@@ -9,11 +9,11 @@ import {
 } from "@/utils";
 
 import Article from "./components/addCustom";
-import { WeModal, BasicInfo, NavGroup } from "@/components";
+import { WeModal, BasicInfo } from "@/components";
 
 const { add, del, edit } = authorized.basic;
 const { basic: coding } = codings;
-const { Nav } = NavGroup;
+
 class Basic extends React.Component {
   getData = () => {
     this.props.dispatch.select({
@@ -41,11 +41,12 @@ class Basic extends React.Component {
     const custom = list.filter((route) => route.isdelete === "0");
     return (
       <>
-        <NavGroup
-          onChange={this.callback}
+        <Card
+          title="基本信息"
           extra={
             <WeModal.modalForm
               name="自定义字段"
+              type="primary"
               action="add"
               dispatch={this.props.dispatch}
               data={{ coding: "P0000" }}
@@ -56,32 +57,28 @@ class Basic extends React.Component {
             </WeModal.modalForm>
           }
         >
-          <Nav name="网站信息" icon="111" value="1">
-            <Card>
-              <BasicInfo
-                title="基本信息"
-                dataSource={baisc}
-                data={{ coding: "P0000" }}
-                dispatch={this.props.dispatch}
-                renderList={this.getData}
-              ></BasicInfo>
-              <BasicInfo
-                title="网站LOGO"
-                dataSource={logo}
-                data={{ coding: "P0000" }}
-                dispatch={this.props.dispatch}
-                renderList={this.getData}
-              ></BasicInfo>
-              <BasicInfo
-                title="自定义管理"
-                dataSource={custom}
-                data={{ coding: "P0000" }}
-                dispatch={this.props.dispatch}
-                renderList={this.getData}
-              ></BasicInfo>
-            </Card>
-          </Nav>
-        </NavGroup>
+          <BasicInfo
+            title="基本信息"
+            dataSource={baisc}
+            data={{ coding: "P0000" }}
+            dispatch={this.props.dispatch}
+            renderList={this.getData}
+          ></BasicInfo>
+          <BasicInfo
+            title="网站LOGO"
+            dataSource={logo}
+            data={{ coding: "P0000" }}
+            dispatch={this.props.dispatch}
+            renderList={this.getData}
+          ></BasicInfo>
+          <BasicInfo
+            title="自定义管理"
+            dataSource={custom}
+            data={{ coding: "P0000" }}
+            dispatch={this.props.dispatch}
+            renderList={this.getData}
+          ></BasicInfo>
+        </Card>
       </>
     );
   }

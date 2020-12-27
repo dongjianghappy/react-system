@@ -21,13 +21,14 @@ import {
   Editor,
   Keyword,
   Preview,
+  WeModal,
 } from "@/components";
 
 import { ButtonGroup, CheckboxGroup } from "@/common";
 const { Option } = Select;
 
 const Form1 = (props) => {
-  const { dataSource, callback } = props;
+  const { dataSource, callback, coding } = props;
   // const [content, setContent] = useState("12")
 
   // useEffect(() => {
@@ -59,8 +60,17 @@ const Form1 = (props) => {
           callback={callback}
         />
       </Form.Item>
-      <Form.Item label="所属分类" name="seotitle">
-        <Input className="input-sm input-350" />
+      <Form.Item label="所属分类" name="fid">
+        <WeModal.Cate
+          {...props}
+          data={{
+            id: dataSource.id,
+            coding: coding.art,
+            catcoing: coding.cate,
+          }}
+        >
+          {dataSource.parent ? dataSource.parent : "未分类"}
+        </WeModal.Cate>
       </Form.Item>
       <Form.Item label="是否启用" name="checked">
         <Radio.Group>

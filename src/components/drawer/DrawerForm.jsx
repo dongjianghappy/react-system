@@ -68,7 +68,7 @@ const DrawerForm = (props) => {
           api: props.api,
           data: {
             ...props.data,
-            ...form.getFieldValue(),
+            ...form.getFieldsValue(),
           },
         })
         .then(() => {
@@ -82,7 +82,7 @@ const DrawerForm = (props) => {
           api: props.api,
           data: {
             ...props.data,
-            ...form.getFieldValue(),
+            ...form.getFieldsValue(),
           },
         })
         .then(() => {

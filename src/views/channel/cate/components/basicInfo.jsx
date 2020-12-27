@@ -10,19 +10,26 @@ import {
   Radio,
   Select,
 } from "antd";
-import { Preview } from "@/components";
+import { Preview, WeModal } from "@/components";
 
 const { Option } = Select;
 
 const Form1 = (props) => {
-  const { params, dataSource, callback } = props;
+  const { params, dataSource, callback, coding } = props;
 
   return (
     <>
       <Form.Item label="分类名称" name="name">
         <Input className="input-sm input-250" />
       </Form.Item>
-      <Form.Item label="所属分类" name=""></Form.Item>
+      <Form.Item label="所属分类" name="">
+        <WeModal.Cate
+          {...params}
+          data={{ id: dataSource.id, coding: coding, catcoing: coding }}
+        >
+          {dataSource.parent ? dataSource.parent : "未分类"}
+        </WeModal.Cate>
+      </Form.Item>
       <Form.Item label="类型" name="type">
         <Select className="w150">
           {React.$enums.navType.map((item) => (

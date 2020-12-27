@@ -107,10 +107,6 @@ const codings = {
 		manager: "U0006",
 		user: "U0005"
 	},
-	collection: {
-		cate: "O0008",
-		art: "O0009"
-	},
 	mysql: "",
 	customize: "P0011",
 	site: {
@@ -127,7 +123,8 @@ const codings = {
 	},
 	collection: {
 		cate: "O0008",
-		art: "O0009"
+		art: "O0009",
+		artTem: "O0011"
 	},
 	tag: {
 		cate: "O0006",

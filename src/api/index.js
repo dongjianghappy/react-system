@@ -199,6 +199,11 @@ export default {
     navList(params) {
         return http.request('vue', 'navList', 'post', params)
     }, 
+
+    // 频道导航
+    channelNavigation(params) {
+        return http.request('vue', 'channelNavigation', 'post', params)
+    },     
     // 导航列表
     navigation(params) {
         return http.request('vue', 'navigation', 'post', params)
@@ -335,15 +340,35 @@ export default {
     enginePercentage(params) {
         return http.request('vue', 'engine_percentage','post', params)
     },  
+
+    // 采集节点列表
+    nodeList(params) {
+        return http.request('vue', 'node_list','post', params)
+    },     
     
     // 开始采集
     collection(params) {
         return http.request('vue', 'collection','post', params)
     },  
+
+    // 临时采集列表
+    temCollectionList(params) {
+        return http.request('vue', 'temCollectionList','post', params)
+    },      
+
+    // 采集临时表导入
+    collectionImport(params) {
+        return http.request('vue', 'collectionImport','post', params)
+    },      
     
     // 生成订单
     createOrder(params) {
         return http.request('vue', 'createOrder','post', params)
+    },      
+
+    // 更新图片
+    saveImage(params) {
+        return http.request('space', 'saveImage','post', params)
     },      
     
     

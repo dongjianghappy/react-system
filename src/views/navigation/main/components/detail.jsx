@@ -29,7 +29,13 @@ const Detail = (props) => {
     <>
       <Tabs type="card">
         <TabPane tab="导航信息" key="1">
-          <BasicInfo flags={flagList} />
+          <BasicInfo
+            coding={params.data.coding}
+            dataSource={dataSource}
+            callback={callback}
+            params={params}
+            flags={flagList}
+          />
         </TabPane>
         <TabPane tab="页面设置" key="2">
           <PageInfo

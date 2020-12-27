@@ -8,7 +8,7 @@ import ModuleDefault from '../views/channel'
 import Channel from '../views/channel/cate'
 import List from '../views/channel/article/'
 import Recycle from '../views/channel/recycle'
-import Article from '../views/channel/article/list-article'
+import Article from '../views/channel/article/article'
 import SettingChannel from '../views/channel/settingchannel'
 import Label from '../views/channel/label'
 import Collect from '../views/channel/collect'
@@ -21,10 +21,9 @@ import Default from '../views/layout/components/default'
 import Basic from '../views/basic'
 import TodoList from '../views/todolist'
 import Navigation from '../views/navigation'
-import NavigationMain from '../views/navigation/mainNavigation/main'
-import NavigationDetail from '../views/navigation/mainNavigation/navigation-detail'
-import Single from '../views/navigation/list'
-import SingleArticle from '../views/navigation/list-article'
+import NavigationMain from '../views/navigation/main'
+import Single from '../views/navigation/single'
+import SingleArticle from '../views/navigation/single/article'
 import menuRouter from '../views/menuRouter'
 import Slideshow from '../views/slideshow'
 import SlideshowList from '../views/slideshow/list'
@@ -68,6 +67,7 @@ import Ip from '../views/statistics/ip'
 import Manager from '../views/log'
 import Mysql from '../views/mysql'
 import Collection from '../views/collection'
+import collectionTemList from '../views/collection/tem-list'
 import CollectionList from '../views/collection/list'
 import Tag from '../views/tag'
 import TagList from '../views/tag/list'
@@ -182,7 +182,6 @@ const arrss = {
     Partner,
     Navigation,
     NavigationMain,
-    NavigationDetail,
     Single,
     SingleArticle,
     Recycle,
@@ -216,6 +215,7 @@ const arrss = {
     UserSecurity,
     UserTheme,
     Collection,
+    collectionTemList,
     CollectionList,
     Mysql,
     Tag,

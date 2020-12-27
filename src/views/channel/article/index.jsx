@@ -7,6 +7,7 @@ import {
   checkButtonAuth,
   authorized,
   codings,
+  getQuery,
 } from "@/utils";
 import { NavGroup } from "@/components";
 
@@ -25,11 +26,11 @@ const { add } = (authorized.channel[mod] && authorized.channel[mod].art) || {
   add: "",
 };
 
-debugger;
-
-const { art: coding, cate: catcoing } = codings[mod];
-
 class Index extends React.Component {
+  state = {
+    params: {},
+    coding: {},
+  };
   option = [
     {
       name: "属性",
@@ -55,12 +56,15 @@ class Index extends React.Component {
       ],
     },
   ];
+  d;
 
   getData = (params = {}) => {
+    this.state.params.fid && (params.fid = `|${this.state.params.fid}|`);
+
     this.props.dispatch.select({
       api: "articleList",
       data: {
-        coding,
+        coding: this.state.coding.art,
         page: 0,
         pagesize: 15,
         ...params,
@@ -69,10 +73,20 @@ class Index extends React.Component {
   };
 
   componentDidMount() {
-    this.getData({
-      management_checked: 1,
-    });
-    this.props.dispatch.getFlagAction();
+    const mod = window.location.pathname.split("/")[2] || "";
+
+    this.setState(
+      {
+        params: getQuery(),
+        coding: codings[mod],
+      },
+      () => {
+        this.getData({
+          management_checked: 1,
+        });
+        this.props.dispatch.getFlagAction();
+      }
+    );
   }
 
   handleClick = (data) => {
@@ -115,7 +129,7 @@ class Index extends React.Component {
               <Link
                 to={{
                   pathname: `/admin/${mod}/detail`,
-                  state: { coding: coding, channel_id: 3 },
+                  state: { channel_id: 3 },
                 }}
               >
                 新增文档
@@ -146,7 +160,7 @@ class Index extends React.Component {
                     </>
                   ),
                 }}
-                coding={coding}
+                coding={this.state.coding.art}
                 {...this.props}
               />
             </Card>

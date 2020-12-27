@@ -13,7 +13,8 @@ import {
     GET_BAISC_INFO,
     GET_MYSQL,
     CHANGE_DATA,
-    SEARCH_FIELD
+    SEARCH_FIELD,
+    GET_QUERY
 } from '../actionTypes'
 
 // 节点初始化设置
@@ -141,6 +142,10 @@ export const searchFieldAction = (value) =>({
     value
 })
 
+export const getQueryAction = (value) =>({
+    type: GET_QUERY,
+    value
+})
 
 
 // // 删除数据

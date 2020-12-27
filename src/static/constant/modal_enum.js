@@ -57,6 +57,11 @@ const confirm = {
     info: "审核成功",
     waring: "你暂时没有删除权限，请联系管理员!"
   },
+  import: {
+    title: "是否确定导入采集库?",
+    info: "导入成功",
+    waring: "你暂时没有删除权限，请联系管理员!"
+  },  
   user: {
     recommend: {
       title: "是否要推送该会员?",
