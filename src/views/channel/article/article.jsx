@@ -29,6 +29,7 @@ class Single extends React.Component {
   state = {
     params: {},
     dataSource: {},
+    flagList: [],
   };
 
   onFinish = (values) => {
@@ -106,6 +107,19 @@ class Single extends React.Component {
               });
             });
         }
+
+        this.props.dispatch
+          .fetch({
+            api: "getFlag",
+            data: {
+              channel_id: 0,
+            },
+          })
+          .then((res) => {
+            this.setState({
+              flagList: res.result,
+            });
+          });
       }
     );
   }
@@ -135,6 +149,7 @@ class Single extends React.Component {
                   data={this.state.data}
                   dataSource={this.state.dataSource}
                   callback={this.callback}
+                  flags={this.state.flagList}
                   {...this.props}
                 />
               </TabPane>

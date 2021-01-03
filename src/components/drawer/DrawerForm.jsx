@@ -16,7 +16,7 @@ const DrawerForm = (props) => {
   const getData = () => {
     dispatch
       .fetch({
-        api: "detail",
+        api: props.detailApi || "detail",
         data: {
           ...props.data,
         },
@@ -69,6 +69,7 @@ const DrawerForm = (props) => {
           data: {
             ...props.data,
             ...form.getFieldsValue(),
+            ...form.getFieldValue().data,
           },
         })
         .then(() => {

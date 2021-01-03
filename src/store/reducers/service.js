@@ -13,6 +13,7 @@ const initState = {
     resume: [],
     announcement: [],
     security: [],
+    Knowledge:[],
     ...initListState
 }
 

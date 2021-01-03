@@ -1,16 +1,17 @@
 // 静态组件
 import Login from '../views/login'
-import notfound from '../views/notfound'
+import notfound404 from '../views/notfound/404'
 
 // 动态组件
 // 频道组件
 import ModuleDefault from '../views/channel'
 import Channel from '../views/channel/cate'
+import ChannelSetting from '../views/channel/setting'
 import List from '../views/channel/article/'
 import Recycle from '../views/channel/recycle'
 import Article from '../views/channel/article/article'
-import SettingChannel from '../views/channel/settingchannel'
-import Label from '../views/channel/label'
+import SettingChannel from '../views/channel/setting/channel'
+import Label from '../views/channel/setting/label'
 import Collect from '../views/channel/collect'
 import Comment from '../views/channel/comment'
 import Praise from '../views/channel/praise'
@@ -35,8 +36,8 @@ import Partner from '../views/partner'
 // 用户组件
 import User from '../views/user'
 import UserBasic from '../views/user/basic'
-import UserPassword from '../views/user/basic/UserPassword'
-import UserList from '../views/user/user-list'
+// import UserPassword from '../views/user/basic/UserPassword'
+import UserList from '../views/user/userinfo'
 import UserGrade from '../views/user/grade'
 import UserRole from '../views/user/role'
 import RoleGrade from '../views/user/role/grade'
@@ -65,6 +66,7 @@ import Domain from '../views/statistics/domain'
 import Engine from '../views/statistics/engine'
 import Ip from '../views/statistics/ip'
 import Manager from '../views/log'
+import Operating from '../views/log/operating'
 import Mysql from '../views/mysql'
 import Collection from '../views/collection'
 import collectionTemList from '../views/collection/tem-list'
@@ -86,11 +88,17 @@ import Job from '../views/service/job'
 import JobArticle from '../views/service/job/article'
 import Resume from '../views/service/job/resume'
 import Message from '../views/service/message/'
+import KnowledgeCate from '../views/service/knowledge/cate/index'
+import KnowledgeList from '../views/service/knowledge/article/'
+import KnowledgeArticle from '../views/service/knowledge/article/article'
 import Spread from '../views/spread'
 import Space from '../views/space'
 import Static from '../views/static'
 import Customize from '../views/customize'
 import CustomizeList from '../views/customize/list'
+
+import Vote from '../views/vote'
+import VoteList from '../views/vote/list'
 
 
 
@@ -101,7 +109,7 @@ export const mainRouter = [
     },
     {
         path: "/404",
-        component: notfound
+        component: notfound404
     }
 ]
 
@@ -173,6 +181,7 @@ const arrss = {
     menuRouter,
     ModuleDefault,
     Channel,
+    ChannelSetting,
     List,
     Article,
     Links,
@@ -202,7 +211,7 @@ const arrss = {
     Ip,
     User,
     UserBasic,
-    UserPassword,
+    // UserPassword,
     UserList,
     UserGrade,
     UserRole,
@@ -231,11 +240,17 @@ const arrss = {
     Job,
     Resume,
     Message,
+    KnowledgeCate,
+    KnowledgeList,
+    KnowledgeArticle,
     Customize,
     CustomizeList,
     Manager,
+    Operating,
     Space,
-    SettingChannel
+    SettingChannel,
+    Vote,
+    VoteList
 }
 
 

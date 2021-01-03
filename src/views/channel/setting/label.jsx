@@ -49,10 +49,10 @@ class Label extends React.Component {
           }
         >
           <Nav name="导航标签" value="1">
-            <Card>
+            <Card bordered={false}>
               <table
                 width="100%"
-                className="table-striped table-hover artlist artlist"
+                className="table-striped table-hover artlist artlist col-left-4"
               >
                 <tr class="th">
                   <td className="col-md-1">选择</td>

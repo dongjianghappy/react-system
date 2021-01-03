@@ -1,107 +1,85 @@
 import React from "react";
-import { Card, Row, Col, Form, Input, Radio, Select, Button } from "antd";
+import { Card, Tabs } from "antd";
 import {
   connect,
-  Link,
   dispatchToProps,
   checkButtonAuth,
   authorized,
   codings,
 } from "@/utils";
+// import UserList from "./components/userList";
+import Personal from "./components/personal";
+import Password from "./components/password";
+import { Confirm, WeCheckbox, WeDrawer, AsideGroup } from "@/components";
 
-import { WeCheckbox, NavGroup } from "@/components";
-import EmailList from "./components/email-list";
-const { Option } = Select;
+const { Nav } = AsideGroup;
+const { add, del, edit } = authorized.partner;
+const { partner: coding } = codings;
+const { TabPane } = Tabs;
 
-const layout = {
-  labelCol: { span: 2 },
-  wrapperCol: { span: 20 },
-};
+class Index extends React.Component {
+  componentDidMount() {
+    // this.getData({
+    //   level: 0,
+    // });
+  }
 
-class UserList extends React.Component {
-  getData = (data) => {
+  getData = (params) => {
     this.props.dispatch.select({
       api: "userList",
       data: {
-        ...data,
+        ...params,
       },
-      node: "audit",
+      node: "user",
     });
   };
 
-  componentDidMount() {
-    this.getData({
-      register_checked: 0,
-    });
-  }
-
-  callback = (key) => {
-    if (key === "1") {
-      this.getData({
-        register_checked: 0,
-      });
-    } else if (key === "2") {
-      this.getData({
-        email_checked: 1,
-      });
+  onChange = (key) => {
+    switch (key) {
+      case "2":
+        this.getData({
+          level: 0,
+        });
+        break;
+      case "3":
+        this.getData({
+          level: 1,
+        });
+        break;
+      case "4":
+        this.getData({
+          level: 2,
+        });
+        break;
+      default:
     }
   };
 
   render() {
-    const { audit } = this.props.module;
+    const { user } = this.props.module;
     return (
       <>
-        <Card>
-          <Row>
-            <Col span={18}>
-              <Form {...layout} labelAlign="left">
-                <Form.Item label="昵称：">
-                  <Input />
-                </Form.Item>
+        <AsideGroup onChange={this.onChange}>
+          <Nav name="个人资料" icon="111" value="1">
+            <Card title="个人资料" bordered={false}>
+              <Personal />
+            </Card>
+          </Nav>
 
-                <Form.Item label="介绍：">
-                  <Input.TextArea />
-                </Form.Item>
-
-                <Form.Item label="性别：">
-                  <Radio.Group>
-                    <Radio value="2" defaultChecked>
-                      保密
-                    </Radio>
-                    <Radio value="1">男</Radio>
-                    <Radio value="0">女</Radio>
-                  </Radio.Group>
-                </Form.Item>
-
-                <Form.Item label="生日：">
-                  <Select className="w150">
-                    <Option value="1">12313</Option>
-                  </Select>
-                </Form.Item>
-                <Form.Item label="省市：">
-                  <Select className="w150">
-                    <Option value="1">上海市</Option>
-                  </Select>
-                </Form.Item>
-                <Form.Item>
-                  <Button htmlType="submit">保存</Button>
-                </Form.Item>
-              </Form>
-            </Col>
-            <Col span={6}>
-              <img src="http://127.0.0.1/user/110506372/photos/110506372.png" />
-            </Col>
-          </Row>
-        </Card>
+          <Nav name="修改密码" value="2">
+            <Card title="修改密码" bordered={false}>
+              <Password />
+            </Card>
+          </Nav>
+        </AsideGroup>
       </>
     );
   }
 }
 
-const stateToProops = (state) => {
-  return {
+export default connect(
+  (state) => ({
     module: state.user,
-  };
-};
-
-export default connect(stateToProops, dispatchToProps)(UserList);
+  }),
+  dispatchToProps
+)(Index);

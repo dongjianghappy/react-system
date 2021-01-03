@@ -62,6 +62,17 @@ const confirm = {
     info: "导入成功",
     waring: "你暂时没有删除权限，请联系管理员!"
   },  
+  top: {
+    setTop: {
+      title: "是否确定置顶该内容?",
+      info: "置顶成功"
+    },
+    cancelTop: {
+      title: "是否要取消推置顶该内容?",
+      info: "取消成功"
+    },
+    waring: "你暂时没有删除权限，请联系管理员!"
+  },
   user: {
     recommend: {
       title: "是否要推送该会员?",

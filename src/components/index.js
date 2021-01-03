@@ -37,6 +37,7 @@ import Confirm from './modal/confirm'
 import TitleAttribute from './attribute/title-attribute'
 import Keyword from './keyword'
 import NavGroup from './NavGroup'
+import AsideGroup from './AsideGroup'
 import ContentTag from './common/contentTag'
 import BasicInfo from './basicInfo'
 import Preview from './preview'
@@ -80,6 +81,7 @@ export  {
     TitleAttribute,
     Keyword,
     NavGroup,
+    AsideGroup,
     ContentTag,
     BasicInfo,
     Preview,

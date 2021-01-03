@@ -11,18 +11,16 @@ const Detail = (props) => {
   const [flagList, setFlagList] = useState([]);
   debugger;
   useEffect(() => {
-    if (props.id) {
-      props
-        .fetch({
-          api: "getFlag",
-          data: {
-            channel_id: 0,
-          },
-        })
-        .then((res) => {
-          setFlagList([...res.result]);
-        });
-    }
+    params.dispatch
+      .fetch({
+        api: "getFlag",
+        data: {
+          channel_id: 0,
+        },
+      })
+      .then((res) => {
+        setFlagList([...res.result]);
+      });
   }, []);
 
   return (
@@ -34,6 +32,7 @@ const Detail = (props) => {
             dataSource={dataSource}
             callback={callback}
             params={params}
+            flags={flagList}
           />
         </TabPane>
         <TabPane tab="页面设置" key="2">

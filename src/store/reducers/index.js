@@ -26,6 +26,8 @@ import user from './user'
 import tag from './tag'
 import order from './order'
 import statistics from './statistics'
+import knowledge from './knowledge'
+import vote from './vote'
 
 const rootReducer = combineReducers({
     basic,
@@ -53,7 +55,9 @@ const rootReducer = combineReducers({
     user,
     tag,
     order,
-    statistics
+    statistics,
+    knowledge,
+    vote
 })
 
 export default rootReducer;

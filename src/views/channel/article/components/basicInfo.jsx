@@ -117,8 +117,12 @@ const Form1 = (props) => {
       <Form.Item label="摘要" name="summary">
         <Input.TextArea className="input-sm" placeholder="请输入内容摘要" />
       </Form.Item>
-      <Form.Item label="聚合标签" name="flag">
-        {/* <CheckboxGroup tagList={flags} /> */}
+      <Form.Item label="聚合标签" name="checkboxList">
+        <CheckboxGroup
+          dataSource={dataSource}
+          flagList={props.flags}
+          callback={callback}
+        />
       </Form.Item>
     </>
   );

@@ -100,6 +100,23 @@ const List = (props) => {
                     authorized={checkButtonAuth(del)}
                     {...props}
                   />
+                  <Confirm
+                    {...props}
+                    name={item.istop === "1" ? "取消" : "置顶"}
+                    config={{
+                      operating: item.istop === "1" ? "cancelTop" : "setTop",
+                      message: React.$modalEnum.top,
+                    }}
+                    data={{
+                      coding,
+                      id: item.id,
+                      field: "istop",
+                      value: item.istop === "1" ? "0" : "1",
+                    }}
+                    api="changeData"
+                    renderList={props.renderList}
+                    authorized={checkButtonAuth("del")}
+                  />
                   <Popover
                     title="更多信息"
                     placement="left"

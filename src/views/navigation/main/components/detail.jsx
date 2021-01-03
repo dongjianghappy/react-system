@@ -7,22 +7,20 @@ const { TabPane } = Tabs;
 
 const Detail = (props) => {
   const { params, dataSource, callback } = props;
-  debugger;
+
   const [flagList, setFlagList] = useState([]);
 
   useEffect(() => {
-    if (props.id) {
-      props
-        .fetch({
-          api: "getFlag",
-          data: {
-            channel_id: 0,
-          },
-        })
-        .then((res) => {
-          setFlagList([...res.result]);
-        });
-    }
+    params.dispatch
+      .fetch({
+        api: "getFlag",
+        data: {
+          channel_id: 0,
+        },
+      })
+      .then((res) => {
+        setFlagList([...res.result]);
+      });
   }, []);
 
   return (

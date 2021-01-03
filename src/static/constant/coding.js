@@ -105,7 +105,8 @@ const codings = {
 	label: "O0002",
 	log:{
 		manager: "U0006",
-		user: "U0005"
+		user: "U0005",
+		operating: "O0014",
 	},
 	mysql: "",
 	customize: "P0011",
@@ -130,6 +131,15 @@ const codings = {
 		cate: "O0006",
 		art: "O0003"
 	},
+	vote: {
+		cate: "O0012",
+		art: "O0013"
+	},	
+	
+	knowledge: {
+		cate: "O0015",
+		art: "O0016"
+	},	
 	user: {
 		recommend: "",
 		grade: "U0003",

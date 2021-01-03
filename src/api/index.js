@@ -371,6 +371,30 @@ export default {
         return http.request('space', 'saveImage','post', params)
     },      
     
+    // 创建投票
+    selectVote(params) {
+        return http.request('vue', 'selectVote','post', params)
+    },  
+
+    // 新建投票
+    createVote(params) {
+        return http.request('vue', 'createVote','post', params)
+    }, 
+
+    // 新建投票
+    updateVote(params) {
+        return http.request('vue', 'updateVote','post', params)
+    }, 
+
+    // 投票结果
+    selectVoteList(params) {
+        return http.request('vue', 'selectVoteList','post', params)
+    },    
+    
+    // 投票结果
+    knowledgeList(params) {
+        return http.request('vue', 'knowledgeList','post', params)
+    },      
     
 
 }

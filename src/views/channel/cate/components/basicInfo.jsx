@@ -11,6 +11,7 @@ import {
   Select,
 } from "antd";
 import { Preview, WeModal } from "@/components";
+import { CheckboxGroup } from "@/common";
 
 const { Option } = Select;
 
@@ -74,6 +75,13 @@ const Form1 = (props) => {
           value={dataSource.image}
           callback={callback}
           params={params}
+        />
+      </Form.Item>
+      <Form.Item label="聚合标签" name="checkboxList">
+        <CheckboxGroup
+          dataSource={dataSource}
+          flagList={props.flags}
+          callback={callback}
         />
       </Form.Item>
     </>

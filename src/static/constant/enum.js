@@ -47,6 +47,12 @@ export const MODUDLE = [
         type: "plate",
         icon: "tags"
     },
+    {
+        value: "vote",
+        name: "投票",
+        type: "plate",
+        icon: "vote"
+    }
 ]
 
 export const TEXT_TYPE = [

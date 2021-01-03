@@ -9,6 +9,7 @@ import {
   getQuery,
 } from "@/utils";
 import { Keyword, Editor, Preview } from "@/components";
+import { CheckboxGroup } from "@/common";
 
 const layout = {
   labelCol: { span: 2 },
@@ -21,6 +22,7 @@ class Single extends React.Component {
   state = {
     params: {},
     dataSource: {},
+    flagList: [],
   };
 
   componentDidMount() {
@@ -43,10 +45,22 @@ class Single extends React.Component {
               const tag = res.result.keyword.split(",");
               res.result.keyword = tag;
               this.setState({
-                data: res.result,
+                dataSource: res.result,
               });
             });
         }
+        this.props.dispatch
+          .fetch({
+            api: "getFlag",
+            data: {
+              channel_id: 0,
+            },
+          })
+          .then((res) => {
+            this.setState({
+              flagList: res.result,
+            });
+          });
       }
     );
   }
@@ -79,8 +93,8 @@ class Single extends React.Component {
           data: {
             coding: "P0002",
             id: this.state.params.id,
-            keyword: this.state.data.keyword.join(),
-            content: this.state.data.content,
+            keyword: this.state.dataSource.keyword.join(),
+            content: this.state.dataSource.content,
             ...values,
           },
         })
@@ -93,8 +107,8 @@ class Single extends React.Component {
         .insert({
           data: {
             coding: "P0002",
-            // keyword: this.state.data.keyword.join(),
-            // content: this.state.data.content,
+            // keyword: this.state.dataSource.keyword.join(),
+            // content: this.state.dataSource.content,
             channel_id: this.state.params.channel,
             ...values,
           },
@@ -190,7 +204,13 @@ class Single extends React.Component {
                 callback={this.callback}
               />
             </Form.Item>
-
+            <Form.Item label="聚合标签" name="checkboxList">
+              <CheckboxGroup
+                dataSource={this.state.dataSource}
+                flagList={this.state.flagList}
+                callback={this.callback}
+              />
+            </Form.Item>
             <Form.Item label=" " style={{ padding: "10px 25px" }}>
               <Button type="primary" htmlType="submit">
                 保存
