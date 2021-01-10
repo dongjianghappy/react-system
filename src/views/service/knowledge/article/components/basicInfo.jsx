@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Input, Form, Radio, Select } from "antd";
+import React from "react";
+import { Input, Form, Radio } from "antd";
 import {
   TitleAttribute,
   Editor,
@@ -9,7 +9,7 @@ import {
 } from "@/components";
 import { CheckboxGroup } from "@/common";
 
-const Form1 = (props) => {
+const Basic = (props) => {
   const { dataSource, callback, coding } = props;
 
   return (
@@ -81,4 +81,4 @@ const Form1 = (props) => {
   );
 };
 
-export default Form1;
+export default Basic;

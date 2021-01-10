@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Space } from "antd";
+import { Card } from "antd";
 import {
   connect,
   dispatchToProps,
@@ -15,6 +15,10 @@ const { add, del, edit } = authorized.service.job;
 const { job: coding } = codings.service;
 
 class Job extends React.Component {
+  componentDidMount() {
+    this.getData();
+  }
+
   getData = () => {
     this.props.dispatch.select({
       data: {
@@ -25,10 +29,6 @@ class Job extends React.Component {
       node: "job",
     });
   };
-
-  componentDidMount() {
-    this.getData();
-  }
 
   render() {
     const { job } = this.props.module;

@@ -6,6 +6,7 @@ import {
   checkButtonAuth,
   authorized,
   codings,
+  datetime,
 } from "@/utils";
 
 import { Status, Confirm, WeCheckbox, WeDrawer } from "@/components";
@@ -59,7 +60,7 @@ class Index extends React.Component {
                 </td>
 
                 <td>{item.content}</td>
-                <td>{item.datetime}</td>
+                <td>{datetime(item.datetime)}</td>
                 <td>
                   <Status
                     data={{ item, field: "checked", coding }}
@@ -98,10 +99,9 @@ class Index extends React.Component {
   }
 }
 
-const stateToProops = (state) => {
-  return {
+export default connect(
+  (state) => ({
     module: state.service,
-  };
-};
-
-export default connect(stateToProops, dispatchToProps)(Index);
+  }),
+  dispatchToProps
+)(Index);

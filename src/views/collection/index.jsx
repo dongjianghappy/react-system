@@ -6,6 +6,7 @@ import {
   checkButtonAuth,
   authorized,
   codings,
+  datetime,
 } from "@/utils";
 
 import { Confirm, WeCheckbox, WeModal } from "@/components";
@@ -16,6 +17,10 @@ const { add, del, start } = authorized.collection.cate;
 const { cate: coding } = codings.collection;
 
 class Collection extends React.Component {
+  componentDidMount() {
+    this.getData();
+  }
+
   getData = () => {
     this.props.dispatch.select({
       api: "nodeList",
@@ -27,10 +32,6 @@ class Collection extends React.Component {
       node: "nodeList",
     });
   };
-
-  componentDidMount() {
-    this.getData();
-  }
 
   handleClick = (data) => {
     this.props[data.dispatch](data);
@@ -62,7 +63,8 @@ class Collection extends React.Component {
               <td class="col-md-4">节点名称</td>
               <td class="col-md-2">创建节点日期</td>
               <td class="col-md-2">数量(入库/总共)</td>
-              <td class="col-md-3">操作</td>
+              <td class="col-md-1">操作人</td>
+              <td class="col-md-2">操作</td>
             </tr>
             {nodeList &&
               nodeList.map((item, index) => (
@@ -74,10 +76,11 @@ class Collection extends React.Component {
                     ></WeCheckbox>
                   </td>
                   <td>{item.name}</td>
-                  <td>{item.datetime}</td>
+                  <td>{datetime(item.datetime)}</td>
                   <td>
                     {item.num}/{item.tem_num}
                   </td>
+                  <td>{item.uid}</td>
                   <td>
                     <WeModal.modalForm
                       name="开始采集"

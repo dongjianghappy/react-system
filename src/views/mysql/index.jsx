@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Table, Space, Row, Col, Button } from "antd";
+import { Card, Space, Button } from "antd";
 import {
   connect,
   dispatchToProps,
@@ -9,7 +9,6 @@ import {
 } from "@/utils";
 
 import { WeCheckbox } from "@/components";
-import { ButtonGroup } from "@/common";
 
 // const { add, del, edit } = authorized.partner;
 const { mysql: coding } = codings;
@@ -21,10 +20,6 @@ class Mysql extends React.Component {
       node: "list",
     });
   }
-
-  handleClick = (data) => {
-    this.props[data.dispatch](data);
-  };
 
   render() {
     const { list } = this.props.module;

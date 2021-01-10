@@ -352,6 +352,74 @@ export const ANNOUNCEMENT_TYPE = [
     }
 ]
 
+
+export const ICON = [
+    {
+      name: "首页",
+      icon: "home",
+    },
+    {
+      name: "设置",
+      icon: "shezhi",
+    },
+    {
+      name: "分类",
+      icon: "list",
+    },
+    {
+      name: "文档",
+      icon: "article",
+    },
+    {
+      name: "点赞",
+      icon: "like",
+    },
+    {
+      name: "评论",
+      icon: "comment",
+    },
+    {
+      name: "收藏",
+      icon: "star",
+    },
+    {
+      name: "下载",
+      icon: "download",
+    },
+    {
+      name: "回收站",
+      icon: "recycle",
+    },
+    {
+      name: "幻灯片",
+      icon: "slideshow",
+    },
+    {
+      name: "应用",
+      icon: "app",
+    },
+    {
+      name: "采集",
+      icon: "gather",
+    },    
+    {
+      name: "数据库",
+      icon: "mysql",
+    },  
+    {
+      name: "模型",
+      icon: "moxing",
+    },        
+    {
+      name: "路由",
+      icon: "route",
+    },
+    {
+      name: "点",
+      icon: "dot",
+    }    
+  ]
+
  const enums = {
     module: MODUDLE,
     textType: TEXT_TYPE,
@@ -370,7 +438,8 @@ export const ANNOUNCEMENT_TYPE = [
     orderType: ORDER_TYPE,
     navType: NAV_TYPE,
     collectionType: COLLECTTION_TYPE,
-    announcementType: ANNOUNCEMENT_TYPE
+    announcementType: ANNOUNCEMENT_TYPE,
+    icon: ICON
 }
 
 export default enums

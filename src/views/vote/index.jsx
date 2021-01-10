@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Avatar } from "antd";
+import { Card } from "antd";
 import {
   connect,
   dispatchToProps,
@@ -7,8 +7,7 @@ import {
   authorized,
   codings,
 } from "@/utils";
-// import Reply from "./components/reply";
-import { Status, WeCheckbox, WeDrawer, Confirm } from "@/components";
+import { Status, WeDrawer, Confirm } from "@/components";
 import { Operatinavbar } from "@/common";
 import Detail from "./components/detail";
 

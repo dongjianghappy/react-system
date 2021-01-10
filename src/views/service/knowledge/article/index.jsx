@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+
 import { Card, Space, Button, Popover } from "antd";
 import {
   dispatchToProps,
@@ -9,23 +9,7 @@ import {
   codings,
   getQuery,
 } from "@/utils";
-import {
-  Confirm,
-  WeCheckbox,
-  Sorter,
-  Status,
-  WeModal,
-  ContentTag,
-} from "@/components";
-
-import { Option } from "@/common";
-
-import Statistics from "./components/statistics-row";
-import List from "./components/list";
-import CheckedList from "./components/checked_list";
-import ReturnList from "./components/return_list";
-
-const mod = window.location.pathname.split("/")[2] || "";
+import { Confirm, WeCheckbox, Sorter, Status, WeModal } from "@/components";
 
 const { art: coding, cate: catcoing } = codings.knowledge;
 
@@ -33,20 +17,6 @@ class Index extends React.Component {
   state = {
     params: {},
     coding: {},
-  };
-
-  getData = (params = {}) => {
-    this.state.params.fid && (params.fid = this.state.params.fid);
-
-    this.props.dispatch.select({
-      api: "knowledgeList",
-      data: {
-        coding: this.state.coding.art,
-        page: 0,
-        pagesize: 15,
-        ...params,
-      },
-    });
   };
 
   componentDidMount() {
@@ -64,24 +34,22 @@ class Index extends React.Component {
     );
   }
 
-  handleClick = (data) => {
-    this.props[data.dispatch](data);
+  getData = (params = {}) => {
+    this.state.params.fid && (params.fid = this.state.params.fid);
+
+    this.props.dispatch.select({
+      api: "knowledgeList",
+      data: {
+        coding: this.state.coding.art,
+        page: 0,
+        pagesize: 15,
+        ...params,
+      },
+    });
   };
 
-  callback = (key) => {
-    if (key === "1") {
-      this.getData({
-        management_checked: 1,
-      });
-    } else if (key === "2") {
-      this.getData({
-        management_checked: 0,
-      });
-    } else if (key === "3") {
-      this.getData({
-        management_checked: -1,
-      });
-    }
+  handleClick = (data) => {
+    this.props[data.dispatch](data);
   };
 
   render() {
@@ -132,14 +100,6 @@ class Index extends React.Component {
                 >
                   {item.parent ? item.parent : "未分类"}
                 </WeModal.Cate>
-                {/* <ModalCate
-                  {...this.props}
-                  id={item.id}
-                  artCoding="A0000"
-                  coding="A0001"
-                >
-                  {item.parent ? item.parent : "未分类"}
-                </ModalCate> */}
               </td>
               <td>{item.visit}</td>
               <td>{item.datetime}</td>
@@ -201,10 +161,9 @@ class Index extends React.Component {
   }
 }
 
-const stateToProops = (state) => {
-  return {
+export default connect(
+  (state) => ({
     module: state.knowledge,
-  };
-};
-
-export default connect(stateToProops, dispatchToProps)(Index);
+  }),
+  dispatchToProps
+)(Index);

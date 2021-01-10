@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Drawer, Button, Form, Tabs } from "antd";
+import { Tabs } from "antd";
 import BasicInfo from "./basicInfo";
 import PageInfo from "./pageInfo";
 

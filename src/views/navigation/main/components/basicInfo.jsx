@@ -1,20 +1,10 @@
 import React from "react";
-import {
-  Space,
-  Card,
-  Table,
-  Checkbox,
-  Button,
-  Input,
-  Form,
-  Radio,
-  Select,
-} from "antd";
+import { Input, Form, Radio, Select } from "antd";
 import { WeModal } from "@/components";
 import { CheckboxGroup } from "@/common";
 const { Option } = Select;
 
-const Form1 = (props) => {
+const Basic = (props) => {
   const { params, dataSource, callback, coding } = props;
   const { navType } = React.$enums;
 
@@ -26,10 +16,11 @@ const Form1 = (props) => {
       <Form.Item label="导航连接" name="url">
         <Input className="input-sm input-350" />
       </Form.Item>
-      <Form.Item label="所属导航" name="">
+      <Form.Item label="所属导航" name="fid">
         <WeModal.Cate
           {...params}
           data={{ id: dataSource.id, coding: coding, catcoing: coding }}
+          callback={callback}
         >
           {dataSource.parent ? dataSource.parent : "未分类"}
         </WeModal.Cate>
@@ -63,4 +54,4 @@ const Form1 = (props) => {
   );
 };
 
-export default Form1;
+export default Basic;

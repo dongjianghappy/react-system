@@ -7,6 +7,7 @@ import {
   authorized,
   codings,
   getQuery,
+  datetime,
 } from "@/utils";
 
 import { Confirm, Status, WeCheckbox } from "@/components";
@@ -21,19 +22,6 @@ class CollectionList extends React.Component {
     dataSource: {},
   };
 
-  getData = () => {
-    const param = this.state.params.fid ? { fid: this.state.params.fid } : {};
-    debugger;
-    this.props.dispatch.select({
-      data: {
-        page: 0,
-        pagesize: 10,
-        coding: coding,
-        ...param,
-      },
-      node: "nodeList",
-    });
-  };
   componentDidMount() {
     this.setState(
       {
@@ -45,8 +33,18 @@ class CollectionList extends React.Component {
     );
   }
 
-  handleClick = (data) => {
-    this.props[data.dispatch](data);
+  getData = () => {
+    const param = this.state.params.fid ? { fid: this.state.params.fid } : {};
+
+    this.props.dispatch.select({
+      data: {
+        page: 0,
+        pagesize: 10,
+        coding: coding,
+        ...param,
+      },
+      node: "nodeList",
+    });
   };
 
   render() {
@@ -75,7 +73,7 @@ class CollectionList extends React.Component {
                   </td>
                   <td>{item.title}</td>
                   <td>{item.content}</td>
-                  <td>{item.datetime}</td>
+                  <td>{datetime(item.datetime)}</td>
                   <td>
                     <Status
                       data={{ item, field: "checked", coding }}

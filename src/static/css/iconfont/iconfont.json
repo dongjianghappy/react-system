@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1128773",
+      "name": "模型",
+      "font_class": "moxing",
+      "unicode": "e7ba",
+      "unicode_decimal": 59322
+    },
+    {
+      "icon_id": "12225048",
+      "name": "gather",
+      "font_class": "gather",
+      "unicode": "e640",
+      "unicode_decimal": 58944
+    },
+    {
+      "icon_id": "14465200",
+      "name": "route",
+      "font_class": "route",
+      "unicode": "e6a8",
+      "unicode_decimal": 59048
+    },
+    {
       "icon_id": "4508597",
       "name": "运营中心填充",
       "font_class": "operation",

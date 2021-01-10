@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { message } from "antd";
+import { CheckboxGroup } from "@/common";
 
 const OrderInfo = (props) => {
-  const { Link, dispatch, dataSource, data } = props;
+  const { dispatch, dataSource, data, renderList } = props;
+  const [params, setParams] = useState({});
+
+  const callback = (params) => {
+    setParams({ ...params });
+  };
+
+  const onUpdate = () => {
+    dispatch
+      .fetch({
+        api: "updateArticle",
+        data: {
+          ...data,
+          ...params,
+        },
+      })
+      .then((res) => {
+        message.info("编辑成功");
+        renderList();
+      });
+  };
 
   return (
     <>
@@ -16,10 +37,45 @@ const OrderInfo = (props) => {
         <p>
           <span className="mr10">在线预览</span>
           <span className="mr10">更新静态</span>
-          <span className="mr10">评论({dataSource.comment})</span>
-          <span className="mr10">点赞({dataSource.comment})</span>
-          <span className="mr10">收藏({dataSource.comment})</span>
-          <span>下载({dataSource.download})</span>
+          <span
+            className="mr10"
+            onClick={() =>
+              props.history.push(`/admin/article/comment?fid=${dataSource.id}`)
+            }
+          >
+            评论({dataSource.comment})
+          </span>
+          <span
+            className="mr10"
+            onClick={() =>
+              props.history.push(`/admin/article/praise?fid=${dataSource.id}`)
+            }
+          >
+            点赞({dataSource.praise})
+          </span>
+          <span
+            className="mr10"
+            onClick={() =>
+              props.history.push(`/admin/article/collect?fid=${dataSource.id}`)
+            }
+          >
+            收藏({dataSource.collect})
+          </span>
+          <span
+            onClick={() =>
+              props.history.push(`/admin/article/download?fid=${dataSource.id}`)
+            }
+          >
+            下载({dataSource.download})
+          </span>
+        </p>
+        <p>
+          属性:<span onClick={onUpdate}>更新</span>
+          <CheckboxGroup
+            dataSource={dataSource}
+            flagList={props.flags}
+            callback={callback}
+          />
         </p>
       </div>
     </>

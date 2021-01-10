@@ -3,9 +3,8 @@ import { Button, Modal, message, Card, Row, Col } from "antd";
 import "./style.less";
 
 const ModalCate = (props) => {
-  const { dispatch, data } = props;
+  const { dispatch, data, callback, type } = props;
   const { coding, catcoing } = data;
-  debugger;
   const [visible, setVisible] = useState(false);
   const [list, setList] = useState([]);
   const [current, setCurrent] = useState({});
@@ -27,19 +26,24 @@ const ModalCate = (props) => {
   };
 
   const handleOk = async () => {
-    dispatch
-      .fetch({
-        api: "moveAticle",
-        data: {
-          coding,
-          id: data.id,
-          fid: current.value,
-        },
-      })
-      .then((res) => {
-        props.renderList && props.renderList();
-        message.info("新增成功");
-      });
+    debugger;
+    if (callback) {
+      callback({ fid: current.value, parent: current.name });
+    } else {
+      dispatch
+        .fetch({
+          api: "moveAticle",
+          data: {
+            coding,
+            id: data.id,
+            fid: current.value,
+          },
+        })
+        .then((res) => {
+          props.renderList && props.renderList();
+          message.info("新增成功");
+        });
+    }
     setVisible(false);
   };
 
@@ -88,7 +92,7 @@ const ModalCate = (props) => {
                       handelSelect({
                         id: item.id,
                         name: item.name,
-                        value: `|${item.id}|`,
+                        value: type === "art" ? `|${item.id}|` : item.id,
                       })
                     }
                   >
@@ -115,7 +119,10 @@ const ModalCate = (props) => {
                           handelSelect({
                             id: items.id,
                             name: `${item.name} > ${items.name}`,
-                            value: `|${item.id}|${items.id}|`,
+                            value:
+                              type === "art"
+                                ? `|${item.id}|${items.id}|`
+                                : items.id,
                           })
                         }
                       >
@@ -132,7 +139,10 @@ const ModalCate = (props) => {
                             handelSelect({
                               id: aaa.id,
                               name: `${item.name} > ${items.name} > ${aaa.name}`,
-                              value: `|${item.id}|${items.id}|${aaa.id}|`,
+                              value:
+                                type === "art"
+                                  ? `|${item.id}|${items.id}|${aaa.id}|`
+                                  : aaa.id,
                             })
                           }
                         >

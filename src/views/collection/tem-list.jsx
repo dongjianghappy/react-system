@@ -21,9 +21,20 @@ class CollectionList extends React.Component {
     dataSource: {},
   };
 
+  componentDidMount() {
+    this.setState(
+      {
+        params: getQuery(),
+      },
+      () => {
+        this.getData();
+      }
+    );
+  }
+
   getData = () => {
     const param = this.state.params.fid ? { fid: this.state.params.fid } : {};
-    debugger;
+
     this.props.dispatch.select({
       api: "temCollectionList",
       data: {
@@ -35,16 +46,6 @@ class CollectionList extends React.Component {
       node: "nodeList",
     });
   };
-  componentDidMount() {
-    this.setState(
-      {
-        params: getQuery(),
-      },
-      () => {
-        this.getData();
-      }
-    );
-  }
 
   handleClick = (data) => {
     this.props[data.dispatch](data);

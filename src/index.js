@@ -13,7 +13,6 @@ import enums from '@/static/constant/enum'
 import modal_enum from '@/static/constant/modal_enum'
 import alert_enum from '@/components/alert/enum'
 import coding from '@/static/constant/coding'
-import isLogin from '@/utils/validations/loginAuth'
 import '@/Global.less';
 
 
@@ -29,7 +28,7 @@ ReactDOM.render(
   <Provider store={store}>
     <Router>
       <Switch>
-        {/* <Route path="/admin" component={isLogin(App)} /> */}
+        
         <Route path="/admin" component={App} />
         {
           mainRouter.map( route => {

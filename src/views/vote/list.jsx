@@ -1,15 +1,5 @@
 import React from "react";
-import {
-  Card,
-  Form,
-  Button,
-  Input,
-  Radio,
-  DatePicker,
-  Avatar,
-  Progress,
-  Alert,
-} from "antd";
+import { Card, Progress, Alert } from "antd";
 import {
   connect,
   dispatchToProps,
@@ -18,20 +8,28 @@ import {
   codings,
   getQuery,
 } from "@/utils";
-// import Reply from "./components/reply";
-import { Status, WeDrawer } from "@/components";
-import { Operatinavbar } from "@/common";
+import { WeDrawer } from "@/components";
 import Detail from "./components/detail";
 import "./style.less";
-const { reply, del, edit } = authorized.messageBoard;
+const { del, edit } = authorized.messageBoard;
 const { messageBoard: coding } = codings;
 
-class Index extends React.Component {
+class List extends React.Component {
   state = {
     params: {},
     dataSource: {},
-    flagList: [],
   };
+
+  componentDidMount() {
+    this.setState(
+      {
+        params: getQuery(),
+      },
+      () => {
+        this.getData();
+      }
+    );
+  }
 
   getData = () => {
     this.props.dispatch
@@ -51,17 +49,6 @@ class Index extends React.Component {
       });
   };
 
-  componentDidMount() {
-    this.setState(
-      {
-        params: getQuery(),
-      },
-      () => {
-        this.getData();
-      }
-    );
-  }
-
   render() {
     const { dataSource } = this.state;
     return (
@@ -69,8 +56,7 @@ class Index extends React.Component {
         title="项目信息 * 进行中"
         extra={
           <WeDrawer.Form
-            title="编辑友情链接"
-            name="编辑"
+            name="修改项目信息"
             isText={true}
             action="edit"
             data={{ id: dataSource.id }}
@@ -153,4 +139,4 @@ export default connect(
     module: state.vote,
   }),
   dispatchToProps
-)(Index);
+)(List);

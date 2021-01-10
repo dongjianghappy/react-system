@@ -3,8 +3,6 @@ import { Layout, Menu, Row, Col, Breadcrumb, Card, Tooltip } from "antd";
 import { withRouter, Link } from "react-router-dom";
 import Channel from "./components/channel";
 import ChannelList from "../../../channel/components/channelList";
-const { SubMenu } = Menu;
-const { Content, Sider } = Layout;
 
 class Position extends React.Component {
   // 模块页面跳转后需要刷新，主要时显示左侧菜单栏

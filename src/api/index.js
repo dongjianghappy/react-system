@@ -11,6 +11,16 @@ export default {
 	Default(params){
 		return http.request('vue', 'defaultPage', 'post', params)
     },	
+
+	// 默认数据
+	channelDefault(params){
+		return http.request('vue', 'channelDefault', 'post', params)
+    },	   
+    
+	// 默认数据
+	userDefault(params){
+		return http.request('vue', 'userDefault', 'post', params)
+    },	     
     
     // 单个列表详情接口
     detail(params) {

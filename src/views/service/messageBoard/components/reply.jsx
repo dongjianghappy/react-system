@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Avatar, Modal, message, Button, Form, Input } from "antd";
+import { Avatar, Modal, Button, Form, Input } from "antd";
 import warning from "@/components/modal/warning";
 import "../letter.less";
 
@@ -25,7 +25,6 @@ const Reply = (props) => {
         },
       })
       .then((res) => {
-        debugger;
         setData(res.result);
       });
   };
@@ -84,7 +83,6 @@ const Reply = (props) => {
                     {item.username}
                   </div>
                   <div className="content">{item.content}</div>
-                  {/* 是的呀。很好用哦 */}
                 </li>
               ))}
           </ul>

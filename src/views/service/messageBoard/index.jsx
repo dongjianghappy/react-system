@@ -6,6 +6,7 @@ import {
   checkButtonAuth,
   authorized,
   codings,
+  datetime,
 } from "@/utils";
 import Reply from "./components/reply";
 import { Status, WeCheckbox } from "@/components";
@@ -15,6 +16,10 @@ const { reply, del, edit } = authorized.messageBoard;
 const { messageBoard: coding } = codings;
 
 class Index extends React.Component {
+  componentDidMount() {
+    this.getData();
+  }
+
   getData = () => {
     this.props.dispatch.select({
       api: "messageBoard",
@@ -26,10 +31,6 @@ class Index extends React.Component {
       node: "messageBoard",
     });
   };
-
-  componentDidMount() {
-    this.getData();
-  }
 
   render() {
     const { messageBoard } = this.props.module;
@@ -78,7 +79,7 @@ class Index extends React.Component {
                     )}
                     {item.content}
                   </td>
-                  <td>{item.datetime}</td>
+                  <td>{datetime(item.datetime)}</td>
                   <td>
                     <Status
                       data={{ item, field: "checked", coding }}

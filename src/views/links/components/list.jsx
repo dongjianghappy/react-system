@@ -1,6 +1,6 @@
 import React from "react";
-import { Space, Popover } from "antd";
-import { checkButtonAuth, authorized, codings, Link } from "@/utils";
+import { Card, Space, Popover } from "antd";
+import { checkButtonAuth, authorized, codings, Link, datetime } from "@/utils";
 import {
   Status,
   Confirm,
@@ -8,8 +8,9 @@ import {
   WeCheckbox,
   Quick,
   Order,
+  SelectList,
 } from "@/components";
-import Article from "./article";
+import Detail from "./detail";
 import { Operatinavbar } from "@/common";
 
 const { add, del, edit } = authorized.link;
@@ -22,97 +23,121 @@ const List = (props) => {
   const render = () => {
     if (props.listType === "1") {
       return (
-        <table width="100%" className="table-striped table-hover col-left-23">
-          <tr className="th">
-            <td className="col-md-1"> 选择</td>
-            <td className="col-md-2">网站名称 </td>
-            <td className="col-md-2">链接地址</td>
-            <td className="col-md-1">来源</td>
-            <td className="col-md-1">类型</td>
-            <td className="col-md-1">价格(元/月)</td>
-            <td className="col-md-1">结束日期</td>
-            <td className="col-md-1">状态</td>
-            <td className="col-md-2">操作</td>
-          </tr>
-          {list &&
-            list.map((item, index) => (
-              <tr>
-                <td>
-                  <WeCheckbox {...props} data={{ id: item.id }}></WeCheckbox>
-                </td>
-                <td>
-                  <Quick
-                    {...props}
-                    title={item.name}
-                    data={{ id: item.id, field: "name", coding }}
-                    authorized={checkButtonAuth("edit")}
-                  />
-                </td>
-                <td>
-                  <Quick
-                    {...props}
-                    title={item.url}
-                    data={{ id: item.id, field: "url", coding }}
-                    authorized={checkButtonAuth("edit")}
-                  />
-                </td>
-                <td></td>
-                <td>{item.type}</td>
-                <td>{item.price}</td>
-                <td>{item.datetime}</td>
-                <td>
-                  <Status
-                    {...props}
-                    data={{ item, field: "status", coding }}
-                    authorized={checkButtonAuth("edit")}
-                  />
-                </td>
-                <td>
-                  <Space>
-                    <WeDrawer.Form
+        <Card
+          title="友情链接列表"
+          extra={
+            <SelectList
+              enumSource={{
+                status: {
+                  "": "所有",
+                  0: "关闭",
+                  1: "开启",
+                },
+              }}
+              init={[
+                {
+                  title: "状态",
+                  field: "status",
+                  value: "",
+                  name: "所有",
+                },
+              ]}
+              renderList={props.renderList}
+            />
+          }
+        >
+          <table width="100%" className="table-striped table-hover col-left-23">
+            <tr className="th">
+              <td className="col-md-1"> 选择</td>
+              <td className="col-md-2">网站名称 </td>
+              <td className="col-md-2">链接地址</td>
+              <td className="col-md-1">来源</td>
+              <td className="col-md-1">类型</td>
+              <td className="col-md-1">价格(元/月)</td>
+              <td className="col-md-1">结束日期</td>
+              <td className="col-md-1">状态</td>
+              <td className="col-md-2">操作</td>
+            </tr>
+            {list &&
+              list.map((item, index) => (
+                <tr>
+                  <td>
+                    <WeCheckbox {...props} data={{ id: item.id }}></WeCheckbox>
+                  </td>
+                  <td>
+                    <Quick
                       {...props}
-                      title="编辑友情链接"
-                      name="编辑"
-                      isText={true}
-                      action="edit"
-                      data={{ id: item.id, coding }}
-                      renderList={props.getData}
+                      title={item.name}
+                      data={{ id: item.id, field: "name", coding }}
                       authorized={checkButtonAuth("edit")}
-                    >
-                      <Article />
-                    </WeDrawer.Form>
-                    <Confirm
-                      {...props}
-                      name="删除"
-                      config={{
-                        operating: "delete",
-                        message: React.$modalEnum,
-                      }}
-                      data={{ coding, id: item.id }}
-                      api="delete"
-                      renderList={props.getData}
-                      authorized={checkButtonAuth("delete")}
                     />
-                    <Popover
-                      title="订单信息"
-                      placement="left"
-                      content={() => (
-                        <Order
-                          {...props}
-                          Link={Link}
-                          dataSource={item}
-                          data={{ fid: item.id, type: 0, coding }}
-                          api="createOrder"
-                        />
-                      )}
-                    >
-                      生成订单
-                    </Popover>
-                  </Space>
-                </td>
-              </tr>
-            ))}
-        </table>
+                  </td>
+                  <td>
+                    <Quick
+                      {...props}
+                      title={item.url}
+                      data={{ id: item.id, field: "url", coding }}
+                      authorized={checkButtonAuth("edit")}
+                    />
+                  </td>
+                  <td></td>
+                  <td>{item.type}</td>
+                  <td>{item.price}</td>
+                  <td>{datetime(item.datetime)}</td>
+                  <td>
+                    <Status
+                      {...props}
+                      data={{ item, field: "status", coding }}
+                      authorized={checkButtonAuth("edit")}
+                    />
+                  </td>
+                  <td>
+                    <Space>
+                      <WeDrawer.Form
+                        {...props}
+                        title="编辑友情链接"
+                        name="编辑"
+                        isText={true}
+                        action="edit"
+                        data={{ id: item.id, coding }}
+                        renderList={props.renderList}
+                        authorized={checkButtonAuth("edit")}
+                      >
+                        <Detail />
+                      </WeDrawer.Form>
+                      <Confirm
+                        {...props}
+                        name="删除"
+                        config={{
+                          operating: "delete",
+                          message: React.$modalEnum,
+                        }}
+                        data={{ coding, id: item.id }}
+                        api="delete"
+                        renderList={props.renderList}
+                        authorized={checkButtonAuth("delete")}
+                      />
+                      <Popover
+                        title="订单信息"
+                        placement="left"
+                        content={() => (
+                          <Order
+                            {...props}
+                            Link={Link}
+                            dataSource={item}
+                            data={{ fid: item.id, type: 0, coding }}
+                            api="createOrder"
+                          />
+                        )}
+                      >
+                        生成订单
+                      </Popover>
+                    </Space>
+                  </td>
+                </tr>
+              ))}
+          </table>
+        </Card>
       );
     } else if (props.listType === "2") {
       return (
@@ -162,10 +187,10 @@ const List = (props) => {
                       isText={true}
                       action="edit"
                       data={{ id: item.id, coding }}
-                      renderList={props.getData}
+                      renderList={props.renderList}
                       authorized={checkButtonAuth("edit")}
                     >
-                      <Article />
+                      <Detail />
                     </WeDrawer.Form>
                     <Confirm
                       {...props}
@@ -176,7 +201,7 @@ const List = (props) => {
                       }}
                       data={{ coding, id: item.id }}
                       api="delete"
-                      renderList={props.getData}
+                      renderList={props.renderList}
                       authorized={checkButtonAuth("delete")}
                     />
                   </Space>
@@ -221,7 +246,7 @@ const List = (props) => {
                 </td>
                 <td>{item.webmaster}</td>
                 <td>{item.qq}</td>
-                <td>{item.datetime}</td>
+                <td>{datetime(item.datetime)}</td>
                 <td>
                   <Space>
                     <Confirm
@@ -233,7 +258,7 @@ const List = (props) => {
                       }}
                       data={{ coding, id: item.id }}
                       api="delete"
-                      renderList={props.getData}
+                      renderList={props.renderList}
                       authorized={checkButtonAuth("delete")}
                     />
                     <Confirm
@@ -245,7 +270,7 @@ const List = (props) => {
                       }}
                       data={{ coding, id: item.id }}
                       api="applyCheck"
-                      renderList={props.getData}
+                      renderList={props.renderList}
                       authorized={checkButtonAuth("delete")}
                     />
                   </Space>
@@ -264,7 +289,7 @@ const List = (props) => {
         {...props}
         button={["all", "delete", "open", "close"]}
         data={{ list: module.checkedList, coding }}
-        renderList={props.getData}
+        renderList={props.renderList}
         checkButtonAuth={checkButtonAuth}
         authorized={authorized}
       />

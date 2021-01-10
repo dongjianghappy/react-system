@@ -1,35 +1,11 @@
 import React from "react";
+import { Layout, Menu, Row, Col, Dropdown, message, Input, Badge } from "antd";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
-import {
-  Layout,
-  Menu,
-  Row,
-  Col,
-  Dropdown,
-  Breadcrumb,
-  message,
-  Space,
-  Input,
-  Badge,
-} from "antd";
-// import { Menu, Button } from 'antd';
-import {
-  AppstoreOutlined,
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  PieChartOutlined,
-  DesktopOutlined,
-  ContainerOutlined,
-  MailOutlined,
-} from "@ant-design/icons";
-import { clearToken } from "../../../../utils/auth";
+import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
+import "@/static/header.css";
 
-import "../../../../static/header.css";
-
-const { SubMenu } = Menu;
 const { Header } = Layout;
-const { Search } = Input;
 
 const Index = function (props) {
   const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
@@ -66,7 +42,7 @@ const Index = function (props) {
           width="25"
           style={{ marginRight: 10 }}
         />
-        07素材网管理平台
+        管理控制平台
       </div>
       <div className="header-wrap">
         <div className="header-left">
@@ -78,17 +54,7 @@ const Index = function (props) {
               >
                 {props.screen ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
               </span>
-              {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']} className="menu">
-              <Menu.Item><Link to="/admin/basic">基本</Link></Menu.Item>
-              <Menu.Item><Link to="/admin/navigation">导航</Link></Menu.Item>
-              <Menu.Item key="3"><Link to="/admin/sucai" >素材</Link></Menu.Item>
-              <Menu.Item key="4"><Link to="/admin/todolist" >测试</Link></Menu.Item>
-            </Menu> */}
             </Col>
-
-            {/* <Col offset={3}>
-              <Search placeholder="站内搜索" />
-            </Col> */}
           </Row>
         </div>
         <div className="header-right">
@@ -116,7 +82,7 @@ const Index = function (props) {
               </Dropdown>
             </Col>
             <Col span="6">
-              <a
+              <Link
                 onClick={() => route("/admin/service/message", "service")}
                 className="absolute"
                 style={{ top: "6px" }}
@@ -124,7 +90,7 @@ const Index = function (props) {
                 <Badge count={5}>
                   <i className="iconfont icon-email font24"></i>
                 </Badge>
-              </a>
+              </Link>
             </Col>
             <Col span="10">
               <Row>
@@ -139,19 +105,6 @@ const Index = function (props) {
           </Row>
         </div>
       </div>
-
-      {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']} className="menu">
-          <Menu.Item key="1"><Link to="/admin/basc">基本</Link></Menu.Item>
-          <Menu.Item key="2"><Link to="/admin/nav">导航</Link></Menu.Item>
-          <Menu.Item key="3"><Link to="/admin/sucai" >素材</Link></Menu.Item>
-          <Menu.Item key="4"><Link to="/admin/todolist" >测试</Link></Menu.Item>
-        </Menu>
-        <Dropdown overlay={menu} className="dropDwon">
-            <div>
-              <img src="http://127.0.0.1//user/110506372/photos/110506372.png" alt="" style={{ marginRight: 5, width: 25, height: 25, borderRadius: '50%'}} />
-              <span>超级管理员</span>
-            </div>
-          </Dropdown> */}
     </Header>
   );
 };

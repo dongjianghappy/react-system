@@ -6,15 +6,20 @@ import {
   checkButtonAuth,
   authorized,
   codings,
+  datetime,
 } from "@/utils";
 import { Status, Confirm, WeCheckbox, WeDrawer, Quick } from "@/components";
 import { Operatinavbar } from "@/common";
-import Article from "./article";
+import Detail from "./components/detail";
 
 const { add, del, edit } = authorized.announcement;
 const { announcement: coding } = codings;
 
 class Announcement extends React.Component {
+  componentDidMount() {
+    this.getData();
+  }
+
   getData = () => {
     this.props.dispatch.select({
       data: {
@@ -26,12 +31,8 @@ class Announcement extends React.Component {
     });
   };
 
-  componentDidMount() {
-    this.getData();
-  }
-
   render() {
-    const { dispatch, module } = this.props;
+    const { announcement } = this.props.module;
 
     return (
       <div>
@@ -47,7 +48,7 @@ class Announcement extends React.Component {
                 authorized={checkButtonAuth("add")}
                 {...this.props}
               >
-                <Article />
+                <Detail />
               </WeDrawer.Form>
             )
           }
@@ -56,12 +57,13 @@ class Announcement extends React.Component {
             <tr className="th">
               <td className="col-md-1">选择</td>
               <td className="col-md-1">顺序</td>
-              <td className="col-md-7">伙伴名称</td>
+              <td className="col-md-5">公告通知</td>
+              <td className="col-md-2">时间</td>
               <td className="col-md-1">状态</td>
               <td className="col-md-2">操作</td>
             </tr>
-            {module.announcement &&
-              module.announcement.map((item, index) => (
+            {announcement &&
+              announcement.map((item, index) => (
                 <tr class="tr-list">
                   <td>
                     <WeCheckbox
@@ -92,6 +94,7 @@ class Announcement extends React.Component {
                       width="50%"
                     />
                   </td>
+                  <td>{datetime(item.datetime)}</td>
                   <td>
                     <Status
                       data={{ item, field: "status", coding }}
@@ -111,7 +114,7 @@ class Announcement extends React.Component {
                         authorized={checkButtonAuth("edit")}
                         {...this.props}
                       >
-                        <Article />
+                        <Detail />
                       </WeDrawer.Form>
                       <Confirm
                         name="删除"

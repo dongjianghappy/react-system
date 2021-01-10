@@ -225,7 +225,7 @@ const dispatchToProps = (dispatch) => {
           node: "flags",
           data: {
             coding: "K0000",
-            channel_id: 3,
+            channel_id: 0,
             type: "art"
           },
           api: "getFlag"
@@ -258,6 +258,11 @@ const dispatchToProps = (dispatch) => {
         const action = searchFieldAction(params)
         dispatch(action)
       },
+
+      setParams(params) {
+        const action = getQueryAction(params)
+        dispatch(action)
+      },      
     }
     }
 }

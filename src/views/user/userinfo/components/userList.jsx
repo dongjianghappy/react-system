@@ -2,12 +2,11 @@ import React from "react";
 import { Card, Space, Button, Avatar } from "antd";
 import { checkButtonAuth, authorized, codings } from "@/utils";
 import { Confirm, WeCheckbox, WeDrawer } from "@/components";
-// import Detail from "../components/Detail";
 
 const UserList = (props) => {
-  const { dataSource } = props;
+  const { dataSource, title } = props;
   return (
-    <>
+    <Card title={title} bordered={false}>
       <table width="100%" className="table-striped table-hover col-left-2">
         <tr className="th">
           <td className="col-md-1">选择</td>
@@ -78,8 +77,6 @@ const UserList = (props) => {
                     title="用户设置"
                     data={{ uid: item.account }}
                     api="userDetail"
-                    // renderList={this.getData}
-                    // authorized={checkButtonAuth("edit")}
                   >
                     {/* <Detail /> */}
                   </WeDrawer.show>
@@ -88,7 +85,7 @@ const UserList = (props) => {
             </tr>
           ))}
       </table>
-    </>
+    </Card>
   );
 };
 

@@ -9,12 +9,16 @@ import {
 } from "@/utils";
 
 import { Confirm, WeDrawer } from "@/components";
-import Detail from "./detail";
+import Detail from "./components/detail";
 
 const { add, del, edit } = authorized.customize;
 const { customize: coding } = codings;
 debugger;
 class CustomizeList extends React.Component {
+  componentDidMount() {
+    this.getData();
+  }
+
   getData = () => {
     this.props.dispatch.select({
       api: "anpassen_field",
@@ -25,10 +29,6 @@ class CustomizeList extends React.Component {
     });
   };
 
-  componentDidMount() {
-    this.getData();
-  }
-
   render() {
     const { fieldList } = this.props.module;
     return (
@@ -37,7 +37,7 @@ class CustomizeList extends React.Component {
           title="字段管理"
           extra={
             <Space>
-              {checkButtonAuth(add) ? (
+              {checkButtonAuth(add) && (
                 <WeDrawer.Form
                   title="新增字段"
                   name="新增字段"
@@ -49,8 +49,6 @@ class CustomizeList extends React.Component {
                 >
                   <Detail />
                 </WeDrawer.Form>
-              ) : (
-                ""
               )}
             </Space>
           }
@@ -73,7 +71,6 @@ class CustomizeList extends React.Component {
                   <td>{item.dtype}</td>
                   <td>{item.length}</td>
                   <td>{item.text_type}</td>
-                  {/* React.$enums.formType[item.text_type].name} */}
                   <td>{item.text_type}</td>
                   <td>
                     <WeDrawer.Form

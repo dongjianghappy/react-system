@@ -1,22 +1,11 @@
 import React from "react";
-import { Drawer, Button, Row, Col, Card, Tooltip } from "antd";
-import { Status, WeModal } from "@/components";
-import { adminRouter } from "@/router";
-import { withRouter } from "react-router-dom";
-import Detail from "./detail";
+import { Drawer, Row, Col, Tooltip } from "antd";
 
-import {
-  connect,
-  Link,
-  dispatchToProps,
-  checkButtonAuth,
-  authorized,
-  codings,
-} from "@/utils";
+import { withRouter } from "react-router-dom";
+
+import { connect, dispatchToProps } from "@/utils";
 
 import { channelInfo } from "@/utils/auth";
-
-const { article: coding } = codings;
 
 class ChannelList extends React.Component {
   state = { visible: false, childrenDrawer: false };
@@ -36,7 +25,6 @@ class ChannelList extends React.Component {
   };
 
   handel = (path) => {
-    debugger;
     this.setState({
       visible: false,
     });

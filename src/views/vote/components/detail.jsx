@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Card, Form, Button, Input, Radio, DatePicker, Avatar } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { Form, Input, Radio } from "antd";
+
 import { WeAlert } from "@/components";
 
 const Detail = (props) => {

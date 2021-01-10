@@ -15,19 +15,9 @@ import Detail from "./components/detail";
 
 const { add, del, edit } = authorized.announcement;
 
-class Channel extends React.Component {
+class Index extends React.Component {
   state = {
     coding: {},
-  };
-  getData = () => {
-    this.props.dispatch.select({
-      data: {
-        page: 0,
-        pagesize: 15,
-        coding: this.state.coding.cate,
-      },
-      node: "cateList",
-    });
   };
 
   componentDidMount() {
@@ -41,20 +31,26 @@ class Channel extends React.Component {
     );
   }
 
-  handleClick = (data) => {
-    this.props[data.dispatch](data);
+  getData = () => {
+    this.props.dispatch.select({
+      data: {
+        page: 0,
+        pagesize: 15,
+        coding: this.state.coding.cate,
+      },
+      node: "cateList",
+    });
   };
 
   render() {
     const { module } = this.props;
-    debugger;
     const { cate: coding } = this.state.coding;
     return (
       <>
         <Card
           title="知识分类"
           extra={
-            checkButtonAuth("add") ? (
+            checkButtonAuth("add") && (
               <WeDrawer.Form
                 name="新增分类"
                 icon="add"
@@ -65,8 +61,6 @@ class Channel extends React.Component {
               >
                 <Detail />
               </WeDrawer.Form>
-            ) : (
-              ""
             )
           }
         >
@@ -77,8 +71,7 @@ class Channel extends React.Component {
             <tr className="th">
               <td className="col-md-1">选择</td>
               <td className="col-md-1">顺序</td>
-              <td className="col-md-6">知识分类</td>
-              <td className="col-md-1">属性</td>
+              <td className="col-md-7">知识分类</td>
               <td className="col-md-1">状态</td>
               <td className="col-md-2">操作</td>
             </tr>
@@ -122,7 +115,6 @@ class Channel extends React.Component {
                         <Detail />
                       </WeDrawer.Form>
                     </td>
-                    <td></td>
                     <td>
                       <Status
                         data={{ item, field: "status", coding }}
@@ -209,7 +201,7 @@ class Channel extends React.Component {
                                   {...this.props}
                                 />
                               </td>
-                              <td className="col-md-6">
+                              <td className="col-md-7">
                                 <i className="cate-two"></i>
                                 <i className="iconfont icon-jianhao iconslide"></i>
                                 <Quick
@@ -236,7 +228,6 @@ class Channel extends React.Component {
                                   <Detail />
                                 </WeDrawer.Form>
                               </td>
-                              <td className="col-md-1"></td>
                               <td className="col-md-1">
                                 <Status
                                   data={{ item, field: "status", coding }}
@@ -270,92 +261,6 @@ class Channel extends React.Component {
                                 </Space>
                               </td>
                             </tr>
-                            <tr className="slide-nav-list">
-                              <td colspan="8" className="p0">
-                                {item.list &&
-                                  item.list.map((item, i) => (
-                                    <table
-                                      width="100%"
-                                      className="table-bordered table-condensed table-hover category  color-cate"
-                                    >
-                                      <tr className="tr-list">
-                                        <td className="col-md-1">
-                                          <WeCheckbox
-                                            data={{ id: item.id }}
-                                            {...this.props}
-                                          ></WeCheckbox>
-                                        </td>
-                                        <td className="col-md-1">
-                                          <Quick
-                                            title={item.sort}
-                                            data={{
-                                              id: item.id,
-                                              field: "sort",
-                                              coding,
-                                            }}
-                                            authorized={checkButtonAuth("edit")}
-                                            {...this.props}
-                                          />
-                                        </td>
-                                        <td className="col-md-6">
-                                          <i className="cate-tree"></i>
-                                          <i className="cate-two"></i>
-                                          <Quick
-                                            title={item.name}
-                                            data={{
-                                              id: item.id,
-                                              field: "name",
-                                              coding,
-                                            }}
-                                            authorized={checkButtonAuth("edit")}
-                                            width="50%"
-                                            {...this.props}
-                                          />
-                                        </td>
-                                        <td className="col-md-1"></td>
-                                        <td className="col-md-1">
-                                          <Status
-                                            data={{
-                                              item,
-                                              field: "status",
-                                              coding,
-                                            }}
-                                            authorized={checkButtonAuth("edit")}
-                                            {...this.props}
-                                          />
-                                        </td>
-                                        <td className="col-md-2">
-                                          <Space>
-                                            <WeDrawer.Form
-                                              isText={true}
-                                              name="编辑"
-                                              title="编辑分类"
-                                              id={item.id}
-                                              renderList={this.getData}
-                                              coding={coding}
-                                              {...this.props}
-                                            >
-                                              <Detail />
-                                            </WeDrawer.Form>
-                                            <Confirm
-                                              name="删除"
-                                              type="text"
-                                              config={
-                                                React.$modalEnum.delete.cate
-                                              }
-                                              coding={coding}
-                                              data={{ id: item.id }}
-                                              fetch={this.props.fetch}
-                                              api="delete"
-                                              renderList={this.getData}
-                                            />
-                                          </Space>
-                                        </td>
-                                      </tr>
-                                    </table>
-                                  ))}
-                              </td>
-                            </tr>
                           </table>
                         ))}
                     </td>
@@ -383,4 +288,4 @@ export default connect(
     module: state.knowledge,
   }),
   dispatchToProps
-)(Channel);
+)(Index);

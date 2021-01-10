@@ -1,21 +1,26 @@
 import React from "react";
-import { Card, Tabs } from "antd";
+import { Card } from "antd";
 import {
   connect,
-  Link,
   dispatchToProps,
   checkButtonAuth,
   authorized,
   codings,
 } from "@/utils";
 
-import { WeCheckbox, NavGroup } from "@/components";
+import { NavGroup } from "@/components";
 import EmailList from "./components/email-list";
 import List from "./components/list";
 
 const { Nav } = NavGroup;
 
 class UserList extends React.Component {
+  componentDidMount() {
+    this.getData({
+      register_checked: 0,
+    });
+  }
+
   getData = (data) => {
     this.props.dispatch.select({
       api: "userList",
@@ -25,12 +30,6 @@ class UserList extends React.Component {
       node: "audit",
     });
   };
-
-  componentDidMount() {
-    this.getData({
-      register_checked: 0,
-    });
-  }
 
   callback = (key) => {
     if (key === "1") {

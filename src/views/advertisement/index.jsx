@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Space, Tabs } from "antd";
+import { Card, Space } from "antd";
 
 import {
   connect,
@@ -12,7 +12,6 @@ import { WeDrawer, NavGroup } from "@/components";
 
 import Detail from "./components/detail";
 
-import Statistics from "./components/statistics";
 import List from "./components/list";
 
 const { Nav } = NavGroup;
@@ -98,7 +97,6 @@ class Advertisement extends React.Component {
 
     return (
       <div>
-        <Statistics />
         <NavGroup
           onChange={this.callback}
           extra={

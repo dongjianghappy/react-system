@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Button, Form, Tabs, message, Input } from "antd";
+import { Card, Button, Form, Tabs, message } from "antd";
 import {
   connect,
   dispatchToProps,
@@ -9,20 +9,13 @@ import {
   Link,
   getQuery,
 } from "@/utils";
-import { WeAlert } from "@/components";
-import CustomField from "./components/customField";
 import BasicInfo from "./components/basicInfo";
 
 const { art: coding, cate: catcoing } = codings.knowledge;
 
 const { TabPane } = Tabs;
 
-const layout = {
-  labelCol: { span: 2 },
-  wrapperCol: { span: 22 },
-};
-
-class Single extends React.Component {
+class Article extends React.Component {
   formRef = React.createRef();
 
   state = {
@@ -37,7 +30,6 @@ class Single extends React.Component {
       this.formRef.current.getFieldValue().image.length > 0 &&
       Array.isArray(this.formRef.current.getFieldValue().image)
     ) {
-      debugger;
       if (
         this.formRef.current.getFieldValue().image[0].indexOf("http") === -1
       ) {
@@ -133,7 +125,10 @@ class Single extends React.Component {
         <Card>
           <Form
             ref={this.formRef}
-            {...layout}
+            layout={{
+              labelCol: { span: 2 },
+              wrapperCol: { span: 22 },
+            }}
             labelAlign="left"
             onFinish={this.onFinish}
           >
@@ -162,10 +157,9 @@ class Single extends React.Component {
   }
 }
 
-const stateToProops = (state) => {
-  return {
-    module: state.channel,
-  };
-};
-
-export default connect(stateToProops, dispatchToProps)(Single);
+export default connect(
+  (state) => ({
+    module: state.knowledge,
+  }),
+  dispatchToProps
+)(Article);

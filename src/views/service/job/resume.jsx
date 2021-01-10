@@ -13,6 +13,10 @@ const { del } = authorized.service.resume;
 const { resume: coding } = codings.service;
 
 class Resume extends React.Component {
+  componentDidMount() {
+    this.getData();
+  }
+
   getData = () => {
     this.props.dispatch.select({
       data: {
@@ -23,10 +27,6 @@ class Resume extends React.Component {
       node: "resume",
     });
   };
-
-  componentDidMount() {
-    this.getData();
-  }
 
   render() {
     const { resume } = this.props.module;

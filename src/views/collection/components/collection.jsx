@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Drawer, Button, Form, Input, Select, Radio } from "antd";
+import React from "react";
+import { Form, Input } from "antd";
 import { WeAlert } from "@/components";
-const { Option } = Select;
 
-const Detail = (props) => {
-  const { params, dataSource, callback } = props;
-  debugger;
+const Collection = (props) => {
   return (
     <>
       <h3 className="mb25">节点名称: 张文钦</h3>
@@ -46,4 +43,4 @@ const Detail = (props) => {
   );
 };
 
-export default Detail;
+export default Collection;

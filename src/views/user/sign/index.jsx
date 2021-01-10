@@ -1,8 +1,7 @@
 import React from "react";
-import { Card, Space, Tabs } from "antd";
+import { Card } from "antd";
 import {
   connect,
-  Link,
   dispatchToProps,
   checkButtonAuth,
   authorized,
@@ -20,6 +19,10 @@ const { add } = authorized.user.sign;
 const { sign: coding } = codings.user;
 
 class UserSign extends React.Component {
+  componentDidMount() {
+    this.getData();
+  }
+
   getData = () => {
     this.props.dispatch.select({
       data: {
@@ -31,17 +34,13 @@ class UserSign extends React.Component {
     });
   };
 
-  componentDidMount() {
-    this.getData();
-  }
-
   render() {
     const { sign } = this.props.module;
     return (
       <NavGroup
         onChange={this.callback}
         extra={
-          checkButtonAuth(add) ? (
+          checkButtonAuth(add) && (
             <WeModal.modalForm
               name="新增选项"
               data={{ coding }}
@@ -51,8 +50,6 @@ class UserSign extends React.Component {
             >
               <Detail />
             </WeModal.modalForm>
-          ) : (
-            ""
           )
         }
       >

@@ -6,6 +6,7 @@ import {
   checkButtonAuth,
   authorized,
   codings,
+  getQuery,
 } from "@/utils";
 
 import { WeCheckbox, R_pagination } from "@/components";
@@ -15,7 +16,25 @@ const { add, del, edit } = authorized.announcement;
 const { art: coding } = codings[mod];
 
 class Collect extends React.Component {
+  state = {
+    params: {},
+  };
+
   componentDidMount() {
+    const mod = window.location.pathname.split("/")[2] || "";
+
+    this.setState(
+      {
+        params: getQuery(),
+        coding: codings[mod],
+      },
+      () => {
+        this.getData();
+      }
+    );
+  }
+
+  getData = () => {
     this.props.dispatch.select({
       api: "collect",
       data: {
@@ -25,7 +44,7 @@ class Collect extends React.Component {
       },
       node: "collect",
     });
-  }
+  };
 
   render() {
     const { collect } = this.props.module;

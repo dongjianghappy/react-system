@@ -1,11 +1,10 @@
 import React from "react";
-import { Space, Card, Table, Checkbox, Button, Input, Form, Radio } from "antd";
+import { Input, Form } from "antd";
 import { Keyword } from "@/components";
 
-const Form1 = (props) => {
+const Pgae = (props) => {
   const { params, dataSource, callback } = props;
 
-  debugger;
   return (
     <>
       <Form.Item label="SEO标题" name="seotitle">
@@ -26,4 +25,4 @@ const Form1 = (props) => {
   );
 };
 
-export default Form1;
+export default Pgae;

@@ -7,15 +7,13 @@ import {
   authorized,
   codings,
 } from "@/utils";
-// import UserList from "./components/userList";
 import Personal from "./components/personal";
 import Password from "./components/password";
-import { Confirm, WeCheckbox, WeDrawer, AsideGroup } from "@/components";
+import { AsideGroup } from "@/components";
 
 const { Nav } = AsideGroup;
 const { add, del, edit } = authorized.partner;
 const { partner: coding } = codings;
-const { TabPane } = Tabs;
 
 class Index extends React.Component {
   componentDidMount() {

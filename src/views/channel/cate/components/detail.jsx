@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Drawer, Button, Form, Tabs } from "antd";
+import { Tabs } from "antd";
 import BasicInfo from "./basicInfo";
 import PageInfo from "./pageInfo";
 import AdvancedSettings from "./advancedSettings";
@@ -9,7 +9,7 @@ const { TabPane } = Tabs;
 const Detail = (props) => {
   const { params, dataSource, callback } = props;
   const [flagList, setFlagList] = useState([]);
-  debugger;
+
   useEffect(() => {
     params.dispatch
       .fetch({

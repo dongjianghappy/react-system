@@ -10,7 +10,21 @@ const layout = {
 const ModalForm = (props) => {
   const { dispatch, action } = props;
   const [visible, setVisible] = useState(false);
+  const [dataSource, setDataSource] = useState({});
   const [form] = Form.useForm();
+
+  const getData = () => {
+    dispatch
+      .fetch({
+        api: "detail",
+        data: {
+          ...props.data,
+        },
+      })
+      .then((res) => {
+        form.setFieldsValue(res.result);
+      });
+  };
 
   const showModal = () => {
     if (!props.authorized) {
@@ -18,16 +32,7 @@ const ModalForm = (props) => {
     }
 
     if (action === "edit") {
-      dispatch
-        .fetch({
-          api: "detail",
-          data: {
-            ...props.data,
-          },
-        })
-        .then((res) => {
-          form.setFieldsValue(res.result);
-        });
+      getData();
     }
 
     if (props.render) {
@@ -42,9 +47,18 @@ const ModalForm = (props) => {
   };
 
   const onFinish = () => {
-    debugger;
+    // 如果是数组则没有选择，所以不需要进行更新
+    if (Array.isArray(form.getFieldValue().image)) {
+      if (form.getFieldValue().image[0].indexOf("http") === -1) {
+        form.getFieldValue().image = `|${form
+          .getFieldValue()
+          .image.join("|")}|`;
+      } else {
+        delete form.getFieldValue().image;
+      }
+    }
+
     if (action === "add") {
-      debugger;
       dispatch
         .insert({
           api: props.api,
@@ -59,7 +73,6 @@ const ModalForm = (props) => {
           props.renderList && props.renderList();
         });
     } else {
-      debugger;
       dispatch
         .update({
           api: props.api,
@@ -94,6 +107,13 @@ const ModalForm = (props) => {
     </>
   );
 
+  // 在其子他组件调用callback，设置字段值并以{name: value}的方式传回
+  const callback = (params) => {
+    Object.assign(dataSource, params);
+    setDataSource({ ...dataSource });
+    form.setFieldsValue({ ...params });
+  };
+
   return (
     <>
       {props.isText === true ? <Text /> : <Buttons />}
@@ -105,8 +125,18 @@ const ModalForm = (props) => {
         width={props.width}
       >
         <Form {...layout} form={form} labelAlign="left">
-          {props.children}
+          {props.children &&
+            React.cloneElement(props.children, {
+              callback, // 回到函数
+              // form,
+              dataSource, // 数据源
+              params: props, // props属性
+              renderDetail: getData, // 初始化接口
+            })}
         </Form>
+        {/* <Form {...layout} form={form} labelAlign="left">
+          {props.children}
+        </Form> */}
       </Modal>
     </>
   );

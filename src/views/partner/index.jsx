@@ -9,12 +9,16 @@ import {
 } from "@/utils";
 import { Status, Confirm, WeCheckbox, WeDrawer, Quick } from "@/components";
 import { Operatinavbar } from "@/common";
-import Article from "./article";
+import Detail from "./components/detail";
 
 const { add, del, edit } = authorized.partner;
 const { partner: coding } = codings;
 
-class Partner extends React.Component {
+class Index extends React.Component {
+  componentDidMount() {
+    this.getData();
+  }
+
   getData = () => {
     this.props.dispatch.select({
       data: {
@@ -24,10 +28,6 @@ class Partner extends React.Component {
       },
     });
   };
-
-  componentDidMount() {
-    this.getData();
-  }
 
   render() {
     const { module } = this.props;
@@ -46,7 +46,7 @@ class Partner extends React.Component {
                 authorized={checkButtonAuth("add")}
                 {...this.props}
               >
-                <Article />
+                <Detail />
               </WeDrawer.Form>
             )
           }
@@ -103,7 +103,7 @@ class Partner extends React.Component {
                         authorized={checkButtonAuth("edit")}
                         {...this.props}
                       >
-                        <Article />
+                        <Detail />
                       </WeDrawer.Form>
                       <Confirm
                         name="删除"
@@ -141,4 +141,4 @@ export default connect(
     module: state.partner,
   }),
   dispatchToProps
-)(Partner);
+)(Index);

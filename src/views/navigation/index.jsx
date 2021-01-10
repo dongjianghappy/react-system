@@ -19,8 +19,12 @@ class Index extends React.Component {
     const { channel } = this.props.module;
     return (
       <>
-        <Card title="导航管理">
-          <table width="100%" className="table-striped col-left-23">
+        <Card>
+          <div className="nav-title">导航管理</div>
+          <table
+            width="100%"
+            className="table-channel table-striped col-left-23"
+          >
             {channel.map((item, index) => (
               <>
                 <tr>

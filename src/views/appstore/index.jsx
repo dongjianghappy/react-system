@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Row, Col } from "antd";
+import { Card, Row, Col, Popover, Button } from "antd";
 import {
   connect,
   Link,
@@ -9,14 +9,21 @@ import {
   codings,
 } from "@/utils";
 
-import { Status, WeModal } from "../../components";
+import { Status, WeModal, Confirm } from "../../components";
 import Detail from "./components/detail";
 
 const { add, del, edit } = authorized.appstore;
-
 const { appstore: coding } = codings;
 
 class Appstore extends React.Component {
+  state = {
+    grade: [],
+  };
+
+  componentDidMount() {
+    this.getData();
+  }
+
   getData = () => {
     this.props.dispatch.select({
       api: "appstore",
@@ -25,40 +32,47 @@ class Appstore extends React.Component {
         pagesize: 25,
       },
     });
-  };
 
-  componentDidMount() {
-    this.getData();
-  }
+    this.props.dispatch
+      .fetch({
+        api: "userGrade",
+        data: {
+          type: 1,
+        },
+      })
+      .then((res) => {
+        this.setState({
+          grade: res.result,
+        });
+      });
+  };
 
   render() {
     const { list } = this.props.module;
-    debugger;
+
     return (
       <>
         <Card
           title="应用中心"
           extra={
-            checkButtonAuth(add) ? (
+            checkButtonAuth(add) && (
               <WeModal.modalForm
                 name="新增应用"
-                action="edit"
+                type="primary"
                 data={{ coding }}
                 renderList={this.getData}
                 authorized={checkButtonAuth(add)}
                 {...this.props}
               >
-                <Detail />
+                <Detail gradeList={this.state.grade} />
               </WeModal.modalForm>
-            ) : (
-              ""
             )
           }
         >
           <Row>
             {list &&
               list.map((item, index) => (
-                <Col span="12">
+                <Col span="12" style={{ background: "#f9f9f9", padding: 5 }}>
                   <Card
                     title={item.name}
                     extra={
@@ -70,35 +84,60 @@ class Appstore extends React.Component {
                             {...this.props}
                           />
                         }
-                        |
-                        <Link
-                          disabled={!checkButtonAuth(edit)}
-                          to={{
-                            pathname: "/admin/user/grade",
-                            state: { type: 2 },
-                          }}
-                        >
-                          权限设置
-                        </Link>{" "}
-                        |
+                        <span className="line">|</span>
                         <WeModal.modalForm
-                          name="编辑应用"
+                          name="编辑"
                           action="edit"
+                          isText={true}
                           data={{ id: item.id, coding }}
                           renderList={this.getData}
                           authorized={checkButtonAuth(edit)}
                           {...this.props}
                         >
-                          <Detail />
+                          <Detail gradeList={this.state.grade} />
                         </WeModal.modalForm>
+                        <span className="line">|</span>
+                        <Popover
+                          placement="bottom"
+                          content={
+                            <div>
+                              <p>
+                                <Confirm
+                                  name="删除"
+                                  config={{
+                                    operating: "delete",
+                                    message: React.$modalEnum,
+                                  }}
+                                  data={{ coding, id: item.id }}
+                                  api="delete"
+                                  renderList={this.getData}
+                                  authorized={checkButtonAuth("delete")}
+                                  {...this.props}
+                                />
+                              </p>
+                              <p>
+                                <Link
+                                  disabled={!checkButtonAuth(edit)}
+                                  to={{
+                                    pathname: "/admin/user/grade",
+                                    state: { type: 2 },
+                                  }}
+                                >
+                                  权限
+                                </Link>
+                              </p>
+                            </div>
+                          }
+                        >
+                          更多
+                        </Popover>
                       </>
                     }
-                    style={{ margin: 10, background: "#f9f9f9" }}
                   >
                     <Row>
                       <Col span="4">
                         <img
-                          src={item.image}
+                          src={item.image[0]}
                           style={{ width: "90%", height: 60 }}
                         />
                       </Col>

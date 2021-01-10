@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Space, Button, Checkbox, Switch } from "antd";
+import { Card, Space, Button, Checkbox, Switch, Popover } from "antd";
 import {
   connect,
   withRouter,
@@ -9,7 +9,14 @@ import {
   codings,
 } from "@/utils";
 
-import { Status, WeCheckbox, WeDrawer, Confirm, Quick } from "@/components";
+import {
+  Status,
+  WeCheckbox,
+  WeDrawer,
+  Confirm,
+  Quick,
+  WeModal,
+} from "@/components";
 import { ButtonGroup } from "@/common";
 import Detail from "./components/detail";
 
@@ -77,8 +84,8 @@ class Channel extends React.Component {
             <tr class="th">
               <td className="col-md-1">选择</td>
               <td className="col-md-1">顺序</td>
-              <td className="col-md-6">分类名称</td>
-              <td className="col-md-1">属性</td>
+              <td className="col-md-7">分类名称</td>
+
               <td className="col-md-1">状态</td>
               <td className="col-md-2">操作</td>
             </tr>
@@ -122,7 +129,6 @@ class Channel extends React.Component {
                         <Detail />
                       </WeDrawer.Form>
                     </td>
-                    <td></td>
                     <td>
                       <Status
                         data={{ item, field: "status", coding }}
@@ -132,28 +138,6 @@ class Channel extends React.Component {
                     </td>
                     <td>
                       <Space>
-                        <span
-                          disabled={!checkButtonAuth(edit)}
-                          onClick={() =>
-                            this.props.history.push(
-                              `/admin/article/detail?channel=2&fid=${item.id}`
-                            )
-                          }
-                        >
-                          添加
-                        </span>
-                        <span className="line">|</span>
-                        <span
-                          disabled={!checkButtonAuth(edit)}
-                          onClick={() =>
-                            this.props.history.push(
-                              `/admin/article/list?&fid=${item.id}`
-                            )
-                          }
-                        >
-                          列表
-                        </span>
-                        <span className="line">|</span>
                         <WeDrawer.Form
                           title="编辑合作伙伴"
                           name="编辑"
@@ -179,6 +163,54 @@ class Channel extends React.Component {
                           authorized={checkButtonAuth("delete")}
                           {...this.props}
                         />
+                        <span className="line">|</span>
+                        <Popover
+                          placement="bottom"
+                          trigger="click"
+                          content={
+                            <div>
+                              <p>
+                                <span
+                                  disabled={!checkButtonAuth(edit)}
+                                  onClick={() =>
+                                    this.props.history.push(
+                                      `/admin/article/detail?channel=2&fid=${item.id}`
+                                    )
+                                  }
+                                >
+                                  添加
+                                </span>
+                              </p>
+                              <p>
+                                <span
+                                  disabled={!checkButtonAuth(edit)}
+                                  onClick={() =>
+                                    this.props.history.push(
+                                      `/admin/article/list?&fid=${item.id}`
+                                    )
+                                  }
+                                >
+                                  列表
+                                </span>
+                              </p>
+                              <p>
+                                <WeModal.Cate
+                                  data={{
+                                    id: item.id,
+                                    coding,
+                                    catcoing: coding,
+                                  }}
+                                  renderList={this.getData}
+                                  {...this.props}
+                                >
+                                  移动
+                                </WeModal.Cate>
+                              </p>
+                            </div>
+                          }
+                        >
+                          更多
+                        </Popover>
                       </Space>
                     </td>
                   </tr>
@@ -209,7 +241,7 @@ class Channel extends React.Component {
                                   {...this.props}
                                 />
                               </td>
-                              <td className="col-md-6">
+                              <td className="col-md-7">
                                 <i class="cate-two"></i>
                                 <i class="iconfont icon-jianhao iconslide"></i>
                                 <Quick
@@ -236,7 +268,6 @@ class Channel extends React.Component {
                                   <Detail />
                                 </WeDrawer.Form>
                               </td>
-                              <td class="col-md-1"></td>
                               <td class="col-md-1">
                                 <Status
                                   data={{ item, field: "status", coding }}
@@ -257,6 +288,7 @@ class Channel extends React.Component {
                                   >
                                     <Detail />
                                   </WeDrawer.Form>
+                                  <span className="line">|</span>
                                   <Confirm
                                     name="删除"
                                     type="text"
@@ -267,6 +299,55 @@ class Channel extends React.Component {
                                     api="delete"
                                     renderList={this.getData}
                                   />
+
+                                  <span className="line">|</span>
+                                  <Popover
+                                    placement="bottom"
+                                    trigger="click"
+                                    content={
+                                      <div>
+                                        <p>
+                                          <span
+                                            disabled={!checkButtonAuth(edit)}
+                                            onClick={() =>
+                                              this.props.history.push(
+                                                `/admin/article/detail?channel=2&fid=${item.id}`
+                                              )
+                                            }
+                                          >
+                                            添加
+                                          </span>
+                                        </p>
+                                        <p>
+                                          <span
+                                            disabled={!checkButtonAuth(edit)}
+                                            onClick={() =>
+                                              this.props.history.push(
+                                                `/admin/article/list?&fid=${item.id}`
+                                              )
+                                            }
+                                          >
+                                            列表
+                                          </span>
+                                        </p>
+                                        <p>
+                                          <WeModal.Cate
+                                            data={{
+                                              id: item.id,
+                                              coding,
+                                              catcoing: coding,
+                                            }}
+                                            renderList={this.getData}
+                                            {...this.props}
+                                          >
+                                            移动
+                                          </WeModal.Cate>
+                                        </p>
+                                      </div>
+                                    }
+                                  >
+                                    更多
+                                  </Popover>
                                 </Space>
                               </td>
                             </tr>
@@ -297,7 +378,7 @@ class Channel extends React.Component {
                                             {...this.props}
                                           />
                                         </td>
-                                        <td className="col-md-6">
+                                        <td className="col-md-7">
                                           <i class="cate-tree"></i>
                                           <i class="cate-two"></i>
                                           <Quick
@@ -312,7 +393,6 @@ class Channel extends React.Component {
                                             {...this.props}
                                           />
                                         </td>
-                                        <td className="col-md-1"></td>
                                         <td className="col-md-1">
                                           <Status
                                             data={{
@@ -337,6 +417,7 @@ class Channel extends React.Component {
                                             >
                                               <Detail />
                                             </WeDrawer.Form>
+                                            <span className="line">|</span>
                                             <Confirm
                                               name="删除"
                                               type="text"
@@ -349,6 +430,58 @@ class Channel extends React.Component {
                                               api="delete"
                                               renderList={this.getData}
                                             />
+                                            <span className="line">|</span>
+                                            <Popover
+                                              placement="bottom"
+                                              trigger="click"
+                                              content={
+                                                <div>
+                                                  <p>
+                                                    <span
+                                                      disabled={
+                                                        !checkButtonAuth(edit)
+                                                      }
+                                                      onClick={() =>
+                                                        this.props.history.push(
+                                                          `/admin/article/detail?channel=2&fid=${item.id}`
+                                                        )
+                                                      }
+                                                    >
+                                                      添加
+                                                    </span>
+                                                  </p>
+                                                  <p>
+                                                    <span
+                                                      disabled={
+                                                        !checkButtonAuth(edit)
+                                                      }
+                                                      onClick={() =>
+                                                        this.props.history.push(
+                                                          `/admin/article/list?&fid=${item.id}`
+                                                        )
+                                                      }
+                                                    >
+                                                      列表
+                                                    </span>
+                                                  </p>
+                                                  <p>
+                                                    <WeModal.Cate
+                                                      data={{
+                                                        id: item.id,
+                                                        coding,
+                                                        catcoing: coding,
+                                                      }}
+                                                      renderList={this.getData}
+                                                      {...this.props}
+                                                    >
+                                                      移动
+                                                    </WeModal.Cate>
+                                                  </p>
+                                                </div>
+                                              }
+                                            >
+                                              更多
+                                            </Popover>
                                           </Space>
                                         </td>
                                       </tr>

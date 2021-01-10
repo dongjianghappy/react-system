@@ -5,7 +5,7 @@ import "./style.less";
 const Nav = (props) => {
   const handelClick = () => {
     props.keyFunction(props.value);
-    props.onChange(props.value);
+    props.onChange(props.data, props.value);
   };
 
   return (

@@ -1,15 +1,5 @@
 import React from "react";
-import {
-  Space,
-  Card,
-  Table,
-  Checkbox,
-  Button,
-  Input,
-  Form,
-  Radio,
-  Select,
-} from "antd";
+import { Input, Form, Radio, Select } from "antd";
 import { Preview, WeModal } from "@/components";
 
 const { Option } = Select;

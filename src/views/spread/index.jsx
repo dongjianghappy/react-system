@@ -16,8 +16,7 @@ import {
   Quick,
   NavGroup,
 } from "@/components";
-import { Operatinavbar } from "@/common";
-import Article from "./article";
+import Detail from "./components/detail";
 
 const { Nav } = NavGroup;
 const { add, del, edit } = authorized.spread;
@@ -55,7 +54,7 @@ class Spread extends React.Component {
                 authorized={checkButtonAuth(add)}
                 {...this.props}
               >
-                <Article />
+                <Detail />
               </WeDrawer.Form>
             ) : (
               ""
@@ -128,7 +127,7 @@ class Spread extends React.Component {
                             authorized={checkButtonAuth(edit)}
                             {...this.props}
                           >
-                            <Article />
+                            <Detail />
                           </WeDrawer.Form>
                           <Confirm
                             name="删除"
@@ -147,14 +146,6 @@ class Spread extends React.Component {
                     </tr>
                   ))}
               </table>
-
-              {/* <Operatinavbar
-            node={this.props.node}
-            button={["all", "delete", "open", "close"]}
-            data={this.props.module}
-            coding="P0006"
-            {...this.props}
-          /> */}
             </Card>
           </Nav>
         </NavGroup>

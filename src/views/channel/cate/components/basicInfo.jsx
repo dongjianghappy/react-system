@@ -1,21 +1,11 @@
 import React from "react";
-import {
-  Space,
-  Card,
-  Table,
-  Checkbox,
-  Button,
-  Input,
-  Form,
-  Radio,
-  Select,
-} from "antd";
+import { Input, Form, Radio, Select } from "antd";
 import { Preview, WeModal } from "@/components";
 import { CheckboxGroup } from "@/common";
 
 const { Option } = Select;
 
-const Form1 = (props) => {
+const Basic = (props) => {
   const { params, dataSource, callback, coding } = props;
 
   return (
@@ -23,10 +13,11 @@ const Form1 = (props) => {
       <Form.Item label="分类名称" name="name">
         <Input className="input-sm input-250" />
       </Form.Item>
-      <Form.Item label="所属分类" name="">
+      <Form.Item label="所属分类" name="fid">
         <WeModal.Cate
           {...params}
           data={{ id: dataSource.id, coding: coding, catcoing: coding }}
+          callback={callback}
         >
           {dataSource.parent ? dataSource.parent : "未分类"}
         </WeModal.Cate>
@@ -59,16 +50,6 @@ const Form1 = (props) => {
         <Input className="input-sm input-150" />
       </Form.Item>
       <Form.Item name="image" label="预览图">
-        {/* <Upload image={props.data.image} /> */}
-        {/* <WeModal.Picture
-          src={
-            "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-          }
-        />
-        <WeModal.Album
-          data={[pic1, pic2, pic3, pic4, pic5, pic6, pic7, pic8, pic10]}
-        />
-        <UploadModal /> */}
         <Preview
           authorized={true}
           data={params.data}
@@ -88,4 +69,4 @@ const Form1 = (props) => {
   );
 };
 
-export default Form1;
+export default Basic;

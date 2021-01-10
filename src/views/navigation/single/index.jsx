@@ -48,7 +48,7 @@ class Single extends React.Component {
         <Card
           title={`${this.state.params.name}单页`}
           extra={
-            checkButtonAuth(add) ? (
+            checkButtonAuth(add) && (
               <Button
                 type="primary"
                 onClick={() =>
@@ -60,8 +60,6 @@ class Single extends React.Component {
               >
                 新增单页
               </Button>
-            ) : (
-              ""
             )
           }
         >

@@ -42,6 +42,8 @@ import ContentTag from './common/contentTag'
 import BasicInfo from './basicInfo'
 import Preview from './preview'
 import Order from './order'
+import SelectList from './option/selectList'
+import IconList from './iconList'
 
 
 export  {
@@ -85,6 +87,8 @@ export  {
     ContentTag,
     BasicInfo,
     Preview,
-    Order
+    Order,
+    SelectList,
+    IconList
 };
   

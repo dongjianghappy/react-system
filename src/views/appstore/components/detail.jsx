@@ -1,52 +1,51 @@
-import React, { useState, useEffect } from 'react';
-import { Drawer, Button, Form, Input, Select, Radio } from 'antd';
-
-
-
+import React from "react";
+import { Form, Input, Radio, Select } from "antd";
+import { Editor, Preview } from "@/components";
+const { Option } = Select;
 const Detail = (props) => {
-
-  const [flagList, setFlagList] = useState([]);
-
- 
-  useEffect(() => {
-    if(props.id){
-      props.fetch({
-        api: "getFlag",
-        data: {
-          channel_id: 0
-        }          
-      }).then((res) => {
-        setFlagList([...res.result])
-      })
-    }
-  }, [])
-
+  const { params, dataSource, callback, gradeList } = props;
+  debugger;
   return (
     <>
-      <Form.Item name="name" label="应用名称" >
-          <Input className=" input-sm" />
+      <Form.Item name="name" label="应用名称">
+        <Input className=" input-sm" />
       </Form.Item>
-      <Form.Item name="sort" label="顺序" >
-          <Input className=" input-sm input-100" />
+      <Form.Item name="sort" label="顺序">
+        <Input className=" input-sm input-100" />
       </Form.Item>
-      <Form.Item name={['user', 'website']} label="状态">
-          <Radio value={1}>开启</Radio>
-          <Radio value={0}>关闭</Radio>
+      <Form.Item name="status" label="状态">
+        <Radio.Group>
+          <Radio value="1" defaultChecked>
+            开启
+          </Radio>
+          <Radio value="0">关闭</Radio>
+        </Radio.Group>
       </Form.Item>
-      <Form.Item name="grade_id" label="应用权限" >
-          <Input className=" input-sm input-100" />
+      <Form.Item name="grade_id" label="应用权限">
+        <Select className="w150" defaultValue={gradeList[0].id}>
+          {gradeList &&
+            gradeList.map((item) => (
+              <Option value={item.id}>{item.name}</Option>
+            ))}
+        </Select>
       </Form.Item>
-      <Form.Item name="module" label="模块名称">
-          <Input className=" input-sm input-100" />
+      <Form.Item name="image" label="预览图">
+        <Preview
+          authorized={true}
+          data={params.data}
+          value={dataSource.image}
+          callback={callback}
+          params={params}
+        />
       </Form.Item>
       <Form.Item name="url" label="应用链接">
-          <Input className=" input-sm" />
-      </Form.Item>                
-      <Form.Item name="description" label="功能说明">
-          <Input.TextArea />
+        <Input className=" input-sm" />
+      </Form.Item>
+      <Form.Item name="description" label="功能描述">
+        <Input.TextArea />
       </Form.Item>
     </>
   );
 };
 
-export default Detail
+export default Detail;

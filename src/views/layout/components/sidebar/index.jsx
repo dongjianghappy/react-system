@@ -57,6 +57,7 @@ class Sidebar extends React.Component {
       if (
         (item.module === "article" ||
           item.module === "tech" ||
+          item.module === "picture" ||
           item.module === "source") &&
         item.children
       ) {
@@ -159,38 +160,7 @@ class Sidebar extends React.Component {
           openKeys={this.state.openKeys}
           onOpenChange={this.onOpenChange}
         >
-          {
-            this.SiderRender(siderRouter)
-            // siderRouter.map((item, i) => (
-
-            //   item.module === "article" ?
-
-            //   <SubMenu key="0" title="基本信息">
-            //       <Menu.Item ><Link to="/admin/article">频道设置</Link></Menu.Item>
-            //       <Menu.Item ><Link to={{pathname:'/admin/navigation/main', state:{id: item.id}}}>频道导航</Link></Menu.Item>
-            //       <Menu.Item ><Link to={{pathname:'/admin/navigation/single', state:{id: item.id}}}>单页管理</Link></Menu.Item>
-            //       <Menu.Item ><Link to={{pathname:'/admin/article/label', state:{id: item.id}}}>聚合标签</Link></Menu.Item>
-            //       <Menu.Item ><Link to={{pathname:'/admin/navigation/single', state:{id: item.id}}}>语言设置</Link></Menu.Item>
-            //   </SubMenu>
-
-            //   :
-
-            //   item.children ? //  && item.child !== 0
-            //   <SubMenu key={i} icon={<UserOutlined />} title={item.name}>
-            //   {
-            //       item.children.map((list, i) => (
-            //       <Menu.Item key={ i+item.name }>
-            //           <Link to={list.path}>{ list.name }</Link>
-            //       </Menu.Item>
-            //       ))
-            //   }
-            //   </SubMenu>
-            //   :
-            //   <Menu.Item key={ i+100 }>
-            //       <Link to={item.path}>{ item.name }</Link>
-            //   </Menu.Item>
-            //   ))
-          }
+          {this.SiderRender(siderRouter)}
         </Menu>
       </Sider>
     );

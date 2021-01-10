@@ -6,6 +6,7 @@ import {
   checkButtonAuth,
   authorized,
   codings,
+  getQuery,
 } from "@/utils";
 
 import { WeCheckbox, R_pagination } from "@/components";
@@ -15,20 +16,39 @@ const { add, del, edit } = authorized.announcement;
 const { art: coding } = codings[mod];
 
 class Comment extends React.Component {
+  state = {
+    params: {},
+  };
+
   componentDidMount() {
+    const mod = window.location.pathname.split("/")[2] || "";
+
+    this.setState(
+      {
+        params: getQuery(),
+        coding: codings[mod],
+      },
+      () => {
+        this.getData();
+      }
+    );
+  }
+
+  getData = () => {
     this.props.dispatch.select({
       api: "comment",
       data: {
         page: 0,
         pagesize: 25,
         coding,
+        fid: this.state.params.fid || "",
       },
       node: "comment",
     });
-  }
+  };
 
   render() {
-    const { module } = this.props;
+    const { comment } = this.props.module;
 
     return (
       <>
@@ -44,8 +64,8 @@ class Comment extends React.Component {
               <td class="col-md-1">时间</td>
               <td class="col-md-1">操作</td>
             </tr>
-            {module.comment &&
-              module.comment.map((item, index) => (
+            {comment &&
+              comment.map((item, index) => (
                 <tr className="tr-list">
                   <td>
                     <WeCheckbox

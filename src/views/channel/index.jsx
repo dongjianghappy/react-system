@@ -1,18 +1,37 @@
 import React from "react";
-import { List, Typography, Avatar, Statistic, Card, Row, Col } from "antd";
-import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
-import { checkButtonAuth, authorized, codings } from "@/utils";
-import { Confirm, WeCheckbox, WeDrawer } from "@/components";
+import {
+  List,
+  Typography,
+  Avatar,
+  Statistic,
+  Card,
+  Row,
+  Col,
+  Tooltip,
+} from "antd";
+import {
+  connect,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+  getQuery,
+} from "@/utils";
+
 import ChartistGraph from "react-chartist";
 
-export default class Domain extends React.Component {
+class Default extends React.Component {
+  state = {
+    dataSource: {},
+  };
   data = {
     labels: ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8", "W9", "W10"],
     series: [
       [1, 2, 4, 8, 6, -2, -1, -4, -6, -2],
-      [1, 2, 4, 8, 9, -2, -1, -4, -6, -2],
+      [1, 2, 4, 8, 9, -2, -1, 0, 2, 5],
+      [1, 2, 4, 1, 2, -2, -1, 0, 2, 5],
     ],
-    colors: ["#0f0", "#00f"],
+    colors: ["#0f0", "#3f8600", "#000"],
   };
 
   options = {
@@ -27,80 +46,71 @@ export default class Domain extends React.Component {
     // }
   };
 
+  componentDidMount() {
+    const mod = window.location.pathname.split("/")[2] || "";
+    const coding = codings[mod];
+
+    this.props.dispatch
+      .fetch({
+        api: "channelDefault",
+        data: {
+          coding: coding.art,
+        },
+      })
+      .then((res) => {
+        this.setState({
+          dataSource: res.result,
+        });
+      });
+  }
+
   type = "Line";
 
   render() {
+    const {
+      list,
+      visit = 0,
+      praise = 0,
+      comment = 0,
+      download = 0,
+    } = this.state.dataSource;
+
     return (
       <div className="site-statistic-demo-card">
         <Row gutter={16}>
           <Col span={6}>
             <Card>
-              <Row>
-                <Col span={8}>
-                  <Statistic
-                    title="用户量"
-                    value={12}
-                    valueStyle={{ color: "#3f8600" }}
-                  />
-                </Col>
-                <Col span={8}>
-                  <Statistic
-                    title="昨日新增"
-                    value={34}
-                    valueStyle={{ color: "#3f8600" }}
-                  />
-                </Col>
-                <Col span={8}>
-                  <Statistic
-                    title="今日新增"
-                    value={45}
-                    valueStyle={{ color: "#3f8600" }}
-                  />
-                </Col>
-              </Row>
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card>
-              <Row>
-                <Col span={12}>
-                  <Statistic
-                    title="今日登录"
-                    value={123}
-                    valueStyle={{ color: "#cf1322" }}
-                  />
-                </Col>
-                <Col span={12}>
-                  <Statistic
-                    title="当前在线"
-                    value={123}
-                    valueStyle={{ color: "#3f8600" }}
-                  />
-                </Col>
-              </Row>
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card>
               <Statistic
-                title="普通会员"
-                value={9.3}
-                precision={2}
+                title="今日访问"
+                value={`${visit}人次`}
                 valueStyle={{ color: "#cf1322" }}
-                prefix={<ArrowDownOutlined />}
-                suffix="%"
               />
             </Card>
           </Col>
           <Col span={6}>
             <Card>
               <Statistic
-                title="高级会员"
-                value={11.28}
-                precision={2}
+                title="今日点赞"
+                value={`${praise}人次`}
+                valueStyle={{ color: "#cf1322" }}
+              />
+            </Card>
+          </Col>
+          <Col span={6}>
+            <Card>
+              <Statistic
+                title="今日评论"
+                value={`${comment}人次`}
+                valueStyle={{ color: "#cf1322" }}
+              />
+            </Card>
+          </Col>
+          <Col span={6}>
+            <Card>
+              <Statistic
+                title="今日下载"
+                value={`${download}人次`}
                 valueStyle={{ color: "#3f8600" }}
-                prefix={<ArrowUpOutlined />}
-                suffix="%"
               />
             </Card>
           </Col>
@@ -115,26 +125,15 @@ export default class Domain extends React.Component {
             </Card>
           </Col>
           <Col span={6} style={{ marginTop: 15 }}>
-            <Card style={{ height: 250 }}>
-              <Statistic
-                title="天气"
-                value={9.3}
-                precision={2}
-                valueStyle={{ color: "#cf1322" }}
-                prefix={<ArrowDownOutlined />}
-                suffix="%"
-              />
-            </Card>
-
-            <Card style={{ marginTop: 15, height: 185 }}>
-              <Statistic
-                title="访客"
-                value={9.3}
-                precision={2}
-                valueStyle={{ color: "#cf1322" }}
-                prefix={<ArrowDownOutlined />}
-                suffix="%"
-              />
+            <Card style={{ height: 450 }} title="最近更新">
+              {list &&
+                list.map((item, index) => (
+                  <List.Item key={item.id} className="nowrap">
+                    <Tooltip title={`【${item.parent}】${item.title}`}>
+                      【{item.parent}】{item.title}
+                    </Tooltip>
+                  </List.Item>
+                ))}
             </Card>
           </Col>
         </Row>
@@ -142,3 +141,10 @@ export default class Domain extends React.Component {
     );
   }
 }
+
+export default connect(
+  (state) => ({
+    module: state.channel,
+  }),
+  dispatchToProps
+)(Default);

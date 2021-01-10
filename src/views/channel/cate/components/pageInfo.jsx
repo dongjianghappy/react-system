@@ -1,8 +1,8 @@
 import React from "react";
-import { Space, Card, Table, Checkbox, Button, Input, Form, Radio } from "antd";
+import { Input, Form } from "antd";
 import { Keyword } from "@/components";
 
-const Form1 = (props) => {
+const Page = (props) => {
   const { dataSource, callback } = props;
 
   return (
@@ -25,4 +25,4 @@ const Form1 = (props) => {
   );
 };
 
-export default Form1;
+export default Page;

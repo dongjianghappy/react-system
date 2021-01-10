@@ -1,31 +1,9 @@
 import React from "react";
-import {
-  Card,
-  Button,
-  Row,
-  Col,
-  Input,
-  Popover,
-  Progress,
-  Modal,
-  message,
-} from "antd";
-import {
-  EditOutlined,
-  EllipsisOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-import {
-  connect,
-  dispatchToProps,
-  checkButtonAuth,
-  authorized,
-  codings,
-} from "@/utils";
+import { Card, Row, Col, Input, Popover, Progress } from "antd";
+
+import { connect, dispatchToProps } from "@/utils";
 
 import "./tablelist.less";
-
-const { Meta } = Card;
 
 class Static extends React.Component {
   // 范围默认是是数据库中查询出来的
@@ -35,17 +13,6 @@ class Static extends React.Component {
     status: "进行中",
     bar: 0,
   };
-
-  // sorter = [
-  //   {
-  //     name: "递减",
-  //     value: "desc",
-  //   },
-  //   {
-  //     name: "递增",
-  //     value: "asc",
-  //   },
-  // ];
 
   sorter = {
     desc: "递减",
@@ -63,8 +30,6 @@ class Static extends React.Component {
         });
       });
   }
-
-  updatehandle = () => {};
 
   sort = (id, data) => {
     this.state.data.map((item) => {
@@ -115,7 +80,6 @@ class Static extends React.Component {
         },
       })
       .then((res) => {
-        debugger;
         this.setState(
           {
             status: res.result.status,
@@ -459,11 +423,18 @@ class Static extends React.Component {
       <>
         {this.state.visible ? <this.Infos /> : ""}
 
-        <Card title="静态生成">
-          <table width="100%" className="table-striped table-hover static-wrap">
+        <Card>
+          <div className="nav-title">静态生成</div>
+          <table
+            width="100%"
+            className="table-channel table-striped table-hover static-wrap"
+          >
             {data && data.map((item, i) => item.id === "0" && this.main(item))}
           </table>
-          <table width="100%" className="table-striped table-hover static-wrap">
+          <table
+            width="100%"
+            className="table-channel table-striped table-hover static-wrap"
+          >
             {data &&
               data.map((item, i) => item.id !== "0" && this.chanel(item))}
           </table>

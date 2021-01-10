@@ -1,11 +1,6 @@
 import React, { useState } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
 import { Layout } from "antd";
+import { BrowserRouter as Router } from "react-router-dom";
 
 import Toper from "./components/header";
 import Sidebar from "./components/sidebar";
@@ -16,11 +11,6 @@ const { Content } = Layout;
 
 const Index = (props) => {
   let sidebar = sessionStorage.getItem("sidebar") || "basic";
-  // let module = window.location.pathname.split("/")[2]
-  // if(module === ""){
-  //   sidebar = "basic"
-  // }
-
   const [screen, setScreen] = useState(false);
   const [routes, setRoutes] = useState(sidebar);
 
@@ -31,7 +21,6 @@ const Index = (props) => {
   const handleClick = (data) => {
     const routes = data;
     setRoutes(routes);
-    // sessionStorage.setItem("sidebar", routes)
   };
 
   return (

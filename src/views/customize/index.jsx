@@ -1,14 +1,6 @@
 import React from "react";
 import { Card } from "antd";
-import {
-  connect,
-  dispatchToProps,
-  checkButtonAuth,
-  authorized,
-  codings,
-} from "@/utils";
-
-import { Link } from "react-router-dom";
+import { connect, dispatchToProps, checkButtonAuth, authorized } from "@/utils";
 
 class Customize extends React.Component {
   componentDidMount() {
@@ -43,14 +35,15 @@ class Customize extends React.Component {
                   <td>{item.type}</td>
                   <td>{item.type}</td>
                   <td>
-                    <Link
-                      to={{
-                        pathname: "/admin/customize/list",
-                        state: { id: item.id },
-                      }}
+                    <span
+                      onClick={() =>
+                        this.props.history.push(
+                          `/admin/customize/list?id=${item.id}`
+                        )
+                      }
                     >
                       字段管理
-                    </Link>
+                    </span>
                   </td>
                 </tr>
               ))}

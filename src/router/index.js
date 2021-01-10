@@ -9,7 +9,7 @@ import Channel from '../views/channel/cate'
 import ChannelSetting from '../views/channel/setting'
 import List from '../views/channel/article/'
 import Recycle from '../views/channel/recycle'
-import Article from '../views/channel/article/article'
+import Article from '../views/channel/article/detail'
 import SettingChannel from '../views/channel/setting/channel'
 import Label from '../views/channel/setting/label'
 import Collect from '../views/channel/collect'
@@ -20,7 +20,6 @@ import Download from '../views/channel/download'
 // 基本组件
 import Default from '../views/layout/components/default'
 import Basic from '../views/basic'
-import TodoList from '../views/todolist'
 import Navigation from '../views/navigation'
 import NavigationMain from '../views/navigation/main'
 import Single from '../views/navigation/single'
@@ -31,12 +30,12 @@ import SlideshowList from '../views/slideshow/list'
 // 运营组件
 import Links from '../views/links'
 import Advertisement from '../views/advertisement'
-import AdvertisementLocation from '../views/advertisement/location'
 import Partner from '../views/partner'
 // 用户组件
-import User from '../views/user'
+// import User from '../views/user'
 import UserBasic from '../views/user/basic'
 // import UserPassword from '../views/user/basic/UserPassword'
+import UserDefault from '../views/user/default'
 import UserList from '../views/user/userinfo'
 import UserGrade from '../views/user/grade'
 import UserRole from '../views/user/role'
@@ -71,8 +70,8 @@ import Mysql from '../views/mysql'
 import Collection from '../views/collection'
 import collectionTemList from '../views/collection/tem-list'
 import CollectionList from '../views/collection/list'
+import CollectionRecycle from '../views/collection/recycle'
 import Tag from '../views/tag'
-import TagList from '../views/tag/list'
 import Order from '../views/order'
 import OrderDoing from '../views/order/order-doing'
 import OrderCompleted from '../views/order/order-completed'
@@ -83,9 +82,7 @@ import Service from '../views/service'
 import MessageBoard from '../views/service/messageBoard'
 import Feedback from '../views/service/feedback'
 import Announcement from '../views/service/announcement'
-import announcementArticle from '../views/service/announcement/article'
 import Job from '../views/service/job'
-import JobArticle from '../views/service/job/article'
 import Resume from '../views/service/job/resume'
 import Message from '../views/service/message/'
 import KnowledgeCate from '../views/service/knowledge/cate/index'
@@ -209,9 +206,10 @@ const arrss = {
     Domain,
     Engine,
     Ip,
-    User,
+    // User,
     UserBasic,
     // UserPassword,
+    UserDefault,
     UserList,
     UserGrade,
     UserRole,
@@ -226,9 +224,9 @@ const arrss = {
     Collection,
     collectionTemList,
     CollectionList,
+    CollectionRecycle,
     Mysql,
     Tag,
-    TagList,
     Order,
     OrderDoing,
     OrderCompleted,

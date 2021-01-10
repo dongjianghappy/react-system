@@ -8,7 +8,7 @@ const initState = {
     global: {
         data: {},
         search: {},
-        query: {},
+        params: {},
         drawer: {
             title: "标题",
             status: false,
@@ -98,7 +98,7 @@ const reducers = (state = initState, action) => {
 
         case GET_QUERY :
             newState = JSON.parse(JSON.stringify(state))
-            newState.global.query = action.value || {}
+            newState.global.params = action.value || {}
             return newState
             break            
         case INPUT_CHANGE :

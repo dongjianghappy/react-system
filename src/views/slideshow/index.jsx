@@ -2,29 +2,27 @@ import React from "react";
 import { Card, Row, Col } from "antd";
 import {
   connect,
-  Link,
   dispatchToProps,
   checkButtonAuth,
   authorized,
   codings,
 } from "@/utils";
-
-import Detail from "./components/detail";
 import { WeDrawer } from "@/components";
+import Detail from "./components/detail";
 
 const { add, edit } = authorized.slideshow.cate;
 const { cate: coding } = codings.slideshow;
 
-class Slideshow extends React.Component {
+class Index extends React.Component {
+  componentDidMount() {
+    this.getData();
+  }
+
   getData = () => {
     this.props.dispatch.select({
       api: "slideshow",
     });
   };
-
-  componentDidMount() {
-    this.getData();
-  }
 
   render() {
     const { list } = this.props.module;
@@ -54,17 +52,18 @@ class Slideshow extends React.Component {
                 <Card
                   style={{ margin: 10, padding: 10 }}
                   cover={
-                    <Link
-                      to={{
-                        pathname: "/admin/slideshow/list",
-                        state: { fid: item.id },
-                      }}
+                    <span
+                      onClick={() =>
+                        this.props.history.push(
+                          `/admin/slideshow/list?fid=${item.id}`
+                        )
+                      }
                     >
                       <img
                         alt="example"
                         src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
                       />
-                    </Link>
+                    </span>
                   }
                 >
                   {item.name}
@@ -88,10 +87,9 @@ class Slideshow extends React.Component {
   }
 }
 
-const stateToProops = (state) => {
-  return {
+export default connect(
+  (state) => ({
     module: state.slideshow,
-  };
-};
-
-export default connect(stateToProops, dispatchToProps)(Slideshow);
+  }),
+  dispatchToProps
+)(Index);

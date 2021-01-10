@@ -14,6 +14,10 @@ const { add, del, edit } = authorized.partner;
 const { message: coding } = codings.service;
 
 class ServiceMessage extends React.Component {
+  componentDidMount() {
+    this.getData();
+  }
+
   getData = () => {
     this.props.dispatch.select({
       data: {
@@ -24,10 +28,6 @@ class ServiceMessage extends React.Component {
       node: "message",
     });
   };
-
-  componentDidMount() {
-    this.getData();
-  }
 
   render() {
     const { message } = this.props.module;
