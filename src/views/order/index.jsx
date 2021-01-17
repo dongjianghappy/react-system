@@ -1,81 +1,103 @@
 import React from "react";
-import {
-  Card,
-  Table,
-  Space,
-  Popconfirm,
-  Button,
-  Checkbox,
-  Input,
-  DatePicker,
-} from "antd";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import {
-  Status,
-  Dialog,
-  Operatinavbar,
-  Condition,
-} from "../../components/index.js";
-import dispatchToProps from "../../store/dispatch";
-import { R_button } from "../../components/index.js";
-import { Option } from "../../common";
-const { Search } = Input;
-const { RangePicker } = DatePicker;
+import { List, Statistic, Card, Row, Col, Tooltip } from "antd";
+import { connect, dispatchToProps, codings } from "@/utils";
+import { Chart } from "@/components";
 
-class Tag extends React.Component {
+class Default extends React.Component {
   componentDidMount() {
-    this.props.select({
+    this.props.dispatch.select({
+      api: "channelDefault",
       data: {
-        page: 0,
-        pagesize: 100,
-        coding: "P0007",
+        coding: "123",
       },
+      node: "source.chart",
     });
   }
 
   render() {
-    const { list } = this.props.module;
+    const {
+      list,
+      visit = 0,
+      praise = 0,
+      comment = 0,
+      download = 0,
+      hours,
+    } = this.props.module["source"].chart;
+
     return (
-      <>
-        <Card title="新订单">
-          <table width="100%" className="table-striped table-hover col-left-23">
-            <tr class="th">
-              <td class="col-md-1">选择</td>
-              <td class="col-md-2">订单号</td>
-              <td class="col-md-4">订单名称</td>
-              <td class="col-md-1">类型</td>
-              <td class="col-md-2">价格(元/周期)</td>
-              <td class="col-md-1">下单日期</td>
-              <td class="col-md-1">操作</td>
-            </tr>
-            {list &&
-              list.map((item, index) => (
-                <tr>
-                  <td>
-                    <Checkbox></Checkbox>
-                  </td>
-                  <td>{item.number}</td>
-                  <td>{item.name}</td>
-                  <td>{item.price}</td>
-                  <td>{item.cycle}</td>
-                  <td>{item.start_time}</td>
-                  <td>处理订单</td>
-                </tr>
-              ))}
-          </table>
-        </Card>
-      </>
+      <div className="site-statistic-demo-card">
+        <Row gutter={16}>
+          <Col span={6}>
+            <Card>
+              <Statistic
+                title="累计访问"
+                value={`${visit}人次`}
+                valueStyle={{ color: "#cf1322" }}
+              />
+            </Card>
+          </Col>
+          <Col span={6}>
+            <Card>
+              <Statistic
+                title="累计点赞"
+                value={`${praise}人次`}
+                valueStyle={{ color: "#cf1322" }}
+              />
+            </Card>
+          </Col>
+          <Col span={6}>
+            <Card>
+              <Statistic
+                title="累计评论"
+                value={`${comment}人次`}
+                valueStyle={{ color: "#cf1322" }}
+              />
+            </Card>
+          </Col>
+          <Col span={6}>
+            <Card>
+              <Statistic
+                title="累计下载"
+                value={`${download}人次`}
+                valueStyle={{ color: "#3f8600" }}
+              />
+            </Card>
+          </Col>
+
+          <Col span={18} style={{ marginTop: 15 }}>
+            <Card title="今日与昨日访问量">
+              <Chart.Line
+                title={["今日浏览量", "昨日浏览量"]}
+                height={285}
+                label={(hours && hours.label) || []}
+                dataSource={[
+                  (hours && hours.value.today_visit) || [],
+                  (hours && hours.value.yestday_visit) || [],
+                ]}
+              />
+            </Card>
+          </Col>
+          <Col span={6} style={{ marginTop: 15 }}>
+            <Card style={{ height: 450 }} title="最近更新">
+              {list &&
+                list.map((item, index) => (
+                  <List.Item key={item.id} className="nowrap">
+                    <Tooltip title={`【${item.parent}】${item.title}`}>
+                      【{item.parent}】{item.title}
+                    </Tooltip>
+                  </List.Item>
+                ))}
+            </Card>
+          </Col>
+        </Row>
+      </div>
     );
   }
 }
 
-const stateToProops = (state) => {
-  return {
-    global: state.common.global,
-    state,
-    module: state.order,
-  };
-};
-
-export default connect(stateToProops, dispatchToProps)(Tag);
+export default connect(
+  (state) => ({
+    module: state.channel,
+  }),
+  dispatchToProps
+)(Default);

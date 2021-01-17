@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Space, Button, Popover } from "antd";
-import { checkButtonAuth, authorized, codings, date } from "@/utils";
+import { checkButtonAuth, authorized, codings, date, channel } from "@/utils";
 import {
   Confirm,
   WeCheckbox,
@@ -12,7 +12,9 @@ import {
 } from "@/components";
 import More from "./more";
 
-const mod = window.location.pathname.split("/")[2] || "";
+// const mod = window.location.pathname.split("/")[2] || "";
+debugger;
+const mod = channel().module || "";
 
 const { del, edit } = (authorized.channel[mod] &&
   authorized.channel[mod].art) || {
@@ -22,7 +24,7 @@ const { del, edit } = (authorized.channel[mod] &&
 
 const { art: coding, cate: catcoing } = codings[mod];
 const List = (props) => {
-  const { dataSource, callback } = props;
+  const { dataSource, callback, channel } = props;
 
   debugger;
   return (
@@ -113,7 +115,7 @@ const List = (props) => {
                       disabled={!checkButtonAuth(del)}
                       onClick={() =>
                         props.history.push(
-                          `/admin/article/detail?channel=2&id=${item.id}`
+                          `/admin/${channel.module}/detail?id=${item.id}`
                         )
                       }
                     >

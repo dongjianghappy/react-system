@@ -7,6 +7,7 @@ import {
   authorized,
   codings,
   getQuery,
+  channel,
 } from "@/utils";
 
 import { WeCheckbox, R_pagination } from "@/components";
@@ -21,12 +22,10 @@ class Collect extends React.Component {
   };
 
   componentDidMount() {
-    const mod = window.location.pathname.split("/")[2] || "";
-
     this.setState(
       {
         params: getQuery(),
-        coding: codings[mod],
+        coding: codings[this.props.channel.module],
       },
       () => {
         this.getData();
@@ -42,7 +41,7 @@ class Collect extends React.Component {
         pagesize: 25,
         coding,
       },
-      node: "collect",
+      node: `${this.props.channel.module}.collect`,
     });
   };
 
@@ -98,7 +97,8 @@ class Collect extends React.Component {
 
 export default connect(
   (state) => ({
-    module: state.channel,
+    module: state.channel[channel().module],
+    channel: channel(),
   }),
   dispatchToProps
 )(Collect);

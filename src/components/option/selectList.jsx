@@ -3,21 +3,21 @@ import { Row, Col, Popover } from "antd";
 import SelectOption from "./select";
 
 const Option = (props) => {
-  const { init, enumSource, flagList } = props; // 初始化数据
-  const [data, setData] = useState(init); // 当前数据
+  const { init, enumSource, flagList, hasReset } = props; // 初始化数据
+  const [dataList, setDataList] = useState(init); // 当前数据
 
   // 选择
   const callback = (parems) => {
     let obj = {};
-    data.map((item) => {
+    dataList.map((item) => {
       if (item.field === parems.field) {
         item.name = parems.name;
         item.value = parems.value;
       }
       obj[item.field] = item.value;
     });
-    setData([...data]);
-    props.renderList(obj);
+    setDataList([...dataList]);
+    props.renderList && props.renderList(obj);
   };
 
   // 重置
@@ -26,14 +26,15 @@ const Option = (props) => {
     init.map((item) => {
       obj[item.field] = item.value;
     });
-    setData([...init]);
-    props.renderList(obj);
+    setDataList([...init]);
+    // props.data 为初始化参数，比如分页
+    props.renderList && props.renderList({ ...obj, ...props.data });
   };
 
   return (
     <>
-      {data &&
-        data.map((item) => (
+      {dataList &&
+        dataList.map((item) => (
           <SelectOption
             title={item.title}
             field={item.field}
@@ -42,12 +43,16 @@ const Option = (props) => {
             callback={callback}
           />
         ))}
-      <span
-        onClick={onReset}
-        style={{ padding: "8px 12px", background: "#1890ff", color: "#fff" }}
-      >
-        重置
-      </span>
+      {hasReset !== false ? (
+        <span
+          onClick={onReset}
+          style={{ padding: "8px 12px", background: "#1890ff", color: "#fff" }}
+        >
+          重置
+        </span>
+      ) : (
+        ""
+      )}
     </>
   );
 };

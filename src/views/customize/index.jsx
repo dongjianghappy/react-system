@@ -17,23 +17,19 @@ class Customize extends React.Component {
         <Card title="内容模型管理">
           <table width="100%" class="table-striped artlist col-left-1">
             <tr class="th">
-              <td class="col-md-3">频道名称</td>
-              <td class="col-md-1">频道ID</td>
+              <td class="col-md-3 pl25">频道名称</td>
+              <td class="col-md-2">频道ID</td>
               <td class="col-md-1">识别id</td>
-              <td class="col-md-2">附加表</td>
-              <td class="col-md-1">状态</td>
-              <td class="col-md-2">模型</td>
+              <td class="col-md-3">附加表</td>
               <td class="col-md-2">操作</td>
             </tr>
             {modelList &&
               modelList.map((item, index) => (
                 <tr>
-                  <td>{item.name}</td>
+                  <td className="pl25">{item.name}</td>
                   <td>{item.id}</td>
                   <td>{item.module}</td>
-                  <td>{item.source}</td>
-                  <td>{item.type}</td>
-                  <td>{item.type}</td>
+                  <td>{`addon_${item.module}`}</td>
                   <td>
                     <span
                       onClick={() =>

@@ -17,8 +17,7 @@ import {
   codings,
   getQuery,
 } from "@/utils";
-
-import ChartistGraph from "react-chartist";
+import { Chart } from "@/components";
 
 class Default extends React.Component {
   state = {
@@ -72,8 +71,8 @@ class Default extends React.Component {
       user = 0,
       ordinary_member = 0,
       senior_member = 0,
-      yes_register = 0,
-      today_register = 0,
+      week,
+      year,
     } = this.state.dataSource;
 
     return (
@@ -81,25 +80,25 @@ class Default extends React.Component {
         <Row gutter={16}>
           <Col span={6}>
             <Card>
-              <Row>
+              <Row className="align_center">
                 <Col span={8}>
                   <Statistic
                     title="用户量"
-                    value={user}
+                    value={user.total}
                     valueStyle={{ color: "#3f8600" }}
                   />
                 </Col>
                 <Col span={8}>
                   <Statistic
                     title="昨日新增"
-                    value={yes_register}
+                    value={user.yesterday}
                     valueStyle={{ color: "#3f8600" }}
                   />
                 </Col>
                 <Col span={8}>
                   <Statistic
                     title="今日新增"
-                    value={today_register}
+                    value={user.today}
                     valueStyle={{ color: "#3f8600" }}
                   />
                 </Col>
@@ -146,30 +145,24 @@ class Default extends React.Component {
           </Col>
 
           <Col span={18} style={{ marginTop: 15 }}>
-            <Card style={{ height: 450 }}>
-              <ChartistGraph
-                data={this.data}
-                options={this.options}
-                type={this.type}
-              />
-            </Card>
+            <Chart.Year
+              title="2020年用户注册量"
+              type="Line"
+              className="graph-green"
+              // dataSource={[[0, 3, 2, 8, 0, 0, 1]]}
+              dataSource={[(year && year.register) || []]}
+            />
           </Col>
           <Col span={6} style={{ marginTop: 15 }}>
-            <Card style={{ height: 250 }}>
-              <Statistic
-                title="天气"
-                value={9.3}
-                valueStyle={{ color: "#cf1322" }}
+            <div>
+              <Chart.Week
+                title="一周注册量"
+                type="Bar"
+                height={250}
+                className="graph-red"
+                dataSource={[(week && week.register) || []]}
               />
-            </Card>
-
-            <Card style={{ marginTop: 15, height: 185 }}>
-              <Statistic
-                title="访客"
-                value={9.3}
-                valueStyle={{ color: "#cf1322" }}
-              />
-            </Card>
+            </div>
           </Col>
         </Row>
       </div>

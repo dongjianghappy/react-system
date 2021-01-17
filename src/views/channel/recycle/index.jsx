@@ -7,6 +7,7 @@ import {
   authorized,
   codings,
   datetime,
+  channel,
 } from "@/utils";
 import { Confirm, WeCheckbox } from "@/components";
 
@@ -24,6 +25,7 @@ class Recycle extends React.Component {
         pagesize: 10,
         coding,
       },
+      node: `${this.props.channel.module}.recycle`,
     });
   };
 
@@ -103,7 +105,8 @@ class Recycle extends React.Component {
 
 export default connect(
   (state) => ({
-    module: state.channel,
+    module: state.channel[channel().module],
+    channel: channel(),
   }),
   dispatchToProps
 )(Recycle);

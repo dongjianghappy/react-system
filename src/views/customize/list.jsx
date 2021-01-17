@@ -6,24 +6,36 @@ import {
   checkButtonAuth,
   authorized,
   codings,
+  getQuery,
 } from "@/utils";
 
-import { Confirm, WeDrawer } from "@/components";
+import { Confirm, WeDrawer, WeCheckbox, Status } from "@/components";
 import Detail from "./components/detail";
 
 const { add, del, edit } = authorized.customize;
 const { customize: coding } = codings;
 debugger;
 class CustomizeList extends React.Component {
+  state = {
+    params: {},
+  };
+
   componentDidMount() {
-    this.getData();
+    this.setState(
+      {
+        params: getQuery(),
+      },
+      () => {
+        this.getData();
+      }
+    );
   }
 
   getData = () => {
     this.props.dispatch.select({
       api: "anpassen_field",
       data: {
-        id: this.props.location.state.id,
+        id: this.state.params.id,
       },
       node: "fieldList",
     });
@@ -42,7 +54,7 @@ class CustomizeList extends React.Component {
                   title="新增字段"
                   name="新增字段"
                   api="add_anpassen"
-                  data={{ channel_id: this.props.location.state.id }}
+                  data={{ channel_id: this.state.params.id }}
                   renderList={this.getData}
                   authorized={checkButtonAuth(add)}
                   {...this.props}
@@ -55,27 +67,28 @@ class CustomizeList extends React.Component {
         >
           <table width="100%" class="table-striped artlist col-left-1">
             <tr class="th">
-              <td class="col-md-3">注释</td>
+              <td class="col-md-2 pl25">注释</td>
               <td class="col-md-1">字段名</td>
               <td class="col-md-1">数据类型</td>
-              <td class="col-md-2">长度</td>
+              <td class="col-md-1">长度</td>
               <td class="col-md-1">显示类型</td>
-              <td class="col-md-2">模型</td>
+              <td class="col-md-3">说明</td>
               <td class="col-md-2">操作</td>
             </tr>
             {fieldList &&
               fieldList.map((item, index) => (
                 <tr>
-                  <td>{item.remark}</td>
+                  <td className="pl25">{item.remark}</td>
                   <td>{item.field}</td>
                   <td>{item.dtype}</td>
                   <td>{item.length}</td>
                   <td>{item.text_type}</td>
-                  <td>{item.text_type}</td>
+                  <td>{item.explanation}</td>
                   <td>
                     <WeDrawer.Form
                       title="编辑字段"
                       name="编辑"
+                      isText={true}
                       action="edit"
                       api="update_anpassen"
                       data={{
@@ -89,6 +102,7 @@ class CustomizeList extends React.Component {
                     >
                       <Detail />
                     </WeDrawer.Form>
+                    <span className="line">|</span>
                     <Confirm
                       name="删除"
                       config={{

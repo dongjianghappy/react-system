@@ -9,14 +9,69 @@ import commonReducers from './commonReduce'
 
 const initState = {
     module: "channel",
-    cateList: [],
-    flags: [],
-    comment: [],
-    praise: [],
-    collect: [],
-    download: [],
-    label: [],
-    ...initListState
+    article: {
+        chart: {},
+        cateList: [],
+        list: [],
+        flags: [],
+        comment: [],
+        praise: [],
+        collect: [],
+        label: [],
+        recycle: [],
+        ...initListState
+    },
+    tech: {
+        chart: {},
+        cateList: [],
+        list: [],
+        flags: [],
+        comment: [],
+        praise: [],
+        collect: [],
+        label: [],
+        recycle: [],
+        ...initListState
+    },
+    source: {
+        chart: {},
+        cateList: [],
+        list: [],
+        flags: [],
+        comment: [],
+        praise: [],
+        collect: [],
+        download: [],
+        label: [],
+        recycle: [],
+        ...initListState
+    },
+    picture: {
+        chart: {},
+        cateList: [],
+        list: [],
+        flags: [],
+        comment: [],
+        praise: [],
+        collect: [],
+        download: [],
+        label: [],
+        recycle: [],
+        ...initListState
+    },
+    notes: {
+        chart: {},
+        cateList: [],
+        list: [],
+        flags: [],
+        comment: [],
+        praise: [],
+        collect: [],
+        label: [],
+        recycle: [],
+        ...initListState
+    },
+
 }
 
 

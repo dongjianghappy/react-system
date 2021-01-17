@@ -18,6 +18,10 @@ import {
    userINfoAction,
    rightMenuAction,
    inputChangeAction,
+   expandAction,
+   expandAllAction,
+   onMoveAction,
+   updateSaveAction
 } from '../actions'
 
 import {
@@ -223,11 +227,7 @@ const dispatchToProps = (dispatch) => {
         
         const action = selectAction({
           node: "flags",
-          data: {
-            coding: "K0000",
-            channel_id: 0,
-            type: "art"
-          },
+          data: params,
           api: "getFlag"
         })
         dispatch(action)
@@ -262,7 +262,39 @@ const dispatchToProps = (dispatch) => {
       setParams(params) {
         const action = getQueryAction(params)
         dispatch(action)
-      },      
+      },   
+      
+      // 单个展开收缩
+      expand(params) {
+        const action = expandAction({
+          data: params
+        })
+        dispatch(action)
+      },
+
+      // 所有展开收缩
+      expandAll(params) {
+        const action = expandAllAction({
+          data: params
+        })
+        dispatch(action)
+      },
+
+      // 移动
+      onMove(params) {
+        const action = onMoveAction({
+          data: params
+        })
+        dispatch(action)
+      },
+
+      // 更新保存
+      updateSave(params) {
+        const action = updateSaveAction({
+          data: params
+        })
+        dispatch(action)
+      },
     }
     }
 }

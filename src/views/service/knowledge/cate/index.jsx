@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Space, Button, Checkbox, Switch } from "antd";
+import { Card, Space, Button, Checkbox, Switch, message } from "antd";
 import {
   connect,
   withRouter,
@@ -33,6 +33,7 @@ class Index extends React.Component {
 
   getData = () => {
     this.props.dispatch.select({
+      api: "cateList",
       data: {
         page: 0,
         pagesize: 15,
@@ -42,8 +43,43 @@ class Index extends React.Component {
     });
   };
 
+  // 保存
+  save = () => {
+    const form = [];
+    const loop = (data) => {
+      return data.map((item, index) => {
+        item.sort = 1 + index;
+        form.push({
+          id: item.id,
+          sort: item.sort,
+          isshow: item.isshow,
+        });
+        if (item.list) {
+          loop(item.list);
+        }
+      });
+    };
+
+    loop(this.props.module.cateList);
+
+    this.props.dispatch
+      .fetch({
+        api: "updateSave",
+        data: {
+          coding: this.state.coding.cate,
+          data: JSON.stringify(form),
+        },
+      })
+      .then((res) => {
+        message.info("编辑成功");
+      });
+  };
+
   render() {
-    const { module } = this.props;
+    const {
+      module: { cateList },
+      dispatch: { onMove, expand, expandAll },
+    } = this.props;
     const { cate: coding } = this.state.coding;
     return (
       <>
@@ -51,32 +87,38 @@ class Index extends React.Component {
           title="知识分类"
           extra={
             checkButtonAuth("add") && (
-              <WeDrawer.Form
-                name="新增分类"
-                icon="add"
-                data={{ coding }}
-                renderList={this.getData}
-                authorized={checkButtonAuth("add")}
-                {...this.props}
-              >
-                <Detail />
-              </WeDrawer.Form>
+              <>
+                <WeDrawer.Form
+                  name="新增分类"
+                  icon="add"
+                  data={{ coding }}
+                  renderList={this.getData}
+                  authorized={checkButtonAuth("add")}
+                  {...this.props}
+                >
+                  <Detail />
+                </WeDrawer.Form>
+                <Button onClick={() => expandAll({ node: "cateList" })}>
+                  全部展开
+                </Button>
+                <Button onClick={() => this.save()}>保存</Button>
+              </>
             )
           }
         >
           <table
             width="100%"
-            className="table-striped table-condensed table-hover category  col-left-3"
+            className="table-striped table-condensed table-hover category table-cate col-left-2"
           >
             <tr className="th">
               <td className="col-md-1">选择</td>
-              <td className="col-md-1">顺序</td>
-              <td className="col-md-7">知识分类</td>
+              <td className="col-md-6">知识分类</td>
               <td className="col-md-1">状态</td>
+              <td className="col-md-2">移动</td>
               <td className="col-md-2">操作</td>
             </tr>
-            {module.cateList &&
-              module.cateList.map((item, index) => (
+            {cateList &&
+              cateList.map((item, index) => (
                 <>
                   <tr className="slide-nav tr-list">
                     <td>
@@ -86,15 +128,14 @@ class Index extends React.Component {
                       ></WeCheckbox>
                     </td>
                     <td>
-                      <Quick
-                        title={item.sort}
-                        data={{ id: item.id, field: "sort", coding }}
-                        authorized={checkButtonAuth("edit")}
-                        {...this.props}
-                      />
-                    </td>
-                    <td>
-                      <i className="iconfont icon-jianhao iconslide"></i>
+                      <i
+                        className={`iconfont icon-${
+                          item.isshow ? "jianhao" : "anonymous-iconfont"
+                        } iconslide`}
+                        onClick={() =>
+                          expand({ node: "cateList", id: item.id })
+                        }
+                      ></i>
                       <Quick
                         title={item.name}
                         data={{ id: item.id, field: "name", coding }}
@@ -121,6 +162,37 @@ class Index extends React.Component {
                         authorized={checkButtonAuth("edit")}
                         {...this.props}
                       />
+                    </td>
+                    <td>
+                      <Button
+                        onClick={() =>
+                          onMove({
+                            direction: "up",
+                            obj: cateList,
+                            moveItem: item,
+                            index,
+                            node: "cateList",
+                          })
+                        }
+                        className="deg180 move-button"
+                        style={{ width: 60, height: 60 }}
+                      >
+                        <i className="iconfont icon-arrow1 moving"></i>
+                      </Button>
+                      <Button
+                        onClick={() =>
+                          onMove({
+                            direction: "down",
+                            obj: cateList,
+                            moveItem: item,
+                            index,
+                            node: "cateList",
+                          })
+                        }
+                        className="move-button"
+                      >
+                        <i className="iconfont icon-arrow1"></i>
+                      </Button>
                     </td>
                     <td>
                       <Space>
@@ -174,97 +246,112 @@ class Index extends React.Component {
                       </Space>
                     </td>
                   </tr>
-                  <tr className="slide-nav-list">
-                    <td colspan="8" className="p0">
-                      {item.list &&
-                        item.list.map((item, i) => (
-                          <table
-                            width="100%"
-                            className="table-bordered table-condensed table-hover category color-cate"
-                          >
-                            <tr class="tr-list">
-                              <td className="col-md-1">
-                                <WeCheckbox
-                                  data={{ id: item.id }}
-                                  {...this.props}
-                                ></WeCheckbox>
-                              </td>
-                              <td className="col-md-1">
-                                <Quick
-                                  title={item.sort}
-                                  data={{
-                                    id: item.id,
-                                    field: "sort",
-                                    coding,
-                                  }}
-                                  authorized={checkButtonAuth("edit")}
-                                  {...this.props}
-                                />
-                              </td>
-                              <td className="col-md-7">
-                                <i className="cate-two"></i>
-                                <i className="iconfont icon-jianhao iconslide"></i>
-                                <Quick
-                                  title={item.name}
-                                  data={{
-                                    id: item.id,
-                                    field: "name",
-                                    coding,
-                                  }}
-                                  authorized={checkButtonAuth("edit")}
-                                  width="50%"
-                                  {...this.props}
-                                />
-                                <WeDrawer.Form
-                                  isText={true}
-                                  title="新增页面"
-                                  icon="add"
-                                  data={{ fid: item.id }}
-                                  action="add"
-                                  coding={coding}
-                                  renderList={this.getData}
-                                  {...this.props}
-                                >
-                                  <Detail />
-                                </WeDrawer.Form>
-                              </td>
-                              <td className="col-md-1">
-                                <Status
-                                  data={{ item, field: "status", coding }}
-                                  authorized={checkButtonAuth("edit")}
-                                  {...this.props}
-                                />
-                              </td>
-                              <td className="col-md-2">
-                                <Space>
-                                  <WeDrawer.Form
-                                    isText={true}
-                                    name="编辑"
-                                    title="编辑分类"
-                                    id={item.id}
-                                    renderList={this.getData}
-                                    coding={coding}
+                  {item.list && item.isshow ? (
+                    <tr className="slide-nav-list">
+                      <td colspan="8" className="p0">
+                        {item.list &&
+                          item.list.map((aaa, i) => (
+                            <table
+                              width="100%"
+                              className="table-bordered table-condensed table-hover category color-cate"
+                            >
+                              <tr class="tr-list">
+                                <td className="col-md-1">
+                                  <WeCheckbox
+                                    data={{ id: aaa.id }}
                                     {...this.props}
-                                  >
-                                    <Detail />
-                                  </WeDrawer.Form>
-                                  <Confirm
-                                    name="删除"
-                                    type="text"
-                                    config={React.$modalEnum.delete.cate}
-                                    coding={coding}
-                                    data={{ id: item.id }}
-                                    fetch={this.props.fetch}
-                                    api="delete"
-                                    renderList={this.getData}
+                                  ></WeCheckbox>
+                                </td>
+                                <td className="col-md-6">
+                                  <i className="cate-two"></i>
+                                  <Quick
+                                    title={aaa.name}
+                                    data={{
+                                      id: aaa.id,
+                                      field: "name",
+                                      coding,
+                                    }}
+                                    authorized={checkButtonAuth("edit")}
+                                    width="50%"
+                                    {...this.props}
                                   />
-                                </Space>
-                              </td>
-                            </tr>
-                          </table>
-                        ))}
-                    </td>
-                  </tr>
+                                </td>
+                                <td className="col-md-1">
+                                  <Status
+                                    data={{
+                                      item: aaa,
+                                      field: "status",
+                                      coding,
+                                    }}
+                                    authorized={checkButtonAuth("edit")}
+                                    {...this.props}
+                                  />
+                                </td>
+                                <td class="col-md-2">
+                                  <Button
+                                    onClick={() =>
+                                      onMove({
+                                        direction: "up",
+                                        obj: item.list,
+                                        moveItem: aaa,
+                                        index: i,
+                                        parantId: item.id,
+                                        node: "cateList",
+                                      })
+                                    }
+                                    className="deg180 move-button"
+                                  >
+                                    <i className="iconfont icon-arrow1 moving"></i>
+                                  </Button>
+                                  <Button
+                                    onClick={() =>
+                                      onMove({
+                                        direction: "down",
+                                        obj: item.list,
+                                        parantId: item.id,
+                                        moveItem: aaa,
+                                        index: i,
+                                        node: "cateList",
+                                      })
+                                    }
+                                    className="move-button"
+                                  >
+                                    <i className="iconfont icon-arrow1"></i>
+                                  </Button>
+                                </td>
+                                <td className="col-md-2">
+                                  <Space>
+                                    <WeDrawer.Form
+                                      isText={true}
+                                      name="编辑"
+                                      title="编辑分类"
+                                      id={aaa.id}
+                                      renderList={this.getData}
+                                      coding={coding}
+                                      {...this.props}
+                                    >
+                                      <Detail />
+                                    </WeDrawer.Form>
+                                    <Confirm
+                                      name="删除"
+                                      type="text"
+                                      config={React.$modalEnum.delete.cate}
+                                      coding={coding}
+                                      data={{ id: aaa.id }}
+                                      fetch={this.props.fetch}
+                                      api="delete"
+                                      renderList={this.getData}
+                                    />
+                                  </Space>
+                                </td>
+                              </tr>
+                            </table>
+                          ))}
+                      </td>
+                    </tr>
+                  ) : (
+                    ""
+                  )}
                 </>
               ))}
           </table>

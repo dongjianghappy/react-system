@@ -14,7 +14,7 @@ const Detail = (props) => {
         <Input />
       </Form.Item>
       <Form.Item label="数据类型" name="dtype">
-        <Radio.Group>
+        <Radio.Group defaultValue="VARCHAR">
           <Row>
             <Col span={12}>
               <Radio value="TEXT">文本保存HTML数据(TEXT)</Radio>
@@ -37,7 +37,7 @@ const Detail = (props) => {
         </Radio.Group>
       </Form.Item>
       <Form.Item label="显示类型" name="text_type">
-        <Select className="w150">
+        <Select className="w150" defaultValue="input">
           {React.$enums.formType.map((item) => (
             <Option value={item.value}>{item.name}</Option>
           ))}

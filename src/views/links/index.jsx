@@ -7,7 +7,7 @@ import {
   authorized,
   codings,
 } from "@/utils";
-import { WeDrawer, NavGroup } from "@/components";
+import { WeDrawer, NavGroup, WePagination } from "@/components";
 import { Option } from "@/common";
 import List from "./components/list";
 import Detail from "./components/detail";
@@ -59,9 +59,9 @@ class Index extends React.Component {
   getData = (data) => {
     this.props.dispatch.select({
       data: {
-        page: 0,
-        pagesize: 25,
         coding,
+        page: 0,
+        pagesize: 15,
         ...data,
       },
     });
@@ -93,6 +93,8 @@ class Index extends React.Component {
   };
 
   render() {
+    const { module } = this.props.module;
+
     return (
       <div>
         <NavGroup
@@ -147,6 +149,15 @@ class Index extends React.Component {
             </Card>
           </Nav>
         </NavGroup>
+        {/* <Operatinavbar
+          button={["all", "delete", "open", "close"]}
+          data={{ list: module.checkedList, coding }}
+          renderList={this.getData}
+          checkButtonAuth={checkButtonAuth}
+          authorized={authorized.partner}
+          {...this.props}
+        />
+        <WePagination module={module} renderList={this.getData} /> */}
       </div>
     );
   }

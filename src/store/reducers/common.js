@@ -1,4 +1,4 @@
-import { INPUT_CHANGE, INSERT, DELETE, UPDATE, GET_DETAIL, SEARCH_FIELD, GET_QUERY, DRAWER, DIALOG, ADD_ITEM, DELETE_ITEM, GET_DATA_ACTION, CHECK_CHANGE, OPEN_AND_CLOSE } from '../actionTypes'
+import { INPUT_CHANGE, INSERT, DELETE, UPDATE, GET_DETAIL, SEARCH_FIELD, GET_QUERY, DRAWER, DIALOG, ADD_ITEM, DELETE_ITEM, GET_DATA_ACTION } from '../actionTypes'
 
 import { initListState } from './commonState'
 
@@ -127,43 +127,6 @@ const reducers = (state = initState, action) => {
             return newState
             break
 
-        // case CHECK_CHANGE :
-        //     newState = JSON.parse(JSON.stringify(state))
-        //     debugger
-        //     if(action.data.checked){
-        //         if(action.data.type === "single"){
-        //             newState.global.checkedList.push(action.data.value)
-        //         }else{
-        //             newState.global.checkedList = action.data.value
-        //         }
-                
-        //     }else{
-        //         newState.global.checkedList.map((item, index) => {
-        //             if(action.data.type === "single"){
-        //                 if(item.id === action.data.value.id){
-        //                     newState.global.checkedList.splice(index, 1)
-        //                 }
-        //             }else{
-        //                 newState.global.checkedList = []
-        //             }
-                    
-        //         })
-        //     }
-        //     return newState
-        //     break
-
-
-
-
-        
-        // 查询列表
-        // case SELECT_LIST :
-        //     newState = JSON.parse(JSON.stringify(state))
-
-            
-        //     return newState
-        //     break
-            
         default :
             return state
 

@@ -1,32 +1,35 @@
-import React from 'react'
-import { Pagination } from 'antd';
+import React from "react";
+import { Pagination } from "antd";
 
-const R_pagination = (props) => {
+const WePagination = (props) => {
+  const { module, renderList, dispatch } = props;
 
-    const { module, dispatch } = props
+  const onChange = (pageNumber, page) => {
+    renderList &&
+      renderList({
+        page: pageNumber,
+        pagesize: page,
+      });
+    // dispatch.select({
+    //   api: props.api,
+    //   data: {
+    //     page: pageNumber,
+    //     pagesize: page,
+    //     ...props.data,
+    //   },
+    // });
+  };
 
-    const onChange = (pageNumber, page) => {
-        dispatch.select({
-            api: props.api,
-            data: {
-              page: pageNumber,
-              pagesize: page,
-              ...props.data
+  return (
+    <Pagination
+      showQuickJumper
+      pagesize={15}
+      total={module.total}
+      onChange={onChange}
+      locale={{ jump_to: "跳至" }}
+      style={{ marginTop: 25 }}
+    />
+  );
+};
 
-            }            
-        })
-    }
-
-    return (
-        <Pagination 
-            showQuickJumper
-            pagesize={15}
-            total={module.total}
-            onChange={onChange}
-            locale={{jump_to:"跳至"}}
-            style={{marginTop: 25}}
-         />
-    )
-}
-
-export default R_pagination
+export default WePagination;

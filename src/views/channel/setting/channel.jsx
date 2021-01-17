@@ -1,42 +1,8 @@
 import React from "react";
-import {
-  Card,
-  Row,
-  Col,
-  Space,
-  Button,
-  Form,
-  Input,
-  Radio,
-  Checkbox,
-  message,
-} from "antd";
-import {
-  connect,
-  dispatchToProps,
-  checkButtonAuth,
-  authorized,
-  codings,
-} from "@/utils";
+import { Card, Button, Form, Input, Radio, message } from "antd";
+import { connect, dispatchToProps, channel } from "@/utils";
 
-import {
-  Status,
-  WeCheckbox,
-  WeDrawer,
-  R_button,
-  ModalForm,
-  Condition,
-  Preview,
-  Keyword,
-} from "@/components";
-import {
-  Node,
-  Navbar,
-  ButtonGroup,
-  Option,
-  OptionSelect,
-  ModalGroup,
-} from "../../../common";
+import { Preview, Keyword } from "@/components";
 
 const layout = {
   labelCol: { span: 2 },
@@ -65,7 +31,7 @@ class Basic extends React.Component {
         api: "detail",
         data: {
           coding: "O0000",
-          id: 2,
+          id: this.props.channel.id,
         },
       })
       .then((res) => {
@@ -102,7 +68,7 @@ class Basic extends React.Component {
       .update({
         data: {
           coding: "O0000",
-          id: 2,
+          id: this.props.channel.id,
           ...values,
         },
       })
@@ -208,5 +174,5 @@ class Basic extends React.Component {
 }
 
 export default connect((state) => {
-  return {};
+  return { channel: channel() };
 }, dispatchToProps)(Basic);

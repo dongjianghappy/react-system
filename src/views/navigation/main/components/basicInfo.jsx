@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Input, Form, Radio, Select } from "antd";
 import { WeModal } from "@/components";
 import { CheckboxGroup } from "@/common";
@@ -7,6 +7,10 @@ const { Option } = Select;
 const Basic = (props) => {
   const { params, dataSource, callback, coding } = props;
   const { navType } = React.$enums;
+  const [navtype, setNavtype] = useState("");
+  useEffect(() => {
+    setNavtype("main");
+  }, []);
 
   return (
     <>
@@ -37,7 +41,7 @@ const Basic = (props) => {
         </Radio.Group>
       </Form.Item>
       <Form.Item label="类型" name="navtype">
-        <Select className="w150" defaultValue="main">
+        <Select key={navtype} className="w150" defaultValue={navtype}>
           {navType.map((item) => (
             <Option value={item.value}>{item.name}</Option>
           ))}

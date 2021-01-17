@@ -20,7 +20,12 @@ export default {
 	// 默认数据
 	userDefault(params){
 		return http.request('vue', 'userDefault', 'post', params)
-    },	     
+    },	   
+    
+	// 默认数据
+	defaultStatistics(params){
+		return http.request('vue', 'defaultStatistics', 'post', params)
+    },
     
     // 单个列表详情接口
     detail(params) {
@@ -88,6 +93,11 @@ export default {
     updateStatus(params) {
         return http.request('common', 'updateStatus', 'post', params)
     },
+
+    // 更新保存
+    updateSave(params) {
+        return http.request('common', 'updateSave', 'post', params)
+    },    
 
      // 用户查询
      userList(params) {

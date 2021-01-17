@@ -7,14 +7,16 @@ import {
   authorized,
   codings,
   getQuery,
+  channel,
 } from "@/utils";
 import { NavGroup } from "@/components";
+import { Operatinavbar } from "@/common";
 import List from "./components/list";
 import CheckedList from "./components/list_audit";
 import ReturnList from "./components/list_return";
 
 const { Nav } = NavGroup;
-
+debugger;
 const mod = window.location.pathname.split("/")[2] || "";
 
 const { add } = (authorized.channel[mod] && authorized.channel[mod].art) || {
@@ -38,6 +40,7 @@ class Index extends React.Component {
         pagesize: 15,
         ...params,
       },
+      node: `${this.props.channel.module}.list`,
     });
   };
 
@@ -47,13 +50,21 @@ class Index extends React.Component {
     this.setState(
       {
         params: getQuery(),
-        coding: codings[mod],
+        coding: codings[this.props.channel.module],
       },
       () => {
         this.getData({
           management_checked: 1,
         });
-        this.props.dispatch.getFlagAction();
+        this.props.dispatch.select({
+          api: "getFlag",
+          data: {
+            coding: this.state.coding.art,
+            channel_id: this.props.channel.id,
+            type: "art",
+          },
+          node: `${this.props.channel.module}.flags`,
+        });
       }
     );
   }
@@ -82,8 +93,7 @@ class Index extends React.Component {
   };
 
   render() {
-    const { module } = this.props;
-
+    const { module, channel } = this.props;
     return (
       <div>
         <NavGroup
@@ -93,7 +103,7 @@ class Index extends React.Component {
               <Button
                 type="primary"
                 onClick={() =>
-                  this.props.history.push(`/admin/${mod}/detail?channel=3}`)
+                  this.props.history.push(`/admin/${channel.module}/detail`)
                 }
                 authorized={checkButtonAuth(add)}
               >
@@ -131,6 +141,14 @@ class Index extends React.Component {
             </Card>
           </Nav>
         </NavGroup>
+        <Operatinavbar
+          {...this.props}
+          button={["all", "delete", "open", "close"]}
+          data={{ list: module.checkedList, coding: this.state.coding.art }}
+          renderList={this.props.renderList}
+          checkButtonAuth={checkButtonAuth}
+          authorized={authorized}
+        />
       </div>
     );
   }
@@ -138,7 +156,8 @@ class Index extends React.Component {
 
 export default connect(
   (state) => ({
-    module: state.channel,
+    module: state.channel[channel().module],
+    channel: channel(),
   }),
   dispatchToProps
 )(Index);

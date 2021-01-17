@@ -28,22 +28,20 @@ const { Option } = Select;
 const List = (props) => {
   return (
     <>
-      <table width="100%" class="table-striped table-hover col-left-23">
+      <table width="100%" class="table-striped table-hover col-left-2">
         <tr class="th">
-          <td class="col-md-2">浏览时间</td>
-          <td class="col-md-4">页面来源</td>
-          <td class="col-md-4">受访页面</td>
-          <td class="col-md-1">ip</td>
-          <td class="col-md-1">区域</td>
+          <td class="col-md-1">序号</td>
+          <td class="col-md-9">受访页面URL</td>
+          <td class="col-md-1">浏览次数</td>
+          <td class="col-md-1">占比</td>
         </tr>
-        {props.data &&
-          props.data.map((item, index) => (
+        {props.dataSource &&
+          props.dataSource.map((item, index) => (
             <tr>
-              <td>{item.name}</td>
-              <td>{item.cycle}</td>
-              <td>{item.integration}</td>
-              <td>{item.description}</td>
-              <td>{item.description}</td>
+              <td>{index + 1}</td>
+              <td>{item.url}</td>
+              <td>{item.nums}</td>
+              <td></td>
             </tr>
           ))}
       </table>

@@ -51,7 +51,7 @@ const UserList = (props) => {
                   ""
                 )}
               </td>
-              <td>{item.last_login_time}</td>
+              <td>{item.register_time}</td>
               <td>{item.online}</td>
               <td>
                 <Space size="middle">

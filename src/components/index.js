@@ -26,7 +26,7 @@ import SelectBox from './select'
 import WeCheckbox from './button/checkbox'
 import Quick from './form/Quick'
 import Editor from './editor'
-import R_pagination from './pagination'
+import WePagination from './pagination'
 import Search from './search'
 import TableList from './tableList'
 import Sorter from './sorter'
@@ -44,7 +44,7 @@ import Preview from './preview'
 import Order from './order'
 import SelectList from './option/selectList'
 import IconList from './iconList'
-
+import Chart from './chart'
 
 export  {
     Status,
@@ -72,7 +72,7 @@ export  {
     WeCheckbox,
     Quick,
     Editor,
-    R_pagination,
+    WePagination,
     Search,
     TableList,
     Sorter,
@@ -89,6 +89,7 @@ export  {
     Preview,
     Order,
     SelectList,
-    IconList
+    IconList,
+    Chart
 };
   

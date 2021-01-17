@@ -1,70 +1,24 @@
 import React from "react";
-import {
-  List,
-  Typography,
-  Avatar,
-  Statistic,
-  Card,
-  Row,
-  Col,
-  Tooltip,
-} from "antd";
-import {
-  connect,
-  dispatchToProps,
-  checkButtonAuth,
-  authorized,
-  codings,
-  getQuery,
-} from "@/utils";
-
-import ChartistGraph from "react-chartist";
+import { List, Statistic, Card, Row, Col, Tooltip } from "antd";
+import { connect, dispatchToProps, codings, channel } from "@/utils";
+import { Chart } from "@/components";
 
 class Default extends React.Component {
   state = {
     dataSource: {},
   };
-  data = {
-    labels: ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8", "W9", "W10"],
-    series: [
-      [1, 2, 4, 8, 6, -2, -1, -4, -6, -2],
-      [1, 2, 4, 8, 9, -2, -1, 0, 2, 5],
-      [1, 2, 4, 1, 2, -2, -1, 0, 2, 5],
-    ],
-    colors: ["#0f0", "#3f8600", "#000"],
-  };
-
-  options = {
-    width: "100%",
-    height: "400",
-    high: 10,
-    low: -10,
-    // axisX: {
-    //   labelInterpolationFnc: function(value, index) {
-    //     return index % 2 === 0 ? value : null;
-    //   }
-    // }
-  };
 
   componentDidMount() {
-    const mod = window.location.pathname.split("/")[2] || "";
-    const coding = codings[mod];
+    const coding = codings[this.props.channel.module];
 
-    this.props.dispatch
-      .fetch({
-        api: "channelDefault",
-        data: {
-          coding: coding.art,
-        },
-      })
-      .then((res) => {
-        this.setState({
-          dataSource: res.result,
-        });
-      });
+    this.props.dispatch.select({
+      api: "channelDefault",
+      data: {
+        coding: coding.art,
+      },
+      node: `${this.props.channel.module}.chart`,
+    });
   }
-
-  type = "Line";
 
   render() {
     const {
@@ -73,15 +27,16 @@ class Default extends React.Component {
       praise = 0,
       comment = 0,
       download = 0,
-    } = this.state.dataSource;
-
+      hours,
+    } = this.props.module.chart;
+    debugger;
     return (
       <div className="site-statistic-demo-card">
         <Row gutter={16}>
           <Col span={6}>
             <Card>
               <Statistic
-                title="今日访问"
+                title="累计访问"
                 value={`${visit}人次`}
                 valueStyle={{ color: "#cf1322" }}
               />
@@ -90,7 +45,7 @@ class Default extends React.Component {
           <Col span={6}>
             <Card>
               <Statistic
-                title="今日点赞"
+                title="累计点赞"
                 value={`${praise}人次`}
                 valueStyle={{ color: "#cf1322" }}
               />
@@ -99,7 +54,7 @@ class Default extends React.Component {
           <Col span={6}>
             <Card>
               <Statistic
-                title="今日评论"
+                title="累计评论"
                 value={`${comment}人次`}
                 valueStyle={{ color: "#cf1322" }}
               />
@@ -108,7 +63,7 @@ class Default extends React.Component {
           <Col span={6}>
             <Card>
               <Statistic
-                title="今日下载"
+                title="累计下载"
                 value={`${download}人次`}
                 valueStyle={{ color: "#3f8600" }}
               />
@@ -116,11 +71,15 @@ class Default extends React.Component {
           </Col>
 
           <Col span={18} style={{ marginTop: 15 }}>
-            <Card style={{ height: 450 }}>
-              <ChartistGraph
-                data={this.data}
-                options={this.options}
-                type={this.type}
+            <Card title="今日与昨日访问量">
+              <Chart.Line
+                title={["今日浏览量", "昨日浏览量"]}
+                height={285}
+                label={(hours && hours.label) || []}
+                dataSource={[
+                  (hours && hours.value.today_visit) || [],
+                  (hours && hours.value.yestday_visit) || [],
+                ]}
               />
             </Card>
           </Col>
@@ -144,7 +103,8 @@ class Default extends React.Component {
 
 export default connect(
   (state) => ({
-    module: state.channel,
+    module: state.channel[channel().module],
+    channel: channel(),
   }),
   dispatchToProps
 )(Default);

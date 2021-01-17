@@ -1,13 +1,12 @@
 import React from "react";
 import { List, Typography, Avatar, Statistic, Card, Row, Col } from "antd";
 import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
-import { connect } from "react-redux";
-import dispatchToProps from "../../../store/dispatch";
-import ChartistGraph from "react-chartist";
+import { connect, dispatchToProps } from "@/utils";
+import { Chart } from "@/components";
 
 class Default extends React.Component {
   componentDidMount() {
-    this.props.getDefault({
+    this.props.dispatch.getDefault({
       fid: this.props.match.params.fid,
     });
   }
@@ -15,34 +14,15 @@ class Default extends React.Component {
   render() {
     const {
       user = 0,
+      register,
       yes_register = 0,
       today_register = 0,
       order,
       article,
       tech,
-    } = this.props.initData.list;
-    var data = {
-      labels: ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8", "W9", "W10"],
-      series: [
-        [1, 2, 4, 8, 6, -2, -1, -4, -6, -2],
-        [1, 2, 4, 8, 9, -2, -1, -4, -6, -2],
-      ],
-      colors: ["#0f0", "#00f"],
-    };
-
-    var options = {
-      width: "100%",
-      height: "400",
-      high: 10,
-      low: -10,
-      // axisX: {
-      //   labelInterpolationFnc: function(value, index) {
-      //     return index % 2 === 0 ? value : null;
-      //   }
-      // }
-    };
-
-    var type = "Line";
+      hours = [],
+      week,
+    } = this.props.module.list;
 
     return (
       <div>
@@ -50,25 +30,25 @@ class Default extends React.Component {
           <Row gutter={16}>
             <Col span={6}>
               <Card>
-                <Row>
+                <Row className="align_center">
                   <Col span={8}>
                     <Statistic
                       title="用户总量"
-                      value={user}
+                      value={user.total}
                       valueStyle={{ color: "#3f8600" }}
                     />
                   </Col>
                   <Col span={8}>
                     <Statistic
                       title="昨日注册"
-                      value={yes_register}
+                      value={user.yesterday}
                       valueStyle={{ color: "#3f8600" }}
                     />
                   </Col>
                   <Col span={8}>
                     <Statistic
                       title="今日注册"
-                      value={today_register}
+                      value={user.today}
                       valueStyle={{ color: "#3f8600" }}
                     />
                   </Col>
@@ -120,32 +100,39 @@ class Default extends React.Component {
               </Card>
             </Col>
             <Col span={18} style={{ marginTop: 15 }}>
-              <Card style={{ height: 450 }}>
-                <ChartistGraph data={data} options={options} type={type} />
+              <Card title="今日与昨日访问量">
+                <Chart.Line
+                  title={["今日浏览量", "今日在线", "昨日浏览量", "昨日在线"]}
+                  height={366}
+                  label={(week && hours.label) || []}
+                  dataSource={[
+                    (week && hours.value.today_visit) || [],
+                    (week && hours.value.today_online) || [],
+                    (week && hours.value.yestday_visit) || [],
+                    (week && hours.value.yestday_online) || [],
+                  ]}
+                />
               </Card>
             </Col>
             <Col span={6} style={{ marginTop: 15 }}>
-              <Card style={{ height: 250 }}>
-                <Statistic
-                  title="天气"
-                  value={9.3}
-                  precision={2}
-                  valueStyle={{ color: "#cf1322" }}
-                  prefix={<ArrowDownOutlined />}
-                  suffix="%"
+              <div>
+                <Chart.Line
+                  title={["最近7天IP量"]}
+                  height="225"
+                  className="graph-green"
+                  label={(week && week.label) || []}
+                  dataSource={[(week && week.value.visit) || []]}
                 />
-              </Card>
+              </div>
 
-              <Card style={{ marginTop: 15, height: 185 }}>
-                <Statistic
-                  title="访客"
-                  value={9.3}
-                  precision={2}
-                  valueStyle={{ color: "#cf1322" }}
-                  prefix={<ArrowDownOutlined />}
-                  suffix="%"
+              <div style={{ marginTop: 15, height: 200 }}>
+                <Chart.Week
+                  title="一周注册量"
+                  type="Bar"
+                  className="graph-red"
+                  dataSource={[(week && week.value.register) || []]}
                 />
-              </Card>
+              </div>
             </Col>
 
             <Col span={12} style={{ marginTop: 15 }}>
@@ -176,10 +163,9 @@ class Default extends React.Component {
   }
 }
 
-const stateToProops = (state) => {
-  return {
-    initData: state.initData,
-  };
-};
-
-export default connect(stateToProops, dispatchToProps)(Default);
+export default connect(
+  (state) => ({
+    module: state.initData,
+  }),
+  dispatchToProps
+)(Default);

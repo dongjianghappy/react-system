@@ -36,6 +36,15 @@ const codings = {
 		praise: "C0004",
 		collect: "C0005",
 	},
+	notes: {
+		name: "notes",
+		art: "A110000",
+		info: "A110001",
+		cate: "A110002",
+		comment: "A110003",
+		praise: "A110004",
+		collect: "A110005",
+	},
 	music: {
 		name: "music",
 		art: "E0000",
@@ -87,6 +96,7 @@ const codings = {
 	// 	link: "P0003",
 	// 	order: "P0007"
 	// },
+	order: "",
 	basic: "P0000",
 	service: {
 		message: "Q0006",
@@ -151,6 +161,7 @@ const codings = {
 		security: "U0009",
 		theme: "M10001"
 	},
+	statistics: "",
 	space: "",
 	static: "",
 	single:""

@@ -11,7 +11,7 @@ import {
 import { Confirm, WeCheckbox, WeDrawer, AsideGroup } from "@/components";
 import Channel from "./channel";
 import SetButton from "./setButton";
-import Label from "./label";
+import Label from "../label";
 
 const { Nav } = AsideGroup;
 const { add, del, edit } = authorized.partner;
@@ -40,11 +40,6 @@ class Index extends React.Component {
       case "2":
         this.getData({
           level: 0,
-        });
-        break;
-      case "3":
-        this.getData({
-          level: 1,
         });
         break;
       case "4":

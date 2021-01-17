@@ -46,16 +46,7 @@ const Index = function (props) {
       </div>
       <div className="header-wrap">
         <div className="header-left">
-          <Row>
-            <Col>
-              <span
-                className="font20 cl-white"
-                onClick={() => props.onScreens()}
-              >
-                {props.screen ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              </span>
-            </Col>
-          </Row>
+          <Row></Row>
         </div>
         <div className="header-right">
           <Row>
@@ -96,9 +87,21 @@ const Index = function (props) {
               <Row>
                 <Col span="8">风格</Col>
                 <Col span="8">
-                  <a href="http://127.0.0.1" target="_blank">
+                  <a href="http://www.yunxi10.com" target="_blank">
                     首页
                   </a>
+                </Col>
+                <Col>
+                  <span
+                    className="font20 cl-white"
+                    onClick={() => props.onScreens()}
+                  >
+                    {props.screen ? (
+                      <MenuUnfoldOutlined />
+                    ) : (
+                      <MenuFoldOutlined />
+                    )}
+                  </span>
                 </Col>
               </Row>
             </Col>

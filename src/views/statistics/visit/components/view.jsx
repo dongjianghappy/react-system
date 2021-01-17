@@ -26,6 +26,8 @@ import { ButtonGroup, Keyword, CheckboxGroup } from "@/common";
 const { Option } = Select;
 
 const List = (props) => {
+  const { dataSource } = props;
+
   const visit = [
     {
       value: "today",
@@ -66,9 +68,18 @@ const List = (props) => {
           visit.map((item, index) => (
             <tr>
               <td>{item.name}</td>
-              <td>{props.data[item.value] && props.data[item.value].ip}</td>
-              <td>{props.data[item.value] && props.data[item.value].nip}</td>
-              <td>{props.data[item.value] && props.data[item.value].pv}</td>
+              <td>
+                {props.dataSource[item.value] &&
+                  props.dataSource[item.value].ip}
+              </td>
+              <td>
+                {props.dataSource[item.value] &&
+                  props.dataSource[item.value].nip}
+              </td>
+              <td>
+                {props.dataSource[item.value] &&
+                  props.dataSource[item.value].pv}
+              </td>
             </tr>
           ))}
       </table>

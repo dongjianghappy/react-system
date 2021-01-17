@@ -1,5 +1,5 @@
 import React from "react";
-import { Space, Card } from "antd";
+import { Space, Card, Button, message } from "antd";
 import {
   connect,
   dispatchToProps,
@@ -41,9 +41,42 @@ class Index extends React.Component {
     });
   };
 
+  // 保存
+  save = () => {
+    const form = [];
+    const loop = (data) => {
+      return data.map((item, index) => {
+        item.sort = 1 + index;
+        form.push({
+          id: item.id,
+          sort: item.sort,
+          isshow: item.isshow,
+        });
+        if (item.list) {
+          loop(item.list);
+        }
+      });
+    };
+
+    loop(this.props.module.main);
+
+    this.props.dispatch
+      .fetch({
+        api: "updateSave",
+        data: {
+          coding: coding,
+          data: JSON.stringify(form),
+        },
+      })
+      .then((res) => {
+        message.info("编辑成功");
+      });
+  };
+
   render() {
     const {
       module: { main, checkedList },
+      dispatch: { onMove, expand, expandAll },
     } = this.props;
 
     const { params } = this.state;
@@ -53,29 +86,35 @@ class Index extends React.Component {
           title={`${params.name}导航`}
           extra={
             checkButtonAuth(add) && (
-              <WeDrawer.Form
-                name="新增导航"
-                icon="add"
-                data={{ channel_id: params.channel, coding }}
-                renderList={this.getData}
-                authorized={checkButtonAuth(add)}
-                {...this.props}
-              >
-                <Detail />
-              </WeDrawer.Form>
+              <>
+                <WeDrawer.Form
+                  name="新增导航"
+                  icon="add"
+                  data={{ channel_id: params.channel, coding }}
+                  renderList={this.getData}
+                  authorized={checkButtonAuth(add)}
+                  {...this.props}
+                >
+                  <Detail />
+                </WeDrawer.Form>
+                <Button onClick={() => expandAll({ node: "main" })}>
+                  全部展开
+                </Button>
+                <Button onClick={() => this.save()}>保存</Button>
+              </>
             )
           }
         >
-          <table width="100%" className="table-striped col-left-34">
+          <table width="100%" className="table-striped table-cate col-left-23">
             <tr className="th">
               <td className="col-md-1">选择</td>
-              <td className="col-md-1">顺序</td>
               <td className="col-md-4">
                 <span className="icon-cate"></span>名称
               </td>
               <td className="col-md-3">连接</td>
               <td className="col-md-1">状态</td>
-              <td className="col-md-2">操作</td>
+              <td className="col-md-2">移动</td>
+              <td className="col-md-1">操作</td>
             </tr>
             {main &&
               main.map((item, index) => (
@@ -88,15 +127,12 @@ class Index extends React.Component {
                       ></WeCheckbox>
                     </td>
                     <td>
-                      <Quick
-                        title={item.sort}
-                        data={{ id: item.id, field: "sort", coding }}
-                        authorized={checkButtonAuth(edit)}
-                        {...this.props}
-                      />
-                    </td>
-                    <td>
-                      <i class="iconfont iconslide icon-anonymous-iconfont"></i>
+                      <i
+                        className={`iconfont icon-${
+                          item.isshow ? "jianhao" : "anonymous-iconfont"
+                        } iconslide`}
+                        onClick={() => expand({ node: "main", id: item.id })}
+                      ></i>
                       <Quick
                         title={item.name}
                         data={{ id: item.id, field: "name", coding }}
@@ -133,6 +169,37 @@ class Index extends React.Component {
                       />
                     </td>
                     <td>
+                      <Button
+                        onClick={() =>
+                          onMove({
+                            direction: "up",
+                            obj: main,
+                            moveItem: item,
+                            index,
+                            node: "main",
+                          })
+                        }
+                        className="deg180 move-button"
+                        style={{ width: 60, height: 60 }}
+                      >
+                        <i className="iconfont icon-arrow1 moving"></i>
+                      </Button>
+                      <Button
+                        onClick={() =>
+                          onMove({
+                            direction: "down",
+                            obj: main,
+                            moveItem: item,
+                            index,
+                            node: "main",
+                          })
+                        }
+                        className="move-button"
+                      >
+                        <i className="iconfont icon-arrow1"></i>
+                      </Button>
+                    </td>
+                    <td>
                       <Space>
                         <WeDrawer.Form
                           title="编辑合作伙伴"
@@ -161,10 +228,10 @@ class Index extends React.Component {
                       </Space>
                     </td>
                   </tr>
-                  {item.list ? (
+                  {item.list && item.isshow ? (
                     <tr className="tr-slide">
                       <td colspan="8" className="p0">
-                        {item.list.map((item, i) => (
+                        {item.list.map((aaa, i) => (
                           <table
                             width="100%"
                             className="table-bordered table-condensed table-hover color-cate"
@@ -172,24 +239,15 @@ class Index extends React.Component {
                             <tr className="tr-list">
                               <td className="col-md-1">
                                 <WeCheckbox
-                                  data={{ id: item.id }}
+                                  data={{ id: aaa.id }}
                                   {...this.props}
                                 ></WeCheckbox>
                               </td>
-                              <td className="col-md-1">
-                                <Quick
-                                  title={item.sort}
-                                  data={{ id: item.id, field: "sort", coding }}
-                                  authorized={checkButtonAuth(edit)}
-                                  {...this.props}
-                                />
-                              </td>
                               <td className="col-md-4">
                                 <i class="cate-two"></i>
-                                <i class="iconfont icon-jianhao iconslide"></i>
                                 <Quick
-                                  title={item.name}
-                                  data={{ id: item.id, field: "name", coding }}
+                                  title={aaa.name}
+                                  data={{ id: aaa.id, field: "name", coding }}
                                   authorized={checkButtonAuth(edit)}
                                   {...this.props}
                                   width="69%"
@@ -197,20 +255,53 @@ class Index extends React.Component {
                               </td>
                               <td className="col-md-3">
                                 <Quick
-                                  title={item.url}
-                                  data={{ id: item.id, field: "url", coding }}
+                                  title={aaa.url}
+                                  data={{ id: aaa.id, field: "url", coding }}
                                   authorized={checkButtonAuth(edit)}
                                   {...this.props}
                                 />
                               </td>
                               <td className="col-md-1">
                                 <Status
-                                  data={{ item, field: "status", coding }}
+                                  data={{ item: aaa, field: "status", coding }}
                                   authorized={checkButtonAuth("edit")}
                                   {...this.props}
                                 />
                               </td>
                               <td className="col-md-2">
+                                <Button
+                                  onClick={() =>
+                                    onMove({
+                                      direction: "up",
+                                      obj: item.list,
+                                      moveItem: aaa,
+                                      index: i,
+                                      parantId: item.id,
+                                      node: "main",
+                                    })
+                                  }
+                                  className="deg180 move-button"
+                                  style={{ width: 60, height: 60 }}
+                                >
+                                  <i className="iconfont icon-arrow1 moving"></i>
+                                </Button>
+                                <Button
+                                  onClick={() =>
+                                    onMove({
+                                      direction: "down",
+                                      obj: item.list,
+                                      moveItem: aaa,
+                                      index: i,
+                                      parantId: item.id,
+                                      node: "main",
+                                    })
+                                  }
+                                  className="move-button"
+                                >
+                                  <i className="iconfont icon-arrow1"></i>
+                                </Button>
+                              </td>
+                              <td className="col-md-1">
                                 <Space>
                                   <WeDrawer.Form
                                     title="编辑合作伙伴"
@@ -218,7 +309,7 @@ class Index extends React.Component {
                                     isText={true}
                                     action="edit"
                                     data={{
-                                      id: item.id,
+                                      id: aaa.id,
                                       coding,
                                       channel: params.channel,
                                     }}
@@ -234,7 +325,7 @@ class Index extends React.Component {
                                       operating: "delete",
                                       message: React.$modalEnum,
                                     }}
-                                    data={{ coding, id: item.id }}
+                                    data={{ coding, id: aaa.id }}
                                     api="delete"
                                     renderList={this.getData}
                                     authorized={checkButtonAuth(del)}

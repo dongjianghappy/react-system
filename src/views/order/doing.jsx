@@ -1,41 +1,24 @@
 import React from "react";
-import {
-  Card,
-  Table,
-  Space,
-  Popconfirm,
-  Button,
-  Checkbox,
-  Input,
-  DatePicker,
-} from "antd";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import {
-  Status,
-  Dialog,
-  Operatinavbar,
-  Condition,
-} from "../../components/index.js";
-import dispatchToProps from "../../store/dispatch";
-import { R_button } from "../../components/index.js";
-import { Option } from "../../common";
-const { Search } = Input;
-const { RangePicker } = DatePicker;
+import { Card } from "antd";
+import { connect, dispatchToProps, codings } from "@/utils";
 
-class Tag extends React.Component {
+class Doing extends React.Component {
   componentDidMount() {
-    this.props.select({
+    this.getData();
+  }
+
+  getData = () => {
+    this.props.dispatch.select({
       data: {
         page: 0,
         pagesize: 100,
         coding: "P0007",
       },
+      node: "doing",
     });
-  }
-
+  };
   render() {
-    const { list } = this.props.module;
+    const { doing } = this.props.module;
     return (
       <>
         <Card title="进行中">
@@ -49,12 +32,10 @@ class Tag extends React.Component {
               <td class="col-md-1">下单日期</td>
               <td class="col-md-1">操作</td>
             </tr>
-            {list &&
-              list.map((item, index) => (
+            {doing &&
+              doing.map((item, index) => (
                 <tr>
-                  <td>
-                    <Checkbox></Checkbox>
-                  </td>
+                  <td></td>
                   <td>{item.number}</td>
                   <td>{item.name}</td>
                   <td>{item.price}</td>
@@ -70,12 +51,9 @@ class Tag extends React.Component {
   }
 }
 
-const stateToProops = (state) => {
-  return {
-    global: state.common.global,
-    state,
+export default connect(
+  (state) => ({
     module: state.order,
-  };
-};
-
-export default connect(stateToProops, dispatchToProps)(Tag);
+  }),
+  dispatchToProps
+)(Doing);

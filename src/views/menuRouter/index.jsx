@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Space, Button, Popover } from "antd";
+import { Card, Space, Button, Popover, message } from "antd";
 import { connect, dispatchToProps, checkButtonAuth, codings } from "@/utils";
 import { WeDrawer, Quick, WeModal } from "@/components";
 
@@ -30,7 +30,14 @@ class menuRouter extends React.Component {
         return (
           <>
             <i class="cate-two"></i>
-            <i class="iconfont icon-jianhao iconslide"></i>
+            <i
+              className={`iconfont icon-${
+                data.isshow ? "jianhao" : "anonymous-iconfont"
+              } iconslide`}
+              onClick={() =>
+                this.props.dispatch.expand({ node: "list", id: data.id })
+              }
+            ></i>
             <Quick
               title={data.name}
               data={{ id: data.id, name: "sort", coding }}
@@ -45,7 +52,15 @@ class menuRouter extends React.Component {
           <>
             <i class="cate-tree"></i>
             <i class="cate-two"></i>
-            <i class="iconfont icon-jianhao iconslide"></i>
+
+            <i
+              className={`iconfont icon-${
+                data.isshow ? "jianhao" : "anonymous-iconfont"
+              } iconslide`}
+              onClick={() =>
+                this.props.dispatch.expand({ node: "list", id: data.id })
+              }
+            ></i>
             <Quick
               title={data.name}
               data={{ id: data.id, field: "name", coding }}
@@ -75,6 +90,38 @@ class menuRouter extends React.Component {
     }
   };
 
+  // 保存
+  save = () => {
+    const form = [];
+    const loop = (data) => {
+      return data.map((item, index) => {
+        item.sort = 1 + index;
+        form.push({
+          id: item.id,
+          sort: item.sort,
+          isshow: item.isshow,
+        });
+        if (item.list) {
+          loop(item.list);
+        }
+      });
+    };
+
+    loop(this.props.module.list);
+
+    this.props.dispatch
+      .fetch({
+        api: "updateSave",
+        data: {
+          coding: coding,
+          data: JSON.stringify(form),
+        },
+      })
+      .then((res) => {
+        message.info("编辑成功");
+      });
+  };
+
   renderList = (data, level) => (
     <>
       <input type="hidden" value={level++} />
@@ -82,7 +129,7 @@ class menuRouter extends React.Component {
       {data.list.map((ss, i) => (
         <table
           width="100%"
-          className="table-bordered table-condensed table-hover color-cate"
+          className="table-bordered table-condensed table-hover table-cate color-cate"
         >
           <tr className="tr-list">
             <td className="col-md-4">{this.tree(ss, level)}</td>
@@ -94,36 +141,38 @@ class menuRouter extends React.Component {
                 {...this.props}
               />
             </td>
-            <td className="col-md-1">
-              {ss.component !== "" ? (
-                <span
-                  style={{
-                    backgroundColor: "#52c41a",
-                    position: "relative",
-                    top: "-1px",
-                    display: "inline-block",
-                    width: "6px",
-                    height: "6px",
-                    verticalAlign: "middle",
-                    borderRadius: "50%",
-                  }}
-                ></span>
-              ) : (
-                <span
-                  style={{
-                    backgroundColor: "#d9d9d9",
-                    position: "relative",
-                    top: "-1px",
-                    display: "inline-block",
-                    width: "6px",
-                    height: "6px",
-                    verticalAlign: "middle",
-                    borderRadius: "50%",
-                  }}
-                ></span>
-              )}
+            <td className="col-md-2">
+              <Button
+                onClick={() =>
+                  this.props.dispatch.onMove({
+                    direction: "up",
+                    obj: data.list,
+                    moveItem: ss,
+                    index: i,
+                    parantId: data.id,
+                  })
+                }
+                className="deg180 move-button"
+                style={{ width: 60, height: 60 }}
+              >
+                <i className="iconfont icon-arrow1 moving"></i>
+              </Button>
+              <Button
+                onClick={() =>
+                  this.props.dispatch.onMove({
+                    direction: "down",
+                    obj: data.list,
+                    moveItem: ss,
+                    index: i,
+                    parantId: data.id,
+                  })
+                }
+                className="move-button"
+              >
+                <i className="iconfont icon-arrow1"></i>
+              </Button>
             </td>
-            <td className="col-md-4">
+            <td className="col-md-3">
               <Space>
                 <WeDrawer.show
                   name="按钮权限"
@@ -180,7 +229,7 @@ class menuRouter extends React.Component {
               </Space>
             </td>
           </tr>
-          {ss.list ? (
+          {ss.list && ss.isshow ? (
             <tr className="tr-slide">
               <td colspan="8" className="p0">
                 {this.renderList(ss, level)}
@@ -195,7 +244,11 @@ class menuRouter extends React.Component {
   );
 
   render() {
-    const { list } = this.props.module;
+    const {
+      module: { list },
+      dispatch: { onMove, expand, expandAll },
+    } = this.props;
+
     return (
       <Card>
         <div style={{ marginBottom: 15 }}>
@@ -210,6 +263,8 @@ class menuRouter extends React.Component {
             >
               <Article />
             </WeDrawer.Form>
+            <Button onClick={() => expandAll({})}>全部展开</Button>
+            <Button onClick={() => this.save()}>保存</Button>
           </Space>
         </div>
 
@@ -219,15 +274,20 @@ class menuRouter extends React.Component {
               <span className="icon-cate"></span>页面名称
             </td>
             <td className="col-md-3">路径</td>
-            <td className="col-md-1">组件</td>
-            <td className="col-md-4">操作</td>
+            <td className="col-md-2">移动</td>
+            <td className="col-md-3">操作</td>
           </tr>
           {list &&
             list.map((item, index) => (
               <>
                 <tr className="tr-list">
                   <td>
-                    <i class="iconfont iconslide icon-anonymous-iconfont"></i>
+                    <i
+                      className={`iconfont icon-${
+                        item.isshow ? "jianhao" : "anonymous-iconfont"
+                      } iconslide`}
+                      onClick={() => expand({ node: "list", id: item.id })}
+                    ></i>
                     <Quick
                       title={item.name}
                       data={{ id: item.id, field: "name", coding }}
@@ -245,33 +305,32 @@ class menuRouter extends React.Component {
                     />
                   </td>
                   <td>
-                    {item.component !== "" ? (
-                      <span
-                        style={{
-                          backgroundColor: "#52c41a",
-                          position: "relative",
-                          top: "-1px",
-                          display: "inline-block",
-                          width: "6px",
-                          height: "6px",
-                          verticalAlign: "middle",
-                          borderRadius: "50%",
-                        }}
-                      ></span>
-                    ) : (
-                      <span
-                        style={{
-                          backgroundColor: "#d9d9d9",
-                          position: "relative",
-                          top: "-1px",
-                          display: "inline-block",
-                          width: "6px",
-                          height: "6px",
-                          verticalAlign: "middle",
-                          borderRadius: "50%",
-                        }}
-                      ></span>
-                    )}
+                    <Button
+                      onClick={() =>
+                        onMove({
+                          direction: "up",
+                          obj: list,
+                          moveItem: item,
+                          index,
+                        })
+                      }
+                      className="deg180 move-button"
+                    >
+                      <i className="iconfont icon-arrow1 moving"></i>
+                    </Button>
+                    <Button
+                      onClick={() =>
+                        onMove({
+                          direction: "down",
+                          obj: list,
+                          moveItem: item,
+                          index,
+                        })
+                      }
+                      className="move-button"
+                    >
+                      <i className="iconfont icon-arrow1"></i>
+                    </Button>
                   </td>
                   <td>
                     <Space>
@@ -329,7 +388,7 @@ class menuRouter extends React.Component {
                     </Space>
                   </td>
                 </tr>
-                {item.list ? (
+                {item.list && item.isshow ? (
                   <tr className="tr-slide">
                     <td colspan="8" className="p0">
                       {this.renderList(item, 0)}

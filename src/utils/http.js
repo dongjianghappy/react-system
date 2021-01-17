@@ -6,10 +6,11 @@ export default class http {
 
     // 构造函数
     constructor(options) {
+        const proxy = process.env // ${proxy.REACT_APP_URL}
 
         if(!options){
             this.baseConfig = {
-                baseURL: '/admincms/api/', // 设置跨域代理接口统一的前置地址
+                baseURL: `/admincms/api/`, // 设置跨域代理接口统一的前置地址 // http://www.yunxi10.com/
                 timeout: 60000,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'

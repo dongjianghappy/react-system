@@ -34,3 +34,8 @@ export const GET_MYSQL = 'getMysql'
 export const CHANGE_DATA = 'changeData'
 export const SEARCH_FIELD = 'searchField'
 export const GET_QUERY = 'getQuery'
+
+export const EXPAND = 'expand'
+export const EXPAND_ALL = 'expandAll'
+export const ON_MOVE = 'onMove'
+export const UPDATE_SAVE = 'updateSave'

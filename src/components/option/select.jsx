@@ -34,7 +34,7 @@ const Option = (props) => {
             </div>
           }
         >
-          <span>{title}: </span>
+          {title ? <span>{title}: </span> : ""}
           <span>{source[dataSource.value]}</span>
         </Popover>
       </span>

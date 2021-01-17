@@ -1,8 +1,6 @@
 import React from "react";
 import { Card, Tabs } from "antd";
-import { connect } from "react-redux";
-import dispatchToProps from "../../store/dispatch";
-import Tu from "./components/statistics";
+import { connect, dispatchToProps } from "@/utils";
 import IpTodapy from "./components/ip-today";
 import IpDetail from "./components/ip-detail";
 import IpLib from "./components/ip-lib";
@@ -11,60 +9,59 @@ const { TabPane } = Tabs;
 
 class Ip extends React.Component {
   componentDidMount() {
-    this.props.select({
+    this.getData();
+  }
+
+  getData = () => {
+    this.props.dispatch.select({
       api: "todayIp",
       data: {
         date: "today",
         page: 0,
         pagesize: 25,
       },
-      node: "ipList",
+      node: "ip.percentage",
     });
-  }
+  };
+
+  detail = (data) => {
+    this.props.dispatch.select({
+      data: {
+        page: 0,
+        pagesize: 25,
+        coding: "S0000",
+      },
+      node: "ip.detailList",
+    });
+  };
+
+  ipList = (data) => {
+    this.props.dispatch.select({
+      data: {
+        page: 0,
+        pagesize: 25,
+        coding: "S0003",
+      },
+      node: "ip.list",
+    });
+  };
 
   callback = (key) => {
     if (key === "1") {
-      this.props.select({
-        api: "todayIp",
-        data: {
-          date: "today",
-          page: 0,
-          pagesize: 25,
-        },
-        node: "ipList",
-      });
+      this.getData();
     } else if (key === "2") {
-      this.props.select({
-        api: "todayIp",
-        data: {
-          page: 0,
-          pagesize: 25,
-        },
-        node: "ipList",
-      });
+      this.getData();
     } else if (key === "3") {
-      this.props.select({
-        data: {
-          page: 0,
-          pagesize: 25,
-          coding: "S0000",
-        },
-        node: "ipList",
-      });
+      this.detail();
     } else if (key === "4") {
-      this.props.select({
-        data: {
-          page: 0,
-          pagesize: 25,
-          coding: "S0003",
-        },
-        node: "ipList",
-      });
+      this.ipList();
     }
   };
 
   render() {
-    const { ipList } = this.props.module;
+    const {
+      ip: { percentage, detailList, list },
+    } = this.props.module;
 
     return (
       <>
@@ -72,32 +69,28 @@ class Ip extends React.Component {
           <Tabs defaultActiveKey="1" onChange={this.callback}>
             <TabPane tab="今日IP" key="1">
               <IpTodapy
-                type="1"
-                data={ipList}
+                dataSource={percentage}
                 {...this.props}
                 getData={() => this.getData(1)}
               />
             </TabPane>
             <TabPane tab="IP占比" key="2">
               <IpTodapy
-                type="1"
-                data={ipList}
+                dataSource={percentage}
                 {...this.props}
                 getData={() => this.getData(1)}
               />
             </TabPane>
             <TabPane tab="IP明细" key="3">
               <IpDetail
-                type="1"
-                data={ipList}
+                dataSource={detailList}
                 {...this.props}
                 getData={() => this.getData(1)}
               />
             </TabPane>
             <TabPane tab="IP库" key="4">
               <IpLib
-                type="1"
-                data={ipList}
+                dataSource={list}
                 {...this.props}
                 getData={() => this.getData(1)}
               />
@@ -109,11 +102,9 @@ class Ip extends React.Component {
   }
 }
 
-const stateToProops = (state) => {
-  debugger;
-  return {
+export default connect(
+  (state) => ({
     module: state.statistics,
-  };
-};
-
-export default connect(stateToProops, dispatchToProps)(Ip);
+  }),
+  dispatchToProps
+)(Ip);

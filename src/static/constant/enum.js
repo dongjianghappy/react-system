@@ -146,6 +146,10 @@ export const CHANNEL_TYPE = [
     {
         value: "source",
         name: "素材"
+    },
+    {
+        value: "notes",
+        name: "笔记"
     }
 ]
 
@@ -420,6 +424,23 @@ export const ICON = [
     }    
   ]
 
+  // 标签类型
+export const LABEL_TYPE = [
+    {
+        value: "nav",
+        name: "导航"
+    },
+    {
+        value: "cat",
+        name: "分类"
+    },
+    {
+        value: "art",
+        name: "文档"
+    }
+    
+]
+
  const enums = {
     module: MODUDLE,
     textType: TEXT_TYPE,
@@ -439,7 +460,8 @@ export const ICON = [
     navType: NAV_TYPE,
     collectionType: COLLECTTION_TYPE,
     announcementType: ANNOUNCEMENT_TYPE,
-    icon: ICON
+    icon: ICON,
+    labelType: LABEL_TYPE
 }
 
 export default enums

@@ -42,6 +42,7 @@ const List = (props) => {
                   name: "所有",
                 },
               ]}
+              data={{ page: 0, pagesize: 15 }}
               renderList={props.renderList}
             />
           }

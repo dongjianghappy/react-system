@@ -11,7 +11,7 @@ import List from '../views/channel/article/'
 import Recycle from '../views/channel/recycle'
 import Article from '../views/channel/article/detail'
 import SettingChannel from '../views/channel/setting/channel'
-import Label from '../views/channel/setting/label'
+import Label from '../views/channel/label'
 import Collect from '../views/channel/collect'
 import Comment from '../views/channel/comment'
 import Praise from '../views/channel/praise'
@@ -48,19 +48,11 @@ import UserRecommend from '../views/user/recommend'
 import UserSecurity from '../views/user/security/inedx'
 import UserTheme from '../views/user/theme'
 
-
-
-
-
-
-
-
-
-
 // 设置组件
 import Appstore from '../views/appstore'
 import Permissions from '../views/appstore/permissions'
 import Statistics from '../views/statistics'
+import Visit from '../views/statistics/visit'
 import Domain from '../views/statistics/domain'
 import Engine from '../views/statistics/engine'
 import Ip from '../views/statistics/ip'
@@ -73,8 +65,9 @@ import CollectionList from '../views/collection/list'
 import CollectionRecycle from '../views/collection/recycle'
 import Tag from '../views/tag'
 import Order from '../views/order'
-import OrderDoing from '../views/order/order-doing'
-import OrderCompleted from '../views/order/order-completed'
+import OrderNew from '../views/order/new'
+import OrderDoing from '../views/order/doing'
+import OrderCompleted from '../views/order/completed'
 import Card from '../views/order/card'
 
 // 服务组件
@@ -119,51 +112,6 @@ const asyncRoutes = [
         isShow: false, 
         exact: true
     },
-    // {
-    //     module: "basic",
-    //     name: "轮播图设置",
-    //     path: "/admin/slideshow/list/:fid?",
-    //     isShow: false,
-    //     component: SlideshowList 
-    // },     
-    // {
-    //     name: "修改文档",
-    //     path: "/admin/article/detail",
-    //     component: Article, 
-    //     isShow: false,
-    //     exact: true 
-    // },
-    //  // 导航开始
-    //  {
-    //     name: "导航管理",
-    //     path: "/admin/navigation/main/:channel_id?",
-    //     component: navigationMain,
-    //     isShow: false, 
-    //     exact: true
-    // },   
-    // {
-    //     name: "单页管理",
-    //     path: "/admin/navigation/single",
-    //     component: Navigation_single,
-    //     isShow: false, 
-    //     exact: true
-    // },  
-    // {
-    //     name: "单页管理",
-    //     path: "/admin/navigation/single/article",
-    //     component: SingleArticle,
-    //     isShow: false, 
-    //     exact: true
-    // }, 
-    
-    // {
-    //     name: "单页管理",
-    //     path: "/admin/user/list",
-    //     component: UserList,
-    //     isShow: false, 
-    //     exact: true
-    // },  
-
     {
         name: "单页管理",
         path: "/admin/menuRouter",
@@ -203,6 +151,7 @@ const arrss = {
     Appstore,
     Permissions,
     Statistics,
+    Visit,
     Domain,
     Engine,
     Ip,
@@ -228,6 +177,7 @@ const arrss = {
     Mysql,
     Tag,
     Order,
+    OrderNew,
     OrderDoing,
     OrderCompleted,
     Card,

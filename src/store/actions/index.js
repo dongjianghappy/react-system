@@ -23,7 +23,11 @@ import {
     UPDATE_STATIC,
     LOGIN,
     USER_INFO,
-    RIGHT_MENU
+    RIGHT_MENU,
+    EXPAND,
+    EXPAND_ALL,
+    ON_MOVE,
+    UPDATE_SAVE
 } from '../actionTypes'
 
 export const inputChangeAction = (value) =>({
@@ -178,4 +182,25 @@ export const userINfoAction = (value) =>({
 export const rightMenuAction = (value) =>({
     type: RIGHT_MENU,
     value: value
+})
+
+
+export const expandAction = (params) => ({
+    type: EXPAND,
+    ...params
+})
+
+export const expandAllAction = (params) => ({
+    type: EXPAND_ALL,
+    ...params
+})
+
+export const onMoveAction = (params) => ({
+    type: ON_MOVE,
+    ...params
+})
+
+export const updateSaveAction = (params) => ({
+    type: UPDATE_SAVE,
+    ...params
 })

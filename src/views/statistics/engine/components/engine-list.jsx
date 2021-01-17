@@ -1,31 +1,8 @@
-import React, { useState, useEffect } from "react";
-import {
-  Space,
-  Card,
-  Table,
-  Checkbox,
-  Button,
-  Input,
-  Form,
-  Radio,
-  Select,
-} from "antd";
-import {
-  Status,
-  R_button,
-  WeDrawer,
-  WeCheckbox,
-  Dialog,
-  R_form,
-  Quick,
-  WeModal,
-} from "@/components/index.js";
-
-import { ButtonGroup, Keyword, CheckboxGroup } from "@/common";
-
-const { Option } = Select;
+import React from "react";
 
 const List = (props) => {
+  const { dataSource } = props;
+
   return (
     <>
       <table width="100%" class="table-striped table-hover col-left-2">

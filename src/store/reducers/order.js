@@ -5,6 +5,9 @@ import commonReducers from './commonReduce'
 
 const initState = {
     module: "order",
+    news: [],
+    doing: [],
+    completed: [],
     ...initListState
 }
 

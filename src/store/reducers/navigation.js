@@ -9,8 +9,10 @@ import commonReducers from './commonReduce'
 
 const initState = {
     module: "navigation",
+    expand: false,
     channel: [],
     navigation: [],
+    main: [],
     single: [],
     ...initListState
 }

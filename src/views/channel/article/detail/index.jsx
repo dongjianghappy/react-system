@@ -1,6 +1,13 @@
 import React from "react";
 import { Card, Button, Form, Tabs, message } from "antd";
-import { connect, dispatchToProps, codings, Link, getQuery } from "@/utils";
+import {
+  connect,
+  dispatchToProps,
+  codings,
+  Link,
+  getQuery,
+  channel,
+} from "@/utils";
 import { WeAlert } from "@/components";
 import BasicInfo from "./components/basicInfo";
 import CustomField from "./components/customField";
@@ -15,6 +22,7 @@ class Index extends React.Component {
 
   state = {
     params: {},
+    coding: {},
     dataSource: {},
     flagList: [],
   };
@@ -45,7 +53,7 @@ class Index extends React.Component {
         .fetch({
           api: "updateArticle",
           data: {
-            coding: coding,
+            coding: this.state.coding.art,
             id: this.state.params.id,
             ...values,
           },
@@ -59,7 +67,7 @@ class Index extends React.Component {
         .fetch({
           api: "insertArticle",
           data: {
-            coding: coding,
+            coding: this.state.coding.art,
             ...values,
           },
         })
@@ -73,6 +81,7 @@ class Index extends React.Component {
     this.setState(
       {
         params: getQuery(),
+        coding: codings[this.props.channel.module],
       },
       () => {
         if (this.state.params.id) {
@@ -80,7 +89,7 @@ class Index extends React.Component {
             .fetch({
               api: "articleDetail",
               data: {
-                coding: coding,
+                coding: this.state.coding.art,
                 id: this.state.params.id,
               },
             })
@@ -96,7 +105,7 @@ class Index extends React.Component {
           .fetch({
             api: "getFlag",
             data: {
-              channel_id: 0,
+              channel_id: this.props.channel.id,
             },
           })
           .then((res) => {
@@ -117,6 +126,7 @@ class Index extends React.Component {
   };
 
   render() {
+    const { channel } = this.props;
     return (
       <Card>
         <Form
@@ -131,7 +141,10 @@ class Index extends React.Component {
           <Tabs type="card">
             <TabPane tab="基本信息" key="1">
               <BasicInfo
-                coding={{ art: coding, cate: catcoing }}
+                coding={{
+                  art: this.state.coding.art,
+                  cate: this.state.coding.cate,
+                }}
                 data={this.state.data}
                 dataSource={this.state.dataSource}
                 callback={this.callback}
@@ -151,10 +164,7 @@ class Index extends React.Component {
                   </span>
                 }
               ></WeAlert>
-              <CustomField
-                {...this.props}
-                channel={this.state.params.channel}
-              />
+              <CustomField {...this.props} channel={channel.id} />
             </TabPane>
           </Tabs>
           <Form.Item label=" " style={{ padding: "10px 25px" }}>
@@ -170,7 +180,8 @@ class Index extends React.Component {
 
 export default connect(
   (state) => ({
-    module: state.channel,
+    module: state.channel[channel().module],
+    channel: channel(),
   }),
   dispatchToProps
 )(Index);

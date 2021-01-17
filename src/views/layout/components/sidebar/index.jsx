@@ -58,6 +58,7 @@ class Sidebar extends React.Component {
         (item.module === "article" ||
           item.module === "tech" ||
           item.module === "picture" ||
+          item.module === "notes" ||
           item.module === "source") &&
         item.children
       ) {
