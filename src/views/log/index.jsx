@@ -1,10 +1,10 @@
 import React from "react";
 import { Card, Tabs } from "antd";
 import { connect, dispatchToProps, codings } from "@/utils";
-import { NavGroup } from "@/components";
+
 import List from "./components/list";
 
-const { Nav } = NavGroup;
+const { TabPane } = Tabs;
 const { manager: coding1, user: coding2 } = codings.log;
 class Log extends React.Component {
   getData = (coding) => {
@@ -28,30 +28,18 @@ class Log extends React.Component {
   render() {
     const { list } = this.props.module;
     return (
-      <NavGroup onChange={this.callback}>
-        <Nav name="管理员登录日志" value="1">
+      <Tabs defaultActiveKey="1" onChange={this.callback}>
+        <TabPane tab="管理员登录日志" key="1">
           <Card>
-            <List
-              type="1"
-              data={{ list, coding: coding1 }}
-              {...this.props}
-              getData={() => this.getData(1)}
-              coding={coding1}
-            />
+            <List type="1" dataSource={list} {...this.props} />
           </Card>
-        </Nav>
-        <Nav name="用户登录日志" value="2">
+        </TabPane>
+        <TabPane tab="用户登录日志" key="2">
           <Card>
-            <List
-              type="1"
-              data={list}
-              {...this.props}
-              getData={() => this.getData(2)}
-              coding={{ list, coding: coding2 }}
-            />
+            <List type="1" dataSource={list} {...this.props} />
           </Card>
-        </Nav>
-      </NavGroup>
+        </TabPane>
+      </Tabs>
     );
   }
 }

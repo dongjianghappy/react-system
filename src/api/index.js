@@ -416,5 +416,18 @@ export default {
         return http.request('vue', 'knowledgeList','post', params)
     },      
     
-
+    // 站内搜索
+    siteSearch(params) {
+        return http.request('vue', 'siteSearch','post', params)
+    },   
+    // 站内搜索
+    template(params) {
+        return http.request('temp', 'template','get', params)
+    },  
+    
+    // 站内搜索
+    saveFile(params) {
+        return http.request('temp', 'saveFile','post', params)
+    },      
+    
 }

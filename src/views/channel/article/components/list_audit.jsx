@@ -1,6 +1,13 @@
 import React from "react";
 import { Space, Button, Popover } from "antd";
-import { Link, checkButtonAuth, authorized, codings, datetime } from "@/utils";
+import {
+  Link,
+  checkButtonAuth,
+  authorized,
+  codings,
+  datetime,
+  channel,
+} from "@/utils";
 import {
   Confirm,
   WeCheckbox,
@@ -11,8 +18,7 @@ import {
 } from "@/components";
 import Detail from "./return_detail";
 
-const mod = window.location.pathname.split("/")[2] || "";
-
+const mod = channel().module || "";
 const { del, edit } = (authorized.channel[mod] &&
   authorized.channel[mod].art) || {
   del: "",

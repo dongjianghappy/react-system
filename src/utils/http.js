@@ -10,7 +10,7 @@ export default class http {
 
         if(!options){
             this.baseConfig = {
-                baseURL: `/admincms/api/`, // 设置跨域代理接口统一的前置地址 // http://www.yunxi10.com/
+                baseURL: `/admincms/api/`, // 设置跨域代理接口统一的前置地址 // http://www.yunxi10.com
                 timeout: 60000,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -77,8 +77,17 @@ export default class http {
 		params.n = n;
         params.m = params.m ? params.m : m;
         const request  = this.axios()
+        let url = ""
+        
 
-        let url = params.m === "space" ? `inter_vue.php?m=${params.m}&n=${params.n}${params.file && params.file !== "/" ? params.file : ""}` : 'inter_vue.php'
+        if(method === "get"){
+            debugger
+            url = `inter_vue.php?m=${params.m}&n=${params.n}&${params.dir}`
+        }else{
+            debugger
+            url = params.m === "space" ? `inter_vue.php?m=${params.m}&n=${params.n}${params.file && params.file !== "/" ? params.file : ""}` : 'inter_vue.php'
+        }
+        debugger
 
         this.requestHeaders(request)
         this.responseHeaders(request)

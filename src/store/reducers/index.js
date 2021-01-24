@@ -28,6 +28,9 @@ import order from './order'
 import statistics from './statistics'
 import knowledge from './knowledge'
 import vote from './vote'
+import search from './search'
+import template from './template'
+
 
 const rootReducer = combineReducers({
     basic,
@@ -57,7 +60,9 @@ const rootReducer = combineReducers({
     order,
     statistics,
     knowledge,
-    vote
+    vote,
+    search,
+    template
 })
 
 export default rootReducer;

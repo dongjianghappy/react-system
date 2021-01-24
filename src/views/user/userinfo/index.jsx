@@ -17,13 +17,17 @@ const { partner: coding } = codings;
 
 class Index extends React.Component {
   componentDidMount() {
-    this.getData();
+    this.getData({
+      level: 0,
+    });
   }
 
   getData = (params) => {
     this.props.dispatch.select({
       api: "userList",
       data: {
+        page: 0,
+        pagesize: 25,
         ...params,
       },
       node: "user",
@@ -31,21 +35,15 @@ class Index extends React.Component {
   };
 
   onChange = (params, key) => {
-    if (key === "1") {
-      this.getData(params);
-    } else {
-      this.props.dispatch.select({
-        api: "userList",
-        data: {
-          ...params,
-        },
-        node: "user",
-      });
-    }
+    this.getData({
+      page: 0,
+      pagesize: 25,
+      ...params,
+    });
   };
 
   render() {
-    const { user } = this.props.module;
+    const { module } = this.props.module;
     return (
       <>
         <AsideGroup onChange={this.onChange}>
@@ -58,7 +56,6 @@ class Index extends React.Component {
           >
             <UserList
               title="普通用户"
-              dataSource={user}
               renderList={this.getData}
               coding={coding}
               {...this.props}
@@ -73,7 +70,6 @@ class Index extends React.Component {
           >
             <UserList
               title="高级用户"
-              dataSource={user}
               renderList={this.getData}
               coding={coding}
               {...this.props}
@@ -88,7 +84,6 @@ class Index extends React.Component {
           >
             <UserList
               title="管理员"
-              dataSource={user}
               renderList={this.getData}
               coding={coding}
               {...this.props}

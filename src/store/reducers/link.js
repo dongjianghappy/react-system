@@ -5,6 +5,13 @@ import commonReducers from './commonReduce'
 
 const initState = {
     module: "link",
+    initialValues: {
+        status: "1",
+        display: "0",
+        source: "0",
+        method: "0",
+        sell: "1",
+    },
     ...initListState
 }
 

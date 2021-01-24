@@ -17,9 +17,7 @@ const Detail = (props) => {
       </Form.Item>
       <Form.Item name="status" label="显示">
         <Radio.Group>
-          <Radio value="1" defaultChecked>
-            是
-          </Radio>
+          <Radio value="1">是</Radio>
           <Radio value="0">否</Radio>
         </Radio.Group>
       </Form.Item>
@@ -30,7 +28,7 @@ const Detail = (props) => {
         </Radio.Group>
       </Form.Item>
       <Form.Item name="source" label="来源">
-        <Select className="w150" defaultValue="0">
+        <Select className="w150">
           {linkType.map((item) => (
             <Option value={item.value}>{item.name}</Option>
           ))}

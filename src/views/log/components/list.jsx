@@ -1,7 +1,7 @@
 import React from "react";
 
 const List = (props) => {
-  const { data } = props;
+  const { dataSource } = props;
   return (
     <>
       <table width="100%" className="table-striped table-hover col-left-23">
@@ -15,8 +15,8 @@ const List = (props) => {
           <td class="col-md-1">地区</td>
           <td class="col-md-2">登录时间</td>
         </tr>
-        {data.list &&
-          data.list.map((item, index) => (
+        {dataSource.list &&
+          dataSource.list.map((item, index) => (
             <tr>
               <td>{item.username}</td>
               <td>{item.grade}</td>

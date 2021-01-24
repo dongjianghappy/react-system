@@ -86,7 +86,7 @@ class Index extends React.Component {
                       message: React.$modalEnum,
                     }}
                     data={{ coding, id: item.id }}
-                    api="delete"
+                    api="deleteVote"
                     renderList={this.getData}
                     authorized={checkButtonAuth("delete")}
                     {...this.props}

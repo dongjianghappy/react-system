@@ -12,6 +12,7 @@ import {
     GET_FLAG,
     GET_BAISC_INFO,
     GET_MYSQL,
+    GET_SEARCH,
     CHANGE_DATA,
     SEARCH_FIELD,
     GET_QUERY
@@ -121,12 +122,32 @@ export const getMysqlAction = (value) =>({
     value
 })
 
+
+
 export const mysql = (params) =>{
     return async (dispatch) => {
         const result = await api.mysql()
 
         if(result.result){
             const action = getMysqlAction(result.result)
+            dispatch(action)
+        }
+    }
+}
+
+// 站内搜索
+export const getSearchAction = (value) =>({
+    type: GET_SEARCH,
+    value
+})
+
+export const search = (params) =>{
+    return async (dispatch) => {
+        debugger
+        const result = await api.siteSearch(params.data)
+
+        if(result.result){
+            const action = getSearchAction(result.result)
             dispatch(action)
         }
     }

@@ -164,7 +164,13 @@ const codings = {
 	statistics: "",
 	space: "",
 	static: "",
-	single:""
+	single:"",
+	search: {
+		keyword: "P0016",
+		config: "P0017"
+	},
+	template:"",
+	test: ""
 }
 
 export default codings

@@ -5,6 +5,7 @@ import commonReducers from './commonReduce'
 
 const initState = {
     module: "mysql",
+    manage: [],
     ...initListState
 }
 

@@ -150,7 +150,12 @@ const DrawerForm = (props) => {
           </div>
         }
       >
-        <Form {...layout} form={form} labelAlign="left">
+        <Form
+          {...layout}
+          form={form}
+          initialValues={props.initialValues}
+          labelAlign="left"
+        >
           {props.children &&
             React.cloneElement(props.children, {
               callback, // 回到函数

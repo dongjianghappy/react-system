@@ -17,7 +17,7 @@ const { add, del, edit } = authorized.link;
 const { link: coding } = codings;
 
 const List = (props) => {
-  const { module } = props;
+  const { module, initialValues } = props;
   const { list } = module;
 
   const render = () => {
@@ -101,6 +101,7 @@ const List = (props) => {
                         isText={true}
                         action="edit"
                         data={{ id: item.id, coding }}
+                        initialValues={initialValues}
                         renderList={props.renderList}
                         authorized={checkButtonAuth("edit")}
                       >
@@ -188,6 +189,7 @@ const List = (props) => {
                       isText={true}
                       action="edit"
                       data={{ id: item.id, coding }}
+                      initialValues={initialValues}
                       renderList={props.renderList}
                       authorized={checkButtonAuth("edit")}
                     >

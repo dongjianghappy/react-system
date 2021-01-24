@@ -20,6 +20,7 @@ const WePagination = (props) => {
     // });
   };
 
+  debugger;
   return (
     <Pagination
       showQuickJumper

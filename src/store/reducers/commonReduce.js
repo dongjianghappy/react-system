@@ -119,19 +119,23 @@ const commonReducers = (state, action) => {
 
             if(action.node.indexOf(".") !== -1){
                 const arr = action.node.split(".")
+                newState.total = action.data.total
+                newState.page = action.data.pages
                 newState[arr[0]][arr[1]] = data
                 newState.node = arr[0]
             }else{
                 if(action.node){
+                    newState.total = action.data.total
+                    newState.page = action.data.pages
                     newState[action.node] = data
                     newState.node = action.node
                 }else{
-                    newState.total = action.data.total
-                    newState.page = action.data.pages
                     newState.list = data
                     newState.node = "list"
                 }
             }
+            newState.total = action.data.total || 0
+            newState.page = action.data.pages || 1
 
             // newState[action.node] = data
             // const arr = action.node.split(".")

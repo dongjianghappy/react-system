@@ -1,16 +1,21 @@
 import React from "react";
 import { Layout, Menu, Row, Col, Dropdown, message, Input, Badge } from "antd";
-import { Link } from "react-router-dom";
+import {
+  connect,
+  dispatchToProps,
+  checkButtonAuth,
+  authorized,
+  codings,
+} from "@/utils";
 import { withRouter } from "react-router-dom";
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
 import "@/static/header.css";
 
 const { Header } = Layout;
-
-const Index = function (props) {
-  const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
-
-  const menu = (
+const { Search } = Input;
+const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+class Index extends React.Component {
+  menu = (
     <Menu
       onClick={(p) => {
         if (p.key === "loginOut") {
@@ -28,88 +33,105 @@ const Index = function (props) {
     </Menu>
   );
 
-  const route = (path, q = "") => {
-    props.history.push(path);
-    props.handle(q);
+  route = (path, q = "") => {
+    this.props.history.push(path);
+    this.props.handle(q);
   };
 
-  return (
-    <Header className="header">
-      <div className="logo" onClick={() => route("/admin", "basic")}>
-        <img
-          alt="logo"
-          src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"
-          width="25"
-          style={{ marginRight: 10 }}
-        />
-        管理控制平台
-      </div>
-      <div className="header-wrap">
-        <div className="header-left">
-          <Row></Row>
-        </div>
-        <div className="header-right">
-          <Row>
-            <Col span="8">
-              <Dropdown
-                overlay={menu}
-                className=""
-                placement="bottomCenter"
-                arrow
-              >
-                <div>
-                  <img
-                    src={userInfo && userInfo.photos}
-                    alt=""
-                    style={{
-                      marginRight: 5,
-                      width: 25,
-                      height: 25,
-                      borderRadius: "50%",
-                    }}
-                  />
-                  <span>{userInfo && userInfo.nickname}</span>
-                </div>
-              </Dropdown>
-            </Col>
-            <Col span="6">
-              <Link
-                onClick={() => route("/admin/service/message", "service")}
-                className="absolute"
-                style={{ top: "6px" }}
-              >
-                <Badge count={5}>
-                  <i className="iconfont icon-email font24"></i>
-                </Badge>
-              </Link>
-            </Col>
-            <Col span="10">
-              <Row>
-                <Col span="8">风格</Col>
-                <Col span="8">
-                  <a href="http://www.yunxi10.com" target="_blank">
-                    首页
-                  </a>
-                </Col>
-                <Col>
-                  <span
-                    className="font20 cl-white"
-                    onClick={() => props.onScreens()}
-                  >
-                    {props.screen ? (
-                      <MenuUnfoldOutlined />
-                    ) : (
-                      <MenuFoldOutlined />
-                    )}
-                  </span>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-        </div>
-      </div>
-    </Header>
-  );
-};
+  search = (data) => {
+    this.props.dispatch.getSearch({
+      data: {
+        search: data,
+      },
+    });
 
-export default withRouter(Index);
+    this.props.history.push("/admin/search");
+  };
+  render() {
+    return (
+      <Header className="header">
+        <div className="logo" onClick={() => this.route("/admin", "basic")}>
+          <img
+            alt="logo"
+            src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"
+            width="25"
+            style={{ marginRight: 10 }}
+          />
+          管理控制平台
+        </div>
+        <div className="header-wrap">
+          <div className="header-left">
+            <Row>
+              <Col className="pl15">
+                <span
+                  className="font20 cl-white"
+                  onClick={() => this.props.onScreens()}
+                >
+                  {this.props.screen ? (
+                    <MenuUnfoldOutlined />
+                  ) : (
+                    <MenuFoldOutlined />
+                  )}
+                </span>
+              </Col>
+              <Col span={6} offset={1}>
+                <Search placeholder="站内搜索" onSearch={this.search} />
+              </Col>
+            </Row>
+          </div>
+          <div className="header-right">
+            <Row>
+              <Col span="8">
+                <Dropdown
+                  overlay={this.menu}
+                  className=""
+                  placement="bottomCenter"
+                  arrow
+                >
+                  <div>
+                    <img
+                      src={userInfo && userInfo.photos}
+                      alt=""
+                      style={{
+                        marginRight: 5,
+                        width: 25,
+                        height: 25,
+                        borderRadius: "50%",
+                      }}
+                    />
+                    <span>{userInfo && userInfo.nickname}</span>
+                  </div>
+                </Dropdown>
+              </Col>
+              <Col span="6">
+                <span
+                  onClick={() =>
+                    this.route("/admin/service/message", "service")
+                  }
+                  className="absolute"
+                  style={{ top: "6px" }}
+                >
+                  <Badge count={5}>
+                    <i className="iconfont icon-email font24"></i>
+                  </Badge>
+                </span>
+              </Col>
+              <Col span="10">
+                <Row>
+                  <Col span="12">风格</Col>
+                  <Col span="12">
+                    <a href="http://www.yunxi10.com" target="_blank">
+                      首页
+                    </a>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </div>
+        </div>
+      </Header>
+    );
+  }
+}
+
+export default withRouter(connect((state) => ({}), dispatchToProps)(Index));

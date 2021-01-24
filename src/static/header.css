@@ -20,7 +20,8 @@
 }
 
 .logo {
-  width: 200px;
+  box-shadow: #2f455a 1px 0px 3px;
+  width: 199px;
   height: 64px;
   line-height: 64px;
   float: left;

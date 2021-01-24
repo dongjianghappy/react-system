@@ -36,6 +36,7 @@ import {
   fetchAction,
   mysql,
   backup,
+  search,
   searchFieldAction,
   getQueryAction
 } from '../actions/operating'
@@ -253,6 +254,13 @@ const dispatchToProps = (dispatch) => {
         const action = backup()
         dispatch(action)
       },
+
+      getSearch(params) {
+        const action = search({
+          ...params
+        })
+        dispatch(action)
+      },      
 
       searchField(params) {
         const action = searchFieldAction(params)

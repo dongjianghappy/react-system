@@ -93,7 +93,7 @@ class Index extends React.Component {
   };
 
   render() {
-    const { module } = this.props.module;
+    const { initialValues } = this.props.module;
 
     return (
       <div>
@@ -104,6 +104,7 @@ class Index extends React.Component {
               <WeDrawer.Form
                 name="新增友情链接"
                 data={{ coding }}
+                initialValues={initialValues}
                 renderList={this.getData}
                 authorized={checkButtonAuth("add")}
                 {...this.props}

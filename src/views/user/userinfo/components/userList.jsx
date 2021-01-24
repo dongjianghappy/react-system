@@ -2,9 +2,10 @@ import React from "react";
 import { Card, Space, Button, Avatar } from "antd";
 import { checkButtonAuth, authorized, codings } from "@/utils";
 import { Confirm, WeCheckbox, WeDrawer } from "@/components";
+import { Operatinavbar } from "@/common";
 
 const UserList = (props) => {
-  const { dataSource, title } = props;
+  const { user, title } = props.module;
   return (
     <Card title={title} bordered={false}>
       <table width="100%" className="table-striped table-hover col-left-2">
@@ -16,8 +17,8 @@ const UserList = (props) => {
           <td className="col-md-1">在线/天</td>
           <td className="col-md-2">操作</td>
         </tr>
-        {dataSource &&
-          dataSource.map((item, index) => (
+        {user &&
+          user.map((item, index) => (
             <tr>
               <td>
                 <WeCheckbox data={{ id: item.id }} {...props}></WeCheckbox>
@@ -85,6 +86,14 @@ const UserList = (props) => {
             </tr>
           ))}
       </table>
+      <Operatinavbar
+        {...props}
+        button={["all", "delete", "open", "close"]}
+        data={{ list: module.checkedList, coding: props.coding }}
+        renderList={props.renderList}
+        checkButtonAuth={checkButtonAuth}
+        authorized={authorized}
+      />
     </Card>
   );
 };

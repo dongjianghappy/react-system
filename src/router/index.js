@@ -1,5 +1,6 @@
 // 静态组件
 import Login from '../views/login'
+import Test from '../views/login/test'
 import notfound404 from '../views/notfound/404'
 
 // 动态组件
@@ -75,6 +76,7 @@ import Service from '../views/service'
 import MessageBoard from '../views/service/messageBoard'
 import Feedback from '../views/service/feedback'
 import Announcement from '../views/service/announcement'
+import Email from '../views/email'
 import Job from '../views/service/job'
 import Resume from '../views/service/job/resume'
 import Message from '../views/service/message/'
@@ -90,12 +92,24 @@ import CustomizeList from '../views/customize/list'
 import Vote from '../views/vote'
 import VoteList from '../views/vote/list'
 
+import Search from '../views/search'
+import SearchView from '../views/search/view'
+import SearchKeyword from '../views/search/keyword'
+import SearchSetting from '../views/search/setting'
+
+import Template from '../views/template'
+
+
 
 
 export const mainRouter = [
     {
         path: "/login",
         component: Login
+    },
+    {
+        path: "/test",
+        component: Test
     },
     {
         path: "/404",
@@ -185,6 +199,7 @@ const arrss = {
     MessageBoard,
     Feedback,
     Announcement,
+    Email,
     Job,
     Resume,
     Message,
@@ -198,7 +213,14 @@ const arrss = {
     Space,
     SettingChannel,
     Vote,
-    VoteList
+    VoteList,
+    Search,
+    SearchView,
+    SearchKeyword,
+    SearchSetting,
+    Template,
+
+    
 }
 
 

@@ -8,7 +8,7 @@ import {
   codings,
   datetime,
 } from "@/utils";
-import { Status, Confirm, WeCheckbox, WeDrawer, Quick } from "@/components";
+import { Status, Confirm, WeCheckbox, WeDrawer } from "@/components";
 import { Operatinavbar } from "@/common";
 import Detail from "./components/detail";
 
@@ -53,11 +53,10 @@ class Announcement extends React.Component {
             )
           }
         >
-          <table width="100%" className="table-striped table-hover col-left-3">
+          <table width="100%" className="table-striped table-hover col-left-2">
             <tr className="th">
               <td className="col-md-1">选择</td>
-              <td className="col-md-1">顺序</td>
-              <td className="col-md-5">公告通知</td>
+              <td className="col-md-6">公告通知</td>
               <td className="col-md-2">时间</td>
               <td className="col-md-1">状态</td>
               <td className="col-md-2">操作</td>
@@ -72,27 +71,12 @@ class Announcement extends React.Component {
                     ></WeCheckbox>
                   </td>
                   <td>
-                    <Quick
-                      title={item.sort}
-                      data={{ id: item.id, field: "sort", coding }}
-                      authorized={checkButtonAuth("edit")}
-                      {...this.props}
-                    />
-                  </td>
-                  <td>
                     {item.type === "1" ? (
                       <span className="mr5 cl-red">公告</span>
                     ) : (
                       <span className="mr5 cl-green">通知</span>
                     )}
-
-                    <Quick
-                      title={item.title}
-                      data={{ id: item.id, field: "title", coding }}
-                      authorized={checkButtonAuth("edit")}
-                      {...this.props}
-                      width="50%"
-                    />
+                    - {item.title}
                   </td>
                   <td>{datetime(item.datetime)}</td>
                   <td>
@@ -127,6 +111,24 @@ class Announcement extends React.Component {
                         renderList={this.getData}
                         authorized={checkButtonAuth("delete")}
                         {...this.props}
+                      />
+                      <Confirm
+                        {...this.props}
+                        name={item.istop === "1" ? "取消" : "置顶"}
+                        config={{
+                          operating:
+                            item.istop === "1" ? "cancelTop" : "setTop",
+                          message: React.$modalEnum.top,
+                        }}
+                        data={{
+                          coding,
+                          id: item.id,
+                          field: "istop",
+                          value: item.istop === "1" ? "0" : "1",
+                        }}
+                        api="changeData"
+                        renderList={this.getData}
+                        authorized={checkButtonAuth("del")}
                       />
                     </Space>
                   </td>
