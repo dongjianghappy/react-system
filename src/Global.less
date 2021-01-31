@@ -96,6 +96,11 @@
 .iconfont {
   color: #999 !important;
 }
+
+// .icon-add {
+//   color: #fff !important;
+// }
+
 .set-gray {
   color: #c0c0c0;
 }
@@ -119,7 +124,17 @@
 .nav-title {
   margin-bottom: 15px;
   border-bottom: 1px solid #eee;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
+  height: 40px;
+  .title {
+    font-size: 16px;
+    font-weight: bold;
+  }
+}
+
+.label-wrap {
+  margin-bottom: 15px;
+  height: 30px;
 }
 
 .line {
@@ -148,4 +163,28 @@
   font-size: 14px;
   font-family: Consolas, monospace, serif;
   height: 500px !important;
+}
+
+.badge {
+  display: inline-block;
+  a {
+    background: #eee;
+    display: inline-block;
+    max-width: 42px;
+    max-height: 42px;
+  }
+  .number {
+    display: inline-block;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    color: #fff;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    white-space: nowrap;
+    text-align: center;
+    background: #ff4d4f;
+    border-radius: 10px;
+  }
 }

@@ -16,9 +16,9 @@ const { art: coding } = codings.slideshow;
 
 class SlideshowList extends React.Component {
   state = {
-    content: [],
+    dataSource: [],
     current: "", // 当保存成功后状态消失，其实在页面顺序更新后，在列表右侧可以新增一个刷新的按钮
-    form: [],
+    form: {},
     params: {},
   };
 
@@ -53,65 +53,22 @@ class SlideshowList extends React.Component {
         });
 
         this.setState({
-          content: res.result,
+          dataSource: res.result,
           form: arr,
         });
       });
   };
 
-  onMove = (direction, moveItem, index) => {
-    const newData = [...this.state.content];
-    const item = newData.splice(
-      index + (direction === "up" ? -1 : 1),
-      1,
-      moveItem
-    )[0]; // 这一步是将要替换的删除，并将移动的插入，最后返回被删除的数组
-    newData[index] = item;
-    this.setState({
-      current: index + (direction === "up" ? -1 : 1),
-      content: newData,
-    });
-
-    let arr = [];
-    newData.map((item, index) => {
-      arr.push({
-        id: item.id,
-        sort: 1 + index,
-        title: item.title,
-        url: item.url,
-        image: item.image,
-      });
-    });
-
-    this.setState({
-      form: arr,
-    });
-  };
-
   handleInput(e, data) {
-    this.state.form.map((item) => {
+    this.state.dataSource.map((item) => {
       if (item.id === data.id) {
         item[data.field] = e.target.value;
       }
     });
 
     this.setState({
-      form: this.state.form,
+      form: this.state.dataSource,
     });
-  }
-
-  handleSave() {
-    this.props.dispatch
-      .update({
-        data: {
-          coding,
-          list: this.state.form,
-        },
-      })
-      .then((res) => {
-        return message.info("编辑成功");
-        this.getData();
-      });
   }
 
   callback = (params) => {
@@ -126,6 +83,54 @@ class SlideshowList extends React.Component {
       })
       .then((res) => {
         this.getData();
+      });
+  };
+
+  // 移动
+  onMove = (direction, obj, moveItem, index) => {
+    const newData = obj;
+    const item = newData.splice(
+      index + (direction === "up" ? -1 : index === obj.length - 1 ? -index : 1),
+      1,
+      moveItem
+    )[0];
+    newData[index] = item;
+    this.setState({
+      dataSource: this.state.dataSource,
+    });
+  };
+
+  // 保存
+  save = () => {
+    const form = [];
+    const loop = (data) => {
+      return this.state.dataSource.map((item, index) => {
+        item.sort = 1 + index;
+        form.push({
+          id: item.id,
+          sort: item.sort,
+          title: item.title,
+          url: item.url,
+          image: item.image,
+        });
+        if (item.list) {
+          loop(item.list);
+        }
+      });
+    };
+
+    loop(this.props.module.main);
+
+    this.props.dispatch
+      .fetch({
+        api: "updateSave",
+        data: {
+          coding: coding,
+          data: JSON.stringify(form),
+        },
+      })
+      .then((res) => {
+        message.info("编辑成功");
       });
   };
 
@@ -148,7 +153,7 @@ class SlideshowList extends React.Component {
           )
         }
       >
-        {this.state.content.map((item, index) => (
+        {this.state.dataSource.map((item, index) => (
           <Row
             style={{
               marginTop: 15,
@@ -167,9 +172,10 @@ class SlideshowList extends React.Component {
             <Col span={12}>
               <div>
                 <Input
+                  key={item.image}
                   addonBefore="图片地址"
                   style={{ width: 450 }}
-                  value={item.image}
+                  defaultValue={item.image}
                   onChange={(e) =>
                     this.handleInput(e, { id: item.id, field: "image" })
                   }
@@ -177,9 +183,10 @@ class SlideshowList extends React.Component {
               </div>
               <div style={{ marginTop: 5 }}>
                 <Input
+                  key={item.url}
                   addonBefore="连接地址"
                   style={{ width: 450 }}
-                  value={item.url}
+                  defaultValue={item.url}
                   onChange={(e) =>
                     this.handleInput(e, { id: item.id, field: "url" })
                   }
@@ -187,9 +194,10 @@ class SlideshowList extends React.Component {
               </div>
               <div style={{ marginTop: 5 }}>
                 <Input
+                  key={item.title}
                   addonBefore="文字说明"
                   style={{ width: 450 }}
-                  value={item.title}
+                  defaultValue={item.title}
                   onChange={(e) =>
                     this.handleInput(e, { id: item.id, field: "title" })
                   }
@@ -197,7 +205,7 @@ class SlideshowList extends React.Component {
               </div>
             </Col>
             <Col
-              span={3}
+              span={4}
               style={{
                 display: "flex",
                 justifyContent: "space-around",
@@ -211,7 +219,7 @@ class SlideshowList extends React.Component {
               />
             </Col>
             <Col
-              span={3}
+              span={2}
               style={{
                 display: "flex",
                 justifyContent: "space-around",
@@ -219,15 +227,19 @@ class SlideshowList extends React.Component {
               }}
             >
               <Button
-                onClick={() => this.onMove("up", item, index)}
+                onClick={() =>
+                  this.onMove("up", this.state.dataSource, item, index)
+                }
                 className="deg180"
-                style={{ width: 60, height: 60 }}
+                className="deg180 move-button"
               >
                 <i className="iconfont icon-arrow1 moving"></i>
               </Button>
               <Button
-                onClick={() => this.onMove("down", item, index)}
-                style={{ width: 60, height: 60 }}
+                onClick={() =>
+                  this.onMove("down", this.state.dataSource, item, index)
+                }
+                className="move-button"
               >
                 <i className="iconfont icon-arrow1"></i>
               </Button>
@@ -237,7 +249,7 @@ class SlideshowList extends React.Component {
         <Button
           type="primary"
           size="large"
-          onClick={() => this.handleSave()}
+          onClick={() => this.save()}
           style={{ marginTop: 25 }}
         >
           保存

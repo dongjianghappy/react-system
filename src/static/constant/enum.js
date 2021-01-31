@@ -421,7 +421,11 @@ export const ICON = [
     {
       name: "点",
       icon: "dot",
-    }    
+    },
+    {
+      name: "消息",
+      icon: "email",
+    },        
   ]
 
   // 标签类型

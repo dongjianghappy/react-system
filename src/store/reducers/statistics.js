@@ -1,4 +1,4 @@
-import { INPUT_CHANGE, ADD_ITEM, DELETE_ITEM, GET_DATA_ACTION } from '../actionTypes'
+import { INPUT_CHANGE, ADD_ITEM, DELETE_ITEM, GET_DATA_ACTION,GET_DETAIL } from '../actionTypes'
 
 import { initListState } from './commonState'
 import commonReducers from './commonReduce'

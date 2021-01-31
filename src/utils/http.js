@@ -80,7 +80,7 @@ export default class http {
         let url = ""
         
 
-        if(method === "get"){
+        if(method === "get" && params.m !== "space"){
             debugger
             url = `inter_vue.php?m=${params.m}&n=${params.n}&${params.dir}`
         }else{

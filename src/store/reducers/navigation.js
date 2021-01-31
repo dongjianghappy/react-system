@@ -9,6 +9,10 @@ import commonReducers from './commonReduce'
 
 const initState = {
     module: "navigation",
+    initialValues: {
+        status: "1",
+        navtype: "main"
+    },
     expand: false,
     channel: [],
     navigation: [],

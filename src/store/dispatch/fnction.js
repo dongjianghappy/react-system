@@ -216,8 +216,11 @@ const dispatchToProps = (dispatch) => {
 
       getDetail(params) {
         const action = detailAction({
-          coding: params.coding,
-          id: params.id
+          node: params.node,
+          data: params.data,
+          api: params.api
+          // coding: params.coding,
+          // id: params.id
         })
         dispatch(action)
       },      
@@ -263,7 +266,10 @@ const dispatchToProps = (dispatch) => {
       },      
 
       searchField(params) {
-        const action = searchFieldAction(params)
+        const action = searchFieldAction({
+          node: params.node,
+          data: params.data,
+        })
         dispatch(action)
       },
 

@@ -11,6 +11,8 @@ class Static extends React.Component {
     visible: false,
     title: "",
     status: "进行中",
+    type: "",
+    name: "",
     bar: 0,
   };
 
@@ -84,21 +86,40 @@ class Static extends React.Component {
           {
             status: res.result.status,
             bar: res.result.bar,
+            type: res.result.type,
+            name: res.result.name,
           },
           () => {
+            const { type, bar, id, name, loop } = res.result;
+
             if (res.result.again) {
               const { action, model, method } = prams.data;
-              this.run({
-                title: prams.title,
-                bar: res.result.bar,
-                data: {
-                  action,
-                  model,
-                  id: res.result.outset,
-                  method,
-                  total: res.result.total,
-                },
-              });
+
+              // 分类
+              if (type === "cat") {
+                this.run({
+                  title: prams.title,
+                  bar: res.result.bar,
+                  data: {
+                    model,
+                    action,
+                    id,
+                    loop,
+                  },
+                });
+              } else {
+                this.run({
+                  title: prams.title,
+                  bar: res.result.bar,
+                  data: {
+                    action,
+                    model,
+                    id: res.result.outset,
+                    method,
+                    total: res.result.total,
+                  },
+                });
+              }
             } else {
               setTimeout(() => {
                 this.setState({
@@ -128,7 +149,7 @@ class Static extends React.Component {
           height: 150,
         }}
         visible={this.state.visible}
-        title={"sdsd"}
+        title={this.state.name}
         content={<Progress percent={30} />}
         onOk={false}
       >
@@ -136,6 +157,8 @@ class Static extends React.Component {
           {this.state.title} {this.state.status}
         </div>
         <div>
+          {this.state.type === "cat" && `正在更新分类-${this.state.name}`}
+
           <Progress percent={this.state.bar} />
         </div>
       </div>

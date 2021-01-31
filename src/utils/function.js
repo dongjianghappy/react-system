@@ -26,3 +26,20 @@ export const date= (timestamp, format) => {
 export const datetime = (timestamp, format) => {
     return moment(timestamp * 1000).format(format || 'YYYY-MM-DD HH:mm:ss');
 }
+
+// 获取json对象属性长度
+export const jsonLength = (jsonObj) => {
+    let length = 0;
+    for (let item in jsonObj) {
+       length++;
+    }
+   return length;
+}
+
+// 初始化数据
+export const requestInit = (init) => {
+    const newsRequest = {}
+    newsRequest.page = init.page;
+    newsRequest.pagesize = init.pagesize;
+   return newsRequest;
+}

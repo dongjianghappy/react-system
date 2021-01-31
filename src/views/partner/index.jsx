@@ -15,22 +15,28 @@ const { add, del, edit } = authorized.partner;
 const { partner: coding } = codings;
 
 class Index extends React.Component {
+  state = {
+    request: {
+      ...this.props.common.global.initPage,
+    },
+  };
+
   componentDidMount() {
     this.getData();
   }
 
-  getData = () => {
+  getData = (data) => {
     this.props.dispatch.select({
       data: {
-        page: 0,
-        pagesize: 25,
         coding,
+        ...this.state.request,
+        ...data,
       },
     });
   };
 
   render() {
-    const { module } = this.props;
+    const { module, initialValues } = this.props;
 
     return (
       <div>
@@ -42,6 +48,7 @@ class Index extends React.Component {
                 name="新增合作伙伴"
                 icon="add"
                 data={{ coding }}
+                initialValues={initialValues}
                 renderList={this.getData}
                 authorized={checkButtonAuth("add")}
                 {...this.props}
@@ -99,6 +106,7 @@ class Index extends React.Component {
                         isText={true}
                         action="edit"
                         data={{ id: item.id, coding }}
+                        initialValues={initialValues}
                         renderList={this.getData}
                         authorized={checkButtonAuth("edit")}
                         {...this.props}
@@ -138,6 +146,7 @@ class Index extends React.Component {
 
 export default connect(
   (state) => ({
+    common: state.common,
     module: state.partner,
   }),
   dispatchToProps

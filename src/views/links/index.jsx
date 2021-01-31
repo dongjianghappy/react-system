@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "antd";
+import { Card, Tabs } from "antd";
 import {
   connect,
   dispatchToProps,
@@ -7,49 +7,28 @@ import {
   authorized,
   codings,
 } from "@/utils";
-import { WeDrawer, NavGroup, WePagination } from "@/components";
-import { Option } from "@/common";
+import { WeDrawer, NavGroup } from "@/components";
+import { Option, Operatinavbar } from "@/common";
 import List from "./components/list";
 import Detail from "./components/detail";
 
 const { add, del, edit } = authorized.link;
 const { link: coding } = codings;
-const { Nav } = NavGroup;
+const { TabPane } = Tabs;
 
 class Index extends React.Component {
-  option = [
-    {
-      name: "来源",
-      field: "source",
-      list: [
-        {
-          value: "",
-          name: "全部",
-        },
-        ...React.$enums.linkType,
-      ],
+  state = {
+    request: {
+      method: 1,
+      apply_checked: 1,
+      ...this.props.common.global.initPage,
     },
-    {
-      name: "显示",
-      field: "display",
-      list: [
-        {
-          value: "",
-          name: "全部",
-        },
-        {
-          value: "0",
-          name: "首页",
-        },
-        {
-          value: "1",
-          name: "全站",
-        },
-      ],
-    },
-  ];
+  };
+
+  option = this.props.module.option;
 
   componentDidMount() {
+    this.option[0].list.push(...React.$enums.linkType);
     this.getData({
       method: 0,
       apply_checked: 1,
@@ -60,14 +39,24 @@ class Index extends React.Component {
     this.props.dispatch.select({
       data: {
         coding,
-        page: 0,
-        pagesize: 15,
+        ...this.state.request,
         ...data,
       },
     });
   };
 
   callback = (key) => {
+    this.props.dispatch.searchField({
+      data: {
+        ...this.props.common.global.initPage,
+      },
+      node: "request",
+    });
+    this.props.dispatch.searchField({
+      data: true,
+      node: "clear",
+    });
+
     let param = {};
     switch (key) {
       case "2":
@@ -78,7 +67,8 @@ class Index extends React.Component {
         break;
       case "3":
         param = {
-          apply_checked: 1,
+          method: 0,
+          apply_checked: 0,
         };
         break;
       default:
@@ -89,7 +79,14 @@ class Index extends React.Component {
         break;
     }
 
-    this.getData(param);
+    this.setState(
+      {
+        request: Object.assign(this.state.request, param),
+      },
+      () => {
+        this.getData();
+      }
+    );
   };
 
   render() {
@@ -97,68 +94,61 @@ class Index extends React.Component {
 
     return (
       <div>
-        <NavGroup
-          onChange={this.callback}
-          extra={
-            checkButtonAuth("add") && (
-              <WeDrawer.Form
-                name="新增友情链接"
-                data={{ coding }}
-                initialValues={initialValues}
-                renderList={this.getData}
-                authorized={checkButtonAuth("add")}
-                {...this.props}
-              >
-                <Detail />
-              </WeDrawer.Form>
-            )
-          }
-        >
-          <Nav name="出售友链" icon="111" value="1">
-            <Card className="mb15">
-              <Option option={this.option} data={{ coding }} {...this.props} />
-            </Card>
+        <Card className="mb15">
+          <Tabs
+            defaultActiveKey="1"
+            onChange={this.callback}
+            tabBarExtraContent={
+              checkButtonAuth("add") && (
+                <WeDrawer.Form
+                  name="新增友情链接"
+                  data={{ coding }}
+                  initialValues={initialValues}
+                  renderList={this.getData}
+                  authorized={checkButtonAuth("add")}
+                  {...this.props}
+                >
+                  <Detail />
+                </WeDrawer.Form>
+              )
+            }
+          >
+            <TabPane tab="出售友链" key="1">
+              <div className="mb15">
+                <Option
+                  option={this.option}
+                  data={{ coding }}
+                  renderList={this.getData}
+                  // search={{ show: true }}
+                  {...this.props}
+                />
+              </div>
 
-            <List
-              listType="1"
-              data={{ coding, apply_checked: 1, method: 0 }}
-              renderList={this.getData}
-              authorized={this.authorized}
-              {...this.props}
-            />
-          </Nav>
-          <Nav name="交换友链" value="2">
-            <Card className="mb15">
+              <List
+                listType="1"
+                renderList={this.getData}
+                authorized={this.authorized}
+                {...this.props}
+              />
+            </TabPane>
+            <TabPane tab="交换友链" key="2">
               <List
                 listType="2"
-                data={{ coding, apply_checked: 1, method: 1 }}
-                getData={this.getData}
+                renderList={this.getData}
                 authorized={this.authorized}
                 {...this.props}
               />
-            </Card>
-          </Nav>
-          <Nav name="申请友链" value="3">
-            <Card className="mb15">
+            </TabPane>
+            <TabPane tab="申请友链" key="3">
               <List
                 listType="3"
-                data={{ coding, apply_checked: 0 }}
-                getData={this.getData}
+                renderList={this.getData}
                 authorized={this.authorized}
                 {...this.props}
               />
-            </Card>
-          </Nav>
-        </NavGroup>
-        {/* <Operatinavbar
-          button={["all", "delete", "open", "close"]}
-          data={{ list: module.checkedList, coding }}
-          renderList={this.getData}
-          checkButtonAuth={checkButtonAuth}
-          authorized={authorized.partner}
-          {...this.props}
-        />
-        <WePagination module={module} renderList={this.getData} /> */}
+            </TabPane>
+          </Tabs>
+        </Card>
       </div>
     );
   }
@@ -167,6 +157,7 @@ class Index extends React.Component {
 export default connect(
   (state) => ({
     module: state.link,
+    common: state.common,
   }),
   dispatchToProps
 )(Index);

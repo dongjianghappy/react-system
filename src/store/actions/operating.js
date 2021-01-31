@@ -14,7 +14,7 @@ import {
     GET_MYSQL,
     GET_SEARCH,
     CHANGE_DATA,
-    SEARCH_FIELD,
+    REQUEST_FIELD,
     GET_QUERY
 } from '../actionTypes'
 
@@ -55,6 +55,7 @@ export const selectAction2 = async (params) =>{
 export const selectAction = (params) =>{
     return async (dispatch) => {
       const data = await api[params.api || 'select'](params.data)
+      debugger
       if(data.result){
         const action = {
             type: GET_DATA_ACTION,
@@ -70,14 +71,18 @@ export const selectAction = (params) =>{
 export const detailAction = (params) =>{
     return async (dispatch) => {
         const { coding, id } = params
-        const result = await api.detail({
-            coding,
-            id
-        })
-        if(result.result){
+        // const result = await api.detail({
+        //     coding,
+        //     id
+        // })
+        // if(result.result){
+        const data = await api[params.api || 'select'](params.data)
+        debugger
+        if(data.result){
             const action = {
                 type: GET_DETAIL,
-                value: result.result
+                node: params.node || "",
+                value: data.result
             }
             dispatch(action)
         }
@@ -158,10 +163,22 @@ export const backup = async (params) =>{
        return result
 }
 
-export const searchFieldAction = (value) =>({
-    type: SEARCH_FIELD,
-    value
-})
+
+// 查询数据
+export const searchFieldAction = (params) =>{
+    return (dispatch) => {
+
+        const action = {
+            type: REQUEST_FIELD,
+            node: params.node || "",
+            value: params.data
+            
+        }
+        dispatch(action)
+
+    }
+}
+
 
 export const getQueryAction = (value) =>({
     type: GET_QUERY,

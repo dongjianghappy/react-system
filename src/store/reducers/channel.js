@@ -9,6 +9,10 @@ import commonReducers from './commonReduce'
 
 const initState = {
     module: "channel",
+    initialValues: {
+        status: "1",
+        type: "main"
+    },
     article: {
         chart: {},
         cateList: [],

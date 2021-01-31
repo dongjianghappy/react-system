@@ -1,4 +1,4 @@
-import { INPUT_CHANGE, INSERT, DELETE, UPDATE, GET_DETAIL, SEARCH_FIELD, GET_QUERY, DRAWER, DIALOG, ADD_ITEM, DELETE_ITEM, GET_DATA_ACTION } from '../actionTypes'
+import { INPUT_CHANGE, INSERT, DELETE, UPDATE, GET_DETAIL, REQUEST_FIELD, GET_QUERY, DRAWER, DIALOG, ADD_ITEM, DELETE_ITEM, GET_DATA_ACTION } from '../actionTypes'
 
 import { initListState } from './commonState'
 
@@ -8,6 +8,15 @@ const initState = {
     global: {
         data: {},
         search: {},
+        initPage: {
+            page: 1,
+            pagesize: 10,
+        },
+        request: {
+            page: 0,
+            pagesize: 10,
+        },
+        clear: true,
         params: {},
         drawer: {
             title: "标题",
@@ -24,14 +33,68 @@ const initState = {
             drawer: false
         },
         checked: true,
-        checkedList: []
+        checkedList: [],
+        option: [
+            {
+              name: "类型",
+              field: "source",
+              list: [
+                {
+                  value: "",
+                  name: "全部",
+                }
+              ],
+            },
+            {
+              name: "显示",
+              field: "display",
+              list: [
+                {
+                  value: "",
+                  name: "全部",
+                },
+                {
+                  value: "0",
+                  name: "是",
+                },
+                {
+                  value: "1",
+                  name: "否",
+                },
+              ],
+            },
+          ]
     },
-    ...initListState
+    system: {},
+    // ...initListState
 }
 const reducers = (state = initState, action) => {
     // 这里是通过action类型进行设置state值，为什么有人说这里的state只读不能修改，而是通过深度拷贝一个新的再设置
     let newState = ""
     switch(action.type){
+
+        case GET_DETAIL :
+            newState = JSON.parse(JSON.stringify(state))
+            debugger
+            if(action.node.indexOf(".") !== -1){
+                const arr = action.node.split(".")
+                newState[arr[0]][arr[1]] = action.value
+                newState.node = arr[0]
+            }else{
+                if(action.node){
+                    newState[action.node] = action.value
+                    newState.node = action.node
+                }else{
+                    newState.detail = action.value
+                }
+            }
+
+
+
+            
+
+            return newState
+            break
         case INSERT :
             newState = JSON.parse(JSON.stringify(state))
 
@@ -88,11 +151,11 @@ const reducers = (state = initState, action) => {
             newState.global.data = action.value.data
             return newState
             break
-
-
-        case SEARCH_FIELD :
+            
+        case REQUEST_FIELD :
+            debugger
             newState = JSON.parse(JSON.stringify(state))
-            newState.global.search = Object.assign(newState.global.search || {})
+            newState.global[action.node] = action.value
             return newState
             break
 

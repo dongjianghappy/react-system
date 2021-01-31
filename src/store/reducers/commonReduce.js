@@ -54,8 +54,23 @@ const commonReducers = (state, action) => {
 
         case GET_DETAIL :
             newState = JSON.parse(JSON.stringify(state))
+            debugger
+            if(action.node.indexOf(".") !== -1){
+                const arr = action.node.split(".")
+                newState[arr[0]][arr[1]] = action.value
+                newState.node = arr[0]
+            }else{
+                if(action.node){
+                    newState[action.node] = action.value
+                    newState.node = action.node
+                }else{
+                    newState.detail = action.value
+                }
+            }
 
-            newState.detail = action.value
+
+
+            
 
             return newState
             break
@@ -119,8 +134,8 @@ const commonReducers = (state, action) => {
 
             if(action.node.indexOf(".") !== -1){
                 const arr = action.node.split(".")
-                newState.total = action.data.total
-                newState.page = action.data.pages
+                newState[arr[0]].total = action.data.total
+                newState[arr[0]].page = action.data.pages
                 newState[arr[0]][arr[1]] = data
                 newState.node = arr[0]
             }else{

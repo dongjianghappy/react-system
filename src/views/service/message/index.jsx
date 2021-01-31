@@ -19,11 +19,19 @@ class ServiceMessage extends React.Component {
   }
 
   getData = () => {
+    let arr = this.props.location.pathname.split("/");
+    let read = {};
+    if (arr[arr.length - 1] === "unread") {
+      read = { status: 0 };
+    } else if (arr[arr.length - 1] === "read") {
+      read = { status: 1 };
+    }
     this.props.dispatch.select({
       data: {
         page: 0,
         pagesize: 25,
         coding,
+        ...read,
       },
       node: "message",
     });
@@ -44,8 +52,20 @@ class ServiceMessage extends React.Component {
                     {...this.props}
                   ></WeCheckbox>
                 </td>
-                <td className="col-md-10">{item.title}</td>
-                <td className="col-md-1">{item.date_time}</td>
+                <td className={`col-md-10 ${item.status === "0" && "bold"}`}>
+                  <span
+                    onClick={() =>
+                      this.props.history.push(
+                        `/admin/service/message/detail?id=${item.id}`
+                      )
+                    }
+                  >
+                    {item.title}
+                  </span>
+                </td>
+                <td className="col-md-1">
+                  {item.status === "1" ? "已读" : "未读"}
+                </td>
               </tr>
             ))}
         </table>

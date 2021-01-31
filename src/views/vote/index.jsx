@@ -96,15 +96,6 @@ class Index extends React.Component {
             </>
           ))}
         </table>
-
-        <Operatinavbar
-          button={["all", "delete", "open", "close"]}
-          data={{ list: module.checkedList, coding }}
-          renderList={this.getData}
-          checkButtonAuth={checkButtonAuth}
-          authorized={authorized.partner}
-          {...this.props}
-        />
       </Card>
     );
   }

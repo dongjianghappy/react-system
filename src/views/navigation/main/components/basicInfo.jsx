@@ -41,7 +41,7 @@ const Basic = (props) => {
         </Radio.Group>
       </Form.Item>
       <Form.Item label="类型" name="navtype">
-        <Select key={navtype} className="w150" defaultValue={navtype}>
+        <Select key={navtype} className="w150">
           {navType.map((item) => (
             <Option value={item.value}>{item.name}</Option>
           ))}

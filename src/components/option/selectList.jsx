@@ -1,35 +1,76 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Popover } from "antd";
 import SelectOption from "./select";
+import { jsonLength } from "@/utils";
 
 const Option = (props) => {
-  const { init, enumSource, flagList, hasReset } = props; // 初始化数据
+  const {
+    common: {
+      global: { request, initPage, clear },
+    },
+    dispatch,
+    renderList,
+    init,
+    enumSource,
+    hasReset,
+  } = props; // 初始化数据
   const [dataList, setDataList] = useState(init); // 当前数据
 
+  useEffect(() => {
+    if (clear) {
+      setDataList(init);
+      dispatch.searchField({
+        data: false,
+        node: "clear",
+      });
+    }
+  }, [request]);
+
   // 选择
-  const callback = (parems) => {
+  const callback = (param) => {
+    const newsRequest = { ...request, ...initPage };
+
     let obj = {};
     dataList.map((item) => {
-      if (item.field === parems.field) {
-        item.name = parems.name;
-        item.value = parems.value;
+      if (item.field === param.field) {
+        item.name = param.name;
+        item.value = param.value;
       }
       obj[item.field] = item.value;
     });
-    setDataList([...dataList]);
-    props.renderList && props.renderList(obj);
+
+    let objs = {};
+    objs[param.field] = param.value;
+    if (param.value !== "") {
+      Object.assign(newsRequest, objs);
+    } else {
+      for (let key in newsRequest) {
+        if (param.field.includes(key)) {
+          delete newsRequest[key];
+        }
+      }
+    }
+
+    dispatch.searchField({
+      data: {
+        ...newsRequest,
+      },
+      node: "request",
+    });
+
+    renderList && renderList(newsRequest);
   };
 
   // 重置
-  const onReset = () => {
-    let obj = {};
-    init.map((item) => {
-      obj[item.field] = item.value;
-    });
-    setDataList([...init]);
-    // props.data 为初始化参数，比如分页
-    props.renderList && props.renderList({ ...obj, ...props.data });
-  };
+  // const onReset = () => {
+  //   let obj = {};
+  //   init.map((item) => {
+  //     obj[item.field] = item.value;
+  //   });
+  //   setDataList([...init]);
+  //   // props.data 为初始化参数，比如分页
+  //   props.renderList && props.renderList({ ...obj, ...props.data });
+  // };
 
   return (
     <>
@@ -43,7 +84,7 @@ const Option = (props) => {
             callback={callback}
           />
         ))}
-      {hasReset !== false ? (
+      {/* {hasReset !== false ? (
         <span
           onClick={onReset}
           style={{ padding: "8px 12px", background: "#1890ff", color: "#fff" }}
@@ -52,7 +93,7 @@ const Option = (props) => {
         </span>
       ) : (
         ""
-      )}
+      )} */}
     </>
   );
 };

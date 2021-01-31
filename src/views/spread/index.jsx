@@ -38,7 +38,7 @@ class Spread extends React.Component {
   }
 
   render() {
-    const { list } = this.props.module;
+    const { list, initialValues } = this.props.module;
 
     return (
       <div>
@@ -50,6 +50,7 @@ class Spread extends React.Component {
                 name="新增推广"
                 icon="add"
                 data={{ coding }}
+                initialValues={initialValues}
                 renderList={this.getData}
                 authorized={checkButtonAuth(add)}
                 {...this.props}
@@ -123,6 +124,7 @@ class Spread extends React.Component {
                             name="编辑"
                             action="edit"
                             data={{ id: item.id, coding }}
+                            initialValues={initialValues}
                             renderList={this.getData}
                             authorized={checkButtonAuth(edit)}
                             {...this.props}

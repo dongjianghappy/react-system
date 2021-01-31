@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col } from "antd";
+import { jsonLength } from "@/utils";
+import { Search } from "../components/index.js";
 
 const Option = (props) => {
-  const { dispatch, coding } = props;
-  const [isInit, setIsInit] = useState(true); // 是否初始化状态
+  const {
+    common: {
+      global: { request, initPage, clear },
+    },
+    renderList,
+    dispatch,
+  } = props;
+
   const [current, setCurrent] = useState({}); // 当前行选择状态
-  const [condition, setCondition] = useState({}); // 查询查询字段
 
   // 初始化中默认为第一个选项
   // 当init的值为true时，则表示初始化状态，初始化时，默认选中第一个值，所有行的field值为空
   useEffect(() => {
-    if (isInit) {
+    if (clear) {
       const cutt = {};
       const param = {};
 
@@ -18,43 +25,62 @@ const Option = (props) => {
         cutt[`row${index}`] = 0;
         param[item.field] = "";
       });
-      setIsInit(false);
       setCurrent(cutt);
-      setCondition(param);
+
+      dispatch.searchField({
+        data: false,
+        node: "clear",
+      });
     }
-  }, []);
+  }, [request]);
 
   const handleCondition = (param) => {
-    debugger;
-    // react纯函数组件useState更新页面不刷新
-    // 当修改原数组时，如果原数组是个深层数组（不只一层），使用setTextList修改时，不会触发页面刷新
-    // 这里我的解决方案是，先将原数组深拷贝，赋值给新数组，再修改新数组，将修改后的新数组传递进去，这样就会引起视图更新。
+    const newsRequest = { ...request, ...initPage };
     current[param.row] = param.index;
     setCurrent({ ...current });
+    let obj = {};
+    obj[param.field] = param.value;
+    if (param.value !== "") {
+      Object.assign(newsRequest, obj);
+    } else {
+      for (let key in newsRequest) {
+        if (param.field.includes(key)) {
+          delete newsRequest[key];
+        }
+      }
+    }
 
-    condition[param.field] = param.value;
-    setCondition({ ...condition });
-
-    dispatch.select({
-      api: props.api,
+    dispatch.searchField({
       data: {
-        coding: coding,
-        page: 0,
-        pagesize: 15,
-        ...condition,
+        ...newsRequest,
       },
-      node: props.node,
+      node: "request",
     });
+
+    renderList && renderList(newsRequest);
   };
 
   return (
     <div className="condition p0">
-      <Row className="p20" style={{ background: "#f9f9f9" }}>
+      {props.search && props.search.show === true ? (
+        <Row className="mb25">
+          <Col>
+            <Search {...props} />
+          </Col>
+        </Row>
+      ) : (
+        ""
+      )}
+
+      <Row
+        className="ptb10"
+        style={{ background: "#f9f9f9", border: "1px solid #eee" }}
+      >
         {props.option.map((item, index) => (
           <Col span="24" className="col " key={index}>
-            <span>{item.name}: </span>
+            <span className="bold">{item.name}</span>
             {item.list.map((items, i) => (
-              <a
+              <span
                 key={i}
                 className={`${
                   parseInt(current["row" + index]) === i ? "option-current" : ""
@@ -69,7 +95,7 @@ const Option = (props) => {
                 }
               >
                 {items.remark || items.name}
-              </a>
+              </span>
             ))}
           </Col>
         ))}

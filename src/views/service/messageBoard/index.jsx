@@ -16,17 +16,22 @@ const { reply, del, edit } = authorized.messageBoard;
 const { messageBoard: coding } = codings;
 
 class Index extends React.Component {
+  state = {
+    request: {
+      ...this.props.common.global.initPage,
+    },
+  };
   componentDidMount() {
     this.getData();
   }
 
-  getData = () => {
+  getData = (data) => {
     this.props.dispatch.select({
       api: "messageBoard",
       data: {
-        page: 0,
-        pagesize: 25,
         coding,
+        ...this.state.request,
+        ...data,
       },
       node: "messageBoard",
     });
@@ -120,6 +125,7 @@ class Index extends React.Component {
 
 export default connect(
   (state) => ({
+    common: state.common,
     module: state.service,
   }),
   dispatchToProps

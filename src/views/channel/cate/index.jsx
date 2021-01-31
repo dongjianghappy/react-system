@@ -84,6 +84,7 @@ class Channel extends React.Component {
     const {
       channel,
       module: { cateList },
+      initialValues,
       dispatch: { onMove, expand, expandAll },
     } = this.props;
 
@@ -92,35 +93,48 @@ class Channel extends React.Component {
 
     return (
       <>
-        <Card
-          title="分类管理"
-          extra={
-            checkButtonAuth("add") ? (
-              <>
-                <WeDrawer.Form
-                  name="新增分类"
-                  icon="add"
-                  data={{ coding }}
-                  renderList={this.getData}
-                  authorized={checkButtonAuth("add")}
-                  {...this.props}
-                >
-                  <Detail />
-                </WeDrawer.Form>
+        <Card>
+          <div className="nav-title">
+            分类管理
+            <span className="right">
+              <Space>
                 <Button
                   onClick={() =>
                     expandAll({ node: `${channel.module}.cateList` })
                   }
                 >
-                  全部展开
+                  <i
+                    className={`iconfont icon-${
+                      this.props.expand ? "jianhao" : "anonymous-iconfont"
+                    } iconslide`}
+                  />
+                  {this.props.expand ? "展开" : "收缩"}
                 </Button>
-                <Button onClick={() => this.save()}>保存</Button>
-              </>
-            ) : (
-              ""
-            )
-          }
-        >
+                <Button onClick={() => this.save()}>
+                  <i className="iconfont icon-mail" />
+                  保存
+                </Button>
+                {checkButtonAuth("add") ? (
+                  <>
+                    <WeDrawer.Form
+                      name="新增分类"
+                      icon="add"
+                      type="defult"
+                      data={{ coding }}
+                      initialValues={initialValues}
+                      renderList={this.getData}
+                      authorized={checkButtonAuth("add")}
+                      {...this.props}
+                    >
+                      <Detail />
+                    </WeDrawer.Form>
+                  </>
+                ) : (
+                  ""
+                )}
+              </Space>
+            </span>
+          </div>
           <table
             width="100%"
             className="table-striped table-condensed table-hover category table-cate col-left-2"
@@ -167,6 +181,7 @@ class Channel extends React.Component {
                         title="新增页面"
                         icon="add"
                         data={{ fid: item.id }}
+                        initialValues={initialValues}
                         action="add"
                         coding={coding}
                         renderList={this.getData}
@@ -220,6 +235,7 @@ class Channel extends React.Component {
                           isText={true}
                           action="edit"
                           data={{ id: item.id, coding }}
+                          initialValues={initialValues}
                           renderList={this.getData}
                           authorized={checkButtonAuth("edit")}
                           {...this.props}
@@ -337,6 +353,7 @@ class Channel extends React.Component {
                                     title="新增页面"
                                     icon="add"
                                     data={{ fid: aaa.id }}
+                                    initialValues={initialValues}
                                     action="add"
                                     coding={coding}
                                     renderList={this.getData}
@@ -395,6 +412,7 @@ class Channel extends React.Component {
                                       name="编辑"
                                       title="编辑分类"
                                       id={aaa.id}
+                                      initialValues={initialValues}
                                       renderList={this.getData}
                                       coding={coding}
                                       {...this.props}
@@ -549,6 +567,7 @@ class Channel extends React.Component {
                                                   name="编辑"
                                                   title="编辑分类"
                                                   id={bbb.id}
+                                                  initialValues={initialValues}
                                                   renderList={this.getData}
                                                   coding={coding}
                                                   {...this.props}
@@ -665,6 +684,7 @@ export default connect(
   (state) => ({
     module: state.channel[channel().module],
     channel: channel(),
+    expand: state.channel.expand,
   }),
   dispatchToProps
 )(Channel);

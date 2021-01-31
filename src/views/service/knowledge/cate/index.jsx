@@ -83,29 +83,43 @@ class Index extends React.Component {
     const { cate: coding } = this.state.coding;
     return (
       <>
-        <Card
-          title="知识分类"
-          extra={
-            checkButtonAuth("add") && (
-              <>
-                <WeDrawer.Form
-                  name="新增分类"
-                  icon="add"
-                  data={{ coding }}
-                  renderList={this.getData}
-                  authorized={checkButtonAuth("add")}
-                  {...this.props}
-                >
-                  <Detail />
-                </WeDrawer.Form>
+        <Card>
+          <div className="nav-title">
+            知识分类
+            <span className="right">
+              <Space>
                 <Button onClick={() => expandAll({ node: "cateList" })}>
-                  全部展开
+                  <i
+                    className={`iconfont icon-${
+                      this.props.module.expand
+                        ? "jianhao"
+                        : "anonymous-iconfont"
+                    } iconslide`}
+                  />
+                  {this.props.module.expand ? "展开" : "收缩"}
                 </Button>
-                <Button onClick={() => this.save()}>保存</Button>
-              </>
-            )
-          }
-        >
+                <Button onClick={() => this.save()}>
+                  <i className="iconfont icon-mail" />
+                  保存
+                </Button>
+                {checkButtonAuth("add") && (
+                  <>
+                    <WeDrawer.Form
+                      name="新增分类"
+                      icon="add"
+                      type="defult"
+                      data={{ coding }}
+                      renderList={this.getData}
+                      authorized={checkButtonAuth("add")}
+                      {...this.props}
+                    >
+                      <Detail />
+                    </WeDrawer.Form>
+                  </>
+                )}
+              </Space>
+            </span>
+          </div>
           <table
             width="100%"
             className="table-striped table-condensed table-hover category table-cate col-left-2"
@@ -321,6 +335,28 @@ class Index extends React.Component {
                                 </td>
                                 <td className="col-md-2">
                                   <Space>
+                                    <span
+                                      disabled={!checkButtonAuth(edit)}
+                                      onClick={() =>
+                                        this.props.history.push(
+                                          `/admin/knowledge/detail?fid=${aaa.id}`
+                                        )
+                                      }
+                                    >
+                                      添加
+                                    </span>
+                                    <span className="line">|</span>
+                                    <span
+                                      disabled={!checkButtonAuth(edit)}
+                                      onClick={() =>
+                                        this.props.history.push(
+                                          `/admin/knowledge/list?&fid=${aaa.id}`
+                                        )
+                                      }
+                                    >
+                                      列表
+                                    </span>
+                                    <span className="line">|</span>
                                     <WeDrawer.Form
                                       isText={true}
                                       name="编辑"
@@ -332,6 +368,7 @@ class Index extends React.Component {
                                     >
                                       <Detail />
                                     </WeDrawer.Form>
+                                    <span className="line">|</span>
                                     <Confirm
                                       name="删除"
                                       type="text"

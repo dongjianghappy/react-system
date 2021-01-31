@@ -20,6 +20,9 @@ class CollectionList extends React.Component {
   state = {
     params: {},
     dataSource: {},
+    request: {
+      ...this.props.common.global.initPage,
+    },
   };
 
   componentDidMount() {
@@ -33,15 +36,15 @@ class CollectionList extends React.Component {
     );
   }
 
-  getData = () => {
+  getData = (data) => {
     const param = this.state.params.fid ? { fid: this.state.params.fid } : {};
 
     this.props.dispatch.select({
       data: {
-        page: 0,
-        pagesize: 10,
         coding: coding,
         ...param,
+        ...this.state.request,
+        ...data,
       },
       node: "nodeList",
     });
@@ -114,6 +117,7 @@ class CollectionList extends React.Component {
 
 export default connect(
   (state) => ({
+    common: state.common,
     module: state.collection,
   }),
   dispatchToProps

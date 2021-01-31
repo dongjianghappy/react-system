@@ -80,6 +80,7 @@ import Email from '../views/email'
 import Job from '../views/service/job'
 import Resume from '../views/service/job/resume'
 import Message from '../views/service/message/'
+import MessageArticle from '../views/service/message/article'
 import KnowledgeCate from '../views/service/knowledge/cate/index'
 import KnowledgeList from '../views/service/knowledge/article/'
 import KnowledgeArticle from '../views/service/knowledge/article/article'
@@ -203,6 +204,7 @@ const arrss = {
     Job,
     Resume,
     Message,
+    MessageArticle,
     KnowledgeCate,
     KnowledgeList,
     KnowledgeArticle,

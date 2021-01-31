@@ -75,36 +75,51 @@ class Index extends React.Component {
 
   render() {
     const {
-      module: { main, checkedList },
+      module: { main, checkedList, initialValues },
       dispatch: { onMove, expand, expandAll },
     } = this.props;
 
     const { params } = this.state;
     return (
       <div>
-        <Card
-          title={`${params.name}导航`}
-          extra={
-            checkButtonAuth(add) && (
-              <>
-                <WeDrawer.Form
-                  name="新增导航"
-                  icon="add"
-                  data={{ channel_id: params.channel, coding }}
-                  renderList={this.getData}
-                  authorized={checkButtonAuth(add)}
-                  {...this.props}
-                >
-                  <Detail />
-                </WeDrawer.Form>
+        <Card>
+          <div className="nav-title">
+            {`${params.name}导航`}
+            <span className="right">
+              <Space>
                 <Button onClick={() => expandAll({ node: "main" })}>
-                  全部展开
+                  <i
+                    className={`iconfont icon-${
+                      this.props.module.expand
+                        ? "jianhao"
+                        : "anonymous-iconfont"
+                    } iconslide`}
+                  />
+                  {this.props.module.expand ? "展开" : "收缩"}
                 </Button>
-                <Button onClick={() => this.save()}>保存</Button>
-              </>
-            )
-          }
-        >
+                <Button onClick={() => this.save()}>
+                  <i className="iconfont icon-mail" />
+                  保存
+                </Button>
+                {checkButtonAuth(add) && (
+                  <>
+                    <WeDrawer.Form
+                      name="新增导航"
+                      icon="add"
+                      type="defult"
+                      data={{ channel_id: params.channel, coding }}
+                      initialValues={initialValues}
+                      renderList={this.getData}
+                      authorized={checkButtonAuth(add)}
+                      {...this.props}
+                    >
+                      <Detail />
+                    </WeDrawer.Form>
+                  </>
+                )}
+              </Space>
+            </span>
+          </div>
           <table width="100%" className="table-striped table-cate col-left-23">
             <tr className="th">
               <td className="col-md-1">选择</td>
@@ -145,6 +160,7 @@ class Index extends React.Component {
                           isText={true}
                           icon="add"
                           data={{ coding, fid: item.id }}
+                          initialValues={initialValues}
                           renderList={this.getData}
                           authorized={checkButtonAuth(add)}
                           {...this.props}
@@ -207,6 +223,7 @@ class Index extends React.Component {
                           isText={true}
                           action="edit"
                           data={{ id: item.id, coding }}
+                          initialValues={initialValues}
                           renderList={this.getData}
                           authorized={checkButtonAuth(edit)}
                           {...this.props}
@@ -313,6 +330,7 @@ class Index extends React.Component {
                                       coding,
                                       channel: params.channel,
                                     }}
+                                    initialValues={initialValues}
                                     renderList={this.getData}
                                     authorized={checkButtonAuth(edit)}
                                     {...this.props}

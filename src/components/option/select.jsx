@@ -16,11 +16,10 @@ const Option = (props) => {
   return (
     <>
       <span
+        className="bg-eee font12"
         style={{
-          marginRight: 10,
-          padding: "8px 12px",
-          background: "#1890ff",
-          color: "#fff",
+          marginLeft: 10,
+          padding: "5px 10px",
         }}
       >
         <Popover

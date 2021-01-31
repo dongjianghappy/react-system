@@ -251,21 +251,34 @@ class menuRouter extends React.Component {
 
     return (
       <Card>
-        <div style={{ marginBottom: 15 }}>
-          <Space>
-            <Button type="primary">路由菜单</Button>
-            <WeDrawer.Form
-              name="新增页面"
-              action="add"
-              dispatch={this.props.dispatch}
-              data={{ coding: "P0015" }}
-              renderList={this.getData}
-            >
-              <Article />
-            </WeDrawer.Form>
-            <Button onClick={() => expandAll({})}>全部展开</Button>
-            <Button onClick={() => this.save()}>保存</Button>
-          </Space>
+        <div className="nav-title">
+          路由菜单
+          <span className="right">
+            <Space>
+              <Button onClick={() => expandAll({})}>
+                <i
+                  className={`iconfont icon-${
+                    this.props.module.expand ? "jianhao" : "anonymous-iconfont"
+                  } iconslide`}
+                />
+                {this.props.module.expand ? "展开" : "收缩"}
+              </Button>
+              <Button onClick={() => this.save()}>
+                <i className="iconfont icon-mail" />
+                保存
+              </Button>
+              <WeDrawer.Form
+                name="新增页面"
+                action="add"
+                type="defult"
+                dispatch={this.props.dispatch}
+                data={{ coding: "P0015" }}
+                renderList={this.getData}
+              >
+                <Article />
+              </WeDrawer.Form>
+            </Space>
+          </span>
         </div>
 
         <table width="100%" className="table-striped col-left-12">

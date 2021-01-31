@@ -266,6 +266,11 @@ export default {
     backup(params) {
         return http.request('database', 'backup', 'post', params)
     },    
+
+    // 数据库备份
+    backupManage(params) {
+        return http.request('database', 'backupManage', 'post', params)
+    },      
     // 应用商城
     appstore(params) {
         return http.request('vue', 'appstore', 'post', params)
@@ -401,6 +406,11 @@ export default {
         return http.request('vue', 'createVote','post', params)
     }, 
 
+    // 删除投票
+    deleteVote(params) {
+        return http.request('vue', 'deleteVote','post', params)
+    },     
+
     // 新建投票
     updateVote(params) {
         return http.request('vue', 'updateVote','post', params)
@@ -414,6 +424,16 @@ export default {
     // 投票结果
     knowledgeList(params) {
         return http.request('vue', 'knowledgeList','post', params)
+    },      
+
+    // 系统消息
+    systemMessage(params) {
+        return http.request('vue', 'systemMessage','post', params)
+    },  
+
+    // 系统消息
+    messageDetail(params) {
+        return http.request('vue', 'messageDetail','post', params)
     },      
     
     // 站内搜索
@@ -429,5 +449,6 @@ export default {
     saveFile(params) {
         return http.request('temp', 'saveFile','post', params)
     },      
-    
+
+      
 }

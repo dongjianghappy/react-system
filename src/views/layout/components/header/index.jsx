@@ -1,12 +1,16 @@
 import React from "react";
-import { Layout, Menu, Row, Col, Dropdown, message, Input, Badge } from "antd";
 import {
-  connect,
-  dispatchToProps,
-  checkButtonAuth,
-  authorized,
-  codings,
-} from "@/utils";
+  Layout,
+  Menu,
+  Row,
+  Col,
+  Dropdown,
+  message,
+  Input,
+  Popover,
+} from "antd";
+import { connect, dispatchToProps } from "@/utils";
+import { Badge } from "@/components";
 import { withRouter } from "react-router-dom";
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
 import "@/static/header.css";
@@ -15,6 +19,17 @@ const { Header } = Layout;
 const { Search } = Input;
 const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 class Index extends React.Component {
+  componentDidMount() {
+    this.getData();
+  }
+
+  getData = () => {
+    this.props.dispatch.getDetail({
+      api: "systemMessage",
+      node: "system",
+    });
+  };
+
   menu = (
     <Menu
       onClick={(p) => {
@@ -48,6 +63,7 @@ class Index extends React.Component {
     this.props.history.push("/admin/search");
   };
   render() {
+    const { system } = this.props.module;
     return (
       <Header className="header">
         <div className="logo" onClick={() => this.route("/admin", "basic")}>
@@ -108,13 +124,21 @@ class Index extends React.Component {
                   onClick={() =>
                     this.route("/admin/service/message", "service")
                   }
+                >
+                  消息
+                  <Badge num={system.message} />
+                </span>
+                {/* <span
+                  onClick={() =>
+                    this.route("/admin/service/message", "service")
+                  }
                   className="absolute"
                   style={{ top: "6px" }}
                 >
                   <Badge count={5}>
                     <i className="iconfont icon-email font24"></i>
                   </Badge>
-                </span>
+                </span> */}
               </Col>
               <Col span="10">
                 <Row>
@@ -134,4 +158,6 @@ class Index extends React.Component {
   }
 }
 
-export default withRouter(connect((state) => ({}), dispatchToProps)(Index));
+export default withRouter(
+  connect((state) => ({ module: state.common }), dispatchToProps)(Index)
+);

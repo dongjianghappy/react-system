@@ -23,30 +23,30 @@ const List = (props) => {
   const render = () => {
     if (props.listType === "1") {
       return (
-        <Card
-          title="友情链接列表"
-          extra={
-            <SelectList
-              enumSource={{
-                status: {
-                  "": "所有",
-                  0: "关闭",
-                  1: "开启",
-                },
-              }}
-              init={[
-                {
-                  title: "状态",
-                  field: "status",
-                  value: "",
-                  name: "所有",
-                },
-              ]}
-              data={{ page: 0, pagesize: 15 }}
-              renderList={props.renderList}
-            />
-          }
-        >
+        <>
+          <div className="label-wrap">
+            <span className="right">
+              <SelectList
+                enumSource={{
+                  status: {
+                    "": "所有",
+                    0: "关闭",
+                    1: "开启",
+                  },
+                }}
+                init={[
+                  {
+                    title: "状态",
+                    field: "status",
+                    value: "",
+                    name: "所有",
+                  },
+                ]}
+                {...props}
+              />
+            </span>
+          </div>
+
           <table width="100%" className="table-striped table-hover col-left-23">
             <tr className="th">
               <td className="col-md-1"> 选择</td>
@@ -139,7 +139,7 @@ const List = (props) => {
                 </tr>
               ))}
           </table>
-        </Card>
+        </>
       );
     } else if (props.listType === "2") {
       return (
@@ -231,22 +231,8 @@ const List = (props) => {
                 <td>
                   <WeCheckbox {...props} data={{ id: item.id }}></WeCheckbox>
                 </td>
-                <td>
-                  <Quick
-                    {...props}
-                    title={item.name}
-                    data={{ id: item.id, field: "name", coding }}
-                    authorized={checkButtonAuth("edit")}
-                  />
-                </td>
-                <td>
-                  <Quick
-                    {...props}
-                    title={item.url}
-                    data={{ id: item.id, field: "url", coding }}
-                    authorized={checkButtonAuth("edit")}
-                  />
-                </td>
+                <td>{item.name}</td>
+                <td>{item.url}</td>
                 <td>{item.webmaster}</td>
                 <td>{item.qq}</td>
                 <td>{datetime(item.datetime)}</td>

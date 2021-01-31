@@ -16,13 +16,19 @@ const { del, edit } = authorized.feedback;
 const { feedback: coding } = codings;
 
 class Index extends React.Component {
-  getData = () => {
+  state = {
+    request: {
+      ...this.props.common.global.initPage,
+    },
+  };
+
+  getData = (data) => {
     this.props.dispatch.select({
       api: "feedback",
       data: {
-        page: 0,
-        pagesize: 25,
         coding,
+        ...this.state.request,
+        ...data,
       },
       node: "feedback",
     });
@@ -101,6 +107,7 @@ class Index extends React.Component {
 
 export default connect(
   (state) => ({
+    common: state.common,
     module: state.service,
   }),
   dispatchToProps

@@ -16,29 +16,34 @@ const { add, del, edit } = authorized.partner;
 const { partner: coding } = codings;
 
 class Index extends React.Component {
+  state = {
+    request: {
+      ...this.props.common.global.initPage,
+    },
+  };
   componentDidMount() {
     this.getData({
       level: 0,
     });
   }
 
-  getData = (params) => {
+  getData = (data) => {
     this.props.dispatch.select({
       api: "userList",
       data: {
-        page: 0,
-        pagesize: 25,
-        ...params,
+        // ...params,
+        ...this.state.request,
+        ...data,
       },
       node: "user",
     });
   };
 
-  onChange = (params, key) => {
+  onChange = (data, key) => {
     this.getData({
-      page: 0,
-      pagesize: 25,
-      ...params,
+      ...this.state.request,
+      ...data,
+      // ...params,
     });
   };
 
@@ -97,6 +102,7 @@ class Index extends React.Component {
 
 export default connect(
   (state) => ({
+    common: state.common,
     module: state.user,
   }),
   dispatchToProps

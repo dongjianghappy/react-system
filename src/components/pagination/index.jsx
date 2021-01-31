@@ -1,35 +1,43 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Pagination } from "antd";
 
 const WePagination = (props) => {
-  const { module, renderList, dispatch } = props;
+  const {
+    module,
+    common: {
+      global: { request, initPage, clear },
+    },
+    renderList,
+    dispatch,
+  } = props;
 
-  const onChange = (pageNumber, page) => {
-    renderList &&
-      renderList({
-        page: pageNumber,
-        pagesize: page,
-      });
-    // dispatch.select({
-    //   api: props.api,
-    //   data: {
-    //     page: pageNumber,
-    //     pagesize: page,
-    //     ...props.data,
-    //   },
-    // });
+  const onChange = (pageNumber, pagesize) => {
+    const newsRequest = { ...request };
+    newsRequest.page = pageNumber;
+    newsRequest.pagesize = initPage.pagesize;
+
+    dispatch.searchField({
+      data: {
+        ...newsRequest,
+      },
+      node: "request",
+    });
+
+    renderList && renderList(newsRequest);
   };
 
-  debugger;
   return (
-    <Pagination
-      showQuickJumper
-      pagesize={15}
-      total={module.total}
-      onChange={onChange}
-      locale={{ jump_to: "跳至" }}
-      style={{ marginTop: 25 }}
-    />
+    <>
+      <Pagination
+        showQuickJumper
+        current={request.page}
+        defaultPageSize={request.pagesize}
+        total={module.total}
+        onChange={onChange}
+        locale={{ jump_to: "跳至" }}
+        style={{ marginTop: 25 }}
+      />
+    </>
   );
 };
 

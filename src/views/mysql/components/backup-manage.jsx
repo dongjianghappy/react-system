@@ -30,6 +30,7 @@ const BackupManage = (props) => {
               <td>{item.dbtime}</td>
               <td>
                 <Confirm
+                  {...props}
                   name="还原"
                   config={{
                     operating: "remove",
@@ -39,10 +40,10 @@ const BackupManage = (props) => {
                   api="removeAndRestore"
                   renderList={props.getData}
                   authorized={checkButtonAuth("del")}
-                  {...props}
                 />
                 <span className="line">|</span>
                 <Confirm
+                  {...props}
                   name="删除"
                   config={{
                     operating: "remove",
@@ -52,7 +53,6 @@ const BackupManage = (props) => {
                   api="removeAndRestore"
                   renderList={props.getData}
                   authorized={checkButtonAuth("del")}
-                  {...props}
                 />
               </td>
             </tr>

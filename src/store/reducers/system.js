@@ -1,14 +1,11 @@
-import { INPUT_CHANGE, ADD_ITEM, DELETE_ITEM, GET_DATA_ACTION } from '../actionTypes'
+import { INPUT_CHANGE, ADD_ITEM, DELETE_ITEM, GET_DETAIL } from '../actionTypes'
 
 import { initListState } from './commonState'
 import commonReducers from './commonReduce'
 
 const initState = {
-    module: "spread",
-    initialValues: {
-        status: "1"
-    },
-    ...initListState
+    module: "system",
+    message: {}
 }
 
 

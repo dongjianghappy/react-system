@@ -26,7 +26,7 @@ const List = (props) => {
     <>
       <table
         width="100%"
-        className="table-striped table-hover artlist col-left-35"
+        className="table-striped table-hover artlist col-left-3"
       >
         <tr className="th">
           <td className="col-md-1">选择</td>

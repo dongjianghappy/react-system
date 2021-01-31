@@ -1,7 +1,7 @@
 import React from "react";
 import { List, Typography, Avatar, Statistic, Card, Row, Col } from "antd";
 import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
-import { connect, dispatchToProps } from "@/utils";
+import { connect, dispatchToProps, CountUp } from "@/utils";
 import { Chart } from "@/components";
 
 class Default extends React.Component {
@@ -32,6 +32,8 @@ class Default extends React.Component {
               <Card>
                 <Row className="align_center">
                   <Col span={8}>
+                    {user.total && <CountUp end={user.total} />}
+
                     <Statistic
                       title="用户总量"
                       value={user.total}

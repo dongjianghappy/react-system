@@ -1,5 +1,6 @@
 import React from "react";
-import { Card, Button } from "antd";
+import { Card, Tabs, Button } from "antd";
+
 import {
   connect,
   dispatchToProps,
@@ -9,13 +10,13 @@ import {
   getQuery,
   channel,
 } from "@/utils";
-import { NavGroup } from "@/components";
+
 import { Operatinavbar } from "@/common";
 import List from "./components/list";
 import CheckedList from "./components/list_audit";
 import ReturnList from "./components/list_return";
 
-const { Nav } = NavGroup;
+const { TabPane } = Tabs;
 debugger;
 const mod = window.location.pathname.split("/")[2] || "";
 
@@ -27,18 +28,22 @@ class Index extends React.Component {
   state = {
     params: {},
     coding: {},
+    request: {
+      management_checked: 1,
+      ...this.props.common.global.initPage,
+    },
   };
 
-  getData = (params = {}) => {
-    this.state.params.fid && (params.fid = `|${this.state.params.fid}|`);
+  getData = (data) => {
+    // this.state.params.fid && (params.fid = `|${this.state.params.fid}|`);
 
     this.props.dispatch.select({
       api: "articleList",
       data: {
         coding: this.state.coding.art,
-        page: 0,
-        pagesize: 15,
-        ...params,
+
+        ...this.state.request,
+        ...data,
       },
       node: `${this.props.channel.module}.list`,
     });
@@ -53,9 +58,7 @@ class Index extends React.Component {
         coding: codings[this.props.channel.module],
       },
       () => {
-        this.getData({
-          management_checked: 1,
-        });
+        this.getData();
         this.props.dispatch.select({
           api: "getFlag",
           data: {
@@ -89,16 +92,24 @@ class Index extends React.Component {
         break;
     }
 
-    this.getData(param);
+    this.setState(
+      {
+        request: Object.assign(this.state.request, param),
+      },
+      () => {
+        this.getData();
+      }
+    );
   };
 
   render() {
     const { module, channel } = this.props;
     return (
-      <div>
-        <NavGroup
+      <Card>
+        <Tabs
+          defaultActiveKey="1"
           onChange={this.callback}
-          extra={
+          tabBarExtraContent={
             checkButtonAuth(add) && (
               <Button
                 type="primary"
@@ -112,50 +123,49 @@ class Index extends React.Component {
             )
           }
         >
-          <Nav name="文档管理" value="1">
+          <TabPane tab="文档管理" key="1">
             <List
               type="1"
               dataSource={module}
               renderList={this.getData}
               {...this.props}
             />
-          </Nav>
-          <Nav name="正在审核" value="2">
-            <Card>
-              <CheckedList
-                type="1"
-                data={module.list}
-                renderList={this.getData}
-                {...this.props}
-              />
-            </Card>
-          </Nav>
-          <Nav name="已退回" value="3">
-            <Card>
-              <ReturnList
-                type="1"
-                data={module.list}
-                renderList={this.getData}
-                {...this.props}
-              />
-            </Card>
-          </Nav>
-        </NavGroup>
+          </TabPane>
+
+          <TabPane tab="正在审核" key="2">
+            <CheckedList
+              type="1"
+              data={module.list}
+              renderList={this.getData}
+              {...this.props}
+            />
+          </TabPane>
+
+          <TabPane tab="已退回" key="3">
+            <ReturnList
+              type="1"
+              data={module.list}
+              renderList={this.getData}
+              {...this.props}
+            />
+          </TabPane>
+        </Tabs>
         <Operatinavbar
-          {...this.props}
           button={["all", "delete", "open", "close"]}
           data={{ list: module.checkedList, coding: this.state.coding.art }}
-          renderList={this.props.renderList}
+          renderList={this.getData}
           checkButtonAuth={checkButtonAuth}
           authorized={authorized}
+          {...this.props}
         />
-      </div>
+      </Card>
     );
   }
 }
 
 export default connect(
   (state) => ({
+    common: state.common,
     module: state.channel[channel().module],
     channel: channel(),
   }),

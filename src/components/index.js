@@ -45,6 +45,7 @@ import Order from './order'
 import SelectList from './option/selectList'
 import IconList from './iconList'
 import Chart from './chart'
+import Badge from './badge'
 
 export  {
     Status,
@@ -90,6 +91,7 @@ export  {
     Order,
     SelectList,
     IconList,
-    Chart
+    Chart,
+    Badge
 };
   

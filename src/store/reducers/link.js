@@ -12,6 +12,36 @@ const initState = {
         method: "0",
         sell: "1",
     },
+    option: [
+        {
+          name: "来源",
+          field: "source",
+          list: [
+            {
+              value: "",
+              name: "全部",
+            }
+          ],
+        },
+        {
+          name: "显示",
+          field: "display",
+          list: [
+            {
+              value: "",
+              name: "全部",
+            },
+            {
+              value: "0",
+              name: "首页",
+            },
+            {
+              value: "1",
+              name: "全站",
+            },
+          ],
+        },
+      ],
     ...initListState
 }
 

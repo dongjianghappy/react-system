@@ -38,6 +38,7 @@ const List = (props) => {
               <td>{item.dbtime}</td>
               <td>
                 <Confirm
+                  {...props}
                   name="备份"
                   config={{
                     operating: "remove",
@@ -47,7 +48,6 @@ const List = (props) => {
                   api="removeAndRestore"
                   renderList={props.getData}
                   authorized={checkButtonAuth("del")}
-                  {...props}
                 />
               </td>
             </tr>

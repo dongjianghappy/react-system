@@ -16,16 +16,21 @@ const { add, del, edit } = authorized.announcement;
 const { announcement: coding } = codings;
 
 class Announcement extends React.Component {
+  state = {
+    request: {
+      ...this.props.common.global.initPage,
+    },
+  };
   componentDidMount() {
     this.getData();
   }
 
-  getData = () => {
+  getData = (data) => {
     this.props.dispatch.select({
       data: {
-        page: 0,
-        pagesize: 25,
         coding,
+        ...this.state.request,
+        ...data,
       },
       node: "announcement",
     });
@@ -152,6 +157,7 @@ class Announcement extends React.Component {
 
 export default connect(
   (state) => ({
+    common: state.common,
     module: state.service,
   }),
   dispatchToProps
