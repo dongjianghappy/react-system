@@ -136,23 +136,25 @@ class SlideshowList extends React.Component {
 
   render() {
     return (
-      <Card
-        title="轮播图设置"
-        extra={
-          checkButtonAuth("add") && (
-            <WeDrawer.Form
-              name="添加轮播图"
-              icon="add"
-              data={{ coding }}
-              renderList={this.getData}
-              authorized={checkButtonAuth(add)}
-              {...this.props}
-            >
-              <Detail />
-            </WeDrawer.Form>
-          )
-        }
-      >
+      <Card>
+        <div className="nav-title">
+          轮播图设置
+          <span className="right">
+            {checkButtonAuth("add") && (
+              <WeDrawer.Form
+                name="添加轮播图"
+                icon="add"
+                type="default"
+                data={{ coding }}
+                renderList={this.getData}
+                authorized={checkButtonAuth(add)}
+                {...this.props}
+              >
+                <Detail />
+              </WeDrawer.Form>
+            )}
+          </span>
+        </div>
         {this.state.dataSource.map((item, index) => (
           <Row
             style={{

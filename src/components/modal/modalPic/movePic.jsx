@@ -48,7 +48,6 @@ const Editor = (props) => {
   const onMove = (direction, source, moveItem, index) => {
     const newData = [...source];
     let item = "";
-    debugger;
     switch (direction) {
       case "up":
         newData.splice(index, 1);
@@ -96,25 +95,53 @@ const Editor = (props) => {
           }}
         >
           <span
-            onClick={() => onMove("up", props.data.source, props.data.item, props.data.index)}
+            onClick={() =>
+              onMove("up", props.data.source, props.data.item, props.data.index)
+            }
             style={{ position: "absolute", top: -12, left: 10, fontSize: 20 }}
           >
             <ArrowUpOutlined />
           </span>
           <span
-            onClick={() => onMove("right", props.data.source, props.data.item, props.data.index)}
+            onClick={() =>
+              onMove(
+                "right",
+                props.data.source,
+                props.data.item,
+                props.data.index
+              )
+            }
             style={{ position: "absolute", right: -10, fontSize: 20 }}
           >
             <ArrowRightOutlined />
           </span>
           <span
-            onClick={() => onMove("down", props.data.source, props.data.item, props.data.index)}
-            style={{ position: "absolute", bottom: -10, left: 10, fontSize: 20 }}
+            onClick={() =>
+              onMove(
+                "down",
+                props.data.source,
+                props.data.item,
+                props.data.index
+              )
+            }
+            style={{
+              position: "absolute",
+              bottom: -10,
+              left: 10,
+              fontSize: 20,
+            }}
           >
             <ArrowDownOutlined />
           </span>
           <span
-            onClick={() => onMove("left", props.data.source, props.data.item, props.data.index)}
+            onClick={() =>
+              onMove(
+                "left",
+                props.data.source,
+                props.data.item,
+                props.data.index
+              )
+            }
             style={{ position: "absolute", left: -4, fontSize: 20 }}
           >
             <ArrowLeftOutlined />

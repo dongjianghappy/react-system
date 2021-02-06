@@ -26,7 +26,6 @@ const ModalCate = (props) => {
   };
 
   const handleOk = async () => {
-    debugger;
     if (callback) {
       callback({ fid: current.value, parent: current.name });
     } else {

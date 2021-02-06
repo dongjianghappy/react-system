@@ -16,7 +16,6 @@ const Editor = (props) => {
     };
     /**一定要创建 */
     editor.create();
-    debugger;
     editor.txt.html(value);
     return () => {
       // 组件销毁时销毁编辑器  注：class写法需要在componentWillUnmount中调用

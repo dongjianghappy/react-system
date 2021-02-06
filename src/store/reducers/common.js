@@ -75,7 +75,6 @@ const reducers = (state = initState, action) => {
 
         case GET_DETAIL :
             newState = JSON.parse(JSON.stringify(state))
-            debugger
             if(action.node.indexOf(".") !== -1){
                 const arr = action.node.split(".")
                 newState[arr[0]][arr[1]] = action.value
@@ -153,7 +152,7 @@ const reducers = (state = initState, action) => {
             break
             
         case REQUEST_FIELD :
-            debugger
+
             newState = JSON.parse(JSON.stringify(state))
             newState.global[action.node] = action.value
             return newState

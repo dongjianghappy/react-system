@@ -3,7 +3,6 @@ import { Space, Button } from "antd";
 import { WeDrawer, Dialog } from "../components";
 
 const modalGroup = (props) => {
-  debugger;
   const handleOk = (data) => {
     props[data.global.data.fn](data);
   };

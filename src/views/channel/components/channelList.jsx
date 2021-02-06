@@ -37,11 +37,11 @@ class ChannelList extends React.Component {
     });
   };
 
-  handel = (path) => {
+  handel = (item) => {
     this.setState({
       visible: false,
     });
-    this.props.click("/admin/" + path, path);
+    this.props.click("/admin/" + item.value, item.module);
   };
 
   render() {
@@ -77,7 +77,7 @@ class ChannelList extends React.Component {
                 <li
                   key={i}
                   className="font16"
-                  onClick={() => this.handel(list.value)}
+                  onClick={() => this.handel(list)}
                 >
                   <i className={`iconfont icon-${list.icon} mr10`}></i>
                   {list.name}

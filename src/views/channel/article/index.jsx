@@ -17,7 +17,6 @@ import CheckedList from "./components/list_audit";
 import ReturnList from "./components/list_return";
 
 const { TabPane } = Tabs;
-debugger;
 const mod = window.location.pathname.split("/")[2] || "";
 
 const { add } = (authorized.channel[mod] && authorized.channel[mod].art) || {
@@ -112,12 +111,15 @@ class Index extends React.Component {
           tabBarExtraContent={
             checkButtonAuth(add) && (
               <Button
-                type="primary"
+                type="default"
                 onClick={() =>
-                  this.props.history.push(`/admin/${channel.module}/detail`)
+                  this.props.history.push(
+                    `/admin/${channel.module}/list/detail`
+                  )
                 }
                 authorized={checkButtonAuth(add)}
               >
+                <i className="iconfont icon-add" />
                 新增文档
               </Button>
             )

@@ -4,7 +4,6 @@ const { Option } = Select;
 
 const Detail = (props) => {
   const { dispatch, data, response } = props;
-  debugger;
   return (
     <>
       <p>{response.title}</p>

@@ -1,5 +1,5 @@
 // 静态组件
-import Login from '../views/login'
+import Login from '../views/login/index'
 import Test from '../views/login/test'
 import notfound404 from '../views/notfound/404'
 
@@ -29,7 +29,7 @@ import menuRouter from '../views/menuRouter'
 import Slideshow from '../views/slideshow'
 import SlideshowList from '../views/slideshow/list'
 // 运营组件
-import Links from '../views/links'
+import Links from '../views/links/index'
 import Advertisement from '../views/advertisement'
 import Partner from '../views/partner'
 // 用户组件
@@ -57,7 +57,8 @@ import Visit from '../views/statistics/visit'
 import Domain from '../views/statistics/domain'
 import Engine from '../views/statistics/engine'
 import Ip from '../views/statistics/ip'
-import Manager from '../views/log'
+import ManagerLoginLog from '../views/log'
+import UserLoginLog from '../views/log/userLog'
 import Operating from '../views/log/operating'
 import Mysql from '../views/mysql'
 import Collection from '../views/collection'
@@ -121,17 +122,17 @@ export const mainRouter = [
 const asyncRoutes = [
     {
         module: "basic",
-        name: "管理控制平台",
+        name: "首页",
         path: "/admin",
         component: Default,
-        isShow: false, 
+        sidebar: false, 
         exact: true
     },
     {
         name: "单页管理",
         path: "/admin/menuRouter",
         component: menuRouter,
-        isShow: false, 
+        sidebar: false, 
         exact: true
     },  
 ]
@@ -210,7 +211,8 @@ const arrss = {
     KnowledgeArticle,
     Customize,
     CustomizeList,
-    Manager,
+    ManagerLoginLog,
+    UserLoginLog,
     Operating,
     Space,
     SettingChannel,
@@ -225,49 +227,73 @@ const arrss = {
     
 }
 
-
-
 const menuRouters = JSON.parse(sessionStorage.getItem("menuList")) || [];
+const new_menuRouters = JSON.parse(sessionStorage.getItem("new_menuList")) || [];
 
+
+const BreadcrumbArr = []
 
 const loop = (data) => {
     return	data.map((item) => {
        if(item.children){
 
-         return {
-            module: item.module,
-            name: item.name,
-            path: item.path,
-            channel: item.channel,
-            component: arrss[item.component],
-            isShow: item.isShow,
-            exact: true,
-            icon: item.icon,
-            meta: {
-                title: item.name,
-                icon: item.icon
-            },
-            children: loop(item.children),
-            // child: item.child
-         }
+            let  aaa = {
+                module: item.module,
+                name: item.name,
+                path: item.path,
+                channel: item.channel,
+                component: arrss[item.component],
+                sidebar: item.sidebar,
+                exact: true,
+                icon: item.icon,
+                meta: {
+                    title: item.name,
+                    icon: item.icon
+                },
+                children: loop(item.children),
+            }
+
+            if(item.node && item.sidebar === "true" && item.disabled === "true"){
+                let cc = item.path;
+                item.node = cc.replace('/admin', `/admin/${item.node}`);
+            }
+            BreadcrumbArr.push({
+                name: item.name,
+                path: item.path,
+                node: item.node,
+                disabled: item.disabled
+            })
+         return aaa
        }
-       return {
+
+       let bbb = {
             module: item.module,
             name: item.name,
             path: item.path,
             channel: item.channel,
             component: arrss[item.component],
-            isShow: item.isShow,
+            sidebar: item.sidebar,
             exact: true,
             icon: item.icon,
             meta: {
                 title: "",
                 icon: "icon-link"
             }
-       }
+        }
+        if(item.node && item.sidebar === "true" && item.disabled === "true"){
+            let cc = item.path;
+            item.node = cc.replace('/admin', `/admin/${item.node}`);
+        }
+        BreadcrumbArr.push({
+            name: item.name,
+            path: item.path,
+            node: item.node,
+            disabled: item.disabled
+        })
+       return bbb
      })
    }
 
-
 const a = loop(menuRouters)
+export const Breadcrumb = asyncRoutes.concat(BreadcrumbArr) 
 export const adminRouter = asyncRoutes.concat(a)

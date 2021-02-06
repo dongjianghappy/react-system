@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "antd";
+import { Card, Tabs } from "antd";
 import {
   connect,
   dispatchToProps,
@@ -8,11 +8,10 @@ import {
   codings,
 } from "@/utils";
 
-import { NavGroup } from "@/components";
 import EmailList from "./components/email-list";
 import List from "./components/list";
 
-const { Nav } = NavGroup;
+const { TabPane } = Tabs;
 
 class UserList extends React.Component {
   componentDidMount() {
@@ -46,28 +45,26 @@ class UserList extends React.Component {
   render() {
     const { audit } = this.props.module;
     return (
-      <NavGroup onChange={this.callback}>
-        <Nav name="积分设置" value="1">
-          <Card>
+      <Card>
+        <Tabs defaultActiveKey="1">
+          <TabPane tab="注册审核" key="1">
             <List
               type="1"
               data={audit}
               {...this.props}
               getData={() => this.getData(1)}
             />
-          </Card>
-        </Nav>
-        <Nav name="积分设置" value="2">
-          <Card>
+          </TabPane>
+          <TabPane tab="邮箱审核" key="2">
             <EmailList
               type="1"
               data={audit}
               {...this.props}
               getData={() => this.getData(1)}
             />
-          </Card>
-        </Nav>
-      </NavGroup>
+          </TabPane>
+        </Tabs>
+      </Card>
     );
   }
 }

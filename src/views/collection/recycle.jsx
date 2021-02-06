@@ -38,7 +38,8 @@ class Recycle extends React.Component {
 
     return (
       <div>
-        <Card title="回收站">
+        <Card>
+          <div className="nav-title">回收站</div>
           <table
             width="100%"
             className="table-striped table-hover artlist col-left-23"

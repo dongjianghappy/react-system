@@ -21,7 +21,8 @@ class Doing extends React.Component {
     const { doing } = this.props.module;
     return (
       <>
-        <Card title="进行中">
+        <Card>
+          <div className="nav-title">进行中</div>
           <table width="100%" className="table-striped table-hover col-left-23">
             <tr class="th">
               <td class="col-md-1">选择</td>

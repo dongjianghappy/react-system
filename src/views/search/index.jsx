@@ -22,7 +22,6 @@ class Index extends React.Component {
   // 点击某条数据后打开当前展示弹窗页面，然后可以点击编辑和保存
   render() {
     const { list } = this.props.module;
-    debugger;
     return (
       <Card>
         <ul className="search-wrap" style={{ maxWidth: 800 }}>

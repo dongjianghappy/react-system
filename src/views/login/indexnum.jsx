@@ -21,7 +21,6 @@ class Index extends React.Component {
   };
 
   render() {
-    debugger;
     const { system } = this.props.module;
 
     return (

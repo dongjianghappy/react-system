@@ -20,7 +20,35 @@ const initState = {
             {
               value: "",
               name: "全部",
-            }
+            },
+            {
+              value: "0",
+              name: "2898"
+          },
+          {
+              value: "1",
+              name: "51链"
+          },
+          {
+              value: "2",
+              name: "易联网"
+          },
+          {
+              value: "3",
+              name: "95链"
+          },
+          {
+              value: "4",
+              name: "本站"
+          },
+          {
+              value: "5",
+              name: "爱链网"
+          },
+          {
+              value: "6",
+              name: "买链接"
+          }
           ],
         },
         {

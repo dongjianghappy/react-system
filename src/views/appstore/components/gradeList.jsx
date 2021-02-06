@@ -13,16 +13,13 @@ export default (props) => {
     <>
       <table width="100%" class="table-striped table-hover col-left-12">
         <tr class="th">
-          <td class="col-md-2">
-            {props.type === "2" ? "应用名称" : "功能名称"}
-          </td>
+          <td class="col-md-2">应用名称</td>
           <td class="col-md-3">描述</td>
           <td class="col-md-1">访客</td>
           <td class="col-md-1">普通用户</td>
           <td class="col-md-1">高级用户</td>
           <td class="col-md-1">VIP</td>
           <td class="col-md-1">超级VIP</td>
-          <td class="col-md-2">操作</td>
         </tr>
         {props.data &&
           props.data.map((item, index) => (
@@ -63,32 +60,6 @@ export default (props) => {
                   data={{ item, field: "super_vip_member", coding }}
                   authorized={checkButtonAuth("edit")}
                 />
-              </td>
-              <td>
-                <Space size="middle">
-                  <WeModal.modalForm
-                    {...props}
-                    name="编辑"
-                    isText={true}
-                    action="edit"
-                    data={{ id: item.id, coding }}
-                    renderList={props.getData}
-                    authorized={checkButtonAuth(edit)}
-                  >
-                    <Detail />
-                  </WeModal.modalForm>
-                  <Confirm
-                    {...props}
-                    name="删除"
-                    config={{
-                      operating: "deleteGrade",
-                      message: React.$modalEnum.user,
-                    }}
-                    data={{ coding, id: item.id }}
-                    api="delete"
-                    authorized={checkButtonAuth("delete")}
-                  />
-                </Space>
               </td>
             </tr>
           ))}

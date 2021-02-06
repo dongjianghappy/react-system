@@ -5,7 +5,6 @@ const Iconfont = (props) => {
   const { icon } = React.$enums;
 
   const handelOk = (data) => {
-    debugger;
     callback({ icon: data.icon });
   };
 

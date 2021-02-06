@@ -30,22 +30,24 @@ class UserTheme extends React.Component {
     const { theme } = this.props.module;
     return (
       <>
-        <Card
-          title="所有主题"
-          extra={
-            checkButtonAuth(add) && (
-              <WeModal.modalForm
-                name="新增主题"
-                data={{ coding }}
-                renderList={this.getData}
-                authorized={checkButtonAuth(add)}
-                {...this.props}
-              >
-                <Detail />
-              </WeModal.modalForm>
-            )
-          }
-        >
+        <Card>
+          <div className="nav-title">
+            主题管理
+            <span className="right">
+              {checkButtonAuth(add) && (
+                <WeModal.modalForm
+                  name="新增主题"
+                  icon="add"
+                  data={{ coding }}
+                  renderList={this.getData}
+                  authorized={checkButtonAuth(add)}
+                  {...this.props}
+                >
+                  <Detail />
+                </WeModal.modalForm>
+              )}
+            </span>
+          </div>
           <Row>
             {theme.map((item, index) => (
               <Col span="6">

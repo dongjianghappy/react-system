@@ -71,7 +71,6 @@ class Single extends React.Component {
       this.formRef.current.getFieldValue().image.length > 0 &&
       Array.isArray(this.formRef.current.getFieldValue().image)
     ) {
-      debugger;
       if (
         this.formRef.current.getFieldValue().image[0].indexOf("http") === -1
       ) {
@@ -102,7 +101,6 @@ class Single extends React.Component {
           message.info("编辑成功");
         });
     } else {
-      debugger;
       this.props.dispatch
         .insert({
           data: {
@@ -120,7 +118,6 @@ class Single extends React.Component {
   };
 
   callback = (params) => {
-    debugger;
     Object.assign(this.state.dataSource, params);
     this.setState({
       dataSource: this.state.dataSource,

@@ -28,7 +28,8 @@ class UserRecommend extends React.Component {
   render() {
     const { recommend } = this.props.module;
     return (
-      <Card title="用户禁言">
+      <Card>
+        <div className="nav-title">用户推送</div>
         <table width="100%" className="table-striped table-hover col-left-23">
           <tr class="th">
             <td class="col-md-1">选择</td>

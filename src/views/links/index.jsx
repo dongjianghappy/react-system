@@ -28,7 +28,6 @@ class Index extends React.Component {
   option = this.props.module.option;
 
   componentDidMount() {
-    this.option[0].list.push(...React.$enums.linkType);
     this.getData({
       method: 0,
       apply_checked: 1,
@@ -102,6 +101,8 @@ class Index extends React.Component {
               checkButtonAuth("add") && (
                 <WeDrawer.Form
                   name="新增友情链接"
+                  icon="add"
+                  type="defult"
                   data={{ coding }}
                   initialValues={initialValues}
                   renderList={this.getData}

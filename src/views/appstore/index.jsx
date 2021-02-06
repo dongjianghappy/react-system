@@ -9,8 +9,9 @@ import {
   codings,
 } from "@/utils";
 
-import { Status, WeModal, Confirm } from "../../components";
+import { Status, WeModal, Confirm, WeDrawer } from "../../components";
 import Detail from "./components/detail";
+import GradeList from "./components/gradeList";
 
 const { add, del, edit } = authorized.appstore;
 const { appstore: coding } = codings;
@@ -52,23 +53,25 @@ class Appstore extends React.Component {
 
     return (
       <>
-        <Card
-          title="应用中心"
-          extra={
-            checkButtonAuth(add) && (
-              <WeModal.modalForm
-                name="新增应用"
-                type="primary"
-                data={{ coding }}
-                renderList={this.getData}
-                authorized={checkButtonAuth(add)}
-                {...this.props}
-              >
-                <Detail gradeList={this.state.grade} />
-              </WeModal.modalForm>
-            )
-          }
-        >
+        <Card>
+          <div className="nav-title">
+            应用中心
+            <span className="right">
+              {checkButtonAuth(add) && (
+                <WeModal.modalForm
+                  name="新增应用"
+                  icon="add"
+                  type="default"
+                  data={{ coding }}
+                  renderList={this.getData}
+                  authorized={checkButtonAuth(add)}
+                  {...this.props}
+                >
+                  <Detail gradeList={this.state.grade} />
+                </WeModal.modalForm>
+              )}
+            </span>
+          </div>
           <Row>
             {list &&
               list.map((item, index) => (
@@ -116,15 +119,18 @@ class Appstore extends React.Component {
                                 />
                               </p>
                               <p>
-                                <Link
-                                  disabled={!checkButtonAuth(edit)}
-                                  to={{
-                                    pathname: "/admin/user/grade",
-                                    state: { type: 2 },
-                                  }}
+                                <WeDrawer.Form
+                                  title="权限设置"
+                                  name="权限"
+                                  isText={true}
+                                  action="edit"
+                                  data={{ id: item.id, coding }}
+                                  renderList={this.getData}
+                                  authorized={checkButtonAuth("edit")}
+                                  {...this.props}
                                 >
-                                  权限
-                                </Link>
+                                  <GradeList />
+                                </WeDrawer.Form>
                               </p>
                             </div>
                           }

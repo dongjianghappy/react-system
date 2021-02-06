@@ -81,13 +81,13 @@ export default class http {
         
 
         if(method === "get" && params.m !== "space"){
-            debugger
+   
             url = `inter_vue.php?m=${params.m}&n=${params.n}&${params.dir}`
         }else{
-            debugger
+    
             url = params.m === "space" ? `inter_vue.php?m=${params.m}&n=${params.n}${params.file && params.file !== "/" ? params.file : ""}` : 'inter_vue.php'
         }
-        debugger
+ 
 
         this.requestHeaders(request)
         this.responseHeaders(request)

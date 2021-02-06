@@ -23,7 +23,7 @@ const reducers = (state = initState, action) => {
 
     switch(action.type){
         case GET_MYSQL :
-            debugger
+       
             newState = JSON.parse(JSON.stringify(state))
             newState.list = action.value.list
             return newState

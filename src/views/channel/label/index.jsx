@@ -51,6 +51,7 @@ class Label extends React.Component {
               <WeDrawer.Form
                 name="新增标签"
                 icon="add"
+                type="default"
                 data={{ coding }}
                 renderList={this.getData}
                 authorized={checkButtonAuth("add")}

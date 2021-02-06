@@ -8,8 +8,6 @@ import { checkButtonAuth } from '@/utils/auth'
 import authorized from '@/static/constant/authorized'
 import codings from '@/static/constant/coding'
 
-debugger
-
 export  {
     connect,
     Link,

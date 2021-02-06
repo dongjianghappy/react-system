@@ -12,13 +12,11 @@ const Keyword = (props) => {
   const keywordInput = useRef();
 
   useEffect(() => {
-    debugger;
     if (value !== undefined && value !== "") {
       setIKeyword([...value.split(",")]);
     }
 
     document.onclick = hideSearchInfo;
-    debugger;
   }, [props.value]); // 这里数组中是箭头父组件tag属性变化
 
   // 删除标签

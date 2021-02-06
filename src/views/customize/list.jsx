@@ -14,7 +14,7 @@ import Detail from "./components/detail";
 
 const { add, del, edit } = authorized.customize;
 const { customize: coding } = codings;
-debugger;
+
 class CustomizeList extends React.Component {
   state = {
     params: {},
@@ -45,26 +45,31 @@ class CustomizeList extends React.Component {
     const { fieldList } = this.props.module;
     return (
       <div>
-        <Card
-          title="字段管理"
-          extra={
-            <Space>
-              {checkButtonAuth(add) && (
-                <WeDrawer.Form
-                  title="新增字段"
-                  name="新增字段"
-                  api="add_anpassen"
-                  data={{ channel_id: this.state.params.id }}
-                  renderList={this.getData}
-                  authorized={checkButtonAuth(add)}
-                  {...this.props}
-                >
-                  <Detail />
-                </WeDrawer.Form>
-              )}
-            </Space>
-          }
-        >
+        <Card>
+          <div className="nav-title">
+            字段管理
+            <span className="right">
+              {
+                <Space>
+                  {checkButtonAuth(add) && (
+                    <WeDrawer.Form
+                      title="新增字段"
+                      name="新增字段"
+                      icon="add"
+                      type="default"
+                      api="add_anpassen"
+                      data={{ channel_id: this.state.params.id }}
+                      renderList={this.getData}
+                      authorized={checkButtonAuth(add)}
+                      {...this.props}
+                    >
+                      <Detail />
+                    </WeDrawer.Form>
+                  )}
+                </Space>
+              }
+            </span>
+          </div>
           <table width="100%" class="table-striped artlist col-left-1">
             <tr class="th">
               <td class="col-md-2 pl25">注释</td>

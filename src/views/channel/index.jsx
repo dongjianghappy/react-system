@@ -29,7 +29,7 @@ class Default extends React.Component {
       download = 0,
       hours,
     } = this.props.module.chart;
-    debugger;
+
     return (
       <div className="site-statistic-demo-card">
         <Row gutter={16}>

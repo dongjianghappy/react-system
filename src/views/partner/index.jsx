@@ -40,24 +40,26 @@ class Index extends React.Component {
 
     return (
       <div>
-        <Card
-          title="合作伙伴"
-          extra={
-            checkButtonAuth("add") && (
-              <WeDrawer.Form
-                name="新增合作伙伴"
-                icon="add"
-                data={{ coding }}
-                initialValues={initialValues}
-                renderList={this.getData}
-                authorized={checkButtonAuth("add")}
-                {...this.props}
-              >
-                <Detail />
-              </WeDrawer.Form>
-            )
-          }
-        >
+        <Card>
+          <div className="nav-title">
+            合作伙伴
+            <span className="right">
+              {checkButtonAuth("add") && (
+                <WeDrawer.Form
+                  name="新增合作伙伴"
+                  icon="add"
+                  type="default"
+                  data={{ coding }}
+                  initialValues={initialValues}
+                  renderList={this.getData}
+                  authorized={checkButtonAuth("add")}
+                  {...this.props}
+                >
+                  <Detail />
+                </WeDrawer.Form>
+              )}
+            </span>
+          </div>
           <table width="100%" className="table-striped table-hover col-left-3">
             <tr className="th">
               <td className="col-md-1">选择</td>

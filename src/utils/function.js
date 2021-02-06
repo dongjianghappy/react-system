@@ -8,7 +8,7 @@ export const channel = () => {
     const item = channel.find((item)=>{
         return item.module === module
     })
-debugger
+
     return item || {}
 }
 

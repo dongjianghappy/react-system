@@ -18,16 +18,13 @@ class Index extends React.Component {
     });
   };
 
-  handle = () => {
-    debugger;
-    alert("sds");
-  };
+  handle = () => {};
 
   // 关于关键词高亮问题，在接口中通过匹配后添加span标签并且返回来
   // 点击某条数据后打开当前展示弹窗页面，然后可以点击编辑和保存
   render() {
     const { list } = this.props.module;
-    debugger;
+
     return (
       <Card>
         <ul className="search-wrap" style={{ maxWidth: 800 }}>

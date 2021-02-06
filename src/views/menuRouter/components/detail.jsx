@@ -25,12 +25,23 @@ const Detail = (props) => {
       <Form.Item name="module" label="标识">
         <Input />
       </Form.Item>
-      <Form.Item label="菜单" name="isShow">
+      <Form.Item name="node" label="面包屑节点">
+        <Input />
+      </Form.Item>
+      <Form.Item name="breadcrumb" label="面包屑">
         <Radio.Group>
           <Radio value="true" defaultChecked>
-            侧边栏展示
+            展示
           </Radio>
-          <Radio value="false">侧边栏不展示</Radio>
+          <Radio value="false">不展示</Radio>
+        </Radio.Group>
+      </Form.Item>
+      <Form.Item label="侧边栏" name="sidebar">
+        <Radio.Group>
+          <Radio value="true" defaultChecked>
+            展示
+          </Radio>
+          <Radio value="false">不展示</Radio>
         </Radio.Group>
       </Form.Item>
       <Form.Item label="是否点击" name="disabled">

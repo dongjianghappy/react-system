@@ -41,7 +41,8 @@ class Index extends React.Component {
   render() {
     const { feedback } = this.props.module;
     return (
-      <Card title="意见反馈列表">
+      <Card>
+        <div className="nav-title">意见反馈列表</div>
         <table width="100%" className="table-striped table-hover col-left-23">
           <tr className="th">
             <td className="col-md-1">选择</td>

@@ -48,7 +48,6 @@ class Basic extends React.Component {
       this.formRef.current.getFieldValue().image.length > 0 &&
       Array.isArray(this.formRef.current.getFieldValue().image)
     ) {
-      debugger;
       if (
         this.formRef.current.getFieldValue().image[0].indexOf("http") === -1
       ) {
@@ -87,7 +86,6 @@ class Basic extends React.Component {
   };
 
   render() {
-    debugger;
     return (
       <>
         <Card title="频道信息" bordered={false}>

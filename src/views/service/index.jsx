@@ -38,7 +38,6 @@ class Basic extends React.Component {
   };
 
   handleClick = (data) => {
-    debugger;
     this.props[data.dispatch](data);
   };
 
@@ -47,24 +46,27 @@ class Basic extends React.Component {
 
     const baisc = list.filter((route) => route.isdelete === "1");
     const custom = list.filter((route) => route.isdelete === "0");
-    debugger;
     return (
-      <Card
-        title="服务信息"
-        extra={
-          <WeModal.modalForm
-            name="自定义字段"
-            type="primary"
-            action="add"
-            dispatch={this.props.dispatch}
-            data={{ coding: "Q0002" }}
-            renderList={this.getData}
-            authorized={true}
-          >
-            <Custom />
-          </WeModal.modalForm>
-        }
-      >
+      <Card>
+        <div className="nav-title">
+          服务信息
+          <span className="right">
+            {
+              <WeModal.modalForm
+                name="自定义字段"
+                type="default"
+                action="add"
+                dispatch={this.props.dispatch}
+                data={{ coding: "Q0002" }}
+                renderList={this.getData}
+                authorized={true}
+              >
+                <Custom />
+              </WeModal.modalForm>
+            }
+          </span>
+        </div>
+
         <BasicInfo
           title="基本信息"
           dataSource={baisc}

@@ -30,7 +30,8 @@ const List = (props) => {
                 <Space size="middle">
                   <WeModal.modalForm
                     {...props}
-                    name="编辑等级"
+                    name="编辑"
+                    isText={true}
                     action="edit"
                     data={{ id: item.id, coding }}
                     authorized={checkButtonAuth(edit)}

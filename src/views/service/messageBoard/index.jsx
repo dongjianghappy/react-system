@@ -40,7 +40,8 @@ class Index extends React.Component {
   render() {
     const { messageBoard } = this.props.module;
     return (
-      <Card title="留言列表">
+      <Card>
+        <div className="nav-title">留言列表</div>
         <table width="100%" className="table-striped table-hover col-left-23">
           <tr className="th">
             <td className="col-md-1">选择</td>

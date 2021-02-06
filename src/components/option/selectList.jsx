@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Popover } from "antd";
 import SelectOption from "./select";
 import { jsonLength } from "@/utils";
+import { Search } from "../index";
 
 const Option = (props) => {
   const {
@@ -74,17 +75,19 @@ const Option = (props) => {
 
   return (
     <>
-      {dataList &&
-        dataList.map((item) => (
-          <SelectOption
-            title={item.title}
-            field={item.field}
-            dataSource={item}
-            source={enumSource[item.field]}
-            callback={callback}
-          />
-        ))}
-      {/* {hasReset !== false ? (
+      <div style={{ display: "flex" }}>
+        <div className="mr10" style={{ flex: 1 }}>
+          {dataList &&
+            dataList.map((item) => (
+              <SelectOption
+                title={item.title}
+                field={item.field}
+                dataSource={item}
+                source={enumSource[item.field]}
+                callback={callback}
+              />
+            ))}
+          {/* {hasReset !== false ? (
         <span
           onClick={onReset}
           style={{ padding: "8px 12px", background: "#1890ff", color: "#fff" }}
@@ -94,6 +97,11 @@ const Option = (props) => {
       ) : (
         ""
       )} */}
+        </div>
+        <div style={{ flex: 1 }}>
+          <Search {...props} />
+        </div>
+      </div>
     </>
   );
 };

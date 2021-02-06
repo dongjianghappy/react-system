@@ -41,7 +41,8 @@ class ServiceMessage extends React.Component {
     const { message } = this.props.module;
 
     return (
-      <Card title="系统消息">
+      <Card>
+        <div className="nav-title">系统消息</div>
         <table width="100%" className="table-striped col-left-2">
           {message &&
             message.map((item, index) => (

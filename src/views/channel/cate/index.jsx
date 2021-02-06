@@ -88,7 +88,6 @@ class Channel extends React.Component {
       dispatch: { onMove, expand, expandAll },
     } = this.props;
 
-    debugger;
     const { cate: coding } = this.state.coding;
 
     return (

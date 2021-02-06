@@ -5,8 +5,6 @@ export default (props) => {
   const { dispatch, module } = props;
 
   function handelChange(e) {
-    debugger;
-
     dispatch.checkBox({
       checked: e.target.checked,
       type: "single",
@@ -18,7 +16,6 @@ export default (props) => {
 
   const checked = () =>
     module.checkedList.some((item, index) => {
-      debugger;
       return item.id === props.data.id;
     });
 

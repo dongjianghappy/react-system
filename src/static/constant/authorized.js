@@ -218,6 +218,4 @@ const authorized = {
 	channel
 }
 
-
-debugger
 export default authorized

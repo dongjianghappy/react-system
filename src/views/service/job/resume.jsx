@@ -32,7 +32,8 @@ class Resume extends React.Component {
     const { resume } = this.props.module;
 
     return (
-      <Card title="职位管理">
+      <Card>
+        <div className="nav-title">职位管理</div>
         <table width="100%" class="table-striped artlist col-left-7">
           <tr class="th">
             <td class="col-md-1">选择</td>

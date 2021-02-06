@@ -5,9 +5,6 @@ import { Button } from "antd";
 
 const SetUSer = (props) => {
   const { dispatch } = props;
-
-  debugger;
-
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState({});
   const [role, setRole] = useState([]);

@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "antd";
+import { Card, Space } from "antd";
 import {
   connect,
   dispatchToProps,
@@ -34,24 +34,26 @@ class Index extends React.Component {
   render() {
     const { vote } = this.props.module;
     return (
-      <Card
-        title="投票管理"
-        extra={
-          checkButtonAuth("add") && (
-            <WeDrawer.Form
-              name="新建投票"
-              icon="add"
-              data={{ coding }}
-              renderList={this.getData}
-              authorized={checkButtonAuth("add")}
-              api="createVote"
-              {...this.props}
-            >
-              <Detail />
-            </WeDrawer.Form>
-          )
-        }
-      >
+      <Card>
+        <div className="nav-title">
+          投票管理
+          <span className="right">
+            {checkButtonAuth("add") && (
+              <WeDrawer.Form
+                name="新建投票"
+                icon="add"
+                type="default"
+                data={{ coding }}
+                renderList={this.getData}
+                authorized={checkButtonAuth("add")}
+                api="createVote"
+                {...this.props}
+              >
+                <Detail />
+              </WeDrawer.Form>
+            )}
+          </span>
+        </div>
         <table width="100%" className="table-striped table-hover col-left-1">
           <tr className="th">
             <td className="col-md-6">投票名称</td>
@@ -72,25 +74,29 @@ class Index extends React.Component {
                   />
                 </td>
                 <td>
-                  <span
-                    onClick={() =>
-                      this.props.history.push(`/admin/vote/list?id=${item.id}`)
-                    }
-                  >
-                    投票查看
-                  </span>
-                  <Confirm
-                    name="删除"
-                    config={{
-                      operating: "delete",
-                      message: React.$modalEnum,
-                    }}
-                    data={{ coding, id: item.id }}
-                    api="deleteVote"
-                    renderList={this.getData}
-                    authorized={checkButtonAuth("delete")}
-                    {...this.props}
-                  />
+                  <Space>
+                    <span
+                      onClick={() =>
+                        this.props.history.push(
+                          `/admin/vote/item/list?id=${item.id}`
+                        )
+                      }
+                    >
+                      查看
+                    </span>
+                    <Confirm
+                      name="删除"
+                      config={{
+                        operating: "delete",
+                        message: React.$modalEnum,
+                      }}
+                      data={{ coding, id: item.id }}
+                      api="deleteVote"
+                      renderList={this.getData}
+                      authorized={checkButtonAuth("delete")}
+                      {...this.props}
+                    />
+                  </Space>
                 </td>
               </tr>
             </>

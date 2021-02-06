@@ -32,21 +32,23 @@ class UserRole extends React.Component {
   render() {
     const { user } = this.props.module;
     return (
-      <Card
-        title="用户列表"
-        extra={
-          checkButtonAuth(add) && (
-            <WeModal.modalForm
-              data={{ coding }}
-              renderList={this.getData}
-              authorized={checkButtonAuth(add)}
-              {...this.props}
-            >
-              <Detail />
-            </WeModal.modalForm>
-          )
-        }
-      >
+      <Card>
+        <div className="nav-title">
+          用户列表
+          <span className="right">
+            {checkButtonAuth(add) && (
+              <WeModal.modalForm
+                name="新增角色"
+                data={{ coding }}
+                renderList={this.getData}
+                authorized={checkButtonAuth(add)}
+                {...this.props}
+              >
+                <Detail />
+              </WeModal.modalForm>
+            )}
+          </span>
+        </div>
         <table width="100%" className="table-striped table-hover col-left-1">
           <tr className="th">
             <td className="col-md-4">名称</td>
@@ -63,7 +65,8 @@ class UserRole extends React.Component {
                 <td>
                   <Space>
                     <WeModal.modalForm
-                      name="编辑角色"
+                      name="编辑"
+                      isText={true}
                       action="edit"
                       data={{ id: item.id, coding }}
                       renderList={this.getData}

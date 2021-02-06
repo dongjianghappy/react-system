@@ -6,25 +6,29 @@ export const MODUDLE = [
         channel: false
     },
     {
+        module: "order",
         value: "order",
         name: "订单",
         type: "plate",
         icon: "order"
     },  
     {
+        module: "user",
         value: "user",
         name: "用户",
         type: "plate",
         icon: "user"
     },
     {
+        module: "service",
         value: "service",
         name: "服务",
         type: "plate",
         icon: "service"
     },
     {
-        value: "business",
+        module: "business",
+        value: "spread",
         name: "运营",
         type: "plate",
         icon: "operation"
@@ -42,13 +46,15 @@ export const MODUDLE = [
         icon: "star"
     },
     {
-        value: "tag",
+        module: "tag",
+        value: "tag/core",
         name: "标签",
         type: "plate",
         icon: "tags"
     },
     {
-        value: "vote",
+        module: "vote",
+        value: "vote/item",
         name: "投票",
         type: "plate",
         icon: "vote"
@@ -425,7 +431,11 @@ export const ICON = [
     {
       name: "消息",
       icon: "email",
-    },        
+    },
+    {
+        name: "订单",
+        icon: "order",
+    }      
   ]
 
   // 标签类型

@@ -2,7 +2,7 @@ import React from "react";
 import { WeCheckbox, Quick, NavGroup, WeDrawer } from "@/components";
 const List = (props) => {
   const { dataSource } = props;
-  debugger;
+
   return (
     <>
       <table

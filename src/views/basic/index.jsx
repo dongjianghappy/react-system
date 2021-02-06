@@ -37,21 +37,25 @@ class Basic extends React.Component {
     );
     const custom = list.filter((route) => route.isdelete === "0");
     return (
-      <Card
-        title="基本信息"
-        extra={
-          <WeModal.modalForm
-            name="自定义字段"
-            type="primary"
-            data={{ coding: "P0000" }}
-            renderList={this.getData}
-            authorized={checkButtonAuth(add)}
-            {...this.props}
-          >
-            <Detail />
-          </WeModal.modalForm>
-        }
-      >
+      <Card>
+        <div className="nav-title">
+          基本信息
+          <span className="right">
+            {
+              <WeModal.modalForm
+                name="自定义字段"
+                icon="add"
+                type="default"
+                data={{ coding: "P0000" }}
+                renderList={this.getData}
+                authorized={checkButtonAuth(add)}
+                {...this.props}
+              >
+                <Detail />
+              </WeModal.modalForm>
+            }
+          </span>
+        </div>
         <BasicInfo
           title="基本信息"
           dataSource={baisc}

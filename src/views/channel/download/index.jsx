@@ -50,7 +50,8 @@ class Download extends React.Component {
 
     return (
       <>
-        <Card title="下载管理">
+        <Card>
+          <div className="nav-title">下载管理</div>
           <table
             width="100%"
             class="table-striped table-hover artlist col-left-23"

@@ -20,6 +20,14 @@ const { Search } = Input;
 const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 class Index extends React.Component {
   componentDidMount() {
+    this.props.dispatch
+      .fetch({
+        api: "Detect",
+      })
+      .then((res) => {
+        sessionStorage.setItem("channel", JSON.stringify(res.result.channel));
+        sessionStorage.setItem("menuList", JSON.stringify(res.result.menuList));
+      });
     this.getData();
   }
 
@@ -42,8 +50,6 @@ class Index extends React.Component {
       }}
       className="p15"
     >
-      <Menu.Item key="tongzhi">通知中心</Menu.Item>
-      <Menu.Item key="setting">设置</Menu.Item>
       <Menu.Item key="loginOut">退出</Menu.Item>
     </Menu>
   );
@@ -60,7 +66,7 @@ class Index extends React.Component {
       },
     });
 
-    this.props.history.push("/admin/search");
+    this.props.history.push("/admin/search/index");
   };
   render() {
     const { system } = this.props.module;
@@ -73,7 +79,7 @@ class Index extends React.Component {
             width="25"
             style={{ marginRight: 10 }}
           />
-          管理控制平台
+          控制平台
         </div>
         <div className="header-wrap">
           <div className="header-left">

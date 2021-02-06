@@ -15,7 +15,6 @@ const VisitChart = (props) => {
       if (dataSource) {
         init.series = dataSource;
         init.labels = label;
-        debugger;
         setData({ ...init });
       }
     },
@@ -26,7 +25,6 @@ const VisitChart = (props) => {
     let arrHigh = [];
     data &&
       data.map((item) => {
-        debugger;
         arrHigh.push(Math.max(...item));
       });
     return 1 + Math.max(...arrHigh);

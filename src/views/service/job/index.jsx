@@ -34,23 +34,25 @@ class Job extends React.Component {
     const { job } = this.props.module;
 
     return (
-      <Card
-        title="职位管理"
-        extra={
-          checkButtonAuth(add) && (
-            <WeDrawer.Form
-              name="新增职位"
-              icon="add"
-              data={{ coding }}
-              renderList={this.getData}
-              authorized={checkButtonAuth(add)}
-              {...this.props}
-            >
-              <Detail />
-            </WeDrawer.Form>
-          )
-        }
-      >
+      <Card>
+        <div className="nav-title">
+          职位管理
+          <span className="right">
+            {checkButtonAuth(add) && (
+              <WeDrawer.Form
+                name="新增职位"
+                icon="add"
+                type="default"
+                data={{ coding }}
+                renderList={this.getData}
+                authorized={checkButtonAuth(add)}
+                {...this.props}
+              >
+                <Detail />
+              </WeDrawer.Form>
+            )}
+          </span>
+        </div>
         <table width="100%" class="table-striped artlist col-left-34">
           <tr class="th">
             <td class="col-md-1">选择</td>

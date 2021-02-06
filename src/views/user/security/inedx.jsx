@@ -33,22 +33,24 @@ class UserSecurity extends React.Component {
     const { security } = this.props.module;
 
     return (
-      <Card
-        title="安全问题"
-        extra={
-          checkButtonAuth(add) && (
-            <WeModal.modalForm
-              name="新增问题"
-              data={{ coding }}
-              renderList={this.getData}
-              authorized={checkButtonAuth(add)}
-              {...this.props}
-            >
-              <Detail />
-            </WeModal.modalForm>
-          )
-        }
-      >
+      <Card>
+        <div className="nav-title">
+          安全问题
+          <span className="right">
+            {checkButtonAuth(add) && (
+              <WeModal.modalForm
+                name="新增问题"
+                icon="add"
+                data={{ coding }}
+                renderList={this.getData}
+                authorized={checkButtonAuth(add)}
+                {...this.props}
+              >
+                <Detail />
+              </WeModal.modalForm>
+            )}
+          </span>
+        </div>
         <table width="100%" class="table-striped table-hover col-left-2">
           {security &&
             security.map((item, index) => (

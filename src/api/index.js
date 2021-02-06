@@ -3,6 +3,12 @@ import https from '../utils/http'
 const http = new https()
 
 export default {
+
+	//用户登录
+	Detect(params){
+		return http.request('user', 'Detect', 'post', params)
+    },
+    
 	//用户登录
 	Login(params){
 		return http.request('user', 'Login', 'post', params)
@@ -448,7 +454,12 @@ export default {
     // 站内搜索
     saveFile(params) {
         return http.request('temp', 'saveFile','post', params)
-    },      
+    },   
+    
+    // 站内搜索
+    routerTest(params) {
+        return http.request('vue', 'routerTest','post', params)
+    },       
 
       
 }

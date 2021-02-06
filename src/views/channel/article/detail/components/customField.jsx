@@ -14,7 +14,6 @@ const CustomField = (props) => {
         },
       })
       .then((res) => {
-        debugger;
         setData(res.result);
       });
   }, []);

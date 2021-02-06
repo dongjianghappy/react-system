@@ -4,7 +4,7 @@ import { Editor, Preview } from "@/components";
 const { Option } = Select;
 const Detail = (props) => {
   const { params, dataSource, callback, gradeList } = props;
-  debugger;
+
   return (
     <>
       <Form.Item name="name" label="应用名称">

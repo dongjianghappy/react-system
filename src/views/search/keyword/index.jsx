@@ -26,9 +26,10 @@ class Index extends React.Component {
   // 7、模板管理
   render() {
     const { keyword } = this.props.module;
-    debugger;
+
     return (
-      <Card title="关键词库">
+      <Card>
+        <div className="nav-title">关键词库</div>
         <table width="100%" class="table-striped table-hover col-left-2">
           <tr class="th">
             <td class="col-md-1">ID</td>

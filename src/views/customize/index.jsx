@@ -14,7 +14,8 @@ class Customize extends React.Component {
     const { modelList } = this.props.module;
     return (
       <div>
-        <Card title="内容模型管理">
+        <Card>
+          <div className="nav-title">模型管理</div>
           <table width="100%" class="table-striped artlist col-left-1">
             <tr class="th">
               <td class="col-md-3 pl25">频道名称</td>

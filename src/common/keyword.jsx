@@ -9,12 +9,10 @@ const Keyword = (props) => {
   const keywordInput = useRef();
 
   useEffect(() => {
-    debugger;
     setIKeyword([...props.tag]);
   }, []);
 
   const sss = (index) => {
-    debugger;
     props.tag.splice(index, 1);
     // setIKeyword([...keyword])
     props.change(props.tag);
@@ -22,7 +20,6 @@ const Keyword = (props) => {
 
   const handelBlur = () => {
     const value = keywordInput.current.state.value;
-    debugger;
     if (value !== "" && value !== undefined && !props.tag.includes(value)) {
       props.tag.push(keywordInput.current.state.value);
       // setIKeyword([...keyword])

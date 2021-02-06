@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 import { connect, dispatchToProps } from "@/utils";
 
 import { channelInfo } from "@/utils/auth";
+import "@/Global.less";
 
 class ChannelList extends React.Component {
   state = { visible: false, childrenDrawer: false };
@@ -46,15 +47,25 @@ class ChannelList extends React.Component {
         </span>
 
         <Drawer
-          title="频道"
           placement="right"
           style={{ top: 63 }}
           width={650}
           closable={false}
           onClose={this.onClose}
           visible={this.state.visible}
+          bodyStyle={{ background: "#103353", padding: 10 }}
         >
-          <Row>
+          <div className="channel-wrap">
+            {qqqq.map((item, index) => (
+              <div
+                className="channel-lists"
+                onClick={() => this.handel(item.module)}
+              >
+                {item.name}
+              </div>
+            ))}
+          </div>
+          {/* <Row>
             {qqqq.map((item, index) => (
               <Col span={6} className="channel-list">
                 <div className="m5 align_center p0">
@@ -69,7 +80,7 @@ class ChannelList extends React.Component {
                 </div>
               </Col>
             ))}
-          </Row>
+          </Row> */}
         </Drawer>
       </>
     );

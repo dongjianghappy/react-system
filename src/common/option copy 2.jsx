@@ -33,7 +33,6 @@ const ButtonGroup = (props) => {
 
     condition[e.target.getAttribute("field")] = e.target.getAttribute("value");
     setCondition({ ...condition });
-    debugger;
     const params = Object.assign(dispatch.search, condition);
     dispatch.select({
       api: props.api,

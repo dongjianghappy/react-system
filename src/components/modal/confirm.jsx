@@ -18,7 +18,6 @@ const Confirm = (props) => {
       icon: <ExclamationCircleOutlined />,
       content: props.config.content,
       onOk() {
-        debugger;
         dispatch
           .fetch({
             api: props.api,
@@ -30,7 +29,7 @@ const Confirm = (props) => {
           })
           .then(() => {
             message.info(information.info);
-            debugger;
+
             props.renderList && props.renderList();
           });
       },

@@ -52,24 +52,28 @@ class List extends React.Component {
   render() {
     const { dataSource } = this.state;
     return (
-      <Card
-        title="项目信息 * 进行中"
-        extra={
-          <WeDrawer.Form
-            name="修改项目信息"
-            isText={true}
-            action="edit"
-            data={{ id: dataSource.id }}
-            detailApi="selectVoteList"
-            api="updateVote"
-            renderList={this.getData}
-            authorized={checkButtonAuth("edit")}
-            {...this.props}
-          >
-            <Detail />
-          </WeDrawer.Form>
-        }
-      >
+      <Card>
+        <div className="nav-title">
+          项目信息 * 进行中
+          <span className="right">
+            {
+              <WeDrawer.Form
+                name="修改项目信息"
+                icon="edit"
+                type="default"
+                action="edit"
+                data={{ id: dataSource.id }}
+                detailApi="selectVoteList"
+                api="updateVote"
+                renderList={this.getData}
+                authorized={checkButtonAuth("edit")}
+                {...this.props}
+              >
+                <Detail />
+              </WeDrawer.Form>
+            }
+          </span>
+        </div>
         <Alert
           description="说明: 投票开始之后到结束均不能编辑项目信息和添加删除投票选项。"
           type="info"

@@ -41,16 +41,17 @@ class UserGrade extends React.Component {
 
   render() {
     const type = this.props.location.state && this.props.location.state.type;
-    debugger;
     const { grade } = this.props.module;
     return (
-      <>
-        <NavGroup
+      <Card>
+        <Tabs
+          defaultActiveKey="1"
           onChange={this.callback}
-          extra={
+          tabBarExtraContent={
             checkButtonAuth(add) ? (
               <WeModal.modalForm
-                name="新增功能应用权限"
+                name="新增权限"
+                icon="add"
                 data={{ coding }}
                 renderList={this.getData}
                 authorized={checkButtonAuth(add)}
@@ -63,24 +64,24 @@ class UserGrade extends React.Component {
             )
           }
         >
-          <Nav name="所有主题" value="1">
+          <TabPane tab="功能权限" key="1">
             <List
               type="1"
               data={grade}
               {...this.props}
               renderList={() => this.getData(1)}
             />
-          </Nav>
-          <Nav name="所有主题" value="2">
+          </TabPane>
+          <TabPane tab="应用权限" key="2">
             <List
               type="2"
               data={grade}
               {...this.props}
               renderList={() => this.getData(2)}
             />
-          </Nav>
-        </NavGroup>
-      </>
+          </TabPane>
+        </Tabs>
+      </Card>
     );
   }
 }

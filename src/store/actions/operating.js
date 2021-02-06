@@ -55,7 +55,6 @@ export const selectAction2 = async (params) =>{
 export const selectAction = (params) =>{
     return async (dispatch) => {
       const data = await api[params.api || 'select'](params.data)
-      debugger
       if(data.result){
         const action = {
             type: GET_DATA_ACTION,
@@ -77,7 +76,6 @@ export const detailAction = (params) =>{
         // })
         // if(result.result){
         const data = await api[params.api || 'select'](params.data)
-        debugger
         if(data.result){
             const action = {
                 type: GET_DETAIL,
@@ -148,7 +146,6 @@ export const getSearchAction = (value) =>({
 
 export const search = (params) =>{
     return async (dispatch) => {
-        debugger
         const result = await api.siteSearch(params.data)
 
         if(result.result){

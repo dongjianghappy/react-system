@@ -5,8 +5,7 @@ import { connect, dispatchToProps, codings } from "@/utils";
 import List from "./components/list";
 
 const { TabPane } = Tabs;
-const { manager: coding } = codings.log;
-
+const { user: coding } = codings.log;
 class Log extends React.Component {
   getData = () => {
     this.props.dispatch.select({
@@ -15,7 +14,7 @@ class Log extends React.Component {
         pagesize: 25,
         coding,
       },
-      node: "manageLog",
+      node: "userLog",
     });
   };
 
@@ -24,10 +23,10 @@ class Log extends React.Component {
   }
 
   render() {
-    const { manageLog } = this.props.module;
+    const { userLog } = this.props.module;
     return (
       <Card>
-        <div className="nav-title">管理员登录日志</div>
+        <div className="nav-title">用户登录日志</div>
         <table width="100%" className="table-striped table-hover col-left-23">
           <tr class="th">
             <td class="col-md-1">管理员名称</td>
@@ -39,8 +38,8 @@ class Log extends React.Component {
             <td class="col-md-1">地区</td>
             <td class="col-md-2">登录时间</td>
           </tr>
-          {manageLog &&
-            manageLog.map((item, index) => (
+          {userLog &&
+            userLog.map((item, index) => (
               <tr>
                 <td>{item.username}</td>
                 <td>{item.grade}</td>

@@ -20,9 +20,9 @@ class Index extends React.Component {
   };
   render() {
     const { config } = this.props.module;
-    debugger;
     return (
-      <Card title="搜索设置">
+      <Card>
+        <div className="nav-title">搜索设置</div>
         <BasicInfo
           title="基本信息"
           dataSource={config}

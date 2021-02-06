@@ -61,7 +61,7 @@ class Index extends React.Component {
         extra={
           checkButtonAuth("add") && (
             <Button
-              type="primary"
+              type="default"
               onClick={() => this.props.history.push(`/admin/knowledge/detail`)}
               authorized={checkButtonAuth("add")}
             >

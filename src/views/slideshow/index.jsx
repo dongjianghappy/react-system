@@ -28,23 +28,25 @@ class Index extends React.Component {
     const { list } = this.props.module;
 
     return (
-      <Card
-        title="幻灯片管理"
-        extra={
-          checkButtonAuth(add) && (
-            <WeDrawer.Form
-              name="新增幻灯片"
-              icon="add"
-              data={{ coding }}
-              renderList={this.getData}
-              authorized={checkButtonAuth(add)}
-              {...this.props}
-            >
-              <Detail />
-            </WeDrawer.Form>
-          )
-        }
-      >
+      <Card>
+        <div className="nav-title">
+          幻灯片管理
+          <span className="right">
+            {checkButtonAuth(add) && (
+              <WeDrawer.Form
+                name="新增幻灯片"
+                icon="add"
+                type="default"
+                data={{ coding }}
+                renderList={this.getData}
+                authorized={checkButtonAuth(add)}
+                {...this.props}
+              >
+                <Detail />
+              </WeDrawer.Form>
+            )}
+          </span>
+        </div>
         <Row>
           {list &&
             list.map((item, i) => (

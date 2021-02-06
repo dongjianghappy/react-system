@@ -106,7 +106,7 @@ class Index extends React.Component {
                     <WeDrawer.Form
                       name="新增导航"
                       icon="add"
-                      type="defult"
+                      type="default"
                       data={{ channel_id: params.channel, coding }}
                       initialValues={initialValues}
                       renderList={this.getData}

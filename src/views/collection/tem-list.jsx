@@ -56,7 +56,10 @@ class CollectionList extends React.Component {
     const { params } = this.state;
     return (
       <div>
-        <Card title={`${params.name ? params.name : "所有"}采集列表`}>
+        <Card>
+          <div className="nav-title">{`${
+            params.name ? params.name : "所有"
+          }采集列表`}</div>
           <table width="100%" class="table-striped artlist col-left-23">
             <tr class="th">
               <td class="col-md-1">选择</td>
@@ -126,6 +129,7 @@ class CollectionList extends React.Component {
 
 export default connect(
   (state) => ({
+    common: state.common,
     module: state.collection,
   }),
   dispatchToProps

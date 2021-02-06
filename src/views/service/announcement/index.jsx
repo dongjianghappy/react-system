@@ -41,23 +41,25 @@ class Announcement extends React.Component {
 
     return (
       <div>
-        <Card
-          title="公告通知"
-          extra={
-            checkButtonAuth("b:manage:announcement:add") && (
-              <WeDrawer.Form
-                name="发布公告通知"
-                icon="add"
-                data={{ coding }}
-                renderList={this.getData}
-                authorized={checkButtonAuth("add")}
-                {...this.props}
-              >
-                <Detail />
-              </WeDrawer.Form>
-            )
-          }
-        >
+        <Card>
+          <div className="nav-title">
+            公告通知
+            <span className="right">
+              {checkButtonAuth("b:manage:announcement:add") && (
+                <WeDrawer.Form
+                  name="发布公告通知"
+                  icon="add"
+                  type="default"
+                  data={{ coding }}
+                  renderList={this.getData}
+                  authorized={checkButtonAuth("add")}
+                  {...this.props}
+                >
+                  <Detail />
+                </WeDrawer.Form>
+              )}
+            </span>
+          </div>
           <table width="100%" className="table-striped table-hover col-left-2">
             <tr className="th">
               <td className="col-md-1">选择</td>

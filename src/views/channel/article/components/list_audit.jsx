@@ -26,7 +26,6 @@ const { del, edit } = (authorized.channel[mod] &&
 };
 
 const { art: coding, cate: catcoing } = codings[mod];
-debugger;
 const List = (props) => {
   return (
     <>

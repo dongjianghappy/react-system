@@ -5,8 +5,6 @@ const Option = (props) => {
   const { title, field, source, dataSource, callback } = props;
 
   const onChecked = (key) => {
-    debugger;
-
     dataSource.name = source[key];
     dataSource.value = key;
 
@@ -16,9 +14,10 @@ const Option = (props) => {
   return (
     <>
       <span
-        className="bg-eee font12"
+        className="bg-eee block"
         style={{
           marginLeft: 10,
+          height: 30,
           padding: "5px 10px",
         }}
       >

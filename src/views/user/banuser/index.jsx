@@ -23,7 +23,8 @@ class Banuser extends React.Component {
   render() {
     const { banuser } = this.props.module;
     return (
-      <Card title="用户禁言">
+      <Card>
+        <div className="nav-title">用户禁言</div>
         <table width="100%" className="table-striped table-hover col-left-7">
           <tr class="th">
             <td class="col-md-1">选择</td>

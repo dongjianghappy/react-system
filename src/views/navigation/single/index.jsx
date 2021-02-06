@@ -45,24 +45,26 @@ class Single extends React.Component {
 
     return (
       <div>
-        <Card
-          title={`${this.state.params.name}单页`}
-          extra={
-            checkButtonAuth(add) && (
-              <Button
-                type="primary"
-                onClick={() =>
-                  this.props.history.push(
-                    `/admin/navigation/single/detail?channel=${this.state.params.channel}`
-                  )
-                }
-                authorized={checkButtonAuth(add)}
-              >
-                新增单页
-              </Button>
-            )
-          }
-        >
+        <Card>
+          <div className="nav-title">
+            {`${this.state.params.name}单页`}
+            <span className="right">
+              {checkButtonAuth(add) && (
+                <Button
+                  type="default"
+                  onClick={() =>
+                    this.props.history.push(
+                      `/admin/navigation/single/detail?channel=${this.state.params.channel}`
+                    )
+                  }
+                  authorized={checkButtonAuth(add)}
+                >
+                  <i className="iconfont icon-add" />
+                  新增单页
+                </Button>
+              )}
+            </span>
+          </div>
           <table width="100%" className="table-striped col-left-345">
             <tr className="th">
               <td className="col-md-1">选择</td>

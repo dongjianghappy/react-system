@@ -77,7 +77,7 @@ const Index = (props) => {
 
   const changeInput = (e) => {
     field[e.currentTarget.id] = e.target.value;
-    debugger;
+
     setField({ ...field });
   };
 

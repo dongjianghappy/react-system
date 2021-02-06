@@ -4,7 +4,6 @@ import ButtonGroup from "./buttonGroup";
 import Pagination from "../components/pagination";
 
 const Operatinavbar = (props) => {
-  debugger;
   return (
     <Row>
       <Col span={8}>

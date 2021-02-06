@@ -4,7 +4,6 @@ import Modal from "./button-add";
 
 const Detail = (props) => {
   const { dispatch, data } = props;
-  debugger;
   const [response, setResponse] = useState([]);
 
   useEffect(() => {

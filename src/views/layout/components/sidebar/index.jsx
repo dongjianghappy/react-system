@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import dispatchToProps from "@/store/dispatch";
 import Logo from "@/static/logo.png";
 
-const _routers = adminRouter.filter((route) => route.isShow);
+const _routers = adminRouter.filter((route) => route.sidebar);
 const path = window.location.pathname.split("/")[2];
 
 const ee = _routers.filter((route) => route.path === `/admin/${path}`);
@@ -126,7 +126,6 @@ class Sidebar extends React.Component {
   };
 
   onOpenChange = (openKeys) => {
-    debugger;
     const latestOpenKey = openKeys.find(
       (key) => this.state.openKeys.indexOf(key) === -1
     );
@@ -140,7 +139,6 @@ class Sidebar extends React.Component {
   };
 
   onCloseChange = () => {
-    debugger;
     this.setState({
       openKeys: [],
     });

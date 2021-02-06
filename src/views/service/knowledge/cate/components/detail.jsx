@@ -9,7 +9,6 @@ const { TabPane } = Tabs;
 const Detail = (props) => {
   const { params, dataSource, callback } = props;
   const [flagList, setFlagList] = useState([]);
-  debugger;
   useEffect(() => {
     if (props.id) {
       props

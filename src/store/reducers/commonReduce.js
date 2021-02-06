@@ -54,7 +54,6 @@ const commonReducers = (state, action) => {
 
         case GET_DETAIL :
             newState = JSON.parse(JSON.stringify(state))
-            debugger
             if(action.node.indexOf(".") !== -1){
                 const arr = action.node.split(".")
                 newState[arr[0]][arr[1]] = action.value
@@ -238,7 +237,7 @@ const commonReducers = (state, action) => {
         case ON_MOVE :
             const {direction, index, obj, moveItem, parantId, node} = action.data
             newState = JSON.parse(JSON.stringify(state))
-            debugger
+
 
             const newData = obj;
             const item = newData.splice(

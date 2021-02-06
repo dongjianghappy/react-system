@@ -117,7 +117,6 @@ export const getSpaceAction = (data) =>({
 
 
 export const spaceAction = (params) =>{
-    debugger
     return async (dispatch) => {
       const data = await api.space(params)
       const action = getSpaceAction(data.result)

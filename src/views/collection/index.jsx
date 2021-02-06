@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Space, Button } from "antd";
+import { Card, Space, Button, Popover } from "antd";
 import {
   connect,
   dispatchToProps,
@@ -42,11 +42,12 @@ class Collection extends React.Component {
     return (
       <div>
         <Card>
-          <div style={{ marginBottom: 15 }}>
-            <Space>
-              <Button type="primary">采集列表</Button>
+          <div className="nav-title">
+            采集列表
+            <span className="right">
               <WeModal.modalForm
                 name="选择节点类型"
+                icon="add"
                 data={{ coding }}
                 renderList={this.getData}
                 authorized={checkButtonAuth(add)}
@@ -54,9 +55,8 @@ class Collection extends React.Component {
               >
                 <Detail />
               </WeModal.modalForm>
-            </Space>
+            </span>
           </div>
-
           <table width="100%" class="table-striped artlist col-left-2">
             <tr class="th">
               <td class="col-md-1">选择</td>
@@ -95,38 +95,52 @@ class Collection extends React.Component {
                       <CollectionNode />
                     </WeModal.modalForm>
                     <span className="line">|</span>
-                    <span
-                      onClick={() =>
-                        this.props.history.push(
-                          `/admin/collection/list?fid=${item.id}&name=${item.name}`
-                        )
+                    <Popover
+                      placement="bottom"
+                      trigger="click"
+                      content={
+                        <div>
+                          <p>
+                            <span
+                              onClick={() =>
+                                this.props.history.push(
+                                  `/admin/collection/list?fid=${item.id}&name=${item.name}`
+                                )
+                              }
+                            >
+                              列表
+                            </span>
+                          </p>
+                          <p>
+                            <span
+                              onClick={() =>
+                                this.props.history.push(
+                                  `/admin/collection/temlist?fid=${item.id}&name=${item.name}`
+                                )
+                              }
+                            >
+                              临时列表
+                            </span>
+                          </p>
+                          <p>
+                            <Confirm
+                              name="删除"
+                              config={{
+                                operating: "delete",
+                                message: React.$modalEnum,
+                              }}
+                              data={{ coding, id: item.id }}
+                              api="delete"
+                              renderList={this.getData}
+                              authorized={checkButtonAuth(del)}
+                              {...this.props}
+                            />
+                          </p>
+                        </div>
                       }
                     >
-                      列表
-                    </span>
-                    <span style={{ padding: "0 5px" }}>|</span>
-                    <span
-                      onClick={() =>
-                        this.props.history.push(
-                          `/admin/collection/temlist?fid=${item.id}&name=${item.name}`
-                        )
-                      }
-                    >
-                      临时列表
-                    </span>
-                    <span style={{ padding: "0 5px" }}>|</span>
-                    <Confirm
-                      name="删除"
-                      config={{
-                        operating: "delete",
-                        message: React.$modalEnum,
-                      }}
-                      data={{ coding, id: item.id }}
-                      api="delete"
-                      renderList={this.getData}
-                      authorized={checkButtonAuth(del)}
-                      {...this.props}
-                    />
+                      更多
+                    </Popover>
                   </td>
                 </tr>
               ))}

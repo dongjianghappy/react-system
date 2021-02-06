@@ -15,7 +15,6 @@ const VisitChart = (props) => {
       if (dataSource) {
         init.series = dataSource;
         init.labels = label;
-        debugger;
         setData({ ...init });
       }
     },

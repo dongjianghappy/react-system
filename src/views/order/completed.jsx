@@ -22,7 +22,8 @@ class completed extends React.Component {
     const { completed } = this.props.module;
     return (
       <>
-        <Card title="已完成">
+        <Card>
+          <div className="nav-title">已完成</div>
           <table width="100%" className="table-striped table-hover col-left-23">
             <tr class="th">
               <td class="col-md-1">选择</td>

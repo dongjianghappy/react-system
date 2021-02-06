@@ -21,7 +21,7 @@ class Index extends React.Component {
     name: "",
   };
   getData = () => {
-    const mod = window.location.pathname.split("/")[4] || "";
+    const mod = window.location.pathname.split("/")[3] || "";
     let type = 0;
     switch (mod) {
       case "core":
@@ -65,20 +65,24 @@ class Index extends React.Component {
 
     return (
       <>
-        <Card
-          title={`${this.state.name}词`}
-          extra={
-            <WeModal.modalForm
-              name="新增标签"
-              data={{ coding, type: this.state.type }}
-              renderList={this.getData}
-              authorized={checkButtonAuth(add)}
-              {...this.props}
-            >
-              <AddDetail />
-            </WeModal.modalForm>
-          }
-        >
+        <Card>
+          <div className="nav-title">
+            {`${this.state.name}词`}
+            <span className="right">
+              {
+                <WeModal.modalForm
+                  name="新增标签"
+                  icon="add"
+                  data={{ coding, type: this.state.type }}
+                  renderList={this.getData}
+                  authorized={checkButtonAuth(add)}
+                  {...this.props}
+                >
+                  <AddDetail />
+                </WeModal.modalForm>
+              }
+            </span>
+          </div>
           <table width="100%" className="table-striped table-hover col-left-3">
             <tr className="th">
               <td className="col-md-1">选择</td>
@@ -154,6 +158,7 @@ class Index extends React.Component {
 
 export default connect(
   (state) => ({
+    common: state.common,
     module: state.tag,
   }),
   dispatchToProps

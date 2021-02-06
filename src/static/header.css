@@ -21,10 +21,12 @@
 
 .logo {
   box-shadow: #2f455a 1px 0px 3px;
+  padding-left: 25px;
   width: 199px;
   height: 64px;
   line-height: 64px;
   float: left;
+  font-size: 18px;
   color: #fff !important;
 }
 .logo a {

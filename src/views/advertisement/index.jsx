@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Space } from "antd";
+import { Card, Space, Tabs } from "antd";
 
 import {
   connect,
@@ -13,6 +13,7 @@ import { WeDrawer, NavGroup } from "@/components";
 import Detail from "./components/detail";
 
 import List from "./components/list";
+const { TabPane } = Tabs;
 
 const { Nav } = NavGroup;
 
@@ -96,42 +97,40 @@ class Advertisement extends React.Component {
     const { list } = this.props.module;
 
     return (
-      <div>
-        <NavGroup
+      <Card>
+        <Tabs
+          defaultActiveKey="1"
           onChange={this.callback}
-          extra={
-            <Space>
-              {checkButtonAuth(add) ? (
-                <WeDrawer.Form
-                  name="新增广告"
-                  icon="add"
-                  data={{ coding }}
-                  renderList={this.getData}
-                  authorized={checkButtonAuth(add)}
-                  {...this.props}
-                >
-                  <Detail />
-                </WeDrawer.Form>
-              ) : (
-                ""
-              )}
-            </Space>
+          tabBarExtraContent={
+            checkButtonAuth(add) ? (
+              <WeDrawer.Form
+                name="新增广告"
+                icon="add"
+                type="defult"
+                data={{ coding }}
+                renderList={this.getData}
+                authorized={checkButtonAuth(add)}
+                {...this.props}
+              >
+                <Detail />
+              </WeDrawer.Form>
+            ) : (
+              ""
+            )
           }
         >
-          <Nav name="广告管理" value="1">
-            {" "}
+          <TabPane tab="广告管理" key="1">
             <List
               type="1"
               data={list}
               {...this.props}
               getData={() => this.getData(1)}
             />
-          </Nav>
-          <Nav name="广告申请" value="2"></Nav>
-          <Nav name="订单列表" value="3"></Nav>
-        </NavGroup>
-        <Card></Card>
-      </div>
+          </TabPane>
+          <TabPane tab="广告申请" key="2"></TabPane>
+          <TabPane tab="订单列表" key="3"></TabPane>
+        </Tabs>
+      </Card>
     );
   }
 }

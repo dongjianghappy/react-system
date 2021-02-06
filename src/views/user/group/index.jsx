@@ -33,22 +33,24 @@ class UserGroup extends React.Component {
   render() {
     const { group } = this.props.module;
     return (
-      <Card
-        title="用户等级管理"
-        extra={
-          checkButtonAuth(add) && (
-            <WeModal.modalForm
-              name="新增等级"
-              data={{ coding }}
-              renderList={this.getData}
-              authorized={checkButtonAuth(add)}
-              {...this.props}
-            >
-              <Detail />
-            </WeModal.modalForm>
-          )
-        }
-      >
+      <Card>
+        <div className="nav-title">
+          用户等级管理
+          <span className="right">
+            {checkButtonAuth(add) && (
+              <WeModal.modalForm
+                name="新增等级"
+                icon="add"
+                data={{ coding }}
+                renderList={this.getData}
+                authorized={checkButtonAuth(add)}
+                {...this.props}
+              >
+                <Detail />
+              </WeModal.modalForm>
+            )}
+          </span>
+        </div>
         <table width="100%" class="table-striped table-hover col-left-4">
           <tr class="th">
             <td class="col-md-1">等级</td>
@@ -67,7 +69,8 @@ class UserGroup extends React.Component {
                 <td>
                   <Space size="middle">
                     <WeModal.modalForm
-                      name="编辑等级"
+                      name="编辑"
+                      isText={true}
                       action="edit"
                       data={{ id: item.id, coding }}
                       renderList={this.getData}

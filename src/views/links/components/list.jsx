@@ -43,6 +43,7 @@ const List = (props) => {
                   },
                 ]}
                 {...props}
+                search={{ field: "name" }}
               />
             </span>
           </div>

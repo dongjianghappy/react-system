@@ -16,7 +16,6 @@ import { isLogined } from '@/utils/auth'
 // 然后修改根目录下package.json文件，label
 
 const redner = (adminRouter) => {
-  debugger
   return adminRouter.map( route => {
 
     if(route.children){

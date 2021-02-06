@@ -22,7 +22,6 @@ const BasicInfo = (props) => {
 
   // 编辑、取消、保存
   const handle = async (e) => {
-    debugger;
     if (isEdit) {
       setFiled();
     } else {

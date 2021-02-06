@@ -7,7 +7,6 @@ const NavGroup = (props) => {
   const keyFunction = (res) => {
     setKey(res);
   };
-  debugger;
   return (
     <>
       {props.children.length > 0 ? (

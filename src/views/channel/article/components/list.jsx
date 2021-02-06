@@ -13,7 +13,7 @@ import {
 import More from "./more";
 
 // const mod = window.location.pathname.split("/")[2] || "";
-debugger;
+
 const mod = channel().module || "";
 
 const { del, edit } = (authorized.channel[mod] &&
@@ -26,7 +26,6 @@ const { art: coding, cate: catcoing } = codings[mod];
 const List = (props) => {
   const { dataSource, callback, channel } = props;
 
-  debugger;
   return (
     <>
       <div className="nav-title">
@@ -56,6 +55,7 @@ const List = (props) => {
                 name: "全部",
               },
             ]}
+            search={{ field: "title" }}
           />
         </span>
       </div>
@@ -111,7 +111,7 @@ const List = (props) => {
                     disabled={!checkButtonAuth(del)}
                     onClick={() =>
                       props.history.push(
-                        `/admin/${channel.module}/detail?id=${item.id}`
+                        `/admin/${channel.module}/list/detail?id=${item.id}`
                       )
                     }
                   >

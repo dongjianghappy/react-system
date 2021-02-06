@@ -170,7 +170,9 @@ const codings = {
 		config: "P0017"
 	},
 	template:"",
-	test: ""
+	test: "",
+	manage: "",
+	function: ""
 }
 
 export default codings

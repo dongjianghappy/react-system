@@ -11,7 +11,7 @@ const Footer = () => {
         fontSize: "14px",
       }}
     >
-      Copyright@07素材网未经许可不得复制、转载或摘编，违者必究！
+      {/* Copyright@07素材网未经许可不得复制、转载或摘编，违者必究！ */}
     </div>
   );
 };

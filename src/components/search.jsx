@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Button, Input } from "antd";
 
 const Search = (props) => {
@@ -10,9 +10,15 @@ const Search = (props) => {
     dispatch,
   } = props;
 
-  const onFinish = (values) => {
+  const [content, setContent] = useState("");
+
+  const inputChange = (e) => {
+    setContent(e.target.value);
+  };
+
+  const onFinish = () => {
     const newsRequest = { ...initPage };
-    newsRequest.title = values.title;
+    newsRequest[props.search.field] = content;
 
     dispatch.searchField({
       data: {
@@ -31,24 +37,27 @@ const Search = (props) => {
 
   return (
     <>
-      <Form layout="inline" onFinish={onFinish} style={{ float: "right" }}>
-        {props.render ? (
-          props.render()
-        ) : (
-          <Form.Item name="title">
-            <Input
-              placeholder="关键词查找"
-              className="input-250 input-sm mr10"
-              prefix="sd"
-            />
-          </Form.Item>
-        )}
-        <Form.Item>
-          <Button type="primary" htmlType="submit" className="mr5">
-            查询
-          </Button>
-        </Form.Item>
-      </Form>
+      <div className="relative" style={{ paddingRight: 0 }}>
+        <Input
+          placeholder="关键词查找"
+          onChange={inputChange}
+          className="input-250 input-sm"
+        />
+        <span
+          className="absolute block"
+          onClick={onFinish}
+          style={{
+            background: "#f0f0f0",
+            top: 0,
+            right: 0,
+            padding: "5px 8px",
+            height: 30,
+            border: 0,
+          }}
+        >
+          查询
+        </span>
+      </div>
     </>
   );
 };
