@@ -3,16 +3,18 @@ import { Input, Form, Radio } from "antd";
 import {
   TitleAttribute,
   Editor,
+  Kindeditor,
   Keyword,
   Preview,
   WeModal,
 } from "@/components";
 
 import { CheckboxGroup } from "@/common";
+import Code from "./code";
 
 const Form1 = (props) => {
-  const { dataSource, callback, coding } = props;
-
+  const { dataSource, callback, coding, action } = props;
+  debugger;
   return (
     <>
       <Form.Item label="文章标题">
@@ -21,6 +23,13 @@ const Form1 = (props) => {
             <Input
               placeholder="请输入文章标题"
               className="input-sm input-350"
+              style={{ float: "left" }}
+            />
+          </Form.Item>
+          <Form.Item name="subtitle">
+            <Input
+              placeholder="请输入副标题"
+              className="input-sm input-150"
               style={{ float: "left" }}
             />
           </Form.Item>
@@ -70,9 +79,9 @@ const Form1 = (props) => {
           </Form.Item>
         </Input.Group>
       </Form.Item>
-      <Form.Item label="下载地址">
+      {/* <Form.Item label="下载地址">
         <Input placeholder="下载链接地址" className="input-sm input-350" />
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item label="预览图" name="image">
         <div style={{ width: 530 }}>
           <Preview
@@ -83,15 +92,30 @@ const Form1 = (props) => {
           />
         </div>
       </Form.Item>
-      <Form.Item label="演示地址" name="jump_link">
+      {/* <Form.Item label="演示地址" name="jump_link">
         <Input.TextArea
           placeholder="演示链接地址"
           className="input-sm"
           style={{ width: "500px", height: "80px" }}
         />
+      </Form.Item> */}
+      <Form.Item label="文件名" name="filename">
+        <Input placeholder="请输入文件名称" className="input-sm input-350" />
       </Form.Item>
+      <Form.Item label="代码区显示" name="code_display">
+        <Radio.Group>
+          <Radio value="html">html</Radio>
+          <Radio value="css">css</Radio>
+          <Radio value="js">js</Radio>
+        </Radio.Group>
+      </Form.Item>
+      <Form.Item label="代码">
+        <Code dataSource={dataSource} callback={callback} />
+      </Form.Item>
+
       <Form.Item label="正文" name="content">
-        <Editor value={dataSource.content} callback={callback} />
+        <Kindeditor content={dataSource.content} action={action} />
+        {/* <Editor value={dataSource.content} callback={callback} /> */}
       </Form.Item>
       <Form.Item label="摘要" name="summary">
         <Input.TextArea className="input-sm" placeholder="请输入内容摘要" />

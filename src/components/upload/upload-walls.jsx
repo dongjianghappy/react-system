@@ -68,7 +68,8 @@ const PicturesWall = (props) => {
     <>
       <Upload
         name="upload"
-        action="http://127.0.0.1/api/interface.php"
+        // action="http://127.0.0.1/api/interface.php"
+        action="http://127.0.0.1/admincms/api/inter_vue.php?&type=space"
         listType="picture-card"
         fileList={fileList}
         onPreview={handlePreview}

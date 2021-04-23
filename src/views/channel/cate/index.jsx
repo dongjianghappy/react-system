@@ -410,10 +410,10 @@ class Channel extends React.Component {
                                       isText={true}
                                       name="编辑"
                                       title="编辑分类"
-                                      id={aaa.id}
+                                      data={{ id: aaa.id, coding }}
                                       initialValues={initialValues}
                                       renderList={this.getData}
-                                      coding={coding}
+                                      authorized={checkButtonAuth("edit")}
                                       {...this.props}
                                     >
                                       <Detail />
@@ -565,10 +565,12 @@ class Channel extends React.Component {
                                                   isText={true}
                                                   name="编辑"
                                                   title="编辑分类"
-                                                  id={bbb.id}
+                                                  data={{ id: bbb.id, coding }}
                                                   initialValues={initialValues}
                                                   renderList={this.getData}
-                                                  coding={coding}
+                                                  authorized={checkButtonAuth(
+                                                    "edit"
+                                                  )}
                                                   {...this.props}
                                                 >
                                                   <Detail />

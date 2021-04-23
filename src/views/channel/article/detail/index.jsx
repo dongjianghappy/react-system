@@ -28,6 +28,12 @@ class Index extends React.Component {
   };
 
   onFinish = (values) => {
+    if (document.getElementsByTagName("iframe") != 0) {
+      values.content = document.getElementsByTagName(
+        "iframe"
+      )[0].contentWindow.window.document.body.innerHTML;
+    }
+
     if (
       this.formRef.current.getFieldValue().image &&
       this.formRef.current.getFieldValue().image.length > 0 &&
@@ -101,18 +107,18 @@ class Index extends React.Component {
             });
         }
 
-        this.props.dispatch
-          .fetch({
-            api: "getFlag",
-            data: {
-              channel_id: this.props.channel.id,
-            },
-          })
-          .then((res) => {
-            this.setState({
-              flagList: res.result,
-            });
-          });
+        // this.props.dispatch
+        //   .fetch({
+        //     api: "getFlag",
+        //     data: {
+        //       channel_id: this.props.channel.id,
+        //     },
+        //   })
+        //   .then((res) => {
+        //     this.setState({
+        //       flagList: res.result,
+        //     });
+        //   });
       }
     );
   }
@@ -127,6 +133,7 @@ class Index extends React.Component {
 
   render() {
     const { channel } = this.props;
+    debugger;
     return (
       <Card>
         <Form
@@ -145,6 +152,7 @@ class Index extends React.Component {
                   art: this.state.coding.art,
                   cate: this.state.coding.cate,
                 }}
+                action={this.state.params.id ? "edit" : "add"}
                 data={this.state.data}
                 dataSource={this.state.dataSource}
                 callback={this.callback}

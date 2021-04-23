@@ -134,24 +134,18 @@ class Index extends React.Component {
                   消息
                   <Badge num={system.message} />
                 </span>
-                {/* <span
-                  onClick={() =>
-                    this.route("/admin/service/message", "service")
-                  }
-                  className="absolute"
-                  style={{ top: "6px" }}
-                >
-                  <Badge count={5}>
-                    <i className="iconfont icon-email font24"></i>
-                  </Badge>
-                </span> */}
               </Col>
               <Col span="10">
                 <Row>
-                  <Col span="12">风格</Col>
-                  <Col span="12">
-                    <a href="http://www.yunxi10.com" target="_blank">
+                  <Col span="8">风格</Col>
+                  <Col span="8">
+                    <a href="/" target="_blank">
                       首页
+                    </a>
+                  </Col>
+                  <Col span="8">
+                    <a href="/admincms" target="_blank">
+                      旧版本
                     </a>
                   </Col>
                 </Row>

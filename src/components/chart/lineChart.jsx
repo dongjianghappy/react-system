@@ -51,7 +51,7 @@ const VisitChart = (props) => {
         <div className="graph-bar">
           <div className="bar-title">
             {title.map((item, index) => (
-              <div>
+              <div key={index}>
                 {item}
                 {title.length > 1 && (
                   <span style={{ background: "#f00" }}></span>

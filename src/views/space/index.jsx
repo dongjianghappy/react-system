@@ -18,9 +18,9 @@ const Spaces = (props) => {
   return (
     <Layout>
       <Router>
-        <Toper />
+        {/* <Toper /> */}
         <Layout>
-          <Sidebar />
+          {/* <Sidebar /> */}
           <Layout style={{ overflow: "hidden" }}>
             <Content
               className="site-layout-background relative"

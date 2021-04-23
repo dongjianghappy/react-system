@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Default Examples</title>
+
+		<link rel="stylesheet" href="../../../common/kindeditor/themes/default/default.css" />
+		<script charset="utf-8" src="../../../common/kindeditor/kindeditor-min.js"></script>
+		<script charset="utf-8" src="../../../common/kindeditor/lang/zh_CN.js"></script>
+		
+		{literal}
+		<script>
+			var editor;
+			KindEditor.ready(function(K) {
+				editor = K.create('textarea[name="content"]', {
+					allowFileManager : true
+				});
+			});
+		</script>
+        {/literal}
+	</head>
+	<body>
+		<textarea id="#form-content" name="content" style="width:100%;height:400px;visibility:hidden;">{$sm_body.content}</textarea>
+	</body>
+</html>

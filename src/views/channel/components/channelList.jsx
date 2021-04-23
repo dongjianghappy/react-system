@@ -67,7 +67,7 @@ class ChannelList extends React.Component {
           <ul className="navigation">
             {routers.map((list, i) =>
               list.value === "space" ? (
-                <li>
+                <li key={i}>
                   <a href="/admin/space" target="_blank">
                     <i className={`iconfont icon-${list.icon} mr10`}></i>
                     {list.name}

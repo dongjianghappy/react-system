@@ -25,8 +25,9 @@ const { del, edit } = (authorized.channel[mod] &&
   edit: "",
 };
 
-const { art: coding, cate: catcoing } = codings[mod];
 const List = (props) => {
+  const { codings } = props;
+  const { art: coding, cate: catcoing } = codings;
   return (
     <>
       <table

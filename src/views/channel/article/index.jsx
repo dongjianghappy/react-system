@@ -129,6 +129,7 @@ class Index extends React.Component {
             <List
               type="1"
               dataSource={module}
+              codings={this.state.coding}
               renderList={this.getData}
               {...this.props}
             />
@@ -138,6 +139,7 @@ class Index extends React.Component {
             <CheckedList
               type="1"
               data={module.list}
+              codings={this.state.coding}
               renderList={this.getData}
               {...this.props}
             />
@@ -147,6 +149,7 @@ class Index extends React.Component {
             <ReturnList
               type="1"
               data={module.list}
+              codings={this.state.coding}
               renderList={this.getData}
               {...this.props}
             />

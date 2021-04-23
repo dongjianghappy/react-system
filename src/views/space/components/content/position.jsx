@@ -18,9 +18,9 @@ const Position = (props) => {
         className="absolute"
       >
         <Row>
-          <Col span={12} style={{ lineHeight: "35px" }}>
+          {/* <Col span={12} style={{ lineHeight: "35px" }}>
             当前目录：upload (共有16文件)
-          </Col>
+          </Col> */}
           <Col span={12} style={{ textAlign: "end" }}>
             <Button onClick={() => props.goback()}>返回</Button>
             {props.show === "space" ? (

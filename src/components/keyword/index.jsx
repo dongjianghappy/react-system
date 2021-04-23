@@ -91,7 +91,7 @@ const Keyword = (props) => {
     <div className="p10">
       <div className="tagInputContainer" style={{ position: "relative" }}>
         {keyword.map((item, index) => (
-          <div className="tag-box">
+          <div key={index} className="tag-box">
             <span>{item}</span>
             <a onClick={() => remove(index)} className="remove">
               ×
@@ -114,7 +114,7 @@ const Keyword = (props) => {
         <div className="tagListContainer">
           <div className="tagList">
             {list.map((item, index) => (
-              <div onClick={select} className="tag-box tagBox">
+              <div key={index} onClick={select} className="tag-box tagBox">
                 {item.name}
               </div>
             ))}

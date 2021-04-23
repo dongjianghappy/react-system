@@ -40,7 +40,7 @@ class Login extends React.Component {
             <div className="photos">
               <i className="iconfont icon-user font64"></i>
             </div>
-            <div id="name" class="username"></div>
+            <div id="name" className="username"></div>
           </div>
           <div id="content" className="login-right right">
             <h1 style={{ marginBottom: 25, fontSize: 14, fontWeight: "bold" }}>

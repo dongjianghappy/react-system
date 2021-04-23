@@ -53,34 +53,20 @@ class ChannelList extends React.Component {
           closable={false}
           onClose={this.onClose}
           visible={this.state.visible}
-          bodyStyle={{ background: "#103353", padding: 10 }}
+          bodyStyle={{ padding: 10 }}
         >
           <div className="channel-wrap">
             {qqqq.map((item, index) => (
               <div
+                key={index}
                 className="channel-lists"
                 onClick={() => this.handel(item.module)}
               >
+                <i className="iconfont icon-list" />
                 {item.name}
               </div>
             ))}
           </div>
-          {/* <Row>
-            {qqqq.map((item, index) => (
-              <Col span={6} className="channel-list">
-                <div className="m5 align_center p0">
-                  <img
-                    src={item.image}
-                    style={{ width: "100%", height: 80 }}
-                    onClick={() => this.handel(item.module)}
-                  />
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    <div>{item.name}</div>
-                  </div>
-                </div>
-              </Col>
-            ))}
-          </Row> */}
         </Drawer>
       </>
     );

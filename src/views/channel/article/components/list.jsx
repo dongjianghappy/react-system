@@ -22,10 +22,9 @@ const { del, edit } = (authorized.channel[mod] &&
   edit: "",
 };
 
-const { art: coding, cate: catcoing } = codings[mod];
 const List = (props) => {
-  const { dataSource, callback, channel } = props;
-
+  const { dataSource, callback, channel, codings } = props;
+  const { art: coding, cate: catcoing } = codings;
   return (
     <>
       <div className="nav-title">
@@ -147,16 +146,21 @@ const List = (props) => {
                     authorized={checkButtonAuth("del")}
                   />
                   <Popover
-                    title="更多信息"
-                    placement="left"
+                    placement="bottom"
+                    trigger="click"
                     content={() => (
-                      <More
-                        {...props}
-                        dataSource={item}
-                        data={{ id: item.id, type: 0, coding }}
-                        renderList={props.renderList}
-                        flags={dataSource.flags}
-                      />
+                      <div>
+                        <p>相册</p>
+                        <p>
+                          <More
+                            {...props}
+                            dataSource={item}
+                            data={{ id: item.id, type: 0, coding }}
+                            renderList={props.renderList}
+                            flags={dataSource.flags}
+                          />
+                        </p>
+                      </div>
                     )}
                   >
                     <Button type="link" size="small">

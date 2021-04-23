@@ -47,7 +47,11 @@ const DrawerForm = (props) => {
   const onFinish = () => {
     // 如果是数组则没有选择，所以不需要进行更新
     if (Array.isArray(form.getFieldValue().image)) {
-      if (form.getFieldValue().image[0].indexOf("http") === -1) {
+      debugger;
+      if (
+        form.getFieldValue().image[0] &&
+        form.getFieldValue().image[0].indexOf("http") === -1
+      ) {
         form.getFieldValue().image = `|${form
           .getFieldValue()
           .image.join("|")}|`;

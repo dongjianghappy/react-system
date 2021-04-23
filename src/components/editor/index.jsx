@@ -8,7 +8,6 @@ const Editor = (props) => {
   useEffect(() => {
     // 注：class写法需要在componentDidMount 创建编辑器
     editor = new E("#div1");
-
     editor.config.onchange = (newHtml) => {
       callback({
         content: newHtml,

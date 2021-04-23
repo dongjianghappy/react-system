@@ -31,21 +31,25 @@ class Sidebar extends React.Component {
         return (
           <SubMenu
             key={i}
-            icon={<i className={`iconfont icon-${item.icon} mr10`}></i>}
+            icon={<i className={`iconfont icon-${item.icon}`}></i>}
             title={item.name}
           >
             {item.children.map((list, i) => (
               <Menu.Item key={i + item.name}>
-                <Link to={list.path}>{list.name}</Link>
+                <Link to={list.path}>
+                  {!this.props.screen ? list.name : ""}
+                </Link>
               </Menu.Item>
             ))}
           </SubMenu>
         );
       } else {
         return (
-          <Menu.Item key={i + 100}>
-            <i className={`iconfont icon-${item.icon} mr10`}></i>
-            <Link to={item.path}>{item.name}</Link>
+          <Menu.Item
+            key={i + 100}
+            icon={<i className={`iconfont icon-${item.icon}`} />}
+          >
+            <Link to={item.path}>{!this.props.screen ? item.name : ""}</Link>
           </Menu.Item>
         );
       }
@@ -69,7 +73,7 @@ class Sidebar extends React.Component {
             <SubMenu
               key={i}
               icon={<i className={`iconfont icon-${item.icon} mr10`}></i>}
-              title={item.name}
+              title={!this.props.screen ? item.name : ""}
             >
               {item.children.map((list, i) => (
                 <Menu.Item key={i + item.name}>
@@ -80,42 +84,17 @@ class Sidebar extends React.Component {
           );
         } else {
           return (
-            <Menu.Item key={i + 100}>
-              <i className={`iconfont icon-${item.icon} mr10`}></i>
+            <Menu.Item
+              key={i + 100}
+              icon={<i className={`iconfont icon-${item.icon}`} />}
+            >
               <Link to={item.path} onClick={this.onCloseChange}>
-                {item.name}
+                {!this.props.screen ? item.name : ""}
               </Link>
             </Menu.Item>
           );
         }
       }
-
-      // item.module === "article" ?
-
-      // <SubMenu key="0" title="基本信息">
-      //     <Menu.Item ><Link to="/admin/article">频道设置</Link></Menu.Item>
-      //     <Menu.Item ><Link to={{pathname:'/admin/navigation/main', state:{id: item.id}}}>频道导航</Link></Menu.Item>
-      //     <Menu.Item ><Link to={{pathname:'/admin/navigation/single', state:{id: item.id}}}>单页管理</Link></Menu.Item>
-      //     <Menu.Item ><Link to={{pathname:'/admin/article/label', state:{id: item.id}}}>聚合标签</Link></Menu.Item>
-      //     <Menu.Item ><Link to={{pathname:'/admin/navigation/single', state:{id: item.id}}}>语言设置</Link></Menu.Item>
-      // </SubMenu>
-
-      // :
-
-      // item.children ? //  && item.child !== 0
-      // <SubMenu key={i} icon={<UserOutlined />} title={item.name}>
-      // {
-      //     item.children.map((list, i) => (
-      //     <Menu.Item key={ i+item.name }>
-      //         <Link to={list.path}>{ list.name }</Link>
-      //     </Menu.Item>
-      //     ))
-      // }
-      // </SubMenu>
-      // :
-      // <Menu.Item key={ i+100 }>
-      //     <Link to={item.path}>{ item.name }</Link>
-      // </Menu.Item>
     });
   };
 
@@ -152,6 +131,7 @@ class Sidebar extends React.Component {
     return (
       <Sider collapsed={this.props.screen} className="site-layout-background">
         <div className="menus">TECHNOLOGY</div>
+
         <Menu
           theme="dark"
           defaultSelectedKeys={["1"]}
@@ -167,7 +147,6 @@ class Sidebar extends React.Component {
 }
 
 const stateToProops = (state) => {
-  console.log(state);
   return {
     list: state.login,
   };

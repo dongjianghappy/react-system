@@ -24,6 +24,8 @@ class Default extends React.Component {
     const {
       list,
       visit = 0,
+      today = 0,
+      yesterday = 0,
       praise = 0,
       comment = 0,
       download = 0,
@@ -35,11 +37,29 @@ class Default extends React.Component {
         <Row gutter={16}>
           <Col span={6}>
             <Card>
-              <Statistic
-                title="累计访问"
-                value={`${visit}人次`}
-                valueStyle={{ color: "#cf1322" }}
-              />
+              <Row className="align_center">
+                <Col span={8}>
+                  <Statistic
+                    title="累计访问"
+                    value={`${visit}`}
+                    valueStyle={{ color: "#3f8600" }}
+                  />
+                </Col>
+                <Col span={8}>
+                  <Statistic
+                    title="昨日览量"
+                    value={`${yesterday}`}
+                    valueStyle={{ color: "#3f8600" }}
+                  />
+                </Col>
+                <Col span={8}>
+                  <Statistic
+                    title="今日览量"
+                    value={`${today}`}
+                    valueStyle={{ color: "#3f8600" }}
+                  />
+                </Col>
+              </Row>
             </Card>
           </Col>
           <Col span={6}>
